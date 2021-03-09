@@ -1,9 +1,11 @@
 import { stringify } from 'querystring';
 import { history } from 'umi';
-import { fakeAccountLogin } from '@/services/login';
+import { login } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { message } from 'antd';
+import { CONFIG } from '@/consts/config';
+
 const Model = {
   namespace: 'login',
   state: {
@@ -11,13 +13,14 @@ const Model = {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      // const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(login, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       }); // Login successfully
 
-      if (response.status === 'ok') {
+      if (response.code === 0) {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  登录成功！');
@@ -39,6 +42,8 @@ const Model = {
         }
 
         history.replace(redirect || '/');
+      } else {
+        message.error(response.msg);
       }
     },
 
@@ -57,8 +62,12 @@ const Model = {
   },
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      return { ...state, status: payload.status, type: payload.type };
+      // 写入用户信息
+      localStorage.setItem("pityToken", payload.data.token);
+      localStorage.setItem("pityUser", JSON.stringify(payload.data.user));
+      // setAuthority(payload.currentAuthority);
+      setAuthority(CONFIG.ROLE[payload.data.user.role]);
+      return { ...state, status: payload.code === 0 ? 'ok': 'error', type: 'account' };
     },
   },
 };

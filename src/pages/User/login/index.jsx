@@ -35,7 +35,7 @@ const Login = (props) => {
     const { dispatch } = props;
     dispatch({
       type: 'login/login',
-      payload: { ...values, type },
+      payload: { ...values },
     });
   };
 
@@ -56,7 +56,7 @@ const Login = (props) => {
           },
         }}
         onFinish={(values) => {
-          handleSubmit(values);
+          handleSubmit({ username: values.userName, password: values.password });
           return Promise.resolve();
         }}
       >
