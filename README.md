@@ -1,57 +1,18 @@
-# Ant Design Pro
+# pityWeb
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+这个项目叫pity，这个project是项目的前端项目，采用react开发。
 
-## Environment Prepare
+这是一个从0开始写的自动化测试平台，旨在总结自己最近几年的工作经验，也顺便帮助大家进步。目前还在火热更新中，基本上每周都会更新几篇吧，前期以教学+编码为主，后期以实现功能为主。希望大家能够喜欢！~
 
-Install `node_modules`:
+项目起源是本人很期待的某家头部公司拒绝了我，觉得特别遗憾吧。加上这一年`浑浑噩噩`的，也没有什么产出，做的东西不如18，19年多。所以打算把自己18-19的项目重写出来，给大家一些参考。最重点的是@我去热饭，饭佬的持续更新让我觉得我也得努力一把了。
 
-```bash
-npm install
-```
+欢迎大家加入群讨论，如果群失效了可以加本人微信: wuranxu，我拉你进群。
 
-or
+希望大家都能够找到自己的方向，冲鸭！如果能够帮到大家，希望大家点个star，感激不尽~也欢迎大家提出各种各样的问题。
 
-```bash
-yarn
-```
+![](https://gitee.com/woodywrx/picture/raw/master/2021-3-10/1615390483947-image.png)
 
-## Provided Scripts
+也欢迎大家关注对应的公众号: **测试开发入坑**
 
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
+![](https://gitee.com/woodywrx/picture/raw/master/2021-3-10/1615390951439-image.png)
 
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
-npm run build
-```
-
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
