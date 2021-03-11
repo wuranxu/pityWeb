@@ -31,6 +31,7 @@ export default defineConfig({
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': defaultSettings.primaryColor,
+    "border-radius-base": '4px',
   },
   title: false,
   ignoreMomentLocale: true,

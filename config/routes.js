@@ -28,6 +28,12 @@ export default [
                 redirect: '/welcome',
               },
               {
+                path: '/request',
+                name: '调试页面',
+                icon: 'rocket',
+                component: './Request'
+              },
+              {
                 path: '/welcome',
                 name: 'welcome',
                 icon: 'smile',
