@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
-import { Card, Col, Row, Input, Select, Button, Tabs, Radio, Dropdown, Menu } from 'antd';
-import { DownOutlined, SendOutlined, DeleteTwoTone, EditTwoTone } from '@ant-design/icons';
+import { Card, Col, Row, Input, Select, Button, Modal, Tabs, notification, Radio, Dropdown, Menu } from 'antd';
+import { DownOutlined, SendOutlined, DeleteTwoTone } from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
+import CodeEditor from '@/components/Postman/CodeEditor';
+import { httpRequest } from '@/services/request';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-const selectBefore = (
-  <Select defaultValue='GET' style={{ width: 120, fontSize: 16, textAlign: 'left' }}>
-    <Option value='GET'>GET</Option>
-    <Option value='POST'>POST</Option>
-    <Option value='PUT'>PUT</Option>
-    <Option value='DELETE'>DELETE</Option>
-  </Select>
-);
-
-
-
 export default () => {
   const [bodyType, setBodyType] = useState('none');
   const [rawType, setRawType] = useState('JSON')
+  const [method, setMethod] = useState('GET');
   const [paramsData, setParamsData] = useState([]);
+  const [headers, setHeaders] = useState([]);
   const [editableKeys, setEditableRowKeys] = useState(() => paramsData.map((item) => item.id));
+  const [headersKeys, setHeadersKeys] = useState(() => headers.map((item) => item.id));
+  const [body, setBody] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState({});
 
   // 请求url+params
   const [url, setUrl] = useState('');
+
+  const selectBefore = (
+    <Select value={method} onChange={data => setMethod(data)} style={{ width: 120, fontSize: 16, textAlign: 'left' }}>
+      <Option value='GET'>GET</Option>
+      <Option value='POST'>POST</Option>
+      <Option value='PUT'>PUT</Option>
+      <Option value='DELETE'>DELETE</Option>
+    </Select>
+  );
 
   // 根据paramsData拼接url
   const joinUrl = (data) => {
@@ -65,10 +71,54 @@ export default () => {
     setRawType(key);
   }
 
-  const onDelete = key => {
-    const data = paramsData.filter(item => item.id !== key)
-    setParamsData(data);
-    joinUrl(data);
+  // 处理headers
+  const getHeaders = () => {
+    const result = {}
+    headers.forEach(item => {
+      if (item.key !== '') {
+        result[item.key] = item.value;
+      }
+    })
+    return result;
+  }
+
+  // 拼接http请求
+  const onRequest = async () => {
+    if (url === '') {
+      notification.error({
+        message: '请求Url不能为空'
+      })
+      return;
+    }
+    setLoading(true);
+    const params = {
+      method, url, body, headers: getHeaders()
+    }
+    if (bodyType === 'none') {
+      params.body = null;
+    }
+    const response = await httpRequest(params);
+    setLoading(false);
+    if (response.code !== 0) {
+      notification.error(response.msg);
+      return;
+    }
+    setResponse(response.data);
+    Modal.info({
+      title: '返回结果',
+      content: <pre>{typeof response.data.response === 'string' ? response.data.response: JSON.stringify(response.data.response, null, 2)}</pre>
+    })
+  }
+
+  const onDelete = (columnType, key) => {
+    if (columnType === 'params') {
+      const data = paramsData.filter(item => item.id !== key)
+      setParamsData(data);
+      joinUrl(data);
+    } else {
+      const data = headers.filter(item => item.id !== key)
+      setHeaders(data);
+    }
   }
 
   const menu = (
@@ -92,28 +142,30 @@ export default () => {
     </Menu>
   );
 
-  const paramsColumns = [
-    {
-      title: 'KEY',
-      dataIndex: 'key',
-    },
-    {
-      title: 'VALUE',
-      dataIndex: 'value',
-    },
-    {
-      title: 'DESCRIPTION',
-      dataIndex: 'description',
-    },
-    {
-      title: '操作',
-      render: (text, record) => {
-        return <>
-          <DeleteTwoTone style={{cursor: 'pointer', marginLeft: 8}} onClick={()=>{onDelete(record.id)}} twoToneColor="#eb2f96"/>
-        </>
-      }
-    },
-  ]
+  const columns = columnType => {
+    return [
+      {
+        title: 'KEY',
+        dataIndex: 'key',
+      },
+      {
+        title: 'VALUE',
+        dataIndex: 'value',
+      },
+      {
+        title: 'DESCRIPTION',
+        dataIndex: 'description',
+      },
+      {
+        title: '操作',
+        render: (text, record) => {
+          return <>
+            <DeleteTwoTone style={{cursor: 'pointer', marginLeft: 8}} onClick={()=>{onDelete(columnType, record.id)}} twoToneColor="#eb2f96"/>
+          </>
+        }
+      },
+    ]
+  }
 
   return (
     <Card>
@@ -125,18 +177,21 @@ export default () => {
           }} />
         </Col>
         <Col span={6}>
-          <Button type='primary' size='large' style={{ marginRight: 16, float: 'right' }}><SendOutlined />Send </Button>
+          <Button onClick={onRequest} loading={loading}
+            type='primary' size='large' style={{ marginRight: 16, float: 'right' }}><SendOutlined />Send </Button>
         </Col>
       </Row>
       <Row style={{ marginTop: 8 }}>
         <Tabs defaultActiveKey='1' style={{width: '100%'}}>
           <TabPane tab='Params' key='1'>
-            <EditableTable columns={paramsColumns} title="Query Params" dataSource={paramsData} setDataSource={setParamsData}
+            <EditableTable columns={columns("params")} title="Query Params" dataSource={paramsData} setDataSource={setParamsData}
             extra={joinUrl} editableKeys={editableKeys} setEditableRowKeys={setEditableRowKeys}
             />
           </TabPane>
           <TabPane tab='Headers' key='2'>
-            这是Headers
+            <EditableTable columns={columns("headers")} title="Headers" dataSource={headers} setDataSource={setHeaders}
+                           editableKeys={headersKeys} setEditableRowKeys={setHeadersKeys}
+            />
           </TabPane>
           <TabPane tab='Body' key='3'>
             <Row>
@@ -156,6 +211,16 @@ export default () => {
                 </Dropdown>: null
               }
             </Row>
+            {
+              bodyType === 'raw' ?
+              <Row style={{marginTop: 12}}>
+                <Col span={24}>
+                  <Card bodyStyle={{padding: 0}}>
+                    <CodeEditor value={body} setValue={setBody} theme="vs-dark"/>
+                  </Card>
+                </Col>
+              </Row>: null
+            }
           </TabPane>
         </Tabs>
       </Row>
