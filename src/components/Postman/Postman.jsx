@@ -8,6 +8,15 @@ import { httpRequest } from '@/services/request';
 const { Option } = Select;
 const { TabPane } = Tabs;
 
+const tabExtra = (response) => {
+  return (
+    response ?
+      <div>
+        <span>Status: <span>{response.status_code}</span></span>
+      </div>: null
+  )
+}
+
 export default () => {
   const [bodyType, setBodyType] = useState('none');
   const [rawType, setRawType] = useState('JSON')
@@ -212,18 +221,27 @@ export default () => {
               }
             </Row>
             {
-              bodyType === 'raw' ?
+              bodyType !== 'none' ?
               <Row style={{marginTop: 12}}>
                 <Col span={24}>
                   <Card bodyStyle={{padding: 0}}>
-                    <CodeEditor value={body} setValue={setBody} theme="vs-dark"/>
+                    <CodeEditor value={body} setValue={setBody} height='40vh'/>
                   </Card>
                 </Col>
-              </Row>: null
+              </Row>: <div style={{height: '40vh', lineHeight: '40vh', textAlign: 'center'}}>This request does not have a body</div>
             }
           </TabPane>
+        </Tabs>
+      </Row>
+      <Row gutter={[8,8]}>
+        <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
+          <TabPane tab="Body" key="1"></TabPane>
+          <TabPane tab="Cookie" key="2"></TabPane>
+          <TabPane tab="Headers" key="3"></TabPane>
         </Tabs>
       </Row>
     </Card>
   );
 }
+
+

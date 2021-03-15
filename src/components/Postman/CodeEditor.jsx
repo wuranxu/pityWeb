@@ -11,7 +11,7 @@ export default ({ language, value, setValue, height, theme }) => {
     <Editor
       height={height || '50vh'}
       defaultLanguage={language || 'json'}
-      defaultValue=''
+      defaultValue={value}
       theme={theme || 'light'}
       onChange={handleEditorChange}
     />
