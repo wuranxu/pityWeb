@@ -24,15 +24,23 @@ const { TabPane } = Tabs;
 const STATUS = {
   200: { color: '#67C23A', text: 'OK' },
   401: { color: '#F56C6C', text: 'unauthorized' },
+  400: { color: '#F56C6C', text: 'Bad Request' },
 };
 
 const tabExtra = (response) => {
-  return response ? (
+  return response && response.response ? (
     <div style={{ marginRight: 16 }}>
       <span>
         Status:
-        <span style={{ color: STATUS[response.status_code].color, marginLeft: 8, marginRight: 8 }}>
-          {response.status_code} {STATUS[response.status_code].text}
+        <span
+          style={{
+            color: STATUS[response.status_code] ? STATUS[response.status_code].color : '#F56C6C',
+            marginLeft: 8,
+            marginRight: 8,
+          }}
+        >
+          {response.status_code}{' '}
+          {STATUS[response.status_code] ? STATUS[response.status_code].text : ''}
         </span>
         <span style={{ marginLeft: 8, marginRight: 8 }}>
           Time: <span style={{ color: '#67C23A' }}>{response.elapsed}</span>
