@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import {
+  Button,
   Card,
   Col,
-  Row,
+  Dropdown,
   Input,
-  Select,
-  Button,
-  Tabs,
-  Table,
+  Menu,
   notification,
   Radio,
-  Dropdown,
-  Menu,
+  Row,
+  Select,
+  Table,
+  Tabs,
 } from 'antd';
-import { DownOutlined, SendOutlined, DeleteTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, DownOutlined, SendOutlined } from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
 import CodeEditor from '@/components/Postman/CodeEditor';
 import { httpRequest } from '@/services/request';
+import auth from '@/utils/auth';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -171,11 +172,9 @@ export default () => {
     }
     const res = await httpRequest(params);
     setLoading(false);
-    if (res.code !== 0) {
-      notification.error(res.data.msg || '网络开小差了');
-      return;
+    if (auth.response(res, true)) {
+      setResponse(res.data);
     }
-    setResponse(res.data);
   };
 
   const onDelete = (columnType, key) => {
