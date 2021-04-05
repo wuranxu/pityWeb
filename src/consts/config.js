@@ -4,5 +4,6 @@ export const CONFIG = {
     0: 'user',
     1: 'admin',
     2: 'superAdmin'
-  }
+  },
+  PIC_URL: "http://cdn.kiin.top/",
 }

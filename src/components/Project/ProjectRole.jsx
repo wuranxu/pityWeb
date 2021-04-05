@@ -3,7 +3,7 @@ import {Avatar, Button, List, Select, Popconfirm, Skeleton, Tag} from 'antd';
 import {connect, useParams} from 'umi';
 import conf from '@/consts/const';
 import {PlusOutlined, DeleteTwoTone} from '@ant-design/icons';
-import FormForModal from "@/components/EagleForm/FormForModal";
+import FormForModal from "@/components/PityForm/FormForModal";
 import NProgress from 'nprogress' // 引入nprogress插件
 import 'nprogress/nprogress.css'  // 这个nprogress样式必须引入
 
