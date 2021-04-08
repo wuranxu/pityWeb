@@ -9,3 +9,11 @@ export async function listProject(params) {
     headers: auth.headers(),
   });
 }
+
+export async function insertProject(params) {
+  return request(`${CONFIG.URL}/project/insert`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
