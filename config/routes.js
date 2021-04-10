@@ -40,6 +40,11 @@ export default [
                 component: './Project/Project',
               },
               {
+                path: '/project/:id',
+                hideInMenu: true,
+                component: './project/ProjectDetail',
+              },
+              {
                 path: '/welcome',
                 name: 'welcome',
                 icon: 'smile',

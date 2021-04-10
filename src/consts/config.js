@@ -1,4 +1,5 @@
 export const CONFIG = {
+  // URL: 'http://47.112.32.195:7777',
   URL: 'http://localhost:7777',
   ROLE: {
     0: 'user',

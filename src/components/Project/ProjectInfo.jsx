@@ -1,58 +1,44 @@
-import React, {useEffect} from 'react';
-import {Row, Col, Select} from 'antd';
-import CustomForm from "@/components/PityForm/CustomForm";
-import {connect} from 'umi';
+import React from 'react';
+import { Col, Row, Select, Tooltip } from 'antd';
+import CustomForm from '@/components/PityForm/CustomForm';
+import { updateProject } from '@/services/project';
+import auth from '@/utils/auth';
 
 
-const {Option} = Select;
+const { Option } = Select;
 
-const ProjectInfo = ({data, user, dispatch}) => {
+export default ({ data, users, reloadData }) => {
 
-  useEffect(() => {
-    dispatch({
-      type: 'user/fetch'
-    })
-  }, [])
-
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const project = {
       ...data,
       ...values,
-      avatar: data.avatar,
-    }
-    dispatch({
-      type: 'project/update',
-      payload: project,
-    })
-  }
+    };
+    const res = await updateProject(project);
+    auth.response(res, true);
+    await reloadData();
+  };
 
-  const opt = <Select placeholder="请选择项目组长">
+  const opt = <Select placeholder='请选择项目组长'>
     {
-      user.users.map(item => <Option value={item.value}>{item.label}</Option>)
+      users.map(item => <Option key={item.value} value={item.id}><Tooltip
+        title={item.email}>{item.name}</Tooltip></Option>)
     }
-  </Select>
+  </Select>;
 
   const fields = [
     {
-      name: 'projectName',
+      name: 'name',
       label: '项目名称',
       required: true,
-      message: "请输入项目名称",
+      message: '请输入项目名称',
       type: 'input',
-      placeholder: "请输入项目名称",
+      placeholder: '请输入项目名称',
       component: null,
     },
     {
-      name: 'gitlabUrl',
-      label: 'gitlab ID',
-      required: true,
-      message: "请输入gitlab项目id, 如有多个用,隔开",
-      type: 'input',
-      placeholder: "请输入gitlab项目id",
-    },
-    {
       name: 'owner',
-      label: '项目组长',
+      label: '项目负责人',
       required: true,
       component: opt,
       type: 'select',
@@ -61,18 +47,25 @@ const ProjectInfo = ({data, user, dispatch}) => {
       name: 'description',
       label: '项目描述',
       required: false,
-      message: "请输入项目描述",
+      message: '请输入项目描述',
       type: 'textarea',
-      placeholder: "请输入项目描述",
+      placeholder: '请输入项目描述',
     },
-  ]
+    {
+      name: 'private',
+      label: '是否私有',
+      required: true,
+      message: '请选择项目是否私有',
+      type: 'switch',
+      valuePropName: 'checked',
+    },
+  ];
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CustomForm left={6} right={18} record={data} onFinish={onFinish} fields={fields}/>
+        <CustomForm left={6} right={18} record={data} onFinish={onFinish} fields={fields} />
       </Col>
     </Row>
-  )
+  );
 }
 
-export default connect(({project, user}) => ({project, user}))(ProjectInfo);

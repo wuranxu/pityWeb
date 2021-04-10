@@ -12,6 +12,7 @@ const {Option} = Select;
 const ProjectRole = ({user, dispatch, project, loading}) => {
   const params = useParams();
   const [modal, setModal] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const onUpdateRole = (item, value) => {
     dispatch({

@@ -12,7 +12,7 @@ export default {
   response: (res, info = false) => {
     if (res.code === 0) {
       if (info) {
-        message.info(res.msg);
+        message.success(res.msg);
       }
       return true;
     }

@@ -1,21 +1,19 @@
-import {Button, Col, Form, Row, Tooltip, Upload} from "antd";
-import React from "react";
-import ProjectAvatar from "@/components/Project/ProjectAvatar";
-import {connect} from 'umi';
-import {SaveOutlined} from '@ant-design/icons';
+import { Button, Col, Form, Row, Tooltip, Upload } from 'antd';
+import React from 'react';
+import ProjectAvatar from '@/components/Project/ProjectAvatar';
+import { SaveOutlined } from '@ant-design/icons';
 
 
 import getComponent from './index';
 
 const {Item: FormItem} = Form;
 
-const CustomForm = ({left, right, formName, record, onFinish, fields, dispatch}) => {
+export default ({left, right, formName, record, onFinish, fields, dispatch}) => {
   const [form] = Form.useForm();
   const layout = {
     labelCol: {span: left},
     wrapperCol: {span: right},
   }
-
 
   return (
     <Form
@@ -53,7 +51,7 @@ const CustomForm = ({left, right, formName, record, onFinish, fields, dispatch})
             <FormItem label={item.label} colon={item.colon || true}
                       rules={
                         [{required: item.required, message: item.message}]
-                      } name={item.name}
+                      } name={item.name} valuePropName={item.valuePropName || 'value'}
             >
               {getComponent(item.type, item.placeholder, item.component)}
             </FormItem>
@@ -75,6 +73,4 @@ const CustomForm = ({left, right, formName, record, onFinish, fields, dispatch})
       </Row>
     </Form>
   )
-
 }
-export default connect(({project}) => ({project}))(CustomForm);
