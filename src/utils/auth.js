@@ -10,6 +10,10 @@ export default {
     return headers;
   },
   response: (res, info = false) => {
+    if (res === null) {
+      message.error("请求失败")
+      return false;
+    }
     if (res.code === 0) {
       if (info) {
         message.success(res.msg);

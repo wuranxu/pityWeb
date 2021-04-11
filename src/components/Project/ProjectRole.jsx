@@ -1,75 +1,63 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Button, List, Select, Popconfirm, Skeleton, Tag} from 'antd';
-import {connect, useParams} from 'umi';
-import conf from '@/consts/const';
+import {CONFIG} from '@/consts/config';
 import {PlusOutlined, DeleteTwoTone} from '@ant-design/icons';
 import FormForModal from "@/components/PityForm/FormForModal";
-import NProgress from 'nprogress' // 引入nprogress插件
-import 'nprogress/nprogress.css'  // 这个nprogress样式必须引入
+import { useParams } from 'umi';
+import { insertProjectRole, updateProjectRole } from '@/services/project';
+import auth from '@/utils/auth';
 
 const {Option} = Select;
 
-const ProjectRole = ({user, dispatch, project, loading}) => {
+const ProjectRole = ({project, roles, users, fetchData}) => {
   const params = useParams();
   const [modal, setModal] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [userMap, setUserMap] = useState({});
 
-  const onUpdateRole = (item, value) => {
-    dispatch({
-      type: 'project/updateRole',
-      payload: {
-        ...item,
-        projRole: value,
-      },
-    })
+  useEffect(()=>{
+    const temp = {}
+    users.forEach(item => {temp[item.id] = item})
+    setUserMap(temp)
+  }, []);
+
+  const onUpdateRole = async (item, value) => {
+    const data = {
+      ...item,
+      project_role: value,
+    }
+    const res = await updateProjectRole(data);
+    if (auth.response(res, true)) {
+      await fetchData();
+    }
   }
 
-  const onFinish = (values) => {
+  const onFinish = async values => {
     const info = {
       ...values,
-      projectId: params.id,
+      project_id: params.id,
     }
-    dispatch({
-      type: 'project/addRole',
-      payload: info,
-    })
-    setModal(false);
+    const res = await insertProjectRole(info);
+    if (auth.response(res, true)) {
+      setModal(false);
+      // 重新加载权限
+      await fetchData();
+    }
   }
 
   const confirm = (item) => {
-    dispatch({
-      type: 'project/deleteRole',
-      payload: item
-    })
   }
 
-  useEffect(() => {
-    NProgress.start();
-    dispatch({
-      type: 'user/fetch'
-    })
-    dispatch({
-      type: 'project/listProjectRole',
-      payload: {
-        projectId: params.id,
-      }
-    })
-    NProgress.done();
-  }, [])
-
-
-  const {userMap, users} = user;
 
   const permission = (item) => {
-    if (item.projRole === 'OWNER') {
+    if (item.project_role === 'OWNER') {
       return [<Tag color='blue' size="large">负责人</Tag>];
     }
     return [
-      <Select style={{width: 80}} value={conf.PROJECT_ROLE_TO_ID[item.projRole]} onChange={(data) => {
+      <Select style={{width: 80}} value={CONFIG.PROJECT_ROLE_MAP[item.project_role]} onChange={(data) => {
         onUpdateRole(item, data);
       }}>
         {
-          Object.keys(conf.PROJECT_ROLE_MAP).map(key => <Option value={key}>{conf.PROJECT_ROLE_MAP[key]}</Option>)
+          Object.keys(CONFIG.PROJECT_ROLE_MAP).map(key => <Option value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
         }
       </Select>,
       <Popconfirm
@@ -86,26 +74,26 @@ const ProjectRole = ({user, dispatch, project, loading}) => {
   }
   const opt = <Select placeholder="请选择用户">
     {
-      users.map(item => <Option value={item.value}>{item.label}</Option>)
+      users.map(item => <Option value={item.id} key={item.id} disabled={item.id === project.owner}>{item.name}</Option>)
     }
   </Select>
 
   const roleList = <Select placeholder="请选择角色">
     {
-      Object.keys(conf.PROJECT_ROLE_MAP).map(key => <Option value={key}>{conf.PROJECT_ROLE_MAP[key]}</Option>)
+      Object.keys(CONFIG.PROJECT_ROLE_MAP).map(key => <Option value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
     }
   </Select>
 
   const fields = [
     {
-      name: 'userId',
+      name: 'user_id',
       label: '用户',
       required: true,
       component: opt,
       type: 'select'
     },
     {
-      name: 'projRole',
+      name: 'project_role',
       label: '角色',
       required: true,
       component: roleList,
@@ -115,10 +103,10 @@ const ProjectRole = ({user, dispatch, project, loading}) => {
 
   const data = [
     {
-      userId: project.projectData.owner,
-      projRole: 'OWNER',
+      user_id: project.owner,
+      project_role: 'OWNER',
     },
-    ...project.roles,
+    ...roles,
   ]
 
   return (
@@ -134,15 +122,14 @@ const ProjectRole = ({user, dispatch, project, loading}) => {
           itemLayout="horizontal"
           size="small"
           dataSource={data}
-          loading={loading.effects['project/listProjectRole']}
           renderItem={item => (
             <List.Item actions={permission(item)}>
               <Skeleton avatar title={false} loading={item.loading} active>
                 <List.Item.Meta
                   avatar={<Avatar
                     src={item.avatar || "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}/>}
-                  title={userMap[item.userId] ? userMap[item.userId].nickname : 'loading'}
-                  description={userMap[item.userId] ? userMap[item.userId].email : 'loading'}/>
+                  title={userMap[item.user_id] ? userMap[item.user_id].name : 'loading'}
+                  description={userMap[item.user_id] ? userMap[item.user_id].email : 'loading'}/>
               </Skeleton>
             </List.Item>
           )}
@@ -152,4 +139,4 @@ const ProjectRole = ({user, dispatch, project, loading}) => {
   )
 }
 
-export default connect(({project, user, loading}) => ({project, user, loading}))(ProjectRole);
+export default ProjectRole;

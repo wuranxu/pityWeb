@@ -33,3 +33,19 @@ export async function updateProject(data) {
     headers: auth.headers(),
   });
 }
+
+export async function insertProjectRole(data) {
+  return request(`${CONFIG.URL}/project/role/insert`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+export async function updateProjectRole(data) {
+  return request(`${CONFIG.URL}/project/role/update`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}

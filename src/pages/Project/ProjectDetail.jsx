@@ -7,6 +7,7 @@ import { queryProject } from '@/services/project';
 import auth from '@/utils/auth';
 import ProjectInfo from '@/components/Project/ProjectInfo';
 import { listUsers } from '@/services/user';
+import ProjectRole from '@/components/Project/ProjectRole';
 
 const { TabPane } = Tabs;
 
@@ -28,7 +29,7 @@ export default () => {
     const res = await queryProject({ projectId });
     if (auth.response(res)) {
       setProjectData(res.data.project);
-      setRoles(res.data.role);
+      setRoles(res.data.roles);
     }
   };
 
@@ -47,10 +48,10 @@ export default () => {
             这里没有用例，暂时替代一下
           </TabPane>
           <TabPane tab='成员列表' key='2'>
-            {/* <ProjectRole /> */}
+            <ProjectRole users={users} project={projectData} roles={roles} fetchData={fetchData}/>
           </TabPane>
           <TabPane tab='项目设置' key='3'>
-            <ProjectInfo data={projectData} users={users} reloadData={fetchData}/>
+            <ProjectInfo data={projectData} users={users} reloadData={fetchData} />
           </TabPane>
         </Tabs>
       </Card>
