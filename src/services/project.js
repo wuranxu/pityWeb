@@ -49,3 +49,11 @@ export async function updateProjectRole(data) {
     headers: auth.headers(),
   });
 }
+
+export async function deleteProjectRole(data) {
+  return request(`${CONFIG.URL}/project/role/delete`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}

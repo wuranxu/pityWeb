@@ -8,6 +8,7 @@ import auth from '@/utils/auth';
 import ProjectInfo from '@/components/Project/ProjectInfo';
 import { listUsers } from '@/services/user';
 import ProjectRole from '@/components/Project/ProjectRole';
+import Directory from '@/components/TestCase/Directory';
 
 const { TabPane } = Tabs;
 
@@ -18,6 +19,7 @@ export default () => {
   const [projectData, setProjectData] = useState({});
   const [users, setUsers] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [tree, setTree] = useState([]);
 
   const fetchUsers = async () => {
     const res = await listUsers();
@@ -30,6 +32,7 @@ export default () => {
     if (auth.response(res)) {
       setProjectData(res.data.project);
       setRoles(res.data.roles);
+      setTree(res.data.test_case);
     }
   };
 
@@ -45,7 +48,7 @@ export default () => {
       <Card>
         <Tabs defaultActiveKey='1'>
           <TabPane tab='用例列表' key='1'>
-            这里没有用例，暂时替代一下
+            <Directory loading={false} treeData={tree}/>
           </TabPane>
           <TabPane tab='成员列表' key='2'>
             <ProjectRole users={users} project={projectData} roles={roles} fetchData={fetchData}/>

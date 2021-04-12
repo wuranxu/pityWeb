@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Button, List, Select, Popconfirm, Skeleton, Tag} from 'antd';
+import {Avatar, Button, List, Select, Popconfirm, Skeleton, Input, Tag} from 'antd';
 import {CONFIG} from '@/consts/config';
 import {PlusOutlined, DeleteTwoTone} from '@ant-design/icons';
 import FormForModal from "@/components/PityForm/FormForModal";
 import { useParams } from 'umi';
-import { insertProjectRole, updateProjectRole } from '@/services/project';
+import { deleteProjectRole, insertProjectRole, updateProjectRole } from '@/services/project';
 import auth from '@/utils/auth';
 
 const {Option} = Select;
@@ -13,19 +13,27 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
   const params = useParams();
   const [modal, setModal] = useState(false);
   const [userMap, setUserMap] = useState({});
+  const [data, setData] = useState(roles);
 
   useEffect(()=>{
     const temp = {}
     users.forEach(item => {temp[item.id] = item})
     setUserMap(temp)
-  }, []);
+    setData([
+      {
+        user_id: project.owner,
+        project_role: 'OWNER',
+      },
+      ...roles,
+    ])
+  }, [roles, users]);
 
   const onUpdateRole = async (item, value) => {
-    const data = {
+    const body = {
       ...item,
       project_role: value,
     }
-    const res = await updateProjectRole(data);
+    const res = await updateProjectRole(body);
     if (auth.response(res, true)) {
       await fetchData();
     }
@@ -44,7 +52,34 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
     }
   }
 
-  const confirm = (item) => {
+  const confirm = async item => {
+    const res = await deleteProjectRole({id: item.id});
+    if (auth.response(res, true)) {
+      await fetchData();
+    }
+  }
+
+  const onSearchRole = name => {
+    if (name === '') {
+      setData([
+        {
+          user_id: project.owner,
+          project_role: 'OWNER',
+        },
+        ...roles,
+      ])
+      return
+    }
+    const now = roles.filter(item => userMap[item.user_id].email.toLowerCase().indexOf(name.toLowerCase()) > -1
+      || userMap[item.user_id].name.toLowerCase().indexOf(name.toLowerCase()) > -1)
+
+    setData([
+      {
+        user_id: project.owner,
+        project_role: 'OWNER',
+      },
+      ...now,
+    ])
   }
 
 
@@ -101,14 +136,6 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
     },
   ]
 
-  const data = [
-    {
-      user_id: project.owner,
-      project_role: 'OWNER',
-    },
-    ...roles,
-  ]
-
   return (
     <div>
       <FormForModal title="添加成员" left={6} right={18} width={500} record={{}} onFinish={onFinish} fields={fields}
@@ -116,6 +143,8 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
       />
       <div style={{marginBottom: 16}}>
         <Button size="small" type="primary" onClick={() => setModal(true)}><PlusOutlined/>添加成员</Button>
+        <Input.Search onSearch={onSearchRole} size="small" style={{float: 'right', marginRight: 8, width: 280}}
+                      placeholder="搜索用户邮箱/姓名"/>
       </div>
       <div>
         <List
