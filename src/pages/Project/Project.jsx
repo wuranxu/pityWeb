@@ -133,7 +133,7 @@ export default () => {
         title="添加项目"
         left={6}
         right={18}
-        record={{}}
+        record={{private: false}}
         visible={visible}
         onCancel={() => setVisible(false)}
         fields={fields}

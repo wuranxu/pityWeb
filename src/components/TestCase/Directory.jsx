@@ -1,51 +1,77 @@
-import {Spin, Row, Col, Card, Dropdown, Menu} from 'antd';
-import React, {useState} from 'react';
+import { Spin, Row, Col, Card, Empty, Dropdown, Menu } from 'antd';
+import React, { useState } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
-import {PlusOutlined,FolderTwoTone, BugTwoTone, FolderOutlined} from '@ant-design/icons';
+import { PlusOutlined, FolderTwoTone, BugTwoTone, FolderOutlined } from '@ant-design/icons';
+import CaseForm from '@/components/TestCase/CaseForm';
+import { createTestCase } from '@/services/testcase';
+import auth from '@/utils/auth';
 
-export default ({loading, treeData}) => {
+export default ({ loading, treeData, fetchData, projectData }) => {
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
+  const [drawer, setDrawer] = useState(false);
+  const [caseInfo, setCaseInfo] = useState({ request_type: '1' });
 
   const menu = (
     <Menu>
       <Menu.Item icon={<FolderOutlined />}>
-        <a>
+        <a onClick={() => {
+          setDrawer(true);
+        }}>
           添加用例
         </a>
       </Menu.Item>
     </Menu>
   );
 
+  const onCreateCase = async (values) => {
+    const res = await createTestCase({
+      ...values,
+      request_type: parseInt(values.request_type, 10),
+      status: parseInt(values.status, 10),
+      tag: values.tag !== undefined ? values.tag.join(','): null,
+      project_id: projectData.id,
+    });
+    if (auth.response(res, true)) {
+      setDrawer(false);
+      await fetchData();
+    }
+  };
+
   const iconMap = key => {
     if (key.indexOf('cat') > -1) {
-      return <FolderTwoTone twoToneColor="#ffc519"/>;
+      return <FolderTwoTone twoToneColor='#ffc519' />;
     }
     if (key.indexOf('case') > -1) {
-      return <BugTwoTone twoToneColor='#13CE66'/>;
+      return <BugTwoTone twoToneColor='#13CE66' />;
     }
   };
 
   const AddButton = <Dropdown overlay={menu}>
-    <a style={{ marginLeft: 8 }}><PlusOutlined style={{ fontSize: 16, marginTop: 4, cursor: 'pointer' }} /></a>
+    <a style={{ marginLeft: 8 }}>
+      <PlusOutlined style={{ fontSize: 16, marginTop: 4, cursor: 'pointer' }} />
+    </a>
   </Dropdown>;
 
   return (
     <Spin spinning={loading} tip='努力加载中'>
+      <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase} />
       <Row gutter={[8, 8]}>
-        <Col span={7}>
+        <Col span={6}>
           <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
             <ProfessionalTree gData={treeData} checkable={false} AddButton={AddButton}
                               searchValue={searchValue}
                               setSearchValue={setSearchValue}
-                              iconMap={iconMap} suffixMap={()=>{return null}} />
+                              iconMap={iconMap} suffixMap={() => {
+              return null;
+            }} />
           </Card>
         </Col>
-        <Col span={17}>
+        <Col span={18}>
           <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
           </Card>
         </Col>
       </Row>
     </Spin>
-  )
+  );
 }

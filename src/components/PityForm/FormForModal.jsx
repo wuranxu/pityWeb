@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Modal} from "antd";
+import {Form, Modal, Col} from "antd";
 import getComponent from './index';
 
 const {Item: FormItem} = Form;
@@ -27,13 +27,15 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
         onFinish={onFinish}
       >
         {
-          fields.map(item => <FormItem label={item.label} colon={item.colon || true}
-                                       rules={
-                                         [{required: item.required, message: item.message}]
-                                       } name={item.name} valuePropName={item.valuePropName || 'value'}
-          >
-            {getComponent(item.type, item.placeholder, item.component)}
-          </FormItem>)
+          fields.map(item => <Col span={item.span || 24}>
+            <FormItem label={item.label} colon={item.colon || true}
+                      rules={
+                        [{required: item.required, message: item.message}]
+                      } name={item.name} valuePropName={item.valuePropName || 'value'}
+            >
+              {getComponent(item.type, item.placeholder, item.component)}
+            </FormItem>
+          </Col>)
         }
       </Form>
     </Modal>

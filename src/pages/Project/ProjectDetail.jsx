@@ -45,10 +45,10 @@ export default () => {
     <PageContainer title={<span>
       <Avatar
         style={{ backgroundColor: '#87d068' }}>{projectData.name === undefined ? 'loading...' : projectData.name.slice(0, 2)}</Avatar>{projectData.name}</span>}>
-      <Card>
+      <Card bodyStyle={{padding: '8px 18px'}}>
         <Tabs defaultActiveKey='1'>
           <TabPane tab='用例列表' key='1'>
-            <Directory loading={false} treeData={tree}/>
+            <Directory loading={false} treeData={tree} fetchData={fetchData} projectData={projectData}/>
           </TabPane>
           <TabPane tab='成员列表' key='2'>
             <ProjectRole users={users} project={projectData} roles={roles} fetchData={fetchData}/>

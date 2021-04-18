@@ -5,6 +5,7 @@ import {
   Col,
   Dropdown,
   Input,
+  Form,
   Menu,
   notification,
   Radio,
@@ -51,33 +52,18 @@ const tabExtra = (response) => {
   ) : null;
 };
 
-export default () => {
+export default ({form, body, setBody, headers, setHeaders}) => {
   const [bodyType, setBodyType] = useState('none');
   const [rawType, setRawType] = useState('JSON');
   const [method, setMethod] = useState('GET');
   const [paramsData, setParamsData] = useState([]);
-  const [headers, setHeaders] = useState([]);
   const [editableKeys, setEditableRowKeys] = useState(() => paramsData.map((item) => item.id));
   const [headersKeys, setHeadersKeys] = useState(() => headers.map((item) => item.id));
-  const [body, setBody] = useState(null);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({});
 
   // 请求url+params
   const [url, setUrl] = useState('');
-
-  const selectBefore = (
-    <Select
-      value={method}
-      onChange={(data) => setMethod(data)}
-      style={{ width: 120, fontSize: 16, textAlign: 'left' }}
-    >
-      <Option value="GET">GET</Option>
-      <Option value="POST">POST</Option>
-      <Option value="PUT">PUT</Option>
-      <Option value="DELETE">DELETE</Option>
-    </Select>
-  );
 
   const resColumns = [
     {
@@ -115,7 +101,8 @@ export default () => {
         }
       }
     });
-    setUrl(tempUrl);
+    // setUrl(tempUrl);
+    form.setFieldsValue({url: tempUrl})
   };
 
   const splitUrl = (nowUrl) => {
@@ -277,121 +264,146 @@ export default () => {
 
   return (
     <Card>
-      <Row gutter={[8, 8]}>
-        <Col span={18}>
-          <Input
-            size="large"
-            value={url}
-            addonBefore={selectBefore}
-            placeholder="请输入要请求的url"
-            onChange={(e) => {
-              setUrl(e.target.value);
-              splitUrl(e.target.value);
-            }}
-          />
-        </Col>
-        <Col span={6}>
-          <Button
-            onClick={onRequest}
-            loading={loading}
-            type="primary"
-            size="large"
-            style={{ marginRight: 16, float: 'right' }}
-          >
-            <SendOutlined />
-            Send{' '}
-          </Button>
-        </Col>
-      </Row>
-      <Row style={{ marginTop: 8 }}>
-        <Tabs defaultActiveKey="1" style={{ width: '100%' }}>
-          <TabPane tab="Params" key="1">
-            <EditableTable
-              columns={columns('params')}
-              title="Query Params"
-              dataSource={paramsData}
-              setDataSource={setParamsData}
-              extra={joinUrl}
-              editableKeys={editableKeys}
-              setEditableRowKeys={setEditableRowKeys}
-            />
-          </TabPane>
-          <TabPane tab="Headers" key="2">
-            <EditableTable
-              columns={columns('headers')}
-              title="Headers"
-              dataSource={headers}
-              setDataSource={setHeaders}
-              editableKeys={headersKeys}
-              setEditableRowKeys={setHeadersKeys}
-            />
-          </TabPane>
-          <TabPane tab="Body" key="3">
-            <Row>
-              <Radio.Group
-                defaultValue="none"
-                value={bodyType}
-                onChange={(e) => setBodyType(e.target.value)}
-              >
-                <Radio value="none">none</Radio>
-                <Radio value="form-data">form-data</Radio>
-                <Radio value="x-www-form-urlencoded">x-www-form-urlencoded</Radio>
-                <Radio value="raw">raw</Radio>
-                <Radio value="binary">binary</Radio>
-                <Radio value="GraphQL">GraphQL</Radio>
-              </Radio.Group>
-              {bodyType === 'raw' ? (
-                <Dropdown style={{ marginLeft: 8 }} overlay={menu} trigger={['click']}>
-                  <a onClick={(e) => e.preventDefault()}>
-                    {rawType} <DownOutlined />
-                  </a>
-                </Dropdown>
-              ) : null}
-            </Row>
-            {bodyType !== 'none' ? (
-              <Row style={{ marginTop: 12 }}>
-                <Col span={24}>
-                  <Card bodyStyle={{ padding: 0 }}>
-                    <CodeEditor value={body} setValue={setBody} height="20vh" />
-                  </Card>
-                </Col>
+      <Form form={form}>
+        <Row gutter={[8, 8]}>
+          <Col span={20}>
+            <Form layout="inline" form={form}>
+              <Col span={6}>
+                <Form.Item name="request_method" rules={
+                  [{required: true, message: "请选择请求方法"}]
+                }>
+                  <Select
+                    value={method}
+                    placeholder="选择请求方式"
+                    onChange={(data) => setMethod(data)}
+                    style={{ width: 120, textAlign: 'left' }}
+                  >
+                    <Option value="GET">GET</Option>
+                    <Option value="POST">POST</Option>
+                    <Option value="PUT">PUT</Option>
+                    <Option value="DELETE">DELETE</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={18}>
+                <Form.Item name="url" rules={
+                  [{required: true, message: "请输入请求url"}]
+                }>
+                  <Input
+                    value={url}
+                    // addonBefore={selectBefore}
+                    placeholder="请输入要请求的url"
+                    onChange={(e) => {
+                      setUrl(e.target.value);
+                      splitUrl(e.target.value);
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+            </Form>
+          </Col>
+          <Col span={4}>
+            <Button
+              onClick={onRequest}
+              loading={loading}
+              type="primary"
+              style={{ marginRight: 16, float: 'right' }}
+            >
+              <SendOutlined />
+              Send{' '}
+            </Button>
+          </Col>
+        </Row>
+        <Row style={{ marginTop: 8 }}>
+          <Tabs defaultActiveKey="1" style={{ width: '100%' }}>
+            <TabPane tab="Params" key="1">
+              <EditableTable
+                columns={columns('params')}
+                title="Query Params"
+                dataSource={paramsData}
+                setDataSource={setParamsData}
+                extra={joinUrl}
+                editableKeys={editableKeys}
+                setEditableRowKeys={setEditableRowKeys}
+              />
+            </TabPane>
+            <TabPane tab="Headers" key="2">
+              <EditableTable
+                columns={columns('headers')}
+                title="Headers"
+                dataSource={headers}
+                setDataSource={setHeaders}
+                editableKeys={headersKeys}
+                setEditableRowKeys={setHeadersKeys}
+              />
+            </TabPane>
+            <TabPane tab="Body" key="3">
+              <Row>
+                <Radio.Group
+                  defaultValue="none"
+                  value={bodyType}
+                  onChange={(e) => setBodyType(e.target.value)}
+                >
+                  <Radio value="none">none</Radio>
+                  <Radio value="form-data">form-data</Radio>
+                  <Radio value="x-www-form-urlencoded">x-www-form-urlencoded</Radio>
+                  <Radio value="raw">raw</Radio>
+                  <Radio value="binary">binary</Radio>
+                  <Radio value="GraphQL">GraphQL</Radio>
+                </Radio.Group>
+                {bodyType === 'raw' ? (
+                  <Dropdown style={{ marginLeft: 8 }} overlay={menu} trigger={['click']}>
+                    <a onClick={(e) => e.preventDefault()}>
+                      {rawType} <DownOutlined />
+                    </a>
+                  </Dropdown>
+                ) : null}
               </Row>
-            ) : (
-              <div style={{ height: '20vh', lineHeight: '20vh', textAlign: 'center' }}>
-                This request does not have a body
-              </div>
-            )}
-          </TabPane>
-        </Tabs>
-      </Row>
-      <Row gutter={[8, 8]}>
-        {Object.keys(response).length === 0 ? null : (
-          <Tabs style={{ width: '100%' }} tabBarExtraContent={tabExtra(response)}>
-            <TabPane tab="Body" key="1">
-              <CodeEditor
-                value={response.response ? JSON.stringify(response.response, null, 2) : ''}
-                height="30vh"
-              />
-            </TabPane>
-            <TabPane tab="Cookie" key="2">
-              <Table
-                columns={resColumns}
-                dataSource={toTable('cookies')}
-                size="small"
-                pagination={false}
-              />
-            </TabPane>
-            <TabPane tab="Headers" key="3">
-              <Table
-                columns={resColumns}
-                dataSource={toTable('response_header')}
-                size="small"
-                pagination={false}
-              />
+              {bodyType !== 'none' ? (
+                <Row style={{ marginTop: 12 }}>
+                  <Col span={24}>
+                    <Card bodyStyle={{ padding: 0 }}>
+                      <CodeEditor value={body} setValue={setBody} height="20vh" />
+                    </Card>
+                  </Col>
+                </Row>
+              ) : (
+                <div style={{ height: '20vh', lineHeight: '20vh', textAlign: 'center' }}>
+                  This request does not have a body
+                </div>
+              )}
             </TabPane>
           </Tabs>
-        )}
-      </Row>
+        </Row>
+        <Row gutter={[8, 8]}>
+          {Object.keys(response).length === 0 ? null : (
+            <Tabs style={{ width: '100%' }} tabBarExtraContent={tabExtra(response)}>
+              <TabPane tab="Body" key="1">
+                <CodeEditor
+                  value={response.response ? JSON.stringify(response.response, null, 2) : ''}
+                  height="30vh"
+                />
+              </TabPane>
+              <TabPane tab="Cookie" key="2">
+                <Table
+                  columns={resColumns}
+                  dataSource={toTable('cookies')}
+                  size="small"
+                  pagination={false}
+                />
+              </TabPane>
+              <TabPane tab="Headers" key="3">
+                <Table
+                  columns={resColumns}
+                  dataSource={toTable('response_header')}
+                  size="small"
+                  pagination={false}
+                />
+              </TabPane>
+            </Tabs>
+          )}
+        </Row>
+      </Form>
     </Card>
   );
 };

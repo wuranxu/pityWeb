@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Select, Spin, Tooltip, Tree } from 'antd';
+import { Input, Select, Row, Col, Spin, Tooltip, Tree, Empty} from 'antd';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
@@ -135,27 +135,33 @@ export default (props) => {
 
   return (
     <Spin spinning={props.loading ? props.loading : false}>
-      <div style={{ padding: 6, marginBottom: 4 }}>
-        <Input placeholder='请输入用例名称' style={{ width: '90%' }} onChange={onChange} size='small'
-               enterButton={false} allowClear value={props.searchValue} />
-        {props.AddButton}
-      </div>
-      <Tree
-        // selectable={props.selectable}
-        blockNode
-        onExpand={onExpand}
-        expandedKeys={expandedKeys}
-        autoExpandParent={autoExpandParent}
-        // checkable={props.checkable}
-        // onCheck={props.onCheck}
-        onSelect={props.onSelect}
-        // checkedKeys={props.checkedKeys}
-        // defaultExpandAll
-        showIcon
-        defaultExpandParent
-      >
-        {loop(props.gData)}
-      </Tree>
+      <Row style={{ padding: 8, marginBottom: 4 }}>
+        <Col span={22}>
+          <Input placeholder='请输入用例名称' style={{ width: '100%' }} onChange={onChange} size='small'
+                 enterButton={false} allowClear value={props.searchValue} />
+        </Col>
+        <Col span={2}>
+          {props.AddButton}
+        </Col>
+      </Row>
+      {
+        props.gData.length > 0 ? <Tree
+          // selectable={props.selectable}
+          blockNode
+          onExpand={onExpand}
+          expandedKeys={expandedKeys}
+          autoExpandParent={autoExpandParent}
+          // checkable={props.checkable}
+          // onCheck={props.onCheck}
+          onSelect={props.onSelect}
+          // checkedKeys={props.checkedKeys}
+          // defaultExpandAll
+          showIcon
+          defaultExpandParent
+        >
+          {loop(props.gData)}
+        </Tree>: <Empty/>
+      }
     </Spin>
   );
 }
