@@ -1,16 +1,18 @@
-import { Spin, Row, Col, Card, Empty, Dropdown, Menu } from 'antd';
+import { Spin, Row, Col, Card, Empty, Result, Dropdown, Menu } from 'antd';
 import React, { useState } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import { PlusOutlined, FolderTwoTone, BugTwoTone, FolderOutlined } from '@ant-design/icons';
 import CaseForm from '@/components/TestCase/CaseForm';
 import { createTestCase } from '@/services/testcase';
 import auth from '@/utils/auth';
+import TestCaseDetail from '@/components/TestCase/TestCaseDetail';
 
 export default ({ loading, treeData, fetchData, projectData }) => {
 
   const [searchValue, setSearchValue] = useState('');
   const [drawer, setDrawer] = useState(false);
   const [caseInfo, setCaseInfo] = useState({ request_type: '1' });
+  const [caseId, setCaseId] = useState(null);
 
   const menu = (
     <Menu>
@@ -24,12 +26,21 @@ export default ({ loading, treeData, fetchData, projectData }) => {
     </Menu>
   );
 
+  const onSelectKeys = keys => {
+    if (keys.length > 0 && keys[0].indexOf("case_") > -1) {
+      // 说明是case
+      setCaseId(parseInt(keys[0].split("_")[1], 10))
+    } else {
+      setCaseId(null);
+    }
+  }
+
   const onCreateCase = async (values) => {
     const res = await createTestCase({
       ...values,
       request_type: parseInt(values.request_type, 10),
       status: parseInt(values.status, 10),
-      tag: values.tag !== undefined ? values.tag.join(','): null,
+      tag: values.tag !== undefined ? values.tag.join(',') : null,
       project_id: projectData.id,
     });
     if (auth.response(res, true)) {
@@ -60,7 +71,7 @@ export default ({ loading, treeData, fetchData, projectData }) => {
         <Col span={6}>
           <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
             <ProfessionalTree gData={treeData} checkable={false} AddButton={AddButton}
-                              searchValue={searchValue}
+                              searchValue={searchValue} onSelect={onSelectKeys}
                               setSearchValue={setSearchValue}
                               iconMap={iconMap} suffixMap={() => {
               return null;
@@ -69,6 +80,9 @@ export default ({ loading, treeData, fetchData, projectData }) => {
         </Col>
         <Col span={18}>
           <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
+            {
+              caseId === null ? <Result title='请选择左侧用例' status='info' /> : <TestCaseDetail caseId={caseId} />
+            }
           </Card>
         </Col>
       </Row>
