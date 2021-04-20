@@ -18,16 +18,22 @@ export default () => {
   const projectId = params.id;
   const [projectData, setProjectData] = useState({});
   const [users, setUsers] = useState([]);
+  const [userMap, setUserMap] = useState({});
   const [roles, setRoles] = useState([]);
   const [tree, setTree] = useState([]);
 
   const fetchUsers = async () => {
     const res = await listUsers();
     setUsers(res);
+    const temp = {}
+    res.forEach(item => {temp[item.id] = item})
+    return temp;
   };
 
   const fetchData = async () => {
-    await fetchUsers();
+    const user = await fetchUsers();
+    setUserMap(user)
+    console.log("user:", user)
     const res = await queryProject({ projectId });
     if (auth.response(res)) {
       setProjectData(res.data.project);
@@ -48,7 +54,7 @@ export default () => {
       <Card bodyStyle={{padding: '8px 18px'}}>
         <Tabs defaultActiveKey='1'>
           <TabPane tab='用例列表' key='1'>
-            <Directory loading={false} treeData={tree} fetchData={fetchData} projectData={projectData}/>
+            <Directory loading={false} treeData={tree} fetchData={fetchData} projectData={projectData} userMap={userMap}/>
           </TabPane>
           <TabPane tab='成员列表' key='2'>
             <ProjectRole users={users} project={projectData} roles={roles} fetchData={fetchData}/>

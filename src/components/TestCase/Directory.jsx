@@ -1,5 +1,5 @@
 import { Spin, Row, Col, Card, Empty, Result, Dropdown, Menu } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import { PlusOutlined, FolderTwoTone, BugTwoTone, FolderOutlined } from '@ant-design/icons';
 import CaseForm from '@/components/TestCase/CaseForm';
@@ -7,7 +7,7 @@ import { createTestCase } from '@/services/testcase';
 import auth from '@/utils/auth';
 import TestCaseDetail from '@/components/TestCase/TestCaseDetail';
 
-export default ({ loading, treeData, fetchData, projectData }) => {
+export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   const [searchValue, setSearchValue] = useState('');
   const [drawer, setDrawer] = useState(false);
@@ -27,13 +27,13 @@ export default ({ loading, treeData, fetchData, projectData }) => {
   );
 
   const onSelectKeys = keys => {
-    if (keys.length > 0 && keys[0].indexOf("case_") > -1) {
+    if (keys.length > 0 && keys[0].indexOf('case_') > -1) {
       // 说明是case
-      setCaseId(parseInt(keys[0].split("_")[1], 10))
+      setCaseId(parseInt(keys[0].split('_')[1], 10));
     } else {
       setCaseId(null);
     }
-  }
+  };
 
   const onCreateCase = async (values) => {
     const res = await createTestCase({
@@ -81,7 +81,7 @@ export default ({ loading, treeData, fetchData, projectData }) => {
         <Col span={18}>
           <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
             {
-              caseId === null ? <Result title='请选择左侧用例' status='info' /> : <TestCaseDetail caseId={caseId} />
+              caseId === null ? <Result title='请选择左侧用例' status='info' /> : <TestCaseDetail caseId={caseId} userMap={userMap} />
             }
           </Card>
         </Col>

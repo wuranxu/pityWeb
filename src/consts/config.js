@@ -34,9 +34,16 @@ export const CONFIG = {
     3: '正常运行',
   },
   REQUEST_TYPE: {
-    1: "Http",
-    2: "Grpc",
-    3: "Dubbo"
+    1: 'Http',
+    2: 'Grpc',
+    3: 'Dubbo',
+  },
+  CASE_TAG: {
+    "P0": "magenta",
+    "P1": "red",
+    "P2": "volcano",
+    "P3": "orange",
+    "P4": "green",
   },
   CASE_BADGE: {
     1: {

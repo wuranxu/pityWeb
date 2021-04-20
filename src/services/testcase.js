@@ -9,3 +9,11 @@ export async function createTestCase(params) {
     headers: auth.headers(),
   });
 }
+
+export async function queryTestCase(params) {
+  return request(`${CONFIG.URL}/testcase/query`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}

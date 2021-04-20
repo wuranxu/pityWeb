@@ -103,6 +103,15 @@ export default () => {
       placeholder: '请输入项目名称',
     },
     {
+      name: 'app',
+      label: '服务名',
+      required: true,
+      message: '请输入项目对应服务名称',
+      type: 'input',
+      placeholder: '请输入项目对应服务名称',
+      component: null,
+    },
+    {
       name: 'owner',
       label: '项目负责人',
       required: true,
