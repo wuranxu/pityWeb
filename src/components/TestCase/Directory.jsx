@@ -1,4 +1,4 @@
-import { Spin, Row, Col, Card, Empty, Result, Dropdown, Menu } from 'antd';
+import { Spin, Row, Col, Card, Tooltip, Result, Dropdown, Menu } from 'antd';
 import React, { useState, useEffect } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import { PlusOutlined, FolderTwoTone, BugTwoTone, FolderOutlined } from '@ant-design/icons';
@@ -58,6 +58,21 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
     }
   };
 
+  const Icon = (icon, title, operation, margin) => {
+    return <Tooltip title={title}><span onClick={operation} style={{ marginLeft: margin }}>{icon}</span></Tooltip>;
+  };
+
+  // 后置icon
+  const suffixMap = item => {
+    if (item.key.indexOf('case') > -1) {
+      return <>
+        {Icon(<a style={{ color: '#3cc64d' }}><PlusOutlined /></a>, '添加前置操作', () => {
+          console.log("点击了")
+        }, 24)}
+      </>
+    }
+  }
+
   const AddButton = <Dropdown overlay={menu}>
     <a style={{ marginLeft: 8 }}>
       <PlusOutlined style={{ fontSize: 16, marginTop: 4, cursor: 'pointer' }} />
@@ -69,17 +84,15 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
       <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase} />
       <Row gutter={[8, 8]}>
         <Col span={6}>
-          <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
+          <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
             <ProfessionalTree gData={treeData} checkable={false} AddButton={AddButton}
                               searchValue={searchValue} onSelect={onSelectKeys}
                               setSearchValue={setSearchValue}
-                              iconMap={iconMap} suffixMap={() => {
-              return null;
-            }} />
+                              iconMap={iconMap} suffixMap={suffixMap} />
           </Card>
         </Col>
         <Col span={18}>
-          <Card bodyStyle={{ padding: 12, minHeight: 500, maxHeight: 500, overflowY: 'auto' }}>
+          <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
             {
               caseId === null ? <Result title='请选择左侧用例' status='info' /> : <TestCaseDetail caseId={caseId} userMap={userMap} />
             }
