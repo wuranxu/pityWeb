@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import { PlusOutlined, FolderTwoTone, BugTwoTone, FolderOutlined, RobotOutlined } from '@ant-design/icons';
 import CaseForm from '@/components/TestCase/CaseForm';
-import { createTestCase } from '@/services/testcase';
+import { createTestCase, insertTestCaseAsserts } from '@/services/testcase';
 import auth from '@/utils/auth';
 import TestCaseDetail from '@/components/TestCase/TestCaseDetail';
 import CustomForm from '@/components/PityForm/CustomForm';
@@ -99,7 +99,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
     if (item.key.indexOf('case') > -1) {
       return <>
         {Icon(
-          <Dropdown overlay={caseMenu(item.key.split("_")[1])}>
+          <Dropdown overlay={caseMenu(item.key.split('_')[1])}>
             <a style={{ color: '#3cc64d' }}>
               <PlusOutlined style={{ fontSize: 16, marginTop: 4, cursor: 'pointer' }} />
             </a>
@@ -111,9 +111,13 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
   };
 
   // 新增断言
-  const onSaveAssert = values => {
+  const onSaveAssert = async values => {
     const data = { case_id: assertCaseId, ...values };
-
+    const res = await insertTestCaseAsserts(data);
+    if (auth.response(res, true)) {
+      setAssertModal(false);
+      await fetchData();
+    }
   };
 
   const AddButton = <Dropdown overlay={menu}>
