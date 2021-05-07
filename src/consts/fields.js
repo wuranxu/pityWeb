@@ -5,6 +5,49 @@ const { Option } = Select;
 // const Option = Select.Option;
 
 export default {
+  CaseAsserts: [
+    {
+      name: 'name',
+      label: '标题',
+      required: true,
+      message: '请输入断言标题',
+      type: 'input',
+      placeholder: '请输入断言标题',
+      component: null,
+      span: 24,
+    },
+    {
+      name: 'assert_type',
+      label: '校验方式',
+      required: true,
+      component: <Select>
+        {Object.keys(CONFIG.ASSERT_TYPE).map(v => <Option key={v} value={v}>{CONFIG.ASSERT_TYPE[v]}</Option>)}
+      </Select>,
+      type: 'select',
+      span: 24,
+    },
+    {
+      name: 'expected',
+      label: '预期结果',
+      required: true,
+      message: '请输入预期结果',
+      type: 'input',
+      placeholder: '请输入预期结果，支持变量',
+      component: null,
+      span: 24,
+    },
+    {
+      name: 'actually',
+      label: '实际结果',
+      required: true,
+      message: '请输入实际结果',
+      type: 'input',
+      placeholder: '请输入实际结果，支持变量',
+      component: null,
+      span: 24,
+    },
+  ],
+
   CaseDetail: [
     {
       name: 'catalogue',

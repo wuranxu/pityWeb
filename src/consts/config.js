@@ -27,6 +27,11 @@ export const CONFIG = {
     // 2: "负责人"
   },
   PRIORITY: ['P0', 'P1', 'P2', 'P3', 'P4'],
+  ASSERT_TYPE: {
+    'equal': '等于',
+    'not_equal': '不等于',
+    'in': '属于',
+  },
   // 用例状态
   CASE_STATUS: {
     1: '调试中',
@@ -39,11 +44,11 @@ export const CONFIG = {
     3: 'Dubbo',
   },
   CASE_TAG: {
-    "P0": "magenta",
-    "P1": "red",
-    "P2": "volcano",
-    "P3": "orange",
-    "P4": "green",
+    'P0': 'magenta',
+    'P1': 'red',
+    'P2': 'volcano',
+    'P3': 'orange',
+    'P4': 'green',
   },
   CASE_BADGE: {
     1: {

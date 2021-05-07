@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { queryTestCase } from '@/services/testcase';
 import auth from '@/utils/auth';
 import { Badge, Col, Descriptions, Row, Tag, Spin, Form, Button } from 'antd';
-import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { EditTwoTone, DeleteTwoTone, PlayCircleTwoTone } from '@ant-design/icons';
 import { CONFIG } from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
+import { executeCase } from '@/services/request';
 
 
 export default ({ caseId, userMap }) => {
@@ -15,6 +16,12 @@ export default ({ caseId, userMap }) => {
   const [body, setBody] = useState('');
   const [headers, setHeaders] = useState([]);
   const [form] = Form.useForm();
+
+  const execute = async () => {
+    const res = await executeCase({case_id: caseId});
+    console.log(res);
+  }
+
   const CaseTitle = <div>
     <span>用例详情</span>
     <a style={{ float: 'right', marginRight: 16 }}><DeleteTwoTone twoToneColor="red"/></a>
@@ -22,6 +29,7 @@ export default ({ caseId, userMap }) => {
       setEditing(true);
       parseHeaders(data.request_header);
     }}><EditTwoTone /></a>
+    <a style={{ float: 'right', marginRight: 16 }} onClick={execute}><PlayCircleTwoTone /></a>
   </div>;
 
 

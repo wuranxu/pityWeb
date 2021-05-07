@@ -9,3 +9,11 @@ export async function httpRequest(params) {
     headers: auth.headers(),
   });
 }
+
+export async function executeCase(params) {
+  return request(`${CONFIG.URL}/request/run`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
