@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { queryTestCase } from '@/services/testcase';
 import auth from '@/utils/auth';
-import { Badge, Col, Descriptions, Row, Tag, Spin, Form, Button } from 'antd';
-import { EditTwoTone, DeleteTwoTone, PlayCircleTwoTone } from '@ant-design/icons';
+import { Badge, Button, Col, Descriptions, Form, Row, Spin, Tag } from 'antd';
+import { DeleteTwoTone, EditTwoTone, PlayCircleTwoTone } from '@ant-design/icons';
 import { CONFIG } from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
 import { executeCase } from '@/services/request';
 
 
-export default ({ caseId, userMap }) => {
+export default ({ caseId, userMap, setExecuteStatus }) => {
   const [data, setData] = useState({ status: 1, tag: '' });
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -18,13 +18,22 @@ export default ({ caseId, userMap }) => {
   const [form] = Form.useForm();
 
   const execute = async () => {
-    const res = await executeCase({case_id: caseId});
-    console.log(res);
-  }
+    const res = await executeCase({ case_id: caseId });
+    setExecuteStatus(res.data.asserts);
+  };
+  const parseHeaders = headerString => {
+    const header = JSON.parse(headerString);
+    const temp = [];
+    Object.keys(header).forEach(k => {
+      temp.push({ key: k, value: header[k] });
+    });
+    setHeaders(temp);
+
+  };
 
   const CaseTitle = <div>
     <span>用例详情</span>
-    <a style={{ float: 'right', marginRight: 16 }}><DeleteTwoTone twoToneColor="red"/></a>
+    <a style={{ float: 'right', marginRight: 16 }}><DeleteTwoTone twoToneColor='red' /></a>
     <a style={{ float: 'right', marginRight: 16 }} onClick={() => {
       setEditing(true);
       parseHeaders(data.request_header);
@@ -38,7 +47,7 @@ export default ({ caseId, userMap }) => {
       return;
     }
     setLoading(true);
-    const res = await queryTestCase({ caseId: caseId });
+    const res = await queryTestCase({ caseId });
     if (auth.response(res)) {
       setData(res.data);
     }
@@ -46,18 +55,9 @@ export default ({ caseId, userMap }) => {
   }, [caseId]);
 
   const onFinish = () => {
-    console.log('暂时不做编辑功能');
+    // console.log('暂时不做编辑功能');
   };
 
-  const parseHeaders = headerString => {
-    const header = JSON.parse(headerString);
-    const temp = [];
-    Object.keys(header).map(k => {
-      temp.push({ key: k, value: header[k] });
-    });
-    setHeaders(temp);
-
-  };
 
   return (
     <Spin spinning={loading}>
@@ -109,8 +109,8 @@ export default ({ caseId, userMap }) => {
                           headers={headers}
                           setHeaders={setHeaders} />
               <div style={{ textAlign: 'center', marginTop: 16 }}>
-                <Button onClick={()=>setEditing(false)}>取消</Button>
-                <Button type='primary' style={{marginLeft: 8}}>保存</Button>
+                <Button onClick={() => setEditing(false)}>取消</Button>
+                <Button type='primary' style={{ marginLeft: 8 }}>保存</Button>
               </div>
             </div>
           }

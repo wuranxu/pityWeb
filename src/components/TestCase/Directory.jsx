@@ -1,12 +1,19 @@
-import { Spin, Row, Col, Card, Tooltip, Result, Dropdown, Menu, Modal } from 'antd';
-import React, { useState, useEffect } from 'react';
+import { Card, Col, Dropdown, Menu, Result, Row, Spin, Tooltip } from 'antd';
+import React, { useState } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
-import { PlusOutlined, FolderTwoTone, BugTwoTone, FolderOutlined, RobotOutlined } from '@ant-design/icons';
+import {
+  BugTwoTone,
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+  FolderOutlined,
+  FolderTwoTone,
+  PlusOutlined,
+  RobotOutlined,
+} from '@ant-design/icons';
 import CaseForm from '@/components/TestCase/CaseForm';
 import { createTestCase, insertTestCaseAsserts } from '@/services/testcase';
 import auth from '@/utils/auth';
 import TestCaseDetail from '@/components/TestCase/TestCaseDetail';
-import CustomForm from '@/components/PityForm/CustomForm';
 import fields from '@/consts/fields';
 import FormForModal from '@/components/PityForm/FormForModal';
 
@@ -18,6 +25,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
   const [assertCaseId, setAssertCaseId] = useState(null);
   const [caseInfo, setCaseInfo] = useState({ request_type: '1' });
   const [caseId, setCaseId] = useState(null);
+  const [executeStatus, setExecuteStatus] = useState(null);
 
   const menu = (
     <Menu>
@@ -108,6 +116,18 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
           }, 24)}
       </>;
     }
+    if (item.key.indexOf('asserts_') > -1) {
+      const id = item.key.split('_')[1];
+      if (executeStatus === null) {
+        return null;
+      }
+      return executeStatus[id] !== undefined ? <>
+        {Icon(
+          executeStatus[id].status ? <CheckCircleTwoTone twoToneColor='#52c41a' /> :
+            <CloseCircleTwoTone twoToneColor='red' />, null, () => {
+          }, 4)}
+      </>: null;
+    }
   };
 
   // 新增断言
@@ -144,7 +164,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
           <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
             {
               caseId === null ? <Result title='请选择左侧用例' status='info' /> :
-                <TestCaseDetail caseId={caseId} userMap={userMap} />
+                <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} />
             }
           </Card>
         </Col>
