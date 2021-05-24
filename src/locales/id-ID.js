@@ -5,6 +5,7 @@ import pwa from './id-ID/pwa';
 import settingDrawer from './id-ID/settingDrawer';
 import settings from './id-ID/settings';
 import pages from './id-ID/pages';
+
 export default {
   'navbar.lang': 'Bahasa',
   'layout.user.link.help': 'Bantuan',

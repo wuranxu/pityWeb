@@ -1,4 +1,5 @@
 import { isUrl } from './utils';
+
 describe('isUrl tests', () => {
   it('should return false for invalid and corner case inputs', () => {
     expect(isUrl([])).toBeFalsy();

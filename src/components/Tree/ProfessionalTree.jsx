@@ -48,8 +48,9 @@ export default (props) => {
         {afterStr} {key === currentKey ? suffix : null}
         </span>
     ) : <span onMouseLeave={() => setCurrentKey(null)}
-              onMouseEnter={() => setCurrentKey(key)}><Tooltip
-      title={title}>{title.length > 16 ? `${title.slice(0, 16)  }...` : title} {key === currentKey ? suffix : null}</Tooltip></span>;
+              onMouseEnter={() => setCurrentKey(key)}>
+      <Tooltip title={title}>{title.length > 16 ? `${title.slice(0, 16)  }...` : title}
+      {key === currentKey ? suffix : null} {props.parseStatus(key)}</Tooltip></span>;
   };
 
   const parseDirectory = (key, title, requestType) => {
@@ -147,6 +148,7 @@ export default (props) => {
       {
         props.gData.length > 0 ? <Tree
           // selectable={props.selectable}
+          size="large"
           blockNode
           onExpand={onExpand}
           expandedKeys={expandedKeys}

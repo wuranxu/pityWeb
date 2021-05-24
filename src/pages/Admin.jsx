@@ -3,6 +3,7 @@ import { HeartTwoTone, SmileTwoTone } from '@ant-design/icons';
 import { Card, Typography, Alert } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { useIntl } from 'umi';
+
 export default () => {
   const intl = useIntl();
   return (
@@ -18,7 +19,7 @@ export default () => {
             id: 'pages.welcome.alertMessage',
             defaultMessage: '更快更强的重型组件，已经发布。',
           })}
-          type="success"
+          type='success'
           showIcon
           banner
           style={{
@@ -32,7 +33,7 @@ export default () => {
             textAlign: 'center',
           }}
         >
-          <SmileTwoTone /> Pity <HeartTwoTone twoToneColor="#eb2f96" /> You
+          <SmileTwoTone /> Pity <HeartTwoTone twoToneColor='#eb2f96' /> You
         </Typography.Title>
       </Card>
       <p
@@ -42,7 +43,7 @@ export default () => {
         }}
       >
         Want to add more pages? Please refer to{' '}
-        <a href="https://pro.ant.design/docs/block-cn" target="_blank" rel="noopener noreferrer">
+        <a href='https://pro.ant.design/docs/block-cn' target='_blank' rel='noopener noreferrer'>
           use block
         </a>
         。

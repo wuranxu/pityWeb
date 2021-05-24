@@ -16,7 +16,7 @@ export default ({ title, width, left, right, formName, record, onFinish, loading
 
   const translateHeaders = () => {
     const hd = {};
-    for (let h in headers) {
+    for (const h in headers) {
       hd[headers[h].key] = headers[h].value;
     }
     return JSON.stringify(hd, null, 2);

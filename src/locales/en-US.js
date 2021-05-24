@@ -5,6 +5,7 @@ import pwa from './en-US/pwa';
 import settingDrawer from './en-US/settingDrawer';
 import settings from './en-US/settings';
 import pages from './en-US/pages';
+
 export default {
   'navBar.lang': 'Languages',
   'layout.user.link.help': 'Help',

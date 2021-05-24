@@ -24,6 +24,8 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
   const [assertModal, setAssertModal] = useState(false);
   const [assertCaseId, setAssertCaseId] = useState(null);
   const [caseInfo, setCaseInfo] = useState({ request_type: '1' });
+  // 0 说明是默认状态 1说明是case 2说明是用例
+  const [mode, setMode] = useState(0);
   const [caseId, setCaseId] = useState(null);
   const [executeStatus, setExecuteStatus] = useState(null);
 
@@ -66,6 +68,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
   const onSelectKeys = keys => {
     if (keys.length > 0 && keys[0].indexOf('case_') > -1) {
       // 说明是case
+      setMode();
       setCaseId(parseInt(keys[0].split('_')[1], 10));
     } else {
       setCaseId(null);
@@ -116,18 +119,34 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
           }, 24)}
       </>;
     }
-    if (item.key.indexOf('asserts_') > -1) {
-      const id = item.key.split('_')[1];
+    // if (item.key.indexOf('asserts_') > -1) {
+    //   const id = item.key.split('_')[1];
+    //   if (executeStatus === null) {
+    //     return null;
+    //   }
+    //   return executeStatus[id] !== undefined ? <>
+    //     {Icon(
+    //       executeStatus[id].status ? <CheckCircleTwoTone twoToneColor='#52c41a' /> :
+    //         <CloseCircleTwoTone twoToneColor='red' />, null, () => {
+    //       }, 4)}
+    //   </>: null;
+    // }
+  };
+
+  const parseStatus = key => {
+    if (key.indexOf('asserts_') > -1) {
       if (executeStatus === null) {
-        return null;
+        return '';
       }
+      const id = key.split('_')[1];
       return executeStatus[id] !== undefined ? <>
         {Icon(
           executeStatus[id].status ? <CheckCircleTwoTone twoToneColor='#52c41a' /> :
             <CloseCircleTwoTone twoToneColor='red' />, null, () => {
           }, 4)}
-      </>: null;
+      </> : '';
     }
+    return '';
   };
 
   // 新增断言
@@ -138,6 +157,16 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
       setAssertModal(false);
       await fetchData();
     }
+  };
+
+  const RenderView = () => {
+    if (mode === 1) {
+      return <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} />;
+    }
+    if (mode === 2) {
+      return
+    }
+    return <Result title='请选择左侧用例' status='info' />;
   };
 
   const AddButton = <Dropdown overlay={menu}>
@@ -157,13 +186,13 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
             <ProfessionalTree gData={treeData} checkable={false} AddButton={AddButton}
                               searchValue={searchValue} onSelect={onSelectKeys}
                               setSearchValue={setSearchValue}
-                              iconMap={iconMap} suffixMap={suffixMap} />
+                              iconMap={iconMap} suffixMap={suffixMap} parseStatus={parseStatus} />
           </Card>
         </Col>
         <Col span={18}>
           <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
             {
-              caseId === null ? <Result title='请选择左侧用例' status='info' /> :
+              mode === 0 ? <Result title='请选择左侧用例' status='info' /> :
                 <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} />
             }
           </Card>
@@ -172,3 +201,5 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
     </Spin>
   );
 }
+
+
