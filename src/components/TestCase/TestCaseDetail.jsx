@@ -7,6 +7,9 @@ import { CONFIG } from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
 import { executeCase } from '@/services/request';
+import HeaderTable from "@/components/Table/HeaderTable";
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 
 export default ({ caseId, userMap, setExecuteStatus }) => {
@@ -64,7 +67,7 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
       <Row gutter={[8, 8]}>
         <Col span={24}>
           {
-            !editing ? <Descriptions title={CaseTitle} bordered size='middle'>
+            !editing ? <Descriptions title={CaseTitle} bordered size='middle' span={3}>
               <Descriptions.Item label='用例名称'><a>{data.name}</a></Descriptions.Item>
               <Descriptions.Item label='用例目录'>{data.catalogue}</Descriptions.Item>
               <Descriptions.Item label='用例优先级'>{<Tag
@@ -90,10 +93,12 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
                 <a href={data.url}>{data.url}</a>
               </Descriptions.Item>
               <Descriptions.Item label='请求Headers' span={3}>
-                <pre>{data.request_header}</pre>
+                <HeaderTable headers={data.request_header}/>
               </Descriptions.Item>
               <Descriptions.Item label='请求body' span={3}>
-                <pre>{data.body}</pre>
+                <SyntaxHighlighter language="json" style={vs2015}>
+                  {data.body || ''}
+                </SyntaxHighlighter>
               </Descriptions.Item>
             </Descriptions> : <div>
               <CaseDetail form={form} layout={{

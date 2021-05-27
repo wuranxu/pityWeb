@@ -38,7 +38,7 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`${new Date().getFullYear()} wuranxu个人出品`}
+    copyright={`${new Date().getFullYear()} woody个人出品`}
     links={[
       {
         key: 'Ant Design Pro',
@@ -101,6 +101,7 @@ const BasicLayout = (props) => {
   return (
     <ProLayout
       logo={logo}
+      SiderMenuProps={{mode: 'horizontal'}}
       formatMessage={formatMessage}
       {...props}
       {...settings}
