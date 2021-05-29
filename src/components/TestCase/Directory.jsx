@@ -1,4 +1,4 @@
-import { Card, Col, Dropdown, Menu, Result, Row, Spin, Tooltip } from 'antd';
+import { Card, Col, Dropdown, Menu, Alert, Row, Spin, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import {
@@ -16,6 +16,7 @@ import auth from '@/utils/auth';
 import TestCaseDetail from '@/components/TestCase/TestCaseDetail';
 import fields from '@/consts/fields';
 import FormForModal from '@/components/PityForm/FormForModal';
+import Asserts from '@/components/TestCase/Asserts';
 
 export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
@@ -27,6 +28,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
   // 0 说明是默认状态 1说明是case 2说明是用例
   const [mode, setMode] = useState(0);
   const [caseId, setCaseId] = useState(null);
+  const [assertId, setAssertId] = useState(null);
   const [executeStatus, setExecuteStatus] = useState(null);
 
   const menu = (
@@ -65,13 +67,26 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
     </Menu>
   );
 
+  const toInt = keys => {
+    return parseInt(keys[0].split('_')[1], 10);
+  };
+
   const onSelectKeys = keys => {
-    if (keys.length > 0 && keys[0].indexOf('case_') > -1) {
-      // 说明是case
-      setMode();
-      setCaseId(parseInt(keys[0].split('_')[1], 10));
-    } else {
+    if (keys.length === 0) {
       setCaseId(null);
+      setAssertId(null);
+      setMode(0);
+      return;
+    }
+    if (keys[0].indexOf('case_') > -1) {
+      // 说明是case
+      setMode(1);
+      setCaseId(toInt(keys));
+    } else if (keys[0].indexOf('asserts_') > -1) {
+      setMode(2);
+      setAssertId(toInt(keys));
+    } else {
+      setMode(0);
     }
   };
 
@@ -161,12 +176,28 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   const RenderView = () => {
     if (mode === 1) {
-      return <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} />;
+      return <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} project={projectData}/>;
     }
     if (mode === 2) {
-      return
+      return <Asserts />;
     }
-    return <Result title='请选择左侧用例' status='info' />;
+    return <Alert
+      closable
+      message='欢迎使用Pity测试平台!'
+      description={
+        <div>
+          <strong>Tips: </strong>
+          <p />
+          <p>1. 左侧是用例树，展示的是用例和用例的相关信息。</p>
+          <p>2. 我们可以选择用例/断言/前置/后置条件进行查看和修改，这些详情会在右侧展示。</p>
+          <p>{'3. 用例的生命周期是[变量替换]->[前置条件执行]->[用例执行]->[后置条件执行]->[断言执行]'}。</p>
+          <p>4. 页面可在线调试对应的接口，选中多个用例可将他们将入测试集。</p>
+          <p>5. 更多功能等待作者慢慢完善吧。</p>
+        </div>
+      }
+      type='info'
+      showIcon
+    />;
   };
 
   const AddButton = <Dropdown overlay={menu}>
@@ -183,7 +214,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
       <Row gutter={[8, 8]}>
         <Col span={6}>
           <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
-            <ProfessionalTree gData={treeData} checkable={false} AddButton={AddButton}
+            <ProfessionalTree gData={treeData} checkable={true} AddButton={AddButton}
                               searchValue={searchValue} onSelect={onSelectKeys}
                               setSearchValue={setSearchValue}
                               iconMap={iconMap} suffixMap={suffixMap} parseStatus={parseStatus} />
@@ -192,8 +223,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
         <Col span={18}>
           <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
             {
-              mode === 0 ? <Result title='请选择左侧用例' status='info' /> :
-                <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} />
+              RenderView(mode)
             }
           </Card>
         </Col>

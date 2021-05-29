@@ -10,6 +10,14 @@ export async function createTestCase(params) {
   });
 }
 
+export async function updateTestCase(params) {
+  return request(`${CONFIG.URL}/testcase/update`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
 export async function queryTestCase(params) {
   return request(`${CONFIG.URL}/testcase/query`, {
     method: 'GET',

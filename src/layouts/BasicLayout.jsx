@@ -101,6 +101,7 @@ const BasicLayout = (props) => {
   return (
     <ProLayout
       logo={logo}
+      layout='top'
       SiderMenuProps={{mode: 'horizontal'}}
       formatMessage={formatMessage}
       {...props}

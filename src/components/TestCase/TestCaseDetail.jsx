@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { queryTestCase } from '@/services/testcase';
+import { queryTestCase, updateTestCase } from '@/services/testcase';
 import auth from '@/utils/auth';
 import { Badge, Button, Col, Descriptions, Form, Row, Spin, Tag } from 'antd';
-import { DeleteTwoTone, EditTwoTone, PlayCircleTwoTone } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { CONFIG } from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
 import { executeCase } from '@/services/request';
-import HeaderTable from "@/components/Table/HeaderTable";
+import HeaderTable from '@/components/Table/HeaderTable';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import styles from './TestCaseDetail.less';
 
 
-export default ({ caseId, userMap, setExecuteStatus }) => {
+export default ({ caseId, userMap, setExecuteStatus, project }) => {
   const [data, setData] = useState({ status: 1, tag: '' });
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -25,6 +26,9 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
     setExecuteStatus(res.data.asserts);
   };
   const parseHeaders = headerString => {
+    if (!headerString) {
+      return;
+    }
     const header = JSON.parse(headerString);
     const temp = [];
     Object.keys(header).forEach(k => {
@@ -36,16 +40,15 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
 
   const CaseTitle = <div>
     <span>用例详情</span>
-    <a style={{ float: 'right', marginRight: 16 }}><DeleteTwoTone twoToneColor='red' /></a>
-    <a style={{ float: 'right', marginRight: 16 }} onClick={() => {
+    <Button type='danger' className={styles.inlineButton}><DeleteOutlined />删除</Button>
+    <Button type='primary' className={styles.inlineButton} onClick={execute}><PlayCircleOutlined />执行</Button>
+    <Button className={styles.inlineButton} onClick={() => {
       setEditing(true);
       parseHeaders(data.request_header);
-    }}><EditTwoTone /></a>
-    <a style={{ float: 'right', marginRight: 16 }} onClick={execute}><PlayCircleTwoTone /></a>
+    }}><EditOutlined />修改</Button>
   </div>;
 
-
-  useEffect(async () => {
+  const init = async () => {
     if (caseId === null) {
       return;
     }
@@ -55,10 +58,33 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
       setData(res.data);
     }
     setLoading(false);
-  }, [caseId]);
+  }
 
-  const onFinish = () => {
-    // console.log('暂时不做编辑功能');
+  useEffect(init, [caseId]);
+
+  const translateHeaders = () => {
+    const hd = {};
+    for (const h in headers) {
+      hd[headers[h].key] = headers[h].value;
+    }
+    return JSON.stringify(hd, null, 2);
+  };
+
+  const onFinish = async () => {
+    const values = await form.validateFields();
+    const params = {
+      ...values,
+      request_type: parseInt(values.request_type, 10),
+      status: parseInt(values.status, 10),
+      tag: values.tag !== undefined ? values.tag.join(',') : null,
+      project_id: project.id,
+      id: caseId,
+      request_header: translateHeaders(), body
+    };
+    const res = await updateTestCase(params);
+    auth.response(res, true);
+    setEditing(false);
+    await init()
   };
 
 
@@ -90,15 +116,17 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
               <Descriptions.Item label='创建时间'>{data.created_at}</Descriptions.Item>
               <Descriptions.Item label='更新时间'>{data.updated_at}</Descriptions.Item>
               <Descriptions.Item label='请求url' span={3}>
-                <a href={data.url}>{data.url}</a>
+                <a href={data.url} style={{ fontSize: 16 }}>{data.url}</a>
               </Descriptions.Item>
               <Descriptions.Item label='请求Headers' span={3}>
-                <HeaderTable headers={data.request_header}/>
+                <HeaderTable headers={data.request_header} />
               </Descriptions.Item>
               <Descriptions.Item label='请求body' span={3}>
-                <SyntaxHighlighter language="json" style={vs2015}>
-                  {data.body || ''}
-                </SyntaxHighlighter>
+                {
+                  data.body ? <SyntaxHighlighter language='json' style={vs2015}>
+                    {data.body}
+                  </SyntaxHighlighter> : null
+                }
               </Descriptions.Item>
             </Descriptions> : <div>
               <CaseDetail form={form} layout={{
@@ -115,7 +143,7 @@ export default ({ caseId, userMap, setExecuteStatus }) => {
                           setHeaders={setHeaders} />
               <div style={{ textAlign: 'center', marginTop: 16 }}>
                 <Button onClick={() => setEditing(false)}>取消</Button>
-                <Button type='primary' style={{ marginLeft: 8 }}>保存</Button>
+                <Button type='primary' style={{ marginLeft: 8 }} onClick={onFinish}>保存</Button>
               </div>
             </div>
           }

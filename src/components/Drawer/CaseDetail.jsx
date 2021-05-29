@@ -1,13 +1,14 @@
 import getComponent from '@/components/PityForm';
 import PostmanForm from '@/components/Postman/PostmanForm';
 import { Form, Row, Col } from 'antd';
+import styles from './CaseDetail.less';
 
 const FormItem = Form.Item;
 
-export default ({form, layout, formName, record, onFinish, fields, body, setBody, headers, setHeaders}) => {
+export default ({ form, layout, formName, record, onFinish, fields, body, setBody, headers, setHeaders }) => {
   return (
     <>
-      <h3 style={{ borderLeft: '3px solid #ecb64a', padding: '3px 8px' }}>用例信息</h3>
+      <p className={styles.caseTitle}>用例信息</p>
       <Form
         form={form}
         {...layout}
@@ -29,7 +30,7 @@ export default ({form, layout, formName, record, onFinish, fields, body, setBody
           }
         </Row>
         <Row gutter={[8, 8]}>
-          <h3 style={{ borderLeft: '3px solid #ecb64a', padding: '3px 8px' }}>请求信息</h3>
+          <p className={styles.caseTitle}>请求信息</p>
           <Col span={24}>
             <PostmanForm form={form} body={body} setBody={setBody} headers={headers} setHeaders={setHeaders} />
           </Col>
