@@ -1,5 +1,5 @@
 import { CONFIG } from '@/consts/config';
-import { Select, Badge } from 'antd';
+import { Select, Badge, Input } from 'antd';
 
 const { Option } = Select;
 // const Option = Select.Option;
@@ -111,4 +111,26 @@ export default {
       span: 12,
     },
   ],
+
+  Environment: [
+    {
+      name: 'name',
+      label: '环境名称',
+      required: true,
+      message: '请输入环境名称',
+      type: 'input',
+      placeholder: '请输入环境名称',
+      component: null,
+      span: 24,
+    },
+    {
+      name: 'remarks',
+      label: '备注',
+      required: false,
+      message: '请输入备注',
+      placeholder: '请输入备注',
+      component: <Input.TextArea maxLength={200}/>,
+      span: 24,
+    },
+  ]
 };

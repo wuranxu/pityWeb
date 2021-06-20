@@ -33,7 +33,6 @@ export default () => {
   const fetchData = async () => {
     const user = await fetchUsers();
     setUserMap(user)
-    console.log("user:", user)
     const res = await queryProject({ projectId });
     if (auth.response(res)) {
       setProjectData(res.data.project);

@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import { listUsers } from '@/services/user';
 
 export default {
   headers: (json = true) => {
@@ -30,4 +31,12 @@ export default {
     message.error(res.msg);
     return false;
   },
+  getUserMap: async () => {
+    const user = await listUsers();
+    const temp = {};
+    user.forEach((item) => {
+      temp[item.id] = item.name;
+    });
+    return temp;
+  }
 };

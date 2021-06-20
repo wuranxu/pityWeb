@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Form, Modal, Col} from "antd";
 import getComponent from './index';
 
@@ -11,6 +11,12 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
       onFinish(values);
     })
   }
+
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue(record);
+  }, [record]);
+
   const layout = {
     labelCol: {span: left},
     wrapperCol: {span: right},

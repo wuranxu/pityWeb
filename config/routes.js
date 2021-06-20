@@ -44,6 +44,12 @@ export default [
                 hideInMenu: true,
                 component: './project/ProjectDetail',
               },
+              {
+                path: '/config/environment',
+                name: '环境管理',
+                icon: 'rocket',
+                component: './Environment',
+              },
               // {
               //   path: '/welcome',
               //   name: 'welcome',
