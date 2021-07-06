@@ -34,7 +34,7 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
       >
         {
           fields.map(item => <Col span={item.span || 24}>
-            <FormItem label={item.label} colon={item.colon || true}
+            <FormItem label={item.label} colon={item.colon || true} initialValue={item.initialValue}
                       rules={
                         [{required: item.required, message: item.message}]
                       } name={item.name} valuePropName={item.valuePropName || 'value'}

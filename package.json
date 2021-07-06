@@ -51,7 +51,7 @@
     "@ant-design/pro-table": "^2.17.0",
     "@monaco-editor/react": "^4.0.11",
     "@umijs/route-utils": "^1.0.33",
-    "antd": "^4.16.3",
+    "antd": "4.12.3",
     "classnames": "^2.2.6",
     "eslint": "^5.8.0",
     "lodash": "^4.17.11",
@@ -64,8 +64,8 @@
     "react-dom": "^17.0.0",
     "react-helmet-async": "^1.0.4",
     "react-syntax-highlighter": "^15.4.3",
-    "umi": "^3.2.14",
-    "umi-request": "^1.0.8"
+    "umi": "3.4.11",
+    "umi-request": "1.0.8"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^1.0.28",
