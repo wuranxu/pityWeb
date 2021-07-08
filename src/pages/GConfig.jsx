@@ -1,18 +1,27 @@
 import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Col, Divider, Input, Switch, Row, Tag, Pagination, Badge, Select, Table } from 'antd';
+import { Badge, Button, Card, Col, Divider, Input, Row, Select, Switch, Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 
 import { PlusOutlined } from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
+import CodeEditor from '@/components/Postman/CodeEditor';
 
 const { Option } = Select;
 const GConfig = ({ gconfig, loading, dispatch }) => {
-  const { data, envList, key_type, envMap, pagination } = gconfig;
-  const [modal, setModal] = useState(false);
-  const [currentEnv, setCurrentEnv] = useState(0);
+  const { data, envList, key_type, envMap, modal, currentEnv, name, pagination } = gconfig;
   const [record, setRecord] = useState({ id: 0 });
-  const [name, setName] = useState('');
+  const [language, setLanguage] = useState(0);
+
+  const getType = () => {
+    if (language === 1) {
+      return 'json';
+    }
+    if (language === 2) {
+      return 'yaml';
+    }
+    return 'text';
+  };
 
   const columns = [
     {
@@ -48,8 +57,9 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
       key: 'operation',
       render: (_, record) => <>
         <a onClick={() => {
-          setModal(true);
+          save({modal: true})
           setRecord(record);
+          setLanguage(record.key_type);
         }}>编辑</a>
         <Divider type='vertical' />
         <a>删除</a>
@@ -59,27 +69,31 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
 
   const fields = [
     {
+      name: 'key_type',
+      label: '类型',
+      required: true,
+      component: <Select onSelect={e => {
+        setLanguage(e);
+      }
+      }>
+        <Option value={0}>String</Option>
+        <Option value={1}>JSON</Option>
+        <Option value={2}>YAML</Option>
+      </Select>,
+      type: 'select',
+    },
+    {
       name: 'key',
       label: 'key',
       required: true,
       type: 'input',
-    },
-    {
-      name: 'key_type',
-      label: '类型',
-      required: true,
-      component: <Select>
-        <Option value={0}>String</Option>
-        <Option value={1}>JSON</Option>
-        <Option value={2}>XML</Option>
-      </Select>,
-      type: 'select',
+      placeholder: '请输入key',
     },
     {
       name: 'value',
       label: 'value',
       required: true,
-      component: <Input.TextArea />,
+      component: <CodeEditor language={getType()} theme='vs-dark' height={250} options={{ lineNumbers: 'off' }} />,
     },
     {
       name: 'enable',
@@ -141,45 +155,51 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
         payload: params,
       });
     }
-    setModal(false);
-    await getConfig();
+  };
+
+  const save = data => {
+    dispatch({
+      type: 'gconfig/save',
+      payload: data,
+    });
   };
 
   return (
     <PageContainer title='全局变量'>
       <Card>
-        <FormForModal
-          fields={fields} visible={modal} left={4} right={20} onFinish={onFinish}
-          onCancel={() => setModal(false)} title='编辑变量' record={record} width={600} />
+        <FormForModal fields={fields} visible={modal} left={4} right={20} onFinish={onFinish}
+                      onCancel={() => {
+                        save({ modal: false });
+                      }} title='编辑变量' record={record} width={600} />
         <Row gutter={[8, 8]}>
           <Col span={12}>
             当前环境:
-            <Select value={currentEnv} style={{ width: 180, marginLeft: 16 }} onChange={e => setCurrentEnv(e)}>
+            <Select value={currentEnv} style={{ width: 180, marginLeft: 16 }} onChange={e => {
+              save({ currentEnv: e });
+            }}>
               <Option value={0}>全部</Option>
               {
                 envList.map(v => <Option value={v.id}>{v.name}</Option>)
               }
             </Select>
             <Button style={{ marginLeft: 16 }} type='primary'
-                    onClick={() => setModal(true)}><PlusOutlined />添加变量</Button>
+                    onClick={() => {
+                      save({ modal: true });
+                    }}><PlusOutlined />添加变量</Button>
           </Col>
           <Col span={6} />
           <Col span={6}>
             <Input placeholder='请输入key' value={name} onChange={e => {
-              setName(e.target.value);
+              save({ name: e.target.value });
             }} />
           </Col>
         </Row>
         <Row style={{ marginTop: 8 }}>
           <Col span={24}>
-            <Table dataSource={data} columns={columns} pagination={pagination}
-                   rowKey={record => record.id} loading={loading.effects['gconfig/fetchGConfig']}
-                   onChange={pg => {
-                     dispatch({
-                       type: 'gconfig/save',
-                       payload: { pagination: pg },
-                     });
-                   }} />
+            <Table dataSource={data} columns={columns} pagination={pagination} rowKey={record => record.id}
+                   loading={loading.effects['gconfig/fetchGConfig']} onChange={pg => {
+              save({ pagination: pg });
+            }} />
           </Col>
         </Row>
       </Card>

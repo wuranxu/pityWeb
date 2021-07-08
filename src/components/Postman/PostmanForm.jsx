@@ -363,7 +363,7 @@ export default ({form, body, setBody, headers, setHeaders}) => {
                 <Row style={{ marginTop: 12 }}>
                   <Col span={24}>
                     <Card bodyStyle={{ padding: 0 }}>
-                      <CodeEditor value={body} setValue={setBody} height="20vh" />
+                      <CodeEditor value={body} onChange={e => setBody(e)} height="20vh" />
                     </Card>
                   </Col>
                 </Row>

@@ -51,13 +51,43 @@ export default {
     },
 
     * insertConfig({ payload }, { call, put, select }) {
+      const state = yield select(state => state.gconfig);
       const res = yield call(insertGConfig, payload);
-      auth.response(res, true)
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'save',
+          payload: { modal: false },
+        });
+      }
+      yield put({
+        type: 'fetchGConfig',
+        payload: {
+          page: state.pagination.current,
+          size: state.pagination.pageSize,
+          env: state.currentEnv,
+          key: state.name,
+        },
+      });
     },
 
     * updateGConfig({ payload }, { call, put, select }) {
       const res = yield call(updateGConfig, payload);
-      auth.response(res, true)
+      const state = yield select(state => state.gconfig);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'save',
+          payload: { modal: false },
+        });
+      }
+      yield put({
+        type: 'fetchGConfig',
+        payload: {
+          page: state.pagination.current,
+          size: state.pagination.pageSize,
+          env: state.currentEnv,
+          key: state.name,
+        },
+      });
     },
 
     * fetchEnvList({ payload }, { call, put }) {
