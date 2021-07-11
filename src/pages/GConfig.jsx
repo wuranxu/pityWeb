@@ -1,11 +1,13 @@
 import {PageContainer} from '@ant-design/pro-layout';
-import {Badge, Button, Card, Col, Divider, Input, Row, Select, Switch, Table, Tag} from 'antd';
+import {Badge, Button, Card, Col, Divider, Input, Modal, Row, Select, Switch, Table, Tag} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {connect} from 'umi';
 
 import {PlusOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
 import CodeEditor from '@/components/Postman/CodeEditor';
+import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import SyntaxHighlighter from "react-syntax-highlighter";
 
 const {Option} = Select;
 const GConfig = ({gconfig, loading, dispatch}) => {
@@ -45,6 +47,32 @@ const GConfig = ({gconfig, loading, dispatch}) => {
       title: 'value',
       dataIndex: 'value',
       key: 'value',
+      render: (text, record) => {
+        if (record.key_type === 0) {
+          return text;
+        }
+        if (record.key_type === 1) {
+          return <a onClick={() => {
+            Modal.info({
+              title: `${record.key}`,
+              width: 500,
+              bodyStyle: {padding: -12},
+              content: <SyntaxHighlighter language="json" style={vs2015}>{record.value}</SyntaxHighlighter>
+            })
+          }}>查看</a>
+        }
+        // yaml
+        if (record.key_type === 2) {
+          return <a onClick={() => {
+            Modal.info({
+              title: `${record.key}`,
+              width: 500,
+              bodyStyle: {padding: -12},
+              content: <SyntaxHighlighter language="yaml" style={vs2015}>{record.value}</SyntaxHighlighter>
+            })
+          }}>查看</a>
+        }
+      }
     },
     {
       title: '是否可用',

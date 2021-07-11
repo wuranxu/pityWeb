@@ -138,7 +138,7 @@ class Environment extends Component {
               <Col span={24}>
                 <Table dataSource={this.state.data} columns={columns} onChange={async pagination => {
                   await this.fetchEnvironmentList(pagination.current, pagination.pageSize);
-                }} pagination={this.state.pagination} />
+                }} pagination={this.state.pagination} rowKey={record => record.id}/>
               </Col>
             </Row>
           </Card>

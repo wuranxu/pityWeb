@@ -31,8 +31,8 @@ export default ({ caseId, userMap, setExecuteStatus, project }) => {
     }
     const header = JSON.parse(headerString);
     const temp = [];
-    Object.keys(header).forEach(k => {
-      temp.push({ key: k, value: header[k] });
+    Object.keys(header).forEach((k, index) => {
+      temp.push({ key: k, value: header[k], id: index.toString()});
     });
     setHeaders(temp);
 
@@ -45,6 +45,7 @@ export default ({ caseId, userMap, setExecuteStatus, project }) => {
     <Button className={styles.inlineButton} onClick={() => {
       setEditing(true);
       parseHeaders(data.request_header);
+      setBody(data.body);
     }}><EditOutlined />修改</Button>
   </div>;
 

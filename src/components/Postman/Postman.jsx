@@ -13,7 +13,7 @@ import {
   Table,
   Tabs,
 } from 'antd';
-import { DeleteTwoTone, DownOutlined, SendOutlined } from '@ant-design/icons';
+import {DeleteTwoTone, DownOutlined, EditTwoTone, SendOutlined} from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
 import CodeEditor from '@/components/Postman/CodeEditor';
 import { httpRequest } from '@/services/request';
@@ -261,6 +261,13 @@ export default () => {
         render: (text, record) => {
           return (
             <>
+              <EditTwoTone
+                style={{ cursor: 'pointer'}}
+                onClick={() => {
+                  console.log(editableKeys);
+                  setEditableRowKeys([record.id])
+                }}
+              />
               <DeleteTwoTone
                 style={{ cursor: 'pointer', marginLeft: 8 }}
                 onClick={() => {

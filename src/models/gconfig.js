@@ -10,6 +10,7 @@ export default {
     name: '',
     envList: [],
     envMap: {},
+    options: [],
     pagination: {
       current: 1,
       pageSize: 8,
@@ -46,6 +47,22 @@ export default {
             current: payload.page,
             total: res.total,
           },
+        },
+      });
+    },
+
+    * fetchAllGConfig({payload}, {call, put}) {
+      const res = yield call(listGConfig, {page: 1, size: 1000});
+      if (!auth.response(res)) {
+        message.error(res.msg);
+        return;
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          options: res.data.map(v => (
+            {label: v, value: `$\{${v.key}\}`, key: v.id}
+          ))
         },
       });
     },
