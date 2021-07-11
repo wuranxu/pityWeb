@@ -1,16 +1,16 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import { Badge, Button, Card, Col, Divider, Input, Row, Select, Switch, Table, Tag } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'umi';
+import {PageContainer} from '@ant-design/pro-layout';
+import {Badge, Button, Card, Col, Divider, Input, Row, Select, Switch, Table, Tag} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'umi';
 
-import { PlusOutlined } from '@ant-design/icons';
+import {PlusOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
 import CodeEditor from '@/components/Postman/CodeEditor';
 
-const { Option } = Select;
-const GConfig = ({ gconfig, loading, dispatch }) => {
-  const { data, envList, key_type, envMap, modal, currentEnv, name, pagination } = gconfig;
-  const [record, setRecord] = useState({ id: 0 });
+const {Option} = Select;
+const GConfig = ({gconfig, loading, dispatch}) => {
+  const {data, envList, key_type, envMap, modal, currentEnv, name, pagination} = gconfig;
+  const [record, setRecord] = useState({id: 0, key_type: 0});
   const [language, setLanguage] = useState(0);
 
   const getType = () => {
@@ -50,7 +50,7 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
       title: '是否可用',
       dataIndex: 'enable',
       key: 'enable',
-      render: text => <Badge status={text ? 'processing' : 'default'} text={text ? '使用中' : '已禁止'} />,
+      render: text => <Badge status={text ? 'processing' : 'default'} text={text ? '使用中' : '已禁止'}/>,
     },
     {
       title: '操作',
@@ -61,8 +61,10 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
           setRecord(record);
           setLanguage(record.key_type);
         }}>编辑</a>
-        <Divider type='vertical' />
-        <a>删除</a>
+        <Divider type='vertical'/>
+        <a onClick={() => {
+          dispatch({type: 'gconfig/deleteGConfig', payload: {id: record.id}})
+        }}>删除</a>
       </>,
     },
   ];
@@ -93,13 +95,13 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
       name: 'value',
       label: 'value',
       required: true,
-      component: <CodeEditor language={getType()} theme='vs-dark' height={250} options={{ lineNumbers: 'off' }} />,
+      component: <CodeEditor language={getType()} theme='vs-dark' height={250} options={{lineNumbers: 'off'}}/>,
     },
     {
       name: 'enable',
       label: '是否可用',
       required: true,
-      component: <Switch />,
+      component: <Switch/>,
       valuePropName: 'checked',
       initialValue: true,
     },
@@ -169,37 +171,37 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
       <Card>
         <FormForModal fields={fields} visible={modal} left={4} right={20} onFinish={onFinish}
                       onCancel={() => {
-                        save({ modal: false });
-                      }} title='编辑变量' record={record} width={600} />
+                        save({modal: false});
+                      }} title='编辑变量' record={record} width={600} offset={-60}/>
         <Row gutter={[8, 8]}>
           <Col span={12}>
             当前环境:
-            <Select value={currentEnv} style={{ width: 180, marginLeft: 16 }} onChange={e => {
-              save({ currentEnv: e });
+            <Select value={currentEnv} style={{width: 180, marginLeft: 16}} onChange={e => {
+              save({currentEnv: e});
             }}>
               <Option value={0}>全部</Option>
               {
                 envList.map(v => <Option value={v.id}>{v.name}</Option>)
               }
             </Select>
-            <Button style={{ marginLeft: 16 }} type='primary'
+            <Button style={{marginLeft: 16}} type='primary'
                     onClick={() => {
-                      save({ modal: true });
-                    }}><PlusOutlined />添加变量</Button>
+                      save({modal: true});
+                    }}><PlusOutlined/>添加变量</Button>
           </Col>
-          <Col span={6} />
+          <Col span={6}/>
           <Col span={6}>
             <Input placeholder='请输入key' value={name} onChange={e => {
-              save({ name: e.target.value });
-            }} />
+              save({name: e.target.value});
+            }}/>
           </Col>
         </Row>
-        <Row style={{ marginTop: 8 }}>
+        <Row style={{marginTop: 8}}>
           <Col span={24}>
             <Table dataSource={data} columns={columns} pagination={pagination} rowKey={record => record.id}
                    loading={loading.effects['gconfig/fetchGConfig']} onChange={pg => {
-              save({ pagination: pg });
-            }} />
+              save({pagination: pg});
+            }}/>
           </Col>
         </Row>
       </Card>
@@ -207,7 +209,7 @@ const GConfig = ({ gconfig, loading, dispatch }) => {
   );
 };
 
-export default connect(({ gconfig, loading }) => ({
+export default connect(({gconfig, loading}) => ({
   gconfig: gconfig,
   loading: loading,
 }))(GConfig);

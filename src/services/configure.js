@@ -59,3 +59,12 @@ export async function updateGConfig(params) {
     headers: auth.headers(),
   });
 }
+
+
+export async function deleteGConfig(params) {
+  return request(`${CONFIG.URL}/config/gconfig/delete`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}

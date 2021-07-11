@@ -1,6 +1,6 @@
-import { insertGConfig, listEnvironment, listGConfig, updateGConfig } from '@/services/configure';
+import {deleteGConfig, insertGConfig, listEnvironment, listGConfig, updateGConfig} from '@/services/configure';
 import auth from '@/utils/auth';
-import { message } from 'antd';
+import {message} from 'antd';
 
 export default {
   namespace: 'gconfig',
@@ -22,7 +22,7 @@ export default {
     },
   },
   reducers: {
-    save(state, { payload }) {
+    save(state, {payload}) {
       return {
         ...state,
         ...payload,
@@ -30,7 +30,7 @@ export default {
     },
   },
   effects: {
-    * fetchGConfig({ payload }, { call, put, select }) {
+    * fetchGConfig({payload}, {call, put, select}) {
       const state = yield select(state => state.gconfig);
       const res = yield call(listGConfig, payload);
       if (!auth.response(res)) {
@@ -50,13 +50,13 @@ export default {
       });
     },
 
-    * insertConfig({ payload }, { call, put, select }) {
+    * insertConfig({payload}, {call, put, select}) {
       const state = yield select(state => state.gconfig);
       const res = yield call(insertGConfig, payload);
       if (auth.response(res, true)) {
         yield put({
           type: 'save',
-          payload: { modal: false },
+          payload: {modal: false},
         });
       }
       yield put({
@@ -70,13 +70,13 @@ export default {
       });
     },
 
-    * updateGConfig({ payload }, { call, put, select }) {
+    * updateGConfig({payload}, {call, put, select}) {
       const res = yield call(updateGConfig, payload);
       const state = yield select(state => state.gconfig);
       if (auth.response(res, true)) {
         yield put({
           type: 'save',
-          payload: { modal: false },
+          payload: {modal: false},
         });
       }
       yield put({
@@ -90,7 +90,24 @@ export default {
       });
     },
 
-    * fetchEnvList({ payload }, { call, put }) {
+    * deleteGConfig({payload}, {call, put, select}) {
+      const res = yield call(deleteGConfig, payload);
+      const state = yield select(state => state.gconfig);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'fetchGConfig',
+          payload: {
+            page: state.pagination.current,
+            size: state.pagination.pageSize,
+            env: state.currentEnv,
+            key: state.name,
+          },
+        });
+      }
+
+    },
+
+    * fetchEnvList({payload}, {call, put}) {
       const res = yield call(listEnvironment, payload);
       if (!auth.response(res)) {
         message.error(res.msg);
