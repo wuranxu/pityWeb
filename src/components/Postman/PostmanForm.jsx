@@ -322,7 +322,7 @@ export default ({form, body, setBody, headers, setHeaders}) => {
                                 </Form.Item>
                             </Col>
                             <Col span={18}>
-                                <Form.Item name="url"
+                                <Form.Item name="url" colon={false}
                                            label={<Tooltip title="点击可展开全局变量提示"><QuestionCircleOutlined onClick={()=>setOpen(true)}/></Tooltip>}
                                            rules={
                                                [{required: true, message: "请输入请求url"}]
@@ -345,14 +345,6 @@ export default ({form, body, setBody, headers, setHeaders}) => {
                                             }
                                         }}
                                     />
-                                    {/*<Input*/}
-                                    {/*  value={url}*/}
-                                    {/*  placeholder="请输入要请求的url"*/}
-                                    {/*  onChange={(e) => {*/}
-                                    {/*    setUrl(e.target.value);*/}
-                                    {/*    splitUrl(e.target.value);*/}
-                                    {/*  }}*/}
-                                    {/*/>*/}
                                 </Form.Item>
                             </Col>
                         </Form>

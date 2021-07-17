@@ -210,18 +210,18 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
     <Spin spinning={loading} tip='努力加载中'>
       <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase} />
       <FormForModal visible={assertModal} fields={fields.CaseAsserts} title='新增断言' left={6} right={18}
-                    onFinish={onSaveAssert} />
-      <Row gutter={[8, 8]}>
-        <Col span={6}>
-          <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
+                    onFinish={onSaveAssert} onCancel={()=> setAssertModal(false)}/>
+      <Row style={{marginTop: -8}}>
+        <Col span={8}>
+          <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }} style={{border: "none"}}>
             <ProfessionalTree gData={treeData} checkable={true} AddButton={AddButton}
                               searchValue={searchValue} onSelect={onSelectKeys}
                               setSearchValue={setSearchValue}
                               iconMap={iconMap} suffixMap={suffixMap} parseStatus={parseStatus} />
           </Card>
         </Col>
-        <Col span={18}>
-          <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
+        <Col span={16}>
+          <Card style={{marginTop: -8, borderRight: 'none', borderBottom: 'none', borderTop: 'none'}} bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
             {
               RenderView(mode)
             }

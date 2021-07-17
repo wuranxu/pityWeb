@@ -1,7 +1,7 @@
 import {Table} from 'antd';
 import {useEffect, useState} from "react";
 
-export default ({headers}) => {
+export default ({headers, size}) => {
   const [data, setData] = useState([]);
 
   useEffect(()=>{
@@ -30,6 +30,6 @@ export default ({headers}) => {
     }
   ]
   return (
-    <Table dataSource={data} columns={columns} pagination={false}/>
+    <Table dataSource={data} columns={columns} pagination={false} size={size || 'middle'}/>
   )
 }

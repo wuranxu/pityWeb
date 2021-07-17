@@ -71,7 +71,7 @@ export default {
     },
     {
       name: 'priority',
-      label: '用例优先级',
+      label: '优先级',
       required: true,
       component: <Select>
         {CONFIG.PRIORITY.map(v => <Option value={v}>{v}</Option>)}
