@@ -12,9 +12,8 @@ import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { connect, FormattedMessage, useIntl } from 'umi';
 import styles from './index.less';
 
-// const clientId = `0f4fc0a875de30614a6a`;
-const clientId = `c46c7ae33442d13498cd`;
-const secret = `c79fafe58ff45f6b5b51ddde70d2d645209e38b9`;
+const clientId = `0f4fc0a875de30614a6a`;
+// const clientId = `c46c7ae33442d13498cd`;
 
 const LoginMessage = ({ content }) => (
   <Alert
