@@ -148,7 +148,6 @@ export default (props) => {
       {
         props.gData.length > 0 ? <Tree
           // selectable={props.selectable}
-          size="large"
           blockNode
           onExpand={onExpand}
           expandedKeys={expandedKeys}

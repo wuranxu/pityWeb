@@ -101,7 +101,6 @@ const BasicLayout = (props) => {
   return (
     <ProLayout
       logo={logo}
-      layout='top'
       SiderMenuProps={{mode: 'horizontal'}}
       formatMessage={formatMessage}
       {...props}
@@ -149,6 +148,7 @@ const BasicLayout = (props) => {
         menuDataRef.current = menuData || [];
         return menuData || [];
       }}
+      layout='top'
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>
         {children}

@@ -1,5 +1,5 @@
 import {
-  AlipayCircleOutlined,
+  AlipayCircleOutlined, GithubOutlined,
   LockOutlined,
   MobileOutlined,
   TaobaoCircleOutlined,
@@ -11,6 +11,10 @@ import React, { useState } from 'react';
 import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { connect, FormattedMessage, useIntl } from 'umi';
 import styles from './index.less';
+
+// const clientId = `0f4fc0a875de30614a6a`;
+const clientId = `c46c7ae33442d13498cd`;
+const secret = `c79fafe58ff45f6b5b51ddde70d2d645209e38b9`;
 
 const LoginMessage = ({ content }) => (
   <Alert
@@ -44,6 +48,11 @@ const Login = (props) => {
     }
 
   };
+
+  const redirectToGithub = () => {
+    const current = window.location.href
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}`
+  }
 
   return (
     <div className={styles.main}>
@@ -220,9 +229,9 @@ const Login = (props) => {
       </ProForm>
       <Space className={styles.other}>
         <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
-        <AlipayCircleOutlined className={styles.icon} />
-        <TaobaoCircleOutlined className={styles.icon} />
-        <WeiboCircleOutlined className={styles.icon} />
+        <GithubOutlined className={styles.icon} onClick={redirectToGithub}/>
+        {/*<TaobaoCircleOutlined className={styles.icon} />*/}
+        {/*<WeiboCircleOutlined className={styles.icon} />*/}
       </Space>
     </div>
   );

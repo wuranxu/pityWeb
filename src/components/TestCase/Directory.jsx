@@ -1,5 +1,5 @@
-import { Card, Col, Dropdown, Menu, Alert, Row, Spin, Tooltip } from 'antd';
-import React, { useState } from 'react';
+import {Card, Col, Dropdown, Menu, Alert, Row, Spin, Tooltip} from 'antd';
+import React, {useState} from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import {
   BugTwoTone,
@@ -11,20 +11,22 @@ import {
   RobotOutlined,
 } from '@ant-design/icons';
 import CaseForm from '@/components/TestCase/CaseForm';
-import { createTestCase, insertTestCaseAsserts } from '@/services/testcase';
+import {createTestCase, insertTestCaseAsserts} from '@/services/testcase';
 import auth from '@/utils/auth';
 import TestCaseDetail from '@/components/TestCase/TestCaseDetail';
 import fields from '@/consts/fields';
 import FormForModal from '@/components/PityForm/FormForModal';
 import Asserts from '@/components/TestCase/Asserts';
+import ConstructorModal from "@/components/TestCase/ConstructorModal";
 
-export default ({ loading, treeData, fetchData, projectData, userMap }) => {
+export default ({loading, treeData, fetchData, projectData, userMap}) => {
 
   const [searchValue, setSearchValue] = useState('');
   const [drawer, setDrawer] = useState(false);
   const [assertModal, setAssertModal] = useState(false);
+  const [constructorModal, setConstructorModal] = useState(false);
   const [assertCaseId, setAssertCaseId] = useState(null);
-  const [caseInfo, setCaseInfo] = useState({ request_type: '1' });
+  const [caseInfo, setCaseInfo] = useState({request_type: '1'});
   // 0 说明是默认状态 1说明是case 2说明是用例
   const [mode, setMode] = useState(0);
   const [caseId, setCaseId] = useState(null);
@@ -33,7 +35,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   const menu = (
     <Menu>
-      <Menu.Item icon={<FolderOutlined />}>
+      <Menu.Item icon={<FolderOutlined/>}>
         <a onClick={() => {
           setDrawer(true);
         }}>
@@ -45,17 +47,19 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   const caseMenu = key => (
     <Menu>
-      <Menu.Item icon={<FolderOutlined />}>
-        <a>
-          添加前置条件
+      <Menu.Item icon={<FolderOutlined/>}>
+        <a onClick={() => {
+          setConstructorModal(true);
+        }}>
+          添加数据构造器
         </a>
       </Menu.Item>
-      <Menu.Item icon={<FolderOutlined />}>
+      <Menu.Item icon={<FolderOutlined/>}>
         <a>
           添加后置条件
         </a>
       </Menu.Item>
-      <Menu.Item icon={<RobotOutlined />}>
+      <Menu.Item icon={<RobotOutlined/>}>
         <a onClick={e => {
           setAssertModal(true);
           setAssertCaseId(key);
@@ -106,18 +110,18 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   const iconMap = key => {
     if (key.indexOf('cat') > -1) {
-      return <FolderTwoTone twoToneColor='#ffc519' />;
+      return <FolderTwoTone twoToneColor='#ffc519'/>;
     }
     if (key.indexOf('case') > -1) {
-      return <BugTwoTone twoToneColor='#13CE66' />;
+      return <BugTwoTone twoToneColor='#13CE66'/>;
     }
     if (key.indexOf('asserts') > -1) {
-      return <RobotOutlined />;
+      return <RobotOutlined/>;
     }
   };
 
   const Icon = (icon, title, operation, margin) => {
-    return <Tooltip title={title}><span onClick={operation} style={{ marginLeft: margin }}>{icon}</span></Tooltip>;
+    return <Tooltip title={title}><span onClick={operation} style={{marginLeft: margin}}>{icon}</span></Tooltip>;
   };
 
   // 后置icon
@@ -126,8 +130,8 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
       return <>
         {Icon(
           <Dropdown overlay={caseMenu(item.key.split('_')[1])}>
-            <a style={{ color: '#3cc64d' }}>
-              <PlusOutlined style={{ fontSize: 16, marginTop: 4, cursor: 'pointer' }} />
+            <a style={{color: '#3cc64d'}}>
+              <PlusOutlined style={{fontSize: 16, marginTop: 4, cursor: 'pointer'}}/>
             </a>
           </Dropdown>, null, () => {
             console.log('点击了');
@@ -156,8 +160,8 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
       const id = key.split('_')[1];
       return executeStatus[id] !== undefined ? <>
         {Icon(
-          executeStatus[id].status ? <CheckCircleTwoTone twoToneColor='#52c41a' /> :
-            <CloseCircleTwoTone twoToneColor='red' />, null, () => {
+          executeStatus[id].status ? <CheckCircleTwoTone twoToneColor='#52c41a'/> :
+            <CloseCircleTwoTone twoToneColor='red'/>, null, () => {
           }, 4)}
       </> : '';
     }
@@ -166,7 +170,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   // 新增断言
   const onSaveAssert = async values => {
-    const data = { case_id: assertCaseId, ...values };
+    const data = {case_id: assertCaseId, ...values};
     const res = await insertTestCaseAsserts(data);
     if (auth.response(res, true)) {
       setAssertModal(false);
@@ -176,10 +180,11 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
 
   const RenderView = () => {
     if (mode === 1) {
-      return <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus} project={projectData}/>;
+      return <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus}
+                             project={projectData}/>;
     }
     if (mode === 2) {
-      return <Asserts />;
+      return <Asserts/>;
     }
     return <Alert
       closable
@@ -187,7 +192,7 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
       description={
         <div>
           <strong>Tips: </strong>
-          <p />
+          <p/>
           <p>1. 左侧是用例树，展示的是用例和用例的相关信息。</p>
           <p>2. 我们可以选择用例/断言/前置/后置条件进行查看和修改，这些详情会在右侧展示。</p>
           <p>{'3. 用例的生命周期是[变量替换]->[前置条件执行]->[用例执行]->[后置条件执行]->[断言执行]'}。</p>
@@ -201,27 +206,29 @@ export default ({ loading, treeData, fetchData, projectData, userMap }) => {
   };
 
   const AddButton = <Dropdown overlay={menu}>
-    <a style={{ marginLeft: 8 }}>
-      <PlusOutlined style={{ fontSize: 16, marginTop: 4, cursor: 'pointer' }} />
+    <a style={{marginLeft: 8}}>
+      <PlusOutlined style={{fontSize: 16, marginTop: 4, cursor: 'pointer'}}/>
     </a>
   </Dropdown>;
 
   return (
     <Spin spinning={loading} tip='努力加载中'>
-      <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase} />
+      <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase}/>
+      <ConstructorModal width={800} modal={constructorModal} setModal={setConstructorModal}/>
       <FormForModal visible={assertModal} fields={fields.CaseAsserts} title='新增断言' left={6} right={18}
-                    onFinish={onSaveAssert} onCancel={()=> setAssertModal(false)}/>
+                    onFinish={onSaveAssert} onCancel={() => setAssertModal(false)}/>
       <Row style={{marginTop: -8}}>
         <Col span={8}>
-          <Card bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }} style={{border: "none"}}>
+          <Card bodyStyle={{padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto'}} style={{border: "none"}}>
             <ProfessionalTree gData={treeData} checkable={true} AddButton={AddButton}
                               searchValue={searchValue} onSelect={onSelectKeys}
                               setSearchValue={setSearchValue}
-                              iconMap={iconMap} suffixMap={suffixMap} parseStatus={parseStatus} />
+                              iconMap={iconMap} suffixMap={suffixMap} parseStatus={parseStatus}/>
           </Card>
         </Col>
         <Col span={16}>
-          <Card style={{marginTop: -8, borderRight: 'none', borderBottom: 'none', borderTop: 'none'}} bodyStyle={{ padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto' }}>
+          <Card style={{marginTop: -8, borderRight: 'none', borderBottom: 'none', borderTop: 'none'}}
+                bodyStyle={{padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto'}}>
             {
               RenderView(mode)
             }
