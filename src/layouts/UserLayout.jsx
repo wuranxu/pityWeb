@@ -54,7 +54,7 @@ const UserLayout = (props) => {
           </div>
           {children}
         </div>
-        <DefaultFooter />
+        <DefaultFooter copyright={`${new Date().getFullYear()} woody个人出品`} links={false}/>
       </div>
     </HelmetProvider>
   );

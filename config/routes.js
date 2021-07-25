@@ -30,13 +30,13 @@ export default [
               {
                 path: '/request',
                 name: '调试页面',
-                icon: 'rocket',
+                icon: 'icon-icon_aside_bug',
                 component: './Request',
               },
               {
                 path: '/project',
                 name: '项目列表',
-                icon: 'book',
+                icon: 'icon-Project',
                 component: './Project/Project',
               },
               {
@@ -46,7 +46,7 @@ export default [
               },
               {
                 path: '/config',
-                icon: 'rocket',
+                icon: 'icon-config',
                 name: '配置中心',
                 // authority: ['admin', 'user'],
                 routes: [

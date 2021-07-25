@@ -41,21 +41,21 @@ const defaultFooterDom = (
     copyright={`${new Date().getFullYear()} woody个人出品`}
     links={[
       {
-        key: 'Ant Design Pro',
-        title: 'Ant Design Pro',
-        href: 'https://pro.ant.design',
+        key: 'Pity Web',
+        title: 'Pity Web',
+        href: 'http://47.112.32.195/',
         blankTarget: true,
       },
       {
         key: 'github',
         title: <GithubOutlined />,
-        href: 'https://github.com/ant-design/ant-design-pro',
+        href: 'https://github.com/wuranxu/pityWeb',
         blankTarget: true,
       },
       {
-        key: 'Ant Design',
-        title: 'Ant Design',
-        href: 'https://ant.design',
+        key: 'Pity',
+        title: 'Pity',
+        href: 'https://github.com/wuranxu/pity',
         blankTarget: true,
       },
     ]}
@@ -148,6 +148,7 @@ const BasicLayout = (props) => {
         menuDataRef.current = menuData || [];
         return menuData || [];
       }}
+      iconfontUrl="//at.alicdn.com/t/font_915840_xhupy1nll7.js"
       layout='top'
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>
