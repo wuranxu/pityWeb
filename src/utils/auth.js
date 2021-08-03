@@ -11,8 +11,8 @@ export default {
     return headers;
   },
   response: (res, info = false) => {
-    if (res === null) {
-      message.error("请求失败")
+    if (!res) {
+      message.error("网络开小差了，请稍后重试")
       return false;
     }
     if (res.code === 0) {

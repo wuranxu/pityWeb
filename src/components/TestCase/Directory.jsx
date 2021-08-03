@@ -26,6 +26,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
   const [assertModal, setAssertModal] = useState(false);
   const [constructorModal, setConstructorModal] = useState(false);
   const [assertCaseId, setAssertCaseId] = useState(null);
+  const [constructorCaseId, setConstructorCaseId] = useState(null);
   const [caseInfo, setCaseInfo] = useState({request_type: '1'});
   // 0 说明是默认状态 1说明是case 2说明是用例
   const [mode, setMode] = useState(0);
@@ -50,6 +51,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
       <Menu.Item icon={<FolderOutlined/>}>
         <a onClick={() => {
           setConstructorModal(true);
+          setConstructorCaseId(key);
         }}>
           添加数据构造器
         </a>
@@ -214,7 +216,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
   return (
     <Spin spinning={loading} tip='努力加载中'>
       <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase}/>
-      <ConstructorModal width={800} modal={constructorModal} setModal={setConstructorModal}/>
+      <ConstructorModal width={800} modal={constructorModal} setModal={setConstructorModal} caseId={constructorCaseId} fetchData={fetchData}/>
       <FormForModal visible={assertModal} fields={fields.CaseAsserts} title='新增断言' left={6} right={18}
                     onFinish={onSaveAssert} onCancel={() => setAssertModal(false)}/>
       <Row style={{marginTop: -8}}>

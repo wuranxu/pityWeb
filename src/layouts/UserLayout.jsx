@@ -48,7 +48,7 @@ const UserLayout = (props) => {
             <div className={styles.desc}>
               <FormattedMessage
                 id="pages.layouts.userLayout.title"
-                defaultMessage="Pity是一款想怎么测就怎么测的接口自动化平台"
+                defaultMessage="Pity是一款开源且自由的接口自动化平台"
               />
             </div>
           </div>

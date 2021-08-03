@@ -332,8 +332,7 @@ export default ({form, body, setBody, headers, setHeaders}) => {
                                         options={options}
                                         placeholder="请输入要请求的url"
                                         onChange={(string, e) => {
-                                            console.log(e.value, string, url)
-                                            if (e.key && url.indexOf(string) === -1) {
+                                            if (e.key && url && url.indexOf(string) === -1) {
                                                 const value = `${url}${string}`
                                                 splitUrl(value);
                                                 form.setFieldsValue({url: value})

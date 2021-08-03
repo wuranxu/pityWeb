@@ -1,5 +1,5 @@
 import { Button, Col, Form, Row, Tooltip, Upload } from 'antd';
-import React from 'react';
+import React, {useEffect} from 'react';
 import ProjectAvatar from '@/components/Project/ProjectAvatar';
 import { SaveOutlined } from '@ant-design/icons';
 
@@ -14,6 +14,10 @@ export default ({left, right, formName, record, onFinish, fields, dispatch}) => 
     labelCol: {span: left},
     wrapperCol: {span: right},
   }
+
+  useEffect(() => {
+    form.setFieldsValue(record);
+  }, [record])
 
   return (
     <Form

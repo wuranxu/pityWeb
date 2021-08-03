@@ -148,7 +148,7 @@ const BasicLayout = (props) => {
         menuDataRef.current = menuData || [];
         return menuData || [];
       }}
-      iconfontUrl="//at.alicdn.com/t/font_915840_xhupy1nll7.js"
+      iconfontUrl="//at.alicdn.com/t/font_915840_2ne958vidtk.js"
       layout='top'
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>

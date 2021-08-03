@@ -28,10 +28,12 @@ export default ({caseId, userMap, setExecuteStatus, project}) => {
   const execute = async () => {
     setLoading(true);
     const res = await executeCase({case_id: caseId});
+    if (auth.response(res, true)) {
+      setTestResult(res.data);
+      setExecuteStatus(res.data.asserts);
+      setResultModal(true);
+    }
     setLoading(false);
-    setTestResult(res.data);
-    setExecuteStatus(res.data.asserts);
-    setResultModal(true);
   };
 
   const parseHeaders = headerString => {

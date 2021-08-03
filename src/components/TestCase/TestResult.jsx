@@ -122,7 +122,7 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Body" key="4">
+          <TabPane tab="Response" key="4">
             <CodeEditor
               value={response.response ? JSON.stringify(response.response, null, 2) : ''}
               height="45vh"
@@ -136,7 +136,7 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Headers" key="6">
+          <TabPane tab="Response Headers" key="6">
             <Table
               columns={resColumns}
               dataSource={toTable('response_header')}
