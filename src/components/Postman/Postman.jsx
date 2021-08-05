@@ -363,7 +363,8 @@ export default () => {
           <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
             <TabPane tab="Body" key="1">
               <CodeEditor
-                value={response.response ? JSON.stringify(response.response, null, 2) : ''}
+                language={response.response && typeof response.response === 'object' ? 'json' : 'text'}
+                value={response.response && typeof response.response === 'object' ? JSON.stringify(response.response, null, 2) : response.response || ''}
                 height="30vh"
               />
             </TabPane>
