@@ -62,7 +62,7 @@ const UserModel = {
       const token = localStorage.getItem("pityToken")
       const userInfo = localStorage.getItem("pityUser")
       if (!token || !userInfo) {
-        history.push("/user/login");
+        window.location.href = "/"
         return;
       }
       const info = JSON.parse(userInfo)

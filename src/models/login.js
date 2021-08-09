@@ -41,7 +41,6 @@ const Model = {
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  登录成功！');
         let { redirect } = params;
-
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
 
@@ -56,8 +55,11 @@ const Model = {
             return;
           }
         }
-
-        history.replace(redirect || '/');
+        if (history !== undefined) {
+          history.replace(redirect || '/');
+        } else {
+          window.location.href = '/';
+        }
       } else {
         message.error(response.msg);
       }
