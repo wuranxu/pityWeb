@@ -21,6 +21,8 @@ import { insertProject, listProject } from '@/services/project';
 import auth from '@/utils/auth';
 import { process } from '@/utils/utils';
 import { listUsers } from '@/services/user';
+import noRecord from '@/assets/no_record.svg'
+
 
 const { Search } = Input;
 const { Option } = Select;
@@ -170,7 +172,7 @@ export default () => {
           {data.length === 0 ? (
             <Col span={24} style={{ textAlign: 'center', marginBottom: 12 }}>
               <Card>
-                <Empty description="暂无项目, 快点击『创建项目』创建一个吧!" />
+                <Empty description="暂无项目, 快点击『创建项目』创建一个吧!" image={noRecord} imageStyle={{height: 220}}/>
               </Card>
             </Col>
           ) : (

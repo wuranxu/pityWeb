@@ -26,7 +26,7 @@ const ConstructorModal = ({modal, setModal, caseId, dispatch, construct, width, 
           <Card
             hoverable
             bordered={false}
-            cover={<IconFont type="icon-imagevector" style={{fontSize: 72, paddingTop: 32}}
+            cover={<IconFont type="icon-yongliliebiao" style={{fontSize: 72, paddingTop: 32}}
                              onClick={() => onSelectType(0)}/>}
           >
             <Meta title="测试用例" style={{textAlign: 'center', fontWeight: 'bold', color: "#1890ff"}}/>
@@ -36,7 +36,7 @@ const ConstructorModal = ({modal, setModal, caseId, dispatch, construct, width, 
           <Card
             hoverable
             bordered={false}
-            cover={<IconFont type="icon-SQL1" style={{fontSize: 72, paddingTop: 32}}
+            cover={<IconFont type="icon-mysql11" style={{fontSize: 72, paddingTop: 32}}
                              onClick={() => onSelectType(1)}/>}
           >
             <Meta title="SQL语句" style={{textAlign: 'center', fontWeight: 'bold', color: "#1890ff"}}/>

@@ -14,7 +14,6 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
     })
   }, [])
 
-  console.log(data);
 
 
   const fields = [

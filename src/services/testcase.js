@@ -41,3 +41,11 @@ export async function insertTestCaseAsserts(data) {
     headers: auth.headers(),
   });
 }
+
+export async function queryXmindData(params) {
+  return request(`${CONFIG.URL}/testcase/xmind`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}

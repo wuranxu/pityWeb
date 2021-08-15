@@ -18,6 +18,7 @@ import fields from '@/consts/fields';
 import FormForModal from '@/components/PityForm/FormForModal';
 import Asserts from '@/components/TestCase/Asserts';
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
+import IconFont from "@/components/Icon/IconFont";
 
 export default ({loading, treeData, fetchData, projectData, userMap}) => {
 
@@ -33,6 +34,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
   const [caseId, setCaseId] = useState(null);
   const [assertId, setAssertId] = useState(null);
   const [executeStatus, setExecuteStatus] = useState(null);
+  const [checkedKeys, setCheckedKeys] = useState(null);
 
   const menu = (
     <Menu>
@@ -115,7 +117,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
       return <FolderTwoTone twoToneColor='#ffc519'/>;
     }
     if (key.indexOf('case') > -1) {
-      return <BugTwoTone twoToneColor='#13CE66'/>;
+      return <IconFont type="icon-testcase-copy"/>;
     }
     if (key.indexOf('asserts') > -1) {
       return <RobotOutlined/>;
@@ -183,7 +185,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
   const RenderView = () => {
     if (mode === 1) {
       return <TestCaseDetail caseId={caseId} userMap={userMap} setExecuteStatus={setExecuteStatus}
-                             project={projectData}/>;
+                             project={projectData} checkedKeys={checkedKeys}/>;
     }
     if (mode === 2) {
       return <Asserts/>;
@@ -216,7 +218,8 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
   return (
     <Spin spinning={loading} tip='努力加载中'>
       <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase}/>
-      <ConstructorModal width={800} modal={constructorModal} setModal={setConstructorModal} caseId={constructorCaseId} fetchData={fetchData}/>
+      <ConstructorModal width={800} modal={constructorModal} setModal={setConstructorModal} caseId={constructorCaseId}
+                        fetchData={fetchData}/>
       <FormForModal visible={assertModal} fields={fields.CaseAsserts} title='新增断言' left={6} right={18}
                     onFinish={onSaveAssert} onCancel={() => setAssertModal(false)}/>
       <Row style={{marginTop: -8}}>
@@ -224,7 +227,8 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
           <Card bodyStyle={{padding: 12, minHeight: 800, maxHeight: 800, overflowY: 'auto'}} style={{border: "none"}}>
             <ProfessionalTree gData={treeData} checkable={true} AddButton={AddButton}
                               searchValue={searchValue} onSelect={onSelectKeys}
-                              setSearchValue={setSearchValue}
+                              setSearchValue={setSearchValue} checkedKeys={checkedKeys}
+                              onCheck={keys => setCheckedKeys(keys)}
                               iconMap={iconMap} suffixMap={suffixMap} parseStatus={parseStatus}/>
           </Card>
         </Col>

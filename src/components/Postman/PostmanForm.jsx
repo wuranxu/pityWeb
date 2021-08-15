@@ -281,7 +281,6 @@ export default ({form, body, setBody, headers, setHeaders}) => {
                             <EditTwoTone
                                 style={{cursor: 'pointer'}}
                                 onClick={() => {
-                                    console.log(editableKeys);
                                     setEditableRowKeys([record.id])
                                 }}
                             />
@@ -441,7 +440,7 @@ export default ({form, body, setBody, headers, setHeaders}) => {
                             <TabPane tab="Headers" key="3">
                                 <Table
                                     columns={resColumns}
-                                    dataSource={toTable('response_header')}
+                                    dataSource={toTable('response_headers')}
                                     size="small"
                                     pagination={false}
                                 />

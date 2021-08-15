@@ -28,7 +28,7 @@ export default {
       localStorage.setItem('pityUser', null);
       window.location.href = '/#/user/login';
       message.info(res.msg);
-      return;
+      return false;
     }
     message.error(res.msg);
     return false;

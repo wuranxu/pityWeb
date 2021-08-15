@@ -10,7 +10,7 @@ export default ({ title, width, left, right, formName, record, onFinish, loading
 
   const onOk = () => {
     form.validateFields().then((values) => {
-      onFinish({ ...values, request_header: translateHeaders(), body });
+      onFinish({ ...values, request_headers: translateHeaders(), body });
     });
   };
 

@@ -159,9 +159,9 @@ export default (props) => {
           expandedKeys={expandedKeys}
           autoExpandParent={autoExpandParent}
           checkable={props.checkable}
-          // onCheck={props.onCheck}
+          onCheck={props.onCheck}
           onSelect={props.onSelect}
-          // checkedKeys={props.checkedKeys}
+          checkedKeys={props.checkedKeys}
           // defaultExpandAll
           showIcon
           defaultExpandParent

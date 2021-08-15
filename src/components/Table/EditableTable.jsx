@@ -16,7 +16,6 @@ export default ({ columns, dataSource, title, setDataSource, editableKeys, setEd
         return [defaultDoms.delete];
       },
       onValuesChange: (record, recordList) => {
-        console.log(record);
         if (extra) {
           extra(recordList);
         }

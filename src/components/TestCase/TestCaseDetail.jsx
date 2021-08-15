@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {queryTestCase, updateTestCase} from '@/services/testcase';
 import auth from '@/utils/auth';
-import {Badge, Button, Col, Descriptions, Form, Row, Spin, Tabs, Tag} from 'antd';
-import {DeleteOutlined, EditOutlined, PlayCircleOutlined} from '@ant-design/icons';
+import {Badge, Button, Col, Descriptions, Dropdown, Form, Menu, Modal, Row, Spin, Tabs, Tag} from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  PlayCircleOutlined,
+  QuestionCircleOutlined,
+  SketchOutlined
+} from '@ant-design/icons';
 import {CONFIG} from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
-import {executeCase} from '@/services/request';
+import {executeCase, executeSelectedCase} from '@/services/request';
 import HeaderTable from '@/components/Table/HeaderTable';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import {vs2015} from 'react-syntax-highlighter/dist/esm/styles/hljs';
@@ -14,8 +20,9 @@ import styles from './TestCaseDetail.less';
 import TestResult from "@/components/TestCase/TestResult";
 
 const TabPane = Tabs.TabPane;
+const {confirm} = Modal;
 
-export default ({caseId, userMap, setExecuteStatus, project}) => {
+export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
   const [data, setData] = useState({status: 1, tag: ''});
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -36,6 +43,24 @@ export default ({caseId, userMap, setExecuteStatus, project}) => {
     setLoading(false);
   };
 
+  const executeMany = async () => {
+    setLoading(true);
+    const case_list = checkedKeys.filter(v => v.indexOf("case_") > -1).map(v => parseInt(v.replace("case_", ""), 10))
+    const res = await executeSelectedCase(case_list)
+    if (auth.response(res, true)) {
+      confirm({
+        title: '用例执行完毕, 是否跳转到报告页面?',
+        icon: <QuestionCircleOutlined/>,
+        onOk() {
+          window.open(`/#/record/report/${res.data}`)
+        },
+        onCancel() {
+        },
+      });
+    }
+    setLoading(false);
+  }
+
   const parseHeaders = headerString => {
     if (!headerString) {
       return;
@@ -48,14 +73,27 @@ export default ({caseId, userMap, setExecuteStatus, project}) => {
     setHeaders(temp);
   };
 
+  const menu = (
+    <Menu onClick={async item => {
+      if (item.key === "1") {
+        await executeMany();
+      }
+    }}>
+      <Menu.Item key="1" icon={<SketchOutlined/>}>
+        执行选中
+      </Menu.Item>
+    </Menu>
+  );
+
   const CaseTitle = <Col span={24}>
     <span style={{fontWeight: 'bold', fontSize: 16}}>用例详情</span>
     <Button type='danger' className={styles.inlineButton}><DeleteOutlined/>删除</Button>
-    <Button type='primary' className={styles.inlineButton} onClick={execute}
-            loading={loading}><PlayCircleOutlined/>执行</Button>
+    <Dropdown.Button className={styles.inlineButton} type="primary" onClick={execute} overlay={menu}>
+      <PlayCircleOutlined/> 执行
+    </Dropdown.Button>
     <Button className={styles.inlineButton} onClick={() => {
       setEditing(true);
-      parseHeaders(data.request_header);
+      parseHeaders(data.request_headers);
       setBody(data.body);
     }}><EditOutlined/>修改</Button>
   </Col>;
@@ -91,7 +129,7 @@ export default ({caseId, userMap, setExecuteStatus, project}) => {
       tag: values.tag !== undefined ? values.tag.join(',') : null,
       project_id: project.id,
       id: caseId,
-      request_header: translateHeaders(), body
+      request_headers: translateHeaders(), body
     };
     const res = await updateTestCase(params);
     auth.response(res, true);
@@ -142,7 +180,7 @@ export default ({caseId, userMap, setExecuteStatus, project}) => {
                       </Descriptions>
                     </TabPane>
                     <TabPane key="2" tab="请求Headers">
-                      <HeaderTable headers={data.request_header}/>
+                      <HeaderTable headers={data.request_headers}/>
                     </TabPane>
                     <TabPane key="3" tab="请求body">
                       {

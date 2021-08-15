@@ -44,6 +44,7 @@ export default [
                 hideInMenu: true,
                 component: './project/ProjectDetail',
               },
+
               {
                 path: '/config',
                 icon: 'icon-config',
@@ -59,6 +60,24 @@ export default [
                     path: '/config/gconfig',
                     name: '全局变量',
                     component: './GConfig',
+                  },
+                ],
+              },
+              {
+                path: '/record',
+                icon: 'icon-jilu1',
+                name: '执行数据',
+                // authority: ['admin', 'user'],
+                routes: [
+                  {
+                    path: '/record/list',
+                    name: '构建历史',
+                    component: './BuildHistory/ReportList',
+                  },
+                  {
+                    path: '/record/report/:id',
+                    hideInMenu: true,
+                    component: './BuildHistory/ReportDetail',
                   },
                 ],
               },

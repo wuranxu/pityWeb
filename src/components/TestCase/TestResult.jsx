@@ -1,9 +1,11 @@
-import {Badge, Col, Descriptions, Modal, Row, Table, Tabs} from "antd";
-import HeaderTable from "@/components/Table/HeaderTable";
-import React from "react";
+import {Badge, Descriptions, Modal, Row, Table, Tabs} from "antd";
+import React, {useEffect, useState} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import CodeEditor from "@/components/Postman/CodeEditor";
+import TreeXmind from "@/components/G6/TreeXmind";
+import {queryXmindData} from "@/services/testcase";
+import auth from "@/utils/auth";
 
 const TabPane = Tabs.TabPane;
 const STATUS = {
@@ -25,13 +27,29 @@ const resColumns = [
 ];
 export default ({response, caseName, width, modal, setModal}) => {
 
+  const [xmindData, setXmindData] = useState({"label": "Loading..."});
+
+  const getBrain = async () => {
+    const res = await queryXmindData({case_id: response.case_id})
+    if (auth.response(res)) {
+      setXmindData(res.data)
+    }
+  }
+
+  useEffect(async () => {
+    if (response.case_id !== undefined) {
+      await getBrain();
+    }
+  }, [response])
+
   const toTable = (field) => {
-    if (!response[field]) {
+    if (response[field] === undefined || response[field] === '{}') {
       return [];
     }
-    return Object.keys(response[field]).map((key) => ({
+    const temp = JSON.parse(response[field]);
+    return Object.keys(temp).map((key) => ({
       key,
-      value: response[field][key],
+      value: temp[key],
     }));
   };
 
@@ -53,21 +71,22 @@ export default ({response, caseName, width, modal, setModal}) => {
     if (!response.asserts) {
       return [];
     }
-    return Object.keys(response.asserts).map(k => (
+    const temp = JSON.parse(response.asserts)
+    return Object.keys(temp).map(k => (
       {
-        status: response.asserts[k].status,
-        msg: response.asserts[k].msg,
+        status: temp[k].status,
+        msg: temp[k].msg,
       }
     ))
   }
 
   return (
-    <Modal style={{marginTop: -80}} title={<span>Test Report:　<strong>{caseName}</strong></span>} width={width || 1000}
-           visible={modal}
+    <Modal style={{marginTop: -80}} title={<span>[<strong>{caseName}</strong>] 执行详情</span>} width={width || 1000}
+           visible={modal} footer={null}
            onCancel={() => setModal(false)}>
       <Row gutter={[8, 8]}>
         <Tabs style={{width: '100%'}} tabPosition="left">
-          <TabPane tab="执行结果" key="1">
+          <TabPane tab="用例信息" key="1">
             <Descriptions column={2} bordered size="middle">
               <Descriptions.Item label="测试结果">
                 <Badge status={response.status ? "success" : "error"} text={response.status ? "成功" : "失败"}/>
@@ -89,7 +108,7 @@ export default ({response, caseName, width, modal, setModal}) => {
               </Descriptions.Item>
               <Descriptions.Item label="执行时间">
                   <span style={{marginLeft: 8, marginRight: 8}}>
-                    <span style={{color: '#67C23A'}}>{response.elapsed}</span>
+                    <span style={{color: '#67C23A'}}>{response.cost}</span>
                   </span>
               </Descriptions.Item>
               <Descriptions.Item label="请求url" span={2}>
@@ -102,17 +121,7 @@ export default ({response, caseName, width, modal, setModal}) => {
                   </SyntaxHighlighter> : null
                 }
               </Descriptions.Item>
-              <Descriptions.Item label="请求headers" span={2}>
-                <HeaderTable headers={JSON.stringify(response.request_header)} size="small"/>
-              </Descriptions.Item>
             </Descriptions>
-          </TabPane>
-          <TabPane tab="执行日志" key="2">
-            <CodeEditor
-              language="text"
-              value={response.logs}
-              height="45vh"
-            />
           </TabPane>
           <TabPane tab="断言" key="3">
             <Table
@@ -122,13 +131,22 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Response" key="4">
+          <TabPane tab="执行日志" key="2">
             <CodeEditor
-              value={response.response ? JSON.stringify(response.response, null, 2) : ''}
+              language="text"
+              value={response.logs}
               height="45vh"
             />
           </TabPane>
-          <TabPane tab="Cookie" key="5">
+          <TabPane tab="Request Headers" key="5">
+            <Table
+              columns={resColumns}
+              dataSource={toTable('request_headers')}
+              size="small"
+              pagination={false}
+            />
+          </TabPane>
+          <TabPane tab="Cookie" key="6">
             <Table
               columns={resColumns}
               dataSource={toTable('cookies')}
@@ -136,13 +154,24 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Response Headers" key="6">
+          <TabPane tab="Response Headers" key="7">
             <Table
               columns={resColumns}
-              dataSource={toTable('response_header')}
+              dataSource={toTable('response_headers')}
               size="small"
               pagination={false}
             />
+          </TabPane>
+          <TabPane tab="Response" key="4">
+            <CodeEditor
+              value={response.response ? response.response : ''}
+              height="45vh"
+            />
+          </TabPane>
+          <TabPane tab="脑图" key="8">
+            <div id="container">
+              <TreeXmind data={xmindData}/>
+            </div>
           </TabPane>
         </Tabs>
       </Row>
