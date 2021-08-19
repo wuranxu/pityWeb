@@ -25,49 +25,48 @@ export default [
             routes: [
               {
                 path: '/',
-                redirect: '/request',
+                redirect: '/index',
               },
               {
-                path: '/request',
-                name: '调试页面',
-                icon: 'icon-icon_aside_bug',
-                component: './Request',
+                path: '/index',
+                name: '工作台',
+                icon: 'icon-gongzuotai2',
+                component: './Dashboard/Workspace',
               },
               {
-                path: '/project',
-                name: '项目列表',
+                path: '/apiTest',
+                name: '接口测试',
                 icon: 'icon-Project',
-                component: './Project/Project',
-              },
-              {
-                path: '/project/:id',
-                hideInMenu: true,
-                component: './project/ProjectDetail',
+                routes: [
+                  {
+                    path: '/apiTest/project',
+                    name: '项目列表',
+                    component: './ApiTest/Project',
+                  },
+                  {
+                    path: '/apiTest/project/:id',
+                    hideInMenu: true,
+                    component: './ApiTest/ProjectDetail',
+                  },
+                  {
+                    path: '/apiTest/testcase',
+                    name: '用例列表',
+                  },
+                  {
+                    path: '/apiTest/testcase',
+                    name: '定时任务',
+                  },
+                  {
+                    path: '/apiTest/testcase',
+                    name: '数据统计',
+                  },
+                ]
               },
 
               {
-                path: '/config',
-                icon: 'icon-config',
-                name: '配置中心',
-                // authority: ['admin', 'user'],
-                routes: [
-                  {
-                    path: '/config/environment',
-                    name: '环境管理',
-                    component: './Environment',
-                  },
-                  {
-                    path: '/config/gconfig',
-                    name: '全局变量',
-                    component: './GConfig',
-                  },
-                ],
-              },
-              {
                 path: '/record',
                 icon: 'icon-jilu1',
-                name: '执行数据',
-                // authority: ['admin', 'user'],
+                name: '测试报告',
                 routes: [
                   {
                     path: '/record/list',
@@ -81,34 +80,73 @@ export default [
                   },
                 ],
               },
-              // {
-              //   path: '/welcome',
-              //   name: 'welcome',
-              //   icon: 'smile',
-              //   component: './Welcome',
-              // },
-              // {
-              //   path: '/admin',
-              //   name: 'admin',
-              //   icon: 'crown',
-              //   component: './Admin',
-              //   authority: ['admin'],
-              //   routes: [
-              //     {
-              //       path: '/admin/sub-page',
-              //       name: 'sub-page',
-              //       icon: 'smile',
-              //       component: './Welcome',
-              //       authority: ['admin'],
-              //     },
-              //   ],
-              // },
-              // {
-              //   name: 'list.table-list',
-              //   icon: 'table',
-              //   path: '/list',
-              //   component: './TableList',
-              // },
+              {
+                path: '/precise',
+                icon: 'icon-jingzhun',
+                name: '精准测试',
+              },
+              {
+                path: '/factory',
+                icon: 'icon-hebingxingzhuang',
+                name: '数据工厂',
+              },
+              {
+                path: '/config',
+                icon: 'icon-config',
+                name: '管理中心',
+                routes: [
+                  {
+                    path: '/config/environment',
+                    name: '环境管理',
+                    component: './Config/Environment',
+                  },
+                  {
+                    path: '/config/gconfig',
+                    name: '全局变量',
+                    component: './Config/GConfig',
+                  },
+                  {
+                    path: '/config/database',
+                    name: '数据库配置',
+                    component: './Config/Database',
+                  },
+                  {
+                    path: '/config/redis',
+                    name: 'Redis配置',
+                    component: './Config/Redis',
+                  },
+                  {
+                    path: '/config/user',
+                    name: '用户管理',
+                    component: './Config/UserList',
+                  },
+                ],
+              },
+              {
+                path: '/tool',
+                name: '实用工具',
+                icon: 'tool',
+                routes: [
+                  {
+                    path: '/Tool/request',
+                    name: 'HTTP测试',
+                    icon: 'icon-yunhang',
+                    component: './Tool/Request',
+                  },
+                  {
+                    path: '/tool/sql',
+                    name: '执行SQL',
+                    icon: 'database',
+                    component: './Tool/SqlOnline',
+                  },
+                  {
+                    path: '/tool/redis',
+                    name: '执行Redis',
+                    icon: 'redis',
+                    component: './Tool/RedisOnline',
+                  },
+                ]
+              },
               {
                 component: './404',
               },

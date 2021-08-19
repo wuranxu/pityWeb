@@ -3,15 +3,16 @@
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
-import ProLayout, { DefaultFooter } from '@ant-design/pro-layout';
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Link, useIntl, connect, history } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
-import { Result, Button } from 'antd';
+import ProLayout, {DefaultFooter} from '@ant-design/pro-layout';
+import React, {useEffect, useMemo, useRef} from 'react';
+import {connect, history, Link, useIntl} from 'umi';
+import {GithubOutlined} from '@ant-design/icons';
+import {Button, Result} from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
-import { getMatchMenu } from '@umijs/route-utils';
+import {getMatchMenu} from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
+import {CONFIG} from "@/consts/config";
 
 const noMatch = (
   <Result
@@ -48,7 +49,7 @@ const defaultFooterDom = (
       },
       {
         key: 'github',
-        title: <GithubOutlined />,
+        title: <GithubOutlined/>,
         href: 'https://github.com/wuranxu/pityWeb',
         blankTarget: true,
       },
@@ -97,7 +98,7 @@ const BasicLayout = (props) => {
       },
     [location.pathname],
   );
-  const { formatMessage } = useIntl();
+  const {formatMessage} = useIntl();
   return (
     <ProLayout
       logo={logo}
@@ -143,12 +144,12 @@ const BasicLayout = (props) => {
         return null;
       }}
       menuDataRender={menuDataRender}
-      rightContentRender={() => <RightContent />}
+      rightContentRender={() => <RightContent/>}
       postMenuData={(menuData) => {
         menuDataRef.current = menuData || [];
         return menuData || [];
       }}
-      iconfontUrl="//at.alicdn.com/t/font_915840_vuhxr66b0x8.js"
+      iconfontUrl={CONFIG.ICONFONT}
       layout='top'
     >
       <Authorized authority={authorized.authority} noMatch={noMatch}>
@@ -158,7 +159,7 @@ const BasicLayout = (props) => {
   );
 };
 
-export default connect(({ global, settings }) => ({
+export default connect(({global, settings}) => ({
   collapsed: global.collapsed,
   settings,
 }))(BasicLayout);

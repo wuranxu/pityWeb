@@ -1,44 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import {
-  Avatar,
-  Button,
-  Pagination,
-  Card,
-  Col,
-  Empty,
-  Input,
-  Popover,
-  Row,
-  Select,
-  Spin,
-  Tooltip,
-} from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import React, {useEffect, useState} from 'react';
+import {PageContainer} from '@ant-design/pro-layout';
+import {Avatar, Button, Card, Col, Empty, Input, Pagination, Popover, Row, Select, Spin, Tooltip,} from 'antd';
+import {QuestionCircleOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
-import { history } from 'umi';
-import { insertProject, listProject } from '@/services/project';
+import {history} from 'umi';
+import {insertProject, listProject} from '@/services/project';
 import auth from '@/utils/auth';
-import { process } from '@/utils/utils';
-import { listUsers } from '@/services/user';
+import {process} from '@/utils/utils';
+import {listUsers} from '@/services/user';
 import noRecord from '@/assets/no_record.svg'
 
 
-const { Search } = Input;
-const { Option } = Select;
+const {Search} = Input;
+const {Option} = Select;
 
 export default () => {
   const [data, setData] = useState([]);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 8, total: 0 });
+  const [pagination, setPagination] = useState({current: 1, pageSize: 8, total: 0});
   const [visible, setVisible] = useState(false);
   const [users, setUsers] = useState({});
 
   const fetchData = async (current = pagination.current, size = pagination.size) => {
     await process(async () => {
-      const res = await listProject({ page: current, size });
+      const res = await listProject({page: current, size});
       if (auth.response(res)) {
         setData(res.data);
-        setPagination({ ...pagination, total: res.total });
+        setPagination({...pagination, total: res.total});
       }
     });
   };
@@ -59,10 +46,10 @@ export default () => {
 
   const onSearchProject = async (projectName) => {
     await process(async () => {
-      const res = await listProject({ page: 1, size: pagination.size, name: projectName });
+      const res = await listProject({page: 1, size: pagination.size, name: projectName});
       if (auth.response(res)) {
         setData(res.data);
-        setPagination({ ...pagination, current: 1, total: res.total });
+        setPagination({...pagination, current: 1, total: res.total});
       }
     });
   };
@@ -150,19 +137,19 @@ export default () => {
         fields={fields}
         onFinish={onHandleCreate}
       />
-      <Row gutter={8} style={{ marginBottom: 16 }}>
+      <Row gutter={8} style={{marginBottom: 16}}>
         <Col span={18}>
           <Button type="primary" onClick={() => setVisible(true)}>
             创建项目
             <Tooltip title="只有超级管理员可以创建项目">
-              <QuestionCircleOutlined />
+              <QuestionCircleOutlined/>
             </Tooltip>
           </Button>
         </Col>
         <Col span={6}>
           <Search
             onSearch={onSearchProject}
-            style={{ float: 'right' }}
+            style={{float: 'right'}}
             placeholder="请输入项目名称"
           />
         </Col>
@@ -170,25 +157,25 @@ export default () => {
       <Spin spinning={false}>
         <Row gutter={16}>
           {data.length === 0 ? (
-            <Col span={24} style={{ textAlign: 'center', marginBottom: 12 }}>
+            <Col span={24} style={{textAlign: 'center', marginBottom: 12}}>
               <Card>
                 <Empty description="暂无项目, 快点击『创建项目』创建一个吧!" image={noRecord} imageStyle={{height: 220}}/>
               </Card>
             </Col>
           ) : (
             data.map((item) => (
-              <Col key={item.id} span={4} style={{ marginBottom: 12 }}>
+              <Col key={item.id} span={4} style={{marginBottom: 12}}>
                 <Popover content={content(item)} placement="rightTop">
                   <Card
                     hoverable
                     bordered={false}
-                    style={{ borderRadius: 16, textAlign: 'center' }}
-                    bodyStyle={{ padding: 16 }}
+                    style={{borderRadius: 16, textAlign: 'center'}}
+                    bodyStyle={{padding: 16}}
                     onClick={() => {
-                      history.push(`/project/${item.id}`);
+                      history.push(`/apiTest/project/${item.id}`);
                     }}
                   >
-                    <Avatar style={{ backgroundColor: '#87d068' }} size={64}>
+                    <Avatar style={{backgroundColor: '#87d068'}} size={64}>
                       {item.name.slice(0, 2)}
                     </Avatar>
                     <p
@@ -209,7 +196,7 @@ export default () => {
         </Row>
         <Row gutter={8}>
           <Col span={24}>
-            <Pagination {...pagination} style={{ float: 'right' }} position="bottomRight" />
+            <Pagination {...pagination} style={{float: 'right'}} position="bottomRight"/>
           </Col>
         </Row>
       </Spin>

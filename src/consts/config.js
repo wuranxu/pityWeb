@@ -1,12 +1,13 @@
 export const CONFIG = {
-  // URL: 'http://47.112.32.195:7777',
-  URL: 'http://localhost:7777',
+  URL: 'http://47.112.32.195:7777',
+  // URL: 'http://localhost:7777',
+  ICONFONT: '//at.alicdn.com/t/font_915840_ck3mwdhocv4.js',
   ROLE: {
     0: 'user',
     1: 'admin',
     2: 'superAdmin',
   },
-  PIC_URL: 'http://cdn.kiin.top/',
+  PIC_URL: 'http://cdn.pity.fun/',
   PROJECT_ROLE: {
     OWNER: '负责人',
     ADMIN: '组长',
