@@ -49,32 +49,31 @@ const ReportList = ({user, report, loading, dispatch}) => {
       title: '执行总数',
       key: 'total',
       render: (_, record) =>
-        <Tag
-          className={styles.countTag}>{record.success_count + record.failed_count + record.skipped_count + record.error_count}</Tag>,
+        <Tag>总数 {record.success_count + record.failed_count + record.skipped_count + record.error_count}</Tag>,
     },
     {
       title: '成功',
       dataIndex: 'success_count',
       key: 'success_count',
-      render: success_count => <Tag color="success" className={styles.countTag}>{success_count}</Tag>,
+      render: success_count => <Tag color="success">成功 {success_count}</Tag>,
     },
     {
       title: '失败',
       dataIndex: 'failed_count',
       key: 'failed_count',
-      render: failed_count => <Tag color="error" className={styles.countTag}>{failed_count}</Tag>,
+      render: failed_count => <Tag color="error">失败 {failed_count}</Tag>,
     },
     {
       title: '出错',
       dataIndex: 'error_count',
       key: 'error_count',
-      render: error_count => <Tag color="warning" className={styles.countTag}>{error_count}</Tag>,
+      render: error_count => <Tag color="warning">出错 {error_count}</Tag>,
     },
     {
       title: '跳过',
       dataIndex: 'skipped_count',
       key: 'skipped_count',
-      render: skipped_count => <Tag color="blue" className={styles.countTag}>{skipped_count}</Tag>,
+      render: skipped_count => <Tag color="blue">跳过 {skipped_count}</Tag>,
     },
     {
       title: '开始时间',
