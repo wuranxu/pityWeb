@@ -23,7 +23,7 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
   }
   return (
     <Modal style={{marginTop: offset}}
-      destroyOnClose confirmLoading={loading}
+      confirmLoading={loading}
       title={title} width={width} visible={visible} onOk={onOk} onCancel={onCancel}>
       <Form
         form={form}

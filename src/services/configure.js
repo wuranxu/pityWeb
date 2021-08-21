@@ -52,6 +52,47 @@ export async function listGConfig(params) {
   });
 }
 
+// 获取gconfig列表
+export async function listDbConfig(params) {
+  return request(`${CONFIG.URL}/config/dbconfig/list`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+export async function insertDbConfig(params) {
+  return request(`${CONFIG.URL}/config/dbconfig/insert`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+export async function updateDbConfig(params) {
+  return request(`${CONFIG.URL}/config/dbconfig/update`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+export async function onTestDbConfig(params) {
+  return request(`${CONFIG.URL}/config/dbconfig/connect`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteDbConfig(params) {
+  return request(`${CONFIG.URL}/config/dbconfig/delete`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
 export async function updateGConfig(params) {
   return request(`${CONFIG.URL}/config/gconfig/update`, {
     method: 'POST',

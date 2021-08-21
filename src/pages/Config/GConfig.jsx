@@ -224,7 +224,7 @@ const GConfig = ({gconfig, loading, dispatch}) => {
             }}/>
           </Col>
         </Row>
-        <Row style={{marginTop: 8}}>
+        <Row style={{marginTop: 12}}>
           <Col span={24}>
             <Table dataSource={data} columns={columns} pagination={pagination} rowKey={record => record.id}
                    loading={loading.effects['gconfig/fetchGConfig']} onChange={pg => {

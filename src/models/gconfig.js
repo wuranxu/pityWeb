@@ -1,4 +1,15 @@
-import {deleteGConfig, insertGConfig, listEnvironment, listGConfig, updateGConfig} from '@/services/configure';
+import {
+  deleteDbConfig,
+  deleteGConfig,
+  insertDbConfig,
+  insertGConfig,
+  listDbConfig,
+  listEnvironment,
+  listGConfig,
+  onTestDbConfig,
+  updateDbConfig,
+  updateGConfig
+} from '@/services/configure';
 import auth from '@/utils/auth';
 import {message} from 'antd';
 
@@ -21,6 +32,12 @@ export default {
       1: 'json',
       2: 'yaml',
     },
+
+    dbConfigData: [],
+    // 数据库配置modal
+    databaseModal: false,
+    databaseRecord: {sql_type: 0},
+
   },
   reducers: {
     save(state, {payload}) {
@@ -31,24 +48,77 @@ export default {
     },
   },
   effects: {
+    // 获取数据库配置
+    * fetchDbConfig({payload}, {call, put}) {
+      const res = yield call(listDbConfig, payload);
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            dbConfigData: res.data,
+          },
+        });
+      }
+    },
+
+    // 新增数据库配置
+    * insertDbConfig({payload}, {call, put}) {
+      const res = yield call(insertDbConfig, payload);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'save',
+          payload: {
+            databaseModal: false,
+          },
+        });
+        return true;
+      }
+      return false;
+    },
+
+    * onTestDbConfig({payload}, {call, put}) {
+      const res = yield call(onTestDbConfig, payload);
+      auth.response(res, true);
+    },
+
+    * updateDbConfig({payload}, {call, put}) {
+      const res = yield call(updateDbConfig, payload);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'save',
+          payload: {
+            databaseModal: false,
+          },
+        });
+        return true;
+      }
+      return false;
+    },
+
+    * deleteDbConfig({payload}, {call, put}) {
+      const res = yield call(deleteDbConfig, payload);
+      return auth.response(res, true);
+    },
+
+
+    // 获取gconfig列表
     * fetchGConfig({payload}, {call, put, select}) {
       const state = yield select(state => state.gconfig);
       const res = yield call(listGConfig, payload);
-      if (!auth.response(res)) {
-        message.error(res.msg);
-        return;
-      }
-      yield put({
-        type: 'save',
-        payload: {
-          data: res.data,
-          pagination: {
-            ...state.pagination,
-            current: payload.page,
-            total: res.total,
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            data: res.data,
+            pagination: {
+              ...state.pagination,
+              current: payload.page,
+              total: res.total,
+            },
           },
-        },
-      });
+        });
+      }
+
     },
 
     * fetchAllGConfig({payload}, {call, put}) {
