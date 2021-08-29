@@ -29,7 +29,7 @@ const SqlOnline = ({online, dispatch, loading}) => {
   const [editor, setEditor] = useState(null);
   const [sqlMode, setSqlMode] = useState('mysql');
   const [sqlValue, setSqlValue] = useState('');
-  const [theme, setTheme] = useState('xcode');
+  const [theme, setTheme] = useState('material-one-dark');
   const [pagination, setPagination] = useState({
     current: 1,
     total: testResults.length,
@@ -146,7 +146,7 @@ const SqlOnline = ({online, dispatch, loading}) => {
               <DirectoryTree treeData={databaseSource} onSelect={(e, data) => {
                 if (e.length > 0 && e[0].indexOf('database_') === 0) {
                   const id = parseInt(e[0].split("_")[1], 10)
-                  const tables = table_map[id];
+                  const tables = Array.from(new Set(table_map[id]));
                   save({
                     tables,
                     currentDatabase: id,

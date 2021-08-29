@@ -51,13 +51,26 @@ export default [
                   {
                     path: '/apiTest/testcase',
                     name: '用例列表',
+                    component: "./ApiTest/TestcaseDirectory"
                   },
                   {
-                    path: '/apiTest/testcase',
+                    path: '/apiTest/testcase/:directory/add',
+                    name: '添加用例',
+                    hideInMenu: true,
+                    component: "./ApiTest/TestCaseComponent"
+                  },
+                  {
+                    path: '/apiTest/testcase/:directory/:case_id',
+                    name: '编辑用例',
+                    hideInMenu: true,
+                    component: "./ApiTest/TestCaseComponent"
+                  },
+                  {
+                    path: '/apiTest/cronjob',
                     name: '定时任务',
                   },
                   {
-                    path: '/apiTest/testcase',
+                    path: '/apiTest/statistic',
                     name: '数据统计',
                   },
                 ]

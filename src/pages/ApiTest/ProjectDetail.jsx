@@ -20,7 +20,6 @@ export default () => {
   const [users, setUsers] = useState([]);
   const [userMap, setUserMap] = useState({});
   const [roles, setRoles] = useState([]);
-  const [tree, setTree] = useState([]);
 
   const fetchUsers = async () => {
     const res = await listUsers();
@@ -37,7 +36,6 @@ export default () => {
     if (auth.response(res)) {
       setProjectData(res.data.project);
       setRoles(res.data.roles);
-      setTree(res.data.test_case);
     }
   };
 
@@ -52,13 +50,10 @@ export default () => {
         style={{ backgroundColor: '#87d068' }}>{projectData.name === undefined ? 'loading...' : projectData.name.slice(0, 2)}</Avatar>{projectData.name}</span>}>
       <Card bodyStyle={{padding: '8px 18px'}}>
         <Tabs defaultActiveKey='1'>
-          <TabPane tab='用例列表' key='1'>
-            <Directory loading={false} treeData={tree} fetchData={fetchData} projectData={projectData} userMap={userMap}/>
-          </TabPane>
-          <TabPane tab='成员列表' key='2'>
+          <TabPane tab='成员列表' key='1'>
             <ProjectRole users={users} project={projectData} roles={roles} fetchData={fetchData}/>
           </TabPane>
-          <TabPane tab='项目设置' key='3'>
+          <TabPane tab='项目设置' key='2'>
             <ProjectInfo data={projectData} users={users} reloadData={fetchData} />
           </TabPane>
         </Tabs>

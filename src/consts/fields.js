@@ -50,16 +50,6 @@ export default {
 
   CaseDetail: [
     {
-      name: 'catalogue',
-      label: '用例目录',
-      required: true,
-      message: '请输入用例目录',
-      type: 'input',
-      placeholder: '请输入用例目录',
-      component: null,
-      span: 12,
-    },
-    {
       name: 'name',
       label: '用例名称',
       required: true,
@@ -67,7 +57,7 @@ export default {
       type: 'input',
       placeholder: '请输入用例名称',
       component: null,
-      span: 12,
+      span: 8,
     },
     {
       name: 'priority',
@@ -77,7 +67,7 @@ export default {
         {CONFIG.PRIORITY.map(v => <Option value={v}>{v}</Option>)}
       </Select>,
       type: 'select',
-      span: 12,
+      span: 8,
     },
     {
       name: 'status',
@@ -88,7 +78,7 @@ export default {
           <Badge {...CONFIG.CASE_BADGE[key]} />}</Option>)}
       </Select>,
       type: 'select',
-      span: 12,
+      span: 8,
     },
     {
       name: 'request_type',
@@ -99,7 +89,7 @@ export default {
                                                              disabled={key !== '1'}>{CONFIG.REQUEST_TYPE[key]}</Option>)}
       </Select>,
       type: 'select',
-      span: 12,
+      span: 8,
     },
     {
       name: 'tag',
@@ -108,7 +98,7 @@ export default {
       component: <Select mode='tags' placeholder='请输入用例标签'>
       </Select>,
       type: 'select',
-      span: 12,
+      span: 8,
     },
   ],
 
