@@ -2,7 +2,7 @@ export const CONFIG = {
   // URL: 'http://47.112.32.195:7777',
   URL: 'http://localhost:7777',
   // URL: '',
-  ICONFONT: '//at.alicdn.com/t/font_915840_e1w5b7tw45.js',
+  ICONFONT: '//at.alicdn.com/t/font_915840_m8k93s2vw3.js',
   ROLE: {
     0: 'user',
     1: 'admin',

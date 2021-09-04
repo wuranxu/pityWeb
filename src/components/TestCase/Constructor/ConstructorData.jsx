@@ -35,7 +35,6 @@ const TestCaseConstructorData = ({caseId, construct, dispatch, form, onFinish}) 
               <TreeSelect
                 allowClear
                 showSearch
-                // multiple
                 style={{width: '100%'}}
                 value={searchConstructor}
                 filterTreeNode={(inputValue, treeNode) => {

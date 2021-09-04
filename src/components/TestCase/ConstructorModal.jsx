@@ -3,12 +3,12 @@ import {connect} from "umi";
 import IconFont from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
+import styles from './ConstructorModal.less';
 
 const {Meta} = Card;
 const {Step} = Steps;
 
-const ConstructorModal = ({modal, setModal, caseId, dispatch, construct, width, fetchData}) => {
-  const [form] = Form.useForm();
+const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, width, fetchData}) => {
 
   const {currentStep, totalStep, constructorType} = construct;
 
@@ -25,8 +25,9 @@ const ConstructorModal = ({modal, setModal, caseId, dispatch, construct, width, 
         <Col span={8}>
           <Card
             hoverable
-            bordered={false}
-            cover={<IconFont type="icon-yongliliebiao" style={{fontSize: 72, paddingTop: 32}}
+            className={styles.mycard}
+            bodyStyle={{background: '#ffffff', padding: 16}}
+            cover={<IconFont type="icon-yongliliebiao" className={styles.icons}
                              onClick={() => onSelectType(0)}/>}
           >
             <Meta title="测试用例" style={{textAlign: 'center', fontWeight: 'bold', color: "#1890ff"}}/>
@@ -35,23 +36,48 @@ const ConstructorModal = ({modal, setModal, caseId, dispatch, construct, width, 
         <Col span={8}>
           <Card
             hoverable
-            bordered={false}
-            cover={<IconFont type="icon-mysql11" style={{fontSize: 72, paddingTop: 32}}
+            className={styles.mycard}
+            bodyStyle={{background: '#ffffff', padding: 16}}
+            cover={<IconFont type="icon-mysql11" className={styles.icons}
                              onClick={() => onSelectType(1)}/>}
           >
-            <Meta title="SQL语句" style={{textAlign: 'center', fontWeight: 'bold', color: "#1890ff"}}/>
+            <Meta title="SQL语句" className={styles.metadata}/>
           </Card>
         </Col>
         <Col span={8}>
           <Card
             hoverable
-            bordered={false}
+            className={styles.mycard}
+            bodyStyle={{background: '#ffffff', padding: 16}}
             cover={<IconFont type="icon-redis2" onClick={() => onSelectType(2)}
-                             style={{fontSize: 72, paddingTop: 32}}/>}
+                             className={styles.icons}/>}
           >
-            <Meta title="Redis语句" style={{textAlign: 'center', fontWeight: 'bold', color: "#1890ff"}}/>
+            <Meta title="Redis语句" className={styles.metadata}/>
           </Card>
         </Col>
+        <Col span={8}>
+          <Card
+            bodyStyle={{background: '#ffffff', padding: 16}}
+            hoverable
+            className={styles.mycard}
+            cover={<IconFont type="icon-qingqiu" onClick={() => onSelectType(2)}
+                             className={styles.icons}/>}
+          >
+            <Meta title="HTTP请求" className={styles.metadata}/>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card
+            bodyStyle={{background: '#ffffff', padding: 16}}
+            hoverable
+            className={styles.mycard}
+            cover={<IconFont type="icon-python" onClick={() => onSelectType(2)}
+                             className={styles.icons}/>}
+          >
+            <Meta title="Python方法" className={styles.metadata}/>
+          </Card>
+        </Col>
+
       </Row>
     }
     if (currentStep === 1) {

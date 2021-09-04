@@ -27,3 +27,11 @@ export async function insertConstructorData(params) {
     headers: auth.headers(),
   });
 }
+
+export async function updateConstructorOrder(params) {
+  return request(`${CONFIG.URL}/testcase/constructor/order`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}

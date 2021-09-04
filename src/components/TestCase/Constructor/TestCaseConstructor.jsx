@@ -1,4 +1,4 @@
-import {Cascader, Select, Switch, Tooltip} from "antd";
+import {Select, Switch, Tooltip} from "antd";
 import QuestionOutlined from '@ant-design/icons';
 import CodeEditor from "@/components/Postman/CodeEditor";
 import React, {useEffect} from "react";
@@ -13,7 +13,6 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       type: 'construct/getTestCaseListTree',
     })
   }, [])
-
 
 
   const fields = [
@@ -40,14 +39,18 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       name: 'case_id',
       label: '测试用例',
       required: true,
-      placeholder: '请输入构造名称',
-      component: <Cascader options={testcaseData} placeholder="请选择用例"/>,
+      placeholder: '请选择用例',
+      component: <Select placeholder="请选择用例">
+        {
+          testcaseData.map(v => <Option value={v.id}>{v.name}</Option>)
+        }
+      </Select>,
     },
     {
       name: 'params',
       label: '动态参数',
       required: false,
-      component: <CodeEditor language='json' theme='vs-dark' height={200} options={{lineNumbers: 'off'}}/>,
+      component: <CodeEditor language='json' theme='vs-dark' height={120} options={{lineNumbers: 'off'}}/>,
     },
     {
       name: 'value',

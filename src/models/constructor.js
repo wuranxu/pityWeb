@@ -1,4 +1,9 @@
-import {insertConstructorData, listConstructorData, queryConstructorData} from "@/services/constructor";
+import {
+  insertConstructorData,
+  listConstructorData,
+  queryConstructorData,
+  updateConstructorOrder
+} from "@/services/constructor";
 import auth from "@/utils/auth";
 import {listTestCaseTree} from "@/services/testcase";
 
@@ -26,11 +31,22 @@ export default {
   },
 
   effects: {
-    * insert({payload}, {call, _}) {
+    * insert({payload}, {call, put}) {
       const res = yield call(insertConstructorData, payload.params);
       if (auth.response(res, true)) {
         payload.fetchData();
+        yield put({
+          type: 'testcase/save',
+          payload: {
+            constructorModal: false,
+          }
+        })
       }
+    },
+
+    * orderConstructor({payload}, {call, put}) {
+      const res = yield call(updateConstructorOrder, payload);
+      return auth.response(res, true);
     },
 
     * getConstructorTree({payload}, {call, put}) {
@@ -73,7 +89,6 @@ export default {
           type: 'save',
           payload: {
             testcaseData: res.data,
-            projectIds: res.project,
           }
         })
       }

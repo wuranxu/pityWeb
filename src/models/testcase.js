@@ -26,6 +26,8 @@ export default {
     asserts: [],
     constructors: [],
     constructors_case: {},
+    constructorModal: false,
+    activeKey: '1',
 
     pagination: {
       current: 1,
@@ -105,7 +107,7 @@ export default {
           payload: {
             caseInfo: res.data.case,
             asserts: res.data.asserts,
-            constructors: res.data.constructors,
+            constructors: res.data.constructors.map((v, index) => ({...v, index})),
             constructors_case: res.data.constructors_case,
           }
         })
