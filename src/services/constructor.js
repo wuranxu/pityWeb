@@ -28,6 +28,22 @@ export async function insertConstructorData(params) {
   });
 }
 
+export async function updateConstructorData(params) {
+  return request(`${CONFIG.URL}/testcase/constructor/update`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteConstructorData(params) {
+  return request(`${CONFIG.URL}/testcase/constructor/delete`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
 export async function updateConstructorOrder(params) {
   return request(`${CONFIG.URL}/testcase/constructor/order`, {
     method: 'POST',

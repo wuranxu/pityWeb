@@ -1,7 +1,12 @@
-import React from 'react';
-import { EditableProTable } from '@ant-design/pro-table';
+import React, {useEffect} from 'react';
+import {EditableProTable} from '@ant-design/pro-table';
 
-export default ({ columns, dataSource, title, setDataSource, editableKeys, setEditableRowKeys, extra }) => {
+export default ({columns, dataSource, title, setDataSource, editableKeys, setEditableRowKeys, extra}) => {
+
+  useEffect(() => {
+    setEditableRowKeys(dataSource.map(v => v.id))
+  }, [dataSource])
+
   return (
     <EditableProTable headerTitle={title} columns={columns} rowKey='id' value={dataSource} onChange={setDataSource}
                       recordCreatorProps={{
@@ -22,6 +27,6 @@ export default ({ columns, dataSource, title, setDataSource, editableKeys, setEd
         setDataSource(recordList);
       },
       onChange: setEditableRowKeys,
-    }} />
+    }}/>
   );
 }

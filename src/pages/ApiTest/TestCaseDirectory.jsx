@@ -325,7 +325,7 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
               <Col span={18}>
                 <span>项目 </span>
                 {
-                  editing ? <Select style={{marginLeft: 32, width: 180}} showSearch
+                  editing ? <Select style={{marginLeft: 32, width: 120}} showSearch
                                     placeholder="请选择项目" value={project_id} autoFocus={true}
                                     onChange={e => {
                                       save({project_id: e})

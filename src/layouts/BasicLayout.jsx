@@ -103,7 +103,7 @@ const BasicLayout = (props) => {
     <ProLayout
       logo={logo}
       SiderMenuProps={{mode: 'horizontal'}}
-      formatMessage={formatMessage}
+      // formatMessage={formatMessage}
       {...props}
       {...settings}
       onCollapse={handleMenuCollapse}

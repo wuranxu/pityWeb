@@ -22,8 +22,8 @@ export default {
     } else {
       hd = headers;
     }
-    return Object.keys(hd).map(key => ({
-      key, value: hd[key]
+    return Object.keys(hd).map((key, index) => ({
+      key, value: hd[key], id: index
     }))
   },
   translateHeaders: headers => {

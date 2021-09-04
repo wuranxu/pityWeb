@@ -6,16 +6,15 @@ import PostmanForm from "@/components/Postman/PostmanForm";
 import fields from "@/consts/fields";
 import {useEffect} from "react";
 import {SaveOutlined} from "@ant-design/icons";
+import common from "@/utils/common";
 
 const FormItem = Form.Item;
 
 const TestCaseEditor = ({
                           dispatch,
-                          user,
                           form,
                           testcase,
                           loading,
-                          directoryId,
                           body,
                           setBody,
                           headers,
@@ -29,6 +28,7 @@ const TestCaseEditor = ({
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(caseInfo);
+    // setHeaders(common.parseHeaders(caseInfo.request_headers))
   }, [caseInfo])
 
   return (
@@ -39,13 +39,16 @@ const TestCaseEditor = ({
     >
       <Card title={<span className={styles.caseTitle}>用例信息</span>}
             extra={<>
-              <Button type="primary" onClick={onSubmit}><SaveOutlined/> 提交</Button>
-              <Button style={{marginLeft: 8}} onClick={() => {
+              <Button type="primary" onClick={async () => {
+                console.log(create)
+                await onSubmit(create)
+              }}><SaveOutlined/> 提交</Button>
+              {!create ? <Button style={{marginLeft: 8}} onClick={() => {
                 dispatch({
                   type: 'testcase/save',
                   payload: {editing: false}
                 })
-              }}><SaveOutlined/> 取消</Button>
+              }}><SaveOutlined/> 取消</Button> : null}
             </>}>
         <Row gutter={[8, 8]}>
           {
@@ -78,11 +81,4 @@ const TestCaseEditor = ({
 
 }
 
-export default connect(({
-  user, testcase, loading
-}
-) => (
-{
-  testcase, user, loading
-}
-))(TestCaseEditor);
+export default connect(({user, testcase, loading}) => ({testcase, user, loading}))(TestCaseEditor);

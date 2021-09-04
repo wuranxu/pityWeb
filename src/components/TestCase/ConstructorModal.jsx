@@ -1,22 +1,63 @@
-import {Button, Card, Col, Form, Modal, Row, Steps} from "antd";
+import {Button, Card, Col, Modal, Row, Steps} from "antd";
 import {connect} from "umi";
 import IconFont from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
 import styles from './ConstructorModal.less';
+import {useEffect} from "react";
 
 const {Meta} = Card;
 const {Step} = Steps;
 
-const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, width, fetchData}) => {
+const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, width, fetchData, record}) => {
 
   const {currentStep, totalStep, constructorType} = construct;
+
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue(record);
+  }, [record])
 
   const save = payload => {
     dispatch({
       type: 'construct/save',
       payload,
     })
+  }
+
+  const onSubmit = async () => {
+    const values = await form.validateFields();
+    const params = {
+      value: values.value,
+      type: values.type,
+      name: values.name,
+      constructor_json: JSON.stringify({
+        project_id: values.case_id[0],
+        case_id: values.case_id[1],
+        params: values.params
+      }),
+      enable: values.enable,
+      case_id: caseId,
+      public: values.public,
+    }
+    let result;
+    if (record.id) {
+      result = await dispatch({
+        type: 'construct/update',
+        payload: {
+          ...params,
+          id: record.id,
+        }
+      })
+    } else {
+      result = await dispatch({
+        type: 'construct/insert',
+        payload: params
+      })
+    }
+    if (result) {
+      fetchData();
+    }
   }
 
   const getContent = () => {
@@ -129,28 +170,7 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
           {/*  </Button>*/}
           {/*)}*/}
           {currentStep === totalStep && (
-            <Button type="primary" onClick={async () => {
-              const values = await form.validateFields();
-              dispatch({
-                type: 'construct/insert',
-                payload: {
-                  params: {
-                    value: values.value,
-                    type: values.type,
-                    name: values.name,
-                    constructor_json: JSON.stringify({
-                      project_id: values.case_id[0],
-                      case_id: values.case_id[1],
-                      params: values.params
-                    }),
-                    enable: values.enable,
-                    case_id: caseId,
-                    public: values.public,
-                  },
-                  fetchData: fetchData,
-                }
-              })
-            }}>
+            <Button type="primary" onClick={onSubmit}>
               <SaveOutlined/> 完成
             </Button>
           )}

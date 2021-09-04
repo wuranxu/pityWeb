@@ -1,7 +1,9 @@
 import {
+  deleteConstructorData,
   insertConstructorData,
   listConstructorData,
   queryConstructorData,
+  updateConstructorData,
   updateConstructorOrder
 } from "@/services/constructor";
 import auth from "@/utils/auth";
@@ -32,17 +34,39 @@ export default {
 
   effects: {
     * insert({payload}, {call, put}) {
-      const res = yield call(insertConstructorData, payload.params);
+      const res = yield call(insertConstructorData, payload);
       if (auth.response(res, true)) {
-        payload.fetchData();
         yield put({
           type: 'testcase/save',
           payload: {
             constructorModal: false,
           }
         })
+        return true;
       }
+      return false;
     },
+
+    * update({payload}, {call, put}) {
+      const res = yield call(updateConstructorData, payload);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'testcase/save',
+          payload: {
+            constructorModal: false,
+          }
+        })
+        return true;
+      }
+      return false;
+    },
+
+    * delete({payload}, {call, put}) {
+      const res = yield call(deleteConstructorData, payload);
+      return auth.response(res, true);
+    },
+
+
 
     * orderConstructor({payload}, {call, put}) {
       const res = yield call(updateConstructorOrder, payload);

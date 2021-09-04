@@ -138,7 +138,6 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
               <PlusOutlined style={{fontSize: 16, marginTop: 4, cursor: 'pointer'}}/>
             </a>
           </Dropdown>, null, () => {
-            console.log('点击了');
           }, 24)}
       </>;
     }

@@ -1,7 +1,7 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Descriptions, Form, Row, Spin, Tabs, Tag, Timeline} from "antd";
+import {Badge, Button, Card, Col, Descriptions, Form, Modal, Row, Spin, Tabs, Tag, Timeline} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
@@ -9,9 +9,18 @@ import IconFont from "@/components/Icon/IconFont";
 import NoRecord from "@/components/NotFound/NoRecord";
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
 import SortedTable from "@/components/Table/SortedTable";
-import {DeleteTwoTone, EditTwoTone, PlusOutlined} from "@ant-design/icons";
+import {
+  DeleteTwoTone,
+  EditOutlined,
+  EditTwoTone,
+  ExclamationCircleOutlined,
+  PlayCircleOutlined,
+  PlusOutlined
+} from "@ant-design/icons";
 import PostmanForm from "@/components/Postman/PostmanForm";
 import common from "@/utils/common";
+import TestCaseAssert from "@/components/TestCase/TestCaseAssert";
+import auth from "@/utils/auth";
 
 const {TabPane} = Tabs;
 
@@ -26,6 +35,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
     constructors,
     activeKey,
     asserts,
+    constructRecord,
     constructors_case,
     constructorModal
   } = testcase;
@@ -100,7 +110,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
       color='blue'>{v}</Tag>) : '无'
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (isCreate = false) => {
     const values = await form.validateFields()
     let params = {
       ...values,
@@ -111,7 +121,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
       request_headers: common.translateHeaders(headers),
       body
     };
-    if (!editing) {
+    if (!editing && !isCreate) {
       params.priority = caseInfo.priority;
       params.name = caseInfo.name;
       params.status = caseInfo.status;
@@ -174,7 +184,19 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
         <a onClick={() => {
           onEditConstructor(record)
         }}><EditTwoTone/></a>
-        <a style={{marginLeft: 8}}><DeleteTwoTone twoToneColor="red"/></a>
+        <a style={{marginLeft: 8}} onClick={() => {
+          Modal.confirm({
+            title: '你确定要删除这个数据构造器吗?',
+            icon: <ExclamationCircleOutlined/>,
+            content: '如果只是暂时不开启，可以先暂停它~',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '点错了',
+            onOk: async () => {
+              await onDeleteConstructor(record)
+            },
+          });
+        }}><DeleteTwoTone twoToneColor="red"/></a>
       </>
     },
   ]
@@ -186,6 +208,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
     })
   }
 
+  // 编辑数据构造器
   const onEditConstructor = record => {
     dispatch({
       type: 'construct/save',
@@ -193,13 +216,41 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
     })
     dispatch({
       type: 'testcase/save',
-      payload: {constructorModal: true}
+      payload: {constructorModal: true, constructRecord: record}
     })
-    constructorForm.setFieldsValue(record);
+  }
+
+  // 删除数据构造器
+  const onDeleteConstructor = async record => {
+    const res = await dispatch({
+      type: 'construct/delete',
+      payload: {id: record.id}
+    })
+    if (res) {
+      const newData = constructors.filter(v => v.id !== record.id)
+      dispatch({
+        type: 'testcase/save',
+        payload: {constructors: newData}
+      })
+    }
+  }
+
+  // 在线运行用例
+  const onExecuteTestCase = async () => {
+    const res = await dispatch({
+      type: 'testcase/onExecuteTestCase',
+      payload: {case_id}
+    })
+    if (auth.response(res, true)) {
+      setResultModal(true);
+      setTestResult(res.data);
+    }
   }
 
   return (
     <PageContainer title={<>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''}</>}>
+      <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
+                  caseName={caseInfo.name}/>
       <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}
             size="large">
         {
@@ -210,32 +261,39 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
               <Col span={24}>
                 <ConstructorModal width={800} modal={constructorModal} setModal={e => {
                   dispatch({type: 'testcase/save', payload: {constructorModal: e}})
-                }} caseId={case_id} form={constructorForm}
+                }} caseId={case_id} form={constructorForm} record={constructRecord}
                                   fetchData={fetchTestCaseInfo}/>
-                <TestResult width={900} modal={resultModal} setModal={setResultModal} response={testResult}
-                            caseName={caseInfo.name}/>
                 {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
-                    <Card title="用例详情" extra={<a onClick={() => {
-                      console.log(caseInfo)
-                      dispatch({
-                        type: 'testcase/save',
-                        payload: {
-                          editing: true,
-                          caseInfo: {
-                            ...caseInfo,
-                            status: caseInfo.status.toString(),
-                            request_type: caseInfo.request_type.toString(),
-                            tag: typeof caseInfo.tag !== 'object' ? caseInfo.tag ? caseInfo.tag.split(",") : [] : caseInfo.tag
-                          },
-                          activeKey: '2',
-                        }
-                      })
-                    }}>编辑</a>}>
+                    <Card title="用例详情" extra={<div>
+                      <Button onClick={() => {
+                        dispatch({
+                          type: 'testcase/save',
+                          payload: {
+                            editing: true,
+                            caseInfo: {
+                              ...caseInfo,
+                              status: caseInfo.status.toString(),
+                              request_type: caseInfo.request_type.toString(),
+                              tag: typeof caseInfo.tag !== 'object' ? caseInfo.tag ? caseInfo.tag.split(",") : [] : caseInfo.tag
+                            },
+                            activeKey: '2',
+                          }
+                        })
+                      }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
+                      <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
+                              loading={loading.effects['testcase/onExecuteTestCase']}
+                              onClick={onExecuteTestCase}><PlayCircleOutlined/> 运行</Button>
+                    </div>}>
                       <Descriptions size='small' column={4}>
                         <Descriptions.Item label='用例名称'><a>{caseInfo.name}</a></Descriptions.Item>
-                        <Descriptions.Item label='请求类型'>{CONFIG.REQUEST_TYPE[caseInfo.request_type]}</Descriptions.Item>
+
+                        <Descriptions.Item
+                          label='请求类型'>{CONFIG.REQUEST_TYPE_TAG[caseInfo.request_type]}</Descriptions.Item>
+                        <Descriptions.Item label='请求url' span={2}>
+                          <a href={caseInfo.url} style={{fontSize: 14}}>{caseInfo.url}</a>
+                        </Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
                           {caseInfo.request_method}
                         </Descriptions.Item>
@@ -243,9 +301,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
                           color={CONFIG.CASE_TAG[caseInfo.priority]}>{caseInfo.priority}</Tag>}</Descriptions.Item>
                         <Descriptions.Item label='用例状态'>{
                           <Badge {...CONFIG.CASE_BADGE[caseInfo.status]} />}</Descriptions.Item>
-                        <Descriptions.Item label='请求url' span={2}>
-                          <a href={caseInfo.url} style={{fontSize: 14}}>{caseInfo.url}</a>
-                        </Descriptions.Item>
                         <Descriptions.Item label='用例标签'>{
                           <div style={{textAlign: 'center'}}>
                             {getTag(caseInfo.tag)}
@@ -260,9 +315,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
                       </Descriptions>
                     </Card>
                 }
-                <Row gutter={8} style={{marginTop: 12}}>
+                <Row gutter={8} style={{marginTop: 24}}>
                   <Col span={24}>
-                    <Card>
+                    <Card bodyStyle={{height: 600, overflow: "auto"}}>
                       <Tabs activeKey={activeKey} onChange={key => {
                         dispatch({
                           type: 'testcase/save',
@@ -299,12 +354,12 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
                                   <Card style={{height: 400}} hoverable bordered={false}>
                                     <Timeline>
                                       {
-                                        constructors.map((item, index) => <Timeline.Item>
+                                        constructors.map((item, index) => item.enable ? <Timeline.Item>
                                           <p><Badge count={index + 1}
                                                     style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
                                             <a>{item.name}</a> : item.name}</p>
                                           {getDesc(item)}
-                                        </Timeline.Item>)
+                                        </Timeline.Item> : null)
                                       }
                                     </Timeline>
                                   </Card>
@@ -323,7 +378,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
                           </Row>
                         </TabPane>
                         <TabPane key="3" tab={<span><IconFont type="icon-duanyan"/>断言</span>}>
-
+                          <TestCaseAssert asserts={asserts} caseId={case_id}/>
                         </TabPane>
                         <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}>
 

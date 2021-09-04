@@ -1,13 +1,16 @@
 import auth from "@/utils/auth";
 import {
   createTestCase,
+  deleteTestCaseAsserts,
   deleteTestcaseDirectory,
+  insertTestCaseAsserts,
   insertTestcaseDirectory,
   listTestcase,
   listTestcaseTree,
   queryTestCase,
   queryTestcaseDirectory,
   updateTestCase,
+  updateTestCaseAsserts,
   updateTestcaseDirectory
 } from "@/services/testcase";
 import {executeCase, executeSelectedCase} from "@/services/request";
@@ -23,6 +26,7 @@ export default {
     testResult: {},
     editing: false,
     caseInfo: {},
+    constructRecord: {},
     asserts: [],
     constructors: [],
     constructors_case: {},
@@ -148,6 +152,23 @@ export default {
 
     * executeSelectedCase({payload}, {call, put}) {
       return yield call(executeSelectedCase, payload.case_list);
+    },
+
+    // 新增testcase assert
+    * insertTestCaseAsserts({payload}, {call, put}) {
+      return yield call(insertTestCaseAsserts, payload)
+    },
+    * updateTestCaseAsserts({payload}, {call, put}) {
+      return yield call(updateTestCaseAsserts, payload)
+    },
+    * deleteTestCaseAsserts({payload}, {call, put}) {
+      const res = yield call(deleteTestCaseAsserts, payload)
+      return auth.response(res, true);
+    },
+
+    // 执行测试用例
+    * onExecuteTestCase({payload}, {call, put}) {
+      return yield call(executeCase, payload);
     }
 
   },

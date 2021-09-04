@@ -1,4 +1,4 @@
-import {Badge, Descriptions, Modal, Row, Table, Tabs} from "antd";
+import {Badge, Descriptions, Drawer, Row, Table, Tabs} from "antd";
 import React, {useEffect, useState} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
@@ -6,6 +6,7 @@ import CodeEditor from "@/components/Postman/CodeEditor";
 import TreeXmind from "@/components/G6/TreeXmind";
 import {queryXmindData} from "@/services/testcase";
 import auth from "@/utils/auth";
+import NoRecord from "@/components/NotFound/NoRecord";
 
 const TabPane = Tabs.TabPane;
 const STATUS = {
@@ -81,9 +82,9 @@ export default ({response, caseName, width, modal, setModal}) => {
   }
 
   return (
-    <Modal style={{marginTop: -80}} title={<span>[<strong>{caseName}</strong>] 执行详情</span>} width={width || 1000}
-           visible={modal} footer={null}
-           onCancel={() => setModal(false)}>
+    <Drawer title={<span>[<strong>{caseName}</strong>] 执行详情</span>} width={width || 1000}
+            visible={modal} placement="right"
+            onClose={() => setModal(false)}>
       <Row gutter={[8, 8]}>
         <Tabs style={{width: '100%'}} tabPosition="left">
           <TabPane tab="用例信息" key="1">
@@ -118,7 +119,7 @@ export default ({response, caseName, width, modal, setModal}) => {
                 {
                   response.request_data ? <SyntaxHighlighter language='json' style={vs2015}>
                     {response.request_data}
-                  </SyntaxHighlighter> : null
+                  </SyntaxHighlighter> : <NoRecord height={120}/>
                 }
               </Descriptions.Item>
             </Descriptions>
@@ -175,6 +176,6 @@ export default ({response, caseName, width, modal, setModal}) => {
           </TabPane>
         </Tabs>
       </Row>
-    </Modal>
+    </Drawer>
   )
 }

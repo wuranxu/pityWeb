@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { CONFIG } from '@/consts/config';
+import {CONFIG} from '@/consts/config';
 import auth from '@/utils/auth';
 
 export async function listTestCaseTree(params) {
@@ -42,10 +42,29 @@ export async function queryTestCase(params) {
   });
 }
 
+// 新增断言
 export async function insertTestCaseAsserts(data) {
   return request(`${CONFIG.URL}/testcase/asserts/insert`, {
     method: 'POST',
     data,
+    headers: auth.headers(),
+  });
+}
+
+// 编辑断言
+export async function updateTestCaseAsserts(data) {
+  return request(`${CONFIG.URL}/testcase/asserts/update`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+// 删除断言
+export async function deleteTestCaseAsserts(data) {
+  return request(`${CONFIG.URL}/testcase/asserts/delete`, {
+    method: 'GET',
+    params: data,
     headers: auth.headers(),
   });
 }
