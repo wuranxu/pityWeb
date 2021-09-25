@@ -38,6 +38,7 @@ import IconFont from "@/components/Icon/IconFont";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
+import LoadingButton from "@/components/Button/LoadingButton";
 
 const {Option} = Select;
 const {DirectoryTree} = Tree;
@@ -430,7 +431,8 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
                     window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
                   }}><PlusOutlined/> 添加用例</Button>
                   {selectedRowKeys.length > 0 ?
-                    <Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}
+                    <LoadingButton text="执行用例" icon={<PlayCircleOutlined/>} onClick={onExecute} style={{marginLeft: 8}}/>: null}
+                    {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
                 </Col>
               </Row>
               <Row style={{marginTop: 16}}>

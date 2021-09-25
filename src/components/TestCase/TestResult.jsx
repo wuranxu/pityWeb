@@ -28,7 +28,7 @@ const resColumns = [
 ];
 export default ({response, caseName, width, modal, setModal}) => {
 
-  const [xmindData, setXmindData] = useState({"label": "Loading..."});
+  const [xmindData, setXmindData] = useState(null);
 
   const getBrain = async () => {
     const res = await queryXmindData({case_id: response.case_id})
@@ -44,7 +44,7 @@ export default ({response, caseName, width, modal, setModal}) => {
   }, [response])
 
   const toTable = (field) => {
-    if (response[field] === undefined || response[field] === '{}') {
+    if (response[field] === null || response[field] === undefined || response[field] === '{}') {
       return [];
     }
     const temp = JSON.parse(response[field]);
@@ -73,12 +73,23 @@ export default ({response, caseName, width, modal, setModal}) => {
       return [];
     }
     const temp = JSON.parse(response.asserts)
-    return Object.keys(temp).map(k => (
-      {
-        status: temp[k].status,
-        msg: temp[k].msg,
+    const result = [];
+    Object.keys(temp).forEach(k => {
+      if (typeof temp[k].msg === "string") {
+        result.push({
+          status: temp[k].status,
+          msg: temp[k].msg,
+        })
+      } else {
+        temp[k].msg.forEach(v => {
+          result.push({
+            status: temp[k].status,
+            msg: v,
+          })
+        })
       }
-    ))
+    })
+    return result;
   }
 
   return (
@@ -136,7 +147,7 @@ export default ({response, caseName, width, modal, setModal}) => {
             <CodeEditor
               language="text"
               value={response.logs}
-              height="45vh"
+              height="80vh"
             />
           </TabPane>
           <TabPane tab="Request Headers" key="5">

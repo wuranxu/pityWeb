@@ -16,6 +16,9 @@ export default ({data}) => {
   let graph = null;
 
   useEffect(() => {
+    if (data === null) {
+      return;
+    }
     G6.registerNode('treeNode', {
       draw: (cfg, group) => {
         const {id, label, collapsed, selected, children, depth} = cfg;
@@ -269,10 +272,15 @@ export default ({data}) => {
           },
         },
       })
+      graph.data(data);
+      graph.render();
+      graph.fitView();
+    }  else {
+      graph.changeData(data);
+      graph.render();
+      graph.fitView();
     }
-    graph.data(data);
-    graph.render();
-    graph.fitView();
+
 
     if (typeof window !== 'undefined')
       window.onresize = () => {
@@ -281,13 +289,13 @@ export default ({data}) => {
         graph.changeSize(container.scrollWidth, container.scrollHeight);
       };
 
-  }, [])
-
-  useEffect(() => {
-    graph.changeData(data);
-    graph.render();
-    graph.fitView();
   }, [data])
+
+  // useEffect(() => {
+  //   graph.changeData(data);
+  //   graph.render();
+  //   graph.fitView();
+  // }, [data])
 
   return (
     <div/>

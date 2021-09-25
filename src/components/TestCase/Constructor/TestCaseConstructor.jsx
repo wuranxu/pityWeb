@@ -3,6 +3,7 @@ import QuestionOutlined from '@ant-design/icons';
 import CodeEditor from "@/components/Postman/CodeEditor";
 import React, {useEffect} from "react";
 import CommonForm from "@/components/PityForm/CommonForm";
+import {CONFIG} from "@/consts/config";
 
 const {Option} = Select;
 
@@ -22,9 +23,10 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       required: true,
       initialValue: data.type,
       component: <Select disabled defaultValue={constructorType}>
-        <Option value={0}>测试用例</Option>
-        <Option value={1}>sql</Option>
-        <Option value={2}>Redis</Option>
+        {
+          Object.keys(CONFIG.CONSTRUCTOR_TYPE).map(key => <Option value={parseInt(key, 10)}
+                                                                  key={key}>{CONFIG.CONSTRUCTOR_TYPE[key]}</Option>)
+        }
       </Select>,
     },
     {
@@ -32,7 +34,7 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       label: '名称',
       required: true,
       type: 'input',
-      placeholder: '请输入构造名称',
+      placeholder: '请输入数据构造器名称',
       initialValue: data.name,
     },
     {
@@ -42,7 +44,7 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       placeholder: '请选择用例',
       component: <Select placeholder="请选择用例">
         {
-          testcaseData.map(v => <Option value={v.id}>{v.name}</Option>)
+          testcaseData.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)
         }
       </Select>,
     },
@@ -50,7 +52,7 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       name: 'params',
       label: '动态参数',
       required: false,
-      component: <CodeEditor language='json' theme='vs-dark' height={120} options={{lineNumbers: 'off'}}/>,
+      component: <CodeEditor language='json' theme='vs-dark' height={100} options={{lineNumbers: 'off'}}/>,
     },
     {
       name: 'value',
@@ -61,11 +63,16 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
     },
     {
       name: 'public',
-      label: <span><Tooltip title="开启共享后, 其他人可使用你的数据构造器"><QuestionOutlined/></Tooltip> 共享</span>,
+      label: <Tooltip title="开启共享后, 其他人可使用你的数据构造器"><span>共享<QuestionOutlined/></span></Tooltip>,
       required: true,
       component: <Switch/>,
       valuePropName: 'checked',
       initialValue: data.public,
+      span: 12,
+      layout: {
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
+      }
     },
     {
       name: 'enable',
@@ -74,6 +81,11 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       component: <Switch/>,
       valuePropName: 'checked',
       initialValue: data.enable,
+      span: 6,
+      layout: {
+        labelCol: {span: 6},
+        wrapperCol: {span: 18},
+      }
     },
 
   ];

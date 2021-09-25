@@ -21,7 +21,6 @@ import common from "@/utils/common";
 import Pie from "@/components/Charts/Pie";
 import NoRecord from "@/components/NotFound/NoRecord";
 import TestResult from "@/components/TestCase/TestResult";
-import {queryXmindData} from "@/services/testcase";
 
 const {TabPane} = Tabs;
 
@@ -37,19 +36,17 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   const {userList, userNameMap} = user;
 
   const getTag = () => {
-    if (reportDetail.success_count) {
-      if (reportDetail.failed_count === 0 && reportDetail.error_count === 0 && reportDetail.success_count > 0) {
-        return <Tag icon={<CheckCircleOutlined/>} color="success">
-          通过
-        </Tag>
-      }
-      return <Tag icon={<CloseCircleOutlined/>} color="error">
-        未通过
+    if (reportDetail.failed_count === 0 && reportDetail.error_count === 0 && reportDetail.success_count > 0) {
+      return <Tag icon={<CheckCircleOutlined/>} color="success">
+        通过
       </Tag>
     }
-    return <Tag icon={<SyncOutlined spin/>} color="processing">
-      加载中
+    return <Tag icon={<CloseCircleOutlined/>} color="error">
+      未通过
     </Tag>
+    // return <Tag icon={<SyncOutlined spin/>} color="processing">
+    //   加载中
+    // </Tag>
   }
 
   const fetchEnv = async () => {
@@ -69,10 +66,16 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   }
 
   const getPieData = () => {
-    if (!reportDetail.success_count) {
+    if (!reportDetail.success_count && !reportDetail.failed_count && !reportDetail.error_count) {
       return [];
     }
     const total = reportDetail.success_count + reportDetail.failed_count + reportDetail.error_count + reportDetail.skipped_count;
+    console.log([
+      {name: '成功', count: reportDetail.success_count, percent: common.calPiePercent(reportDetail.success_count, total)},
+      {name: '失败', count: reportDetail.failed_count, percent: common.calPiePercent(reportDetail.failed_count, total)},
+      {name: '错误', count: reportDetail.error_count, percent: common.calPiePercent(reportDetail.error_count, total)},
+      {name: '跳过', count: reportDetail.skipped_count, percent: common.calPiePercent(reportDetail.skipped_count, total)},
+    ])
     return [
       {name: '成功', count: reportDetail.success_count, percent: common.calPiePercent(reportDetail.success_count, total)},
       {name: '失败', count: reportDetail.failed_count, percent: common.calPiePercent(reportDetail.failed_count, total)},
@@ -122,6 +125,11 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       render: text => <a>{text}</a>
     },
     {
+      title: '数据描述',
+      dataIndex: 'data_name',
+      key: 'data_name',
+    },
+    {
       title: '重试次数',
       dataIndex: 'retry',
       key: 'retry',
@@ -168,7 +176,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       <Spin spinning={loading.effects["gconfig/fetchEnvList"]}>
         <Card title={`测试报告#${reportId}`}>
           <Row gutter={[8, 8]}>
-            <Col span={16}>
+            <Col span={17}>
               <Row gutter={8}>
                 <Col span={4}>
                   <Card hoverable bordered={false} className={styles.statisticCard}>
@@ -239,7 +247,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
               </Descriptions>
 
             </Col>
-            <Col span={8}>
+            <Col span={7}>
               <Pie height={230} data={getPieData()} name="name"/>
             </Col>
           </Row>
@@ -251,7 +259,6 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
               <Input placeholder="请输入用例名称"/>
             </Col>
           </Row>
-
           <Row gutter={[8, 8]}>
             <Col span={24}>
               <Table style={{marginTop: 8}} columns={columns} dataSource={caseList}

@@ -92,7 +92,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
         onUpdateRole(item, data);
       }}>
         {
-          Object.keys(CONFIG.PROJECT_ROLE_MAP).map(key => <Option value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
+          Object.keys(CONFIG.PROJECT_ROLE_MAP).map((key, index) => <Option key={index} value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
         }
       </Select>,
       <Popconfirm
@@ -115,7 +115,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
 
   const roleList = <Select placeholder="请选择角色">
     {
-      Object.keys(CONFIG.PROJECT_ROLE_MAP).map(key => <Option value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
+      Object.keys(CONFIG.PROJECT_ROLE_MAP).map((key, index) => <Option key={index} value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
     }
   </Select>
 

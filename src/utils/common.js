@@ -10,7 +10,7 @@ export default {
     if (num === 0 || total === 0) {
       return 0;
     }
-    return (Math.round(num / total));// 小数点后两位百分比
+    return (Math.round(num / total * 100) / 100.00);// 小数点后两位百分比
   },
   parseHeaders: headers => {
     if (!headers) {

@@ -90,7 +90,7 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
     }
     setUrl(form.getFieldValue('url'));
     splitUrl(form.getFieldValue('url'))
-  }, [])
+  }, [body])
 
   // 请求url+params
   const resColumns = [
@@ -290,7 +290,6 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
               <EditTwoTone
                 style={{cursor: 'pointer'}}
                 onClick={() => {
-                  console.log(record)
                   setEditableRowKeys([record.id])
                 }}
               />
@@ -323,10 +322,10 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
                     // onChange={(data) => setMethod(data)}
                     style={{width: 120, textAlign: 'left'}}
                   >
-                    <Option value="GET">GET</Option>
-                    <Option value="POST">POST</Option>
-                    <Option value="PUT">PUT</Option>
-                    <Option value="DELETE">DELETE</Option>
+                    <Option key="GET" value="GET">GET</Option>
+                    <Option key="POST" value="POST">POST</Option>
+                    <Option key="PUT" value="PUT">PUT</Option>
+                    <Option key="DELETE" value="DELETE">DELETE</Option>
                   </Select>
                 </Form.Item>
               </Col>
@@ -401,7 +400,7 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
             <TabPane tab="Body" key="3">
               <Row>
                 <Radio.Group
-                  defaultValue="none"
+                  defaultValue={body === "" ? 'none': "raw"}
                   value={bodyType}
                   onChange={(e) => setBodyType(e.target.value)}
                 >

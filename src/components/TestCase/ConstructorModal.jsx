@@ -1,17 +1,18 @@
-import {Button, Card, Col, Modal, Row, Steps} from "antd";
+import {Button, Card, Col, Drawer, Row, Steps} from "antd";
 import {connect} from "umi";
 import IconFont from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
 import styles from './ConstructorModal.less';
 import {useEffect} from "react";
+import DatabaseConstructor from "@/components/TestCase/Constructor/DatabaseConstructor";
 
 const {Meta} = Card;
 const {Step} = Steps;
 
 const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, width, fetchData, record}) => {
 
-  const {currentStep, totalStep, constructorType} = construct;
+  const {currentStep, totalStep, constructorType, testCaseConstructorData} = construct;
 
   useEffect(() => {
     form.resetFields();
@@ -25,17 +26,30 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
     })
   }
 
+  const getConstructorJson = (values) => {
+    if (testCaseConstructorData.type === 0) {
+      // 说明是用例
+      return JSON.stringify({
+        project_id: values.case_id[0],
+        case_id: values.case_id[1],
+        params: values.params
+      })
+    } else if (testCaseConstructorData.type === 1) {
+      // 说明是sql构造方法
+      return JSON.stringify({
+        database: values.database,
+        sql: values.sql,
+      })
+    }
+  }
+
   const onSubmit = async () => {
     const values = await form.validateFields();
     const params = {
       value: values.value,
-      type: values.type,
+      type: testCaseConstructorData.type,
       name: values.name,
-      constructor_json: JSON.stringify({
-        project_id: values.case_id[0],
-        case_id: values.case_id[1],
-        params: values.params
-      }),
+      constructor_json: getConstructorJson(values),
       enable: values.enable,
       case_id: caseId,
       public: values.public,
@@ -101,7 +115,7 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
             bodyStyle={{background: '#ffffff', padding: 16}}
             hoverable
             className={styles.mycard}
-            cover={<IconFont type="icon-qingqiu" onClick={() => onSelectType(2)}
+            cover={<IconFont type="icon-qingqiu" onClick={() => onSelectType(3)}
                              className={styles.icons}/>}
           >
             <Meta title="HTTP请求" className={styles.metadata}/>
@@ -112,7 +126,7 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
             bodyStyle={{background: '#ffffff', padding: 16}}
             hoverable
             className={styles.mycard}
-            cover={<IconFont type="icon-python" onClick={() => onSelectType(2)}
+            cover={<IconFont type="icon-python" onClick={() => onSelectType(4)}
                              className={styles.icons}/>}
           >
             <Meta title="Python方法" className={styles.metadata}/>
@@ -124,6 +138,9 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
     if (currentStep === 1) {
       if (constructorType === 0) {
         return <TestCaseConstructorData form={form}/>
+      }
+      if (constructorType === 1) {
+        return <DatabaseConstructor form={form}/>
       }
     }
   }
@@ -149,8 +166,7 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
   }
 
   return (
-    <Modal title="数据构造器" width={width || 800} visible={modal} onCancel={() => setModal(false)} footer={null}
-           style={{marginTop: -80}}>
+    <Drawer title="数据构造器" width={width || 1100} visible={modal} onClose={() => setModal(false)} footer={null}>
       <>
         <Row>
           <Col span={6}/>
@@ -181,7 +197,7 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
           )}
         </div>
       </>
-    </Modal>
+    </Drawer>
   )
 }
 

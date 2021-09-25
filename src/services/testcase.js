@@ -120,3 +120,30 @@ export async function deleteTestcaseDirectory(params) {
     headers: auth.headers(),
   });
 }
+
+// 新增测试数据
+export async function insertTestcaseData(params) {
+  return request(`${CONFIG.URL}/testcase/data/insert`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+// 编辑测试数据
+export async function updateTestcaseData(params) {
+  return request(`${CONFIG.URL}/testcase/data/update`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+// 删除测试数据
+export async function deleteTestcaseData(params) {
+  return request(`${CONFIG.URL}/testcase/data/delete`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}

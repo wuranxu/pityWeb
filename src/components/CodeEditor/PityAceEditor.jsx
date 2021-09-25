@@ -1,6 +1,12 @@
 import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/ace'; // mysql模式的包
 import 'ace-builds/src-noconflict/mode-mysql'; // mysql模式的包
 import 'ace-builds/src-noconflict/mode-pgsql'; // pg模式包
+// import 'ace-builds/src-noconflict/mode-json'; // json包
+import 'ace-builds/src-noconflict/mode-python'; // json包
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/worker-json'
+
 // 主题样式
 import 'ace-builds/src-noconflict/theme-ambiance';
 import 'ace-builds/src-noconflict/theme-chrome';

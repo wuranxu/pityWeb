@@ -2,8 +2,10 @@ import auth from "@/utils/auth";
 import {
   createTestCase,
   deleteTestCaseAsserts,
+  deleteTestcaseData,
   deleteTestcaseDirectory,
   insertTestCaseAsserts,
+  insertTestcaseData,
   insertTestcaseDirectory,
   listTestcase,
   listTestcaseTree,
@@ -11,6 +13,7 @@ import {
   queryTestcaseDirectory,
   updateTestCase,
   updateTestCaseAsserts,
+  updateTestcaseData,
   updateTestcaseDirectory
 } from "@/services/testcase";
 import {executeCase, executeSelectedCase} from "@/services/request";
@@ -29,6 +32,8 @@ export default {
     constructRecord: {},
     asserts: [],
     constructors: [],
+    testData: {},
+    envActiveKey: '',
     constructors_case: {},
     constructorModal: false,
     activeKey: '1',
@@ -113,6 +118,7 @@ export default {
             asserts: res.data.asserts,
             constructors: res.data.constructors.map((v, index) => ({...v, index})),
             constructors_case: res.data.constructors_case,
+            testData: res.data.test_data,
           }
         })
       }
@@ -169,6 +175,52 @@ export default {
     // 执行测试用例
     * onExecuteTestCase({payload}, {call, put}) {
       return yield call(executeCase, payload);
+    },
+
+    // 测试数据相关
+    * insertTestcaseData({payload}, {call, put, select}) {
+      const {testData} = yield select(state => state.testcase)
+      const {env} = payload;
+      const res = yield call(insertTestcaseData, payload);
+      if (auth.response(res, true)) {
+        const newData = {...testData};
+        if (newData[parseInt(env, 10)] === undefined) {
+          newData[parseInt(env, 10)] = [res.data]
+        } else {
+          newData[parseInt(env, 10)].push(res.data);
+        }
+        yield put({
+          type: 'save',
+          payload: {testData: newData}
+        })
+        return true;
+      }
+      return false;
+    },
+
+    * updateTestcaseData({payload}, {call, put, select}) {
+      const {testData} = yield select(state => state.testcase)
+      const {env} = payload;
+      const res = yield call(updateTestcaseData, payload);
+      if (auth.response(res, true)) {
+        const newData = {...testData};
+        const temp = newData[parseInt(env, 10)]
+        const index = temp.findIndex((item) => res.data.id === item.id);
+        const item = temp[index]
+        temp.splice(index, 1, {...item, ...res.data});
+        yield put({
+          type: 'save',
+          payload: {testData: newData}
+        })
+        return true;
+      }
+      return false;
+    },
+
+
+    * deleteTestcaseData({payload}, {call, _}) {
+      const res = yield call(deleteTestcaseData, payload);
+      return auth.response(res, true);
     }
 
   },

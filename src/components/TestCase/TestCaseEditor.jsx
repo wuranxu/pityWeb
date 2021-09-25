@@ -28,6 +28,8 @@ const TestCaseEditor = ({
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(caseInfo);
+    setBody(caseInfo.body)
+    console.log(caseInfo)
     // setHeaders(common.parseHeaders(caseInfo.request_headers))
   }, [caseInfo])
 
@@ -40,7 +42,6 @@ const TestCaseEditor = ({
       <Card title={<span className={styles.caseTitle}>用例信息</span>}
             extra={<>
               <Button type="primary" onClick={async () => {
-                console.log(create)
                 await onSubmit(create)
               }}><SaveOutlined/> 提交</Button>
               {!create ? <Button style={{marginLeft: 8}} onClick={() => {

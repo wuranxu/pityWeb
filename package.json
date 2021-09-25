@@ -72,7 +72,7 @@
     "react-helmet-async": "^1.0.4",
     "react-sortable-hoc": "^2.0.0",
     "react-syntax-highlighter": "^15.4.3",
-    "umi": "3.4.11",
+    "umi": "^3.4.11",
     "umi-request": "1.0.8"
   },
   "devDependencies": {

@@ -59,10 +59,10 @@ export default () => {
       onChange={(data) => setMethod(data)}
       style={{width: 120, fontSize: 16, textAlign: 'left'}}
     >
-      <Option value="GET">GET</Option>
-      <Option value="POST">POST</Option>
-      <Option value="PUT">PUT</Option>
-      <Option value="DELETE">DELETE</Option>
+      <Option key="GET" value="GET">GET</Option>
+      <Option key="POST" value="POST">POST</Option>
+      <Option key="PUT" value="PUT">PUT</Option>
+      <Option key="DELETE" value="DELETE">DELETE</Option>
     </Select>
   );
 

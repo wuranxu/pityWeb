@@ -33,7 +33,7 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
         onFinish={onFinish}
       >
         {
-          fields.map(item => <Col span={item.span || 24}>
+          fields.map((item, index) => <Col span={item.span || 24} key={index}>
             <FormItem label={item.label} colon={item.colon || true} initialValue={item.initialValue}
                       rules={
                         [{required: item.required, message: item.message}]

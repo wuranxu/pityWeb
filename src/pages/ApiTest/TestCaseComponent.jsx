@@ -15,16 +15,20 @@ import {
   EditTwoTone,
   ExclamationCircleOutlined,
   PlayCircleOutlined,
-  PlusOutlined
+  PlusOutlined,
+  QuestionCircleOutlined
 } from "@ant-design/icons";
 import PostmanForm from "@/components/Postman/PostmanForm";
 import common from "@/utils/common";
 import TestCaseAssert from "@/components/TestCase/TestCaseAssert";
 import auth from "@/utils/auth";
+import TooltipIcon from "@/components/Icon/TooltipIcon";
+import NoRecord2 from "@/components/NotFound/NoRecord2";
+import TestcaseData from "@/components/TestCase/TestcaseData";
 
 const {TabPane} = Tabs;
 
-const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
+const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const params = useParams();
   const directory_id = params.directory;
   const case_id = params.case_id;
@@ -37,8 +41,10 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
     asserts,
     constructRecord,
     constructors_case,
-    constructorModal
+    constructorModal,
+    envActiveKey
   } = testcase;
+  const {envList} = gconfig;
   const {userMap} = user;
   const [resultModal, setResultModal] = useState(false);
   const [testResult, setTestResult] = useState({});
@@ -46,6 +52,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
   const [constructorForm] = Form.useForm();
   const [body, setBody] = useState('');
   const [headers, setHeaders] = useState([]);
+  const [testDataKey, setTestDataKey] = useState(null);
 
 
   useEffect(async () => {
@@ -53,6 +60,16 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
       type: 'testcase/queryTestcaseDirectory',
       payload: {
         directory_id,
+      }
+    })
+
+    // 获取环境信息
+    await dispatch({
+      type: 'gconfig/fetchEnvList',
+      payload: {
+        page: 1,
+        size: 1000,
+        exactly: true // 全部获取
       }
     })
 
@@ -68,6 +85,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
     form.resetFields();
     form.setFieldsValue(caseInfo);
     setHeaders(common.parseHeaders(caseInfo.request_headers))
+    setBody(caseInfo.body);
   }, [caseInfo, editing])
 
   const fetchTestCaseInfo = async () => {
@@ -95,8 +113,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
     if (!result) {
       return null
     }
-    return <p>用例: <a href={`/#/apiTest/testcase/${result['directory_id']}/${result['id']}`}
-                     target="_blank">{result['name']}</a></p>
+    return <div>用例: <a href={`/#/apiTest/testcase/${result['directory_id']}/${result['id']}`}
+                       target="_blank">{result['name']}</a></div>
   }
 
   const getTag = tag => {
@@ -204,15 +222,22 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
   const onCreateConstructor = () => {
     dispatch({
       type: 'testcase/save',
-      payload: {constructorModal: true}
+      payload: {
+        constructorModal: true, testCaseConstructorData: {
+          public: true,
+          enable: true,
+        },
+        currentStep: 0
+      }
     })
   }
 
   // 编辑数据构造器
   const onEditConstructor = record => {
+    const dt = JSON.parse(record.constructor_json);
     dispatch({
       type: 'construct/save',
-      payload: {currentStep: 1}
+      payload: {currentStep: 1, testCaseConstructorData: {...record, ...dt}, constructorType: record.type}
     })
     dispatch({
       type: 'testcase/save',
@@ -259,14 +284,14 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
             /> :
             <Row>
               <Col span={24}>
-                <ConstructorModal width={800} modal={constructorModal} setModal={e => {
+                <ConstructorModal width={1100} modal={constructorModal} setModal={e => {
                   dispatch({type: 'testcase/save', payload: {constructorModal: e}})
                 }} caseId={case_id} form={constructorForm} record={constructRecord}
                                   fetchData={fetchTestCaseInfo}/>
                 {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
-                    <Card title="用例详情" extra={<div>
+                    <Card title={<span>用例详情 {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>} extra={<div>
                       <Button onClick={() => {
                         dispatch({
                           type: 'testcase/save',
@@ -323,12 +348,39 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
                           type: 'testcase/save',
                           payload: {activeKey: key}
                         })
+                        if (key === '5' && envList.length > 0) {
+                          dispatch({
+                            type: 'testcase/save',
+                            payload: {
+                              envActiveKey: envList[0].id.toString(),
+                            }
+                          })
+                        }
                       }}>
+
+                        <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
+                          icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~"/></span>}>
+                          {
+                            envList.length > 0 ?
+                              <Tabs tabPosition="left" activeKey={envActiveKey} onChange={key => {
+                                dispatch({
+                                  type: 'testcase/save',
+                                  payload: {envActiveKey: key}
+                                })
+                              }}>
+                                {envList.map(item => <TabPane key={item.id} tab={item.name}>
+                                  <TestcaseData caseId={case_id} currentEnv={envActiveKey}/>
+                                </TabPane>)}
+                              </Tabs> : <NoRecord2 height={280}
+                                                   desc={<span>没有任何环境信息, {<a href="/#/config/environment"
+                                                                             target="_blank">去添加</a>}</span>}/>
+                          }
+                        </TabPane>
                         <TabPane key="1" tab={<span><IconFont type="icon-DependencyGraph_16x"/>数据构造器</span>}>
                           {
                             constructors.length === 0 ?
                               <NoRecord height={180}
-                                        desc={<p>没有数据构造器, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</p>}/> :
+                                        desc={<div>没有数据构造器, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
                               <Row gutter={12}>
                                 <Col span={16}>
                                   <Row>
@@ -354,10 +406,10 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
                                   <Card style={{height: 400}} hoverable bordered={false}>
                                     <Timeline>
                                       {
-                                        constructors.map((item, index) => item.enable ? <Timeline.Item>
-                                          <p><Badge count={index + 1}
-                                                    style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                            <a>{item.name}</a> : item.name}</p>
+                                        constructors.map((item, index) => item.enable ? <Timeline.Item key={index}>
+                                          <div key={index}><Badge count={index + 1} key={index}
+                                                                  style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
+                                            <a key={item.name}>{item.name}</a> : item.name}</div>
                                           {getDesc(item)}
                                         </Timeline.Item> : null)
                                       }
@@ -397,10 +449,10 @@ const TestCaseComponent = ({loading, dispatch, user, testcase}) => {
 
 export default connect((
   {
-    user, testcase, loading
+    user, testcase, loading, gconfig
   }
 ) => (
   {
-    testcase, user, loading
+    testcase, user, loading, gconfig
   }
 ))(TestCaseComponent);
