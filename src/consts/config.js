@@ -5,7 +5,7 @@ export const CONFIG = {
   // URL: 'http://47.112.32.195:7777',
   URL: 'http://localhost:7777',
   // URL: '',
-  ICONFONT: '//at.alicdn.com/t/font_915840_eseo5s4kbdq.js',
+  ICONFONT: '//at.alicdn.com/t/font_915840_rklsjnujxp8.js',
   ROLE: {
     0: 'user',
     1: 'admin',
@@ -138,6 +138,18 @@ export const CONFIG = {
     2: 'Redis语句',
     3: 'HTTP请求',
     4: 'Python方法'
+  },
+  MSG_TYPE: {
+    0: '邮件',
+    1: '钉钉',
+    2: '企业微信',
+    3: '飞书',
+  },
+  MSG_ICON: {
+    0: "icon-dianziyoujian",
+    1: 'icon-dingding01',
+    2: 'icon-qiyeweixin',
+    3: 'icon-feishu',
   },
   DEFAULT_AVATAR:
     'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn1.itc.cn%2Fimg8%2Fwb%2Frecom%2F2015%2F11%2F24%2F144832579376786755.jpeg&refer=http%3A%2F%2Fn1.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620401980&t=9ee0f5e56b90bb80cfde8f7cc81c81ae',

@@ -137,8 +137,7 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
   return (
 
     <Spin spinning={loading.effects['online/fetchDatabaseSource']}
-          tip="数据加载中, 请耐心等待..."
-          indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>} size="large">
+          tip="数据加载中, 请耐心等待..." size="large">
       <Row gutter={[12]}>
         <Col span={8} style={{display: 'table-cell'}}>
           <Card title="数据库列表" bodyStyle={{height: leftHeight || 656, overflowY: 'auto'}} size="small">

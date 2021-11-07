@@ -25,7 +25,7 @@ export default () => {
       const res = await listProject({page: current, size});
       if (auth.response(res)) {
         setData(res.data);
-        setPagination({...pagination, total: res.total});
+        setPagination({...pagination, current, total: res.total});
       }
     });
   };
@@ -155,7 +155,7 @@ export default () => {
         </Col>
       </Row>
       <Spin spinning={false}>
-        <Row gutter={16}>
+        <Row gutter={24}>
           {data.length === 0 ? (
             <Col span={24} style={{textAlign: 'center', marginBottom: 12}}>
               <Card>
@@ -164,7 +164,7 @@ export default () => {
             </Col>
           ) : (
             data.map((item) => (
-              <Col key={item.id} span={4} style={{marginBottom: 12}}>
+              <Col key={item.id} span={6} style={{marginBottom: 24}}>
                 <Popover content={content(item)} placement="rightTop">
                   <Card
                     hoverable
@@ -196,7 +196,9 @@ export default () => {
         </Row>
         <Row gutter={8}>
           <Col span={24}>
-            <Pagination {...pagination} style={{float: 'right'}} position="bottomRight"/>
+            <Pagination {...pagination} style={{float: 'right'}} position="bottomRight" onChange={pg => {
+              fetchData(pg)
+            }}/>
           </Col>
         </Row>
       </Spin>

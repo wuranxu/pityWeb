@@ -66,8 +66,9 @@ export default [
                     component: "./ApiTest/TestCaseComponent"
                   },
                   {
-                    path: '/apiTest/cronjob',
-                    name: '定时任务',
+                    path: '/apiTest/testplan',
+                    name: '测试计划',
+                    component: './ApiTest/TestPlan'
                   },
                   {
                     path: '/apiTest/statistic',
