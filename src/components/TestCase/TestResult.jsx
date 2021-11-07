@@ -7,6 +7,7 @@ import TreeXmind from "@/components/G6/TreeXmind";
 import {queryXmindData} from "@/services/testcase";
 import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
+import IconFont from "@/components/Icon/IconFont";
 
 const TabPane = Tabs.TabPane;
 const STATUS = {
@@ -98,7 +99,7 @@ export default ({response, caseName, width, modal, setModal}) => {
             onClose={() => setModal(false)}>
       <Row gutter={[8, 8]}>
         <Tabs style={{width: '100%'}} tabPosition="left">
-          <TabPane tab="用例信息" key="1">
+          <TabPane tab={<span><IconFont type="icon-yongliliebiao"/>基本信息</span>} key="1">
             <Descriptions column={2} bordered size="middle">
               <Descriptions.Item label="测试结果">
                 <Badge status={response.status ? "success" : "error"} text={response.status ? "成功" : "失败"}/>
@@ -135,7 +136,7 @@ export default ({response, caseName, width, modal, setModal}) => {
               </Descriptions.Item>
             </Descriptions>
           </TabPane>
-          <TabPane tab="断言" key="3">
+          <TabPane tab={<span><IconFont type="icon-duanyan"/>断言</span>} key="3">
             <Table
               columns={assertTable}
               dataSource={getSource()}
@@ -143,14 +144,14 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="执行日志" key="2">
+          <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
             <CodeEditor
               language="text"
               value={response.logs}
               height="80vh"
             />
           </TabPane>
-          <TabPane tab="Request Headers" key="5">
+          <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
             <Table
               columns={resColumns}
               dataSource={toTable('request_headers')}
@@ -158,7 +159,7 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Cookie" key="6">
+          <TabPane tab={<span><IconFont type="icon-cookies-1"/>Cookie</span>} key="6">
             <Table
               columns={resColumns}
               dataSource={toTable('cookies')}
@@ -166,7 +167,7 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Response Headers" key="7">
+          <TabPane tab={<span><IconFont type="icon-header"/>Response Headers</span>} key="7">
             <Table
               columns={resColumns}
               dataSource={toTable('response_headers')}
@@ -174,13 +175,13 @@ export default ({response, caseName, width, modal, setModal}) => {
               pagination={false}
             />
           </TabPane>
-          <TabPane tab="Response" key="4">
+          <TabPane tab={<span><IconFont type="icon-xiangying"/>Response</span>} key="4">
             <CodeEditor
               value={response.response ? response.response : ''}
               height="45vh"
             />
           </TabPane>
-          <TabPane tab="脑图" key="8">
+          <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">
             <div id="container">
               <TreeXmind data={xmindData}/>
             </div>

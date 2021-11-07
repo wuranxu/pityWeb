@@ -149,13 +149,13 @@ export default [
                   },
                   {
                     path: '/tool/sql',
-                    name: '执行SQL',
+                    name: 'SQL客户端',
                     icon: 'database',
                     component: './Tool/SqlOnline',
                   },
                   {
                     path: '/tool/redis',
-                    name: '执行Redis',
+                    name: 'Redis客户端',
                     icon: 'redis',
                     component: './Tool/RedisOnline',
                   },

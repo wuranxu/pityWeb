@@ -80,12 +80,13 @@ export default () => {
   ];
 
   const toTable = (field) => {
-    if (!response[field]) {
+    if (response[field] === null || response[field] === undefined || response[field] === '{}') {
       return [];
     }
-    return Object.keys(response[field]).map((key) => ({
+    const temp = JSON.parse(response[field]);
+    return Object.keys(temp).map((key) => ({
       key,
-      value: response[field][key],
+      value: temp[key],
     }));
   };
 
