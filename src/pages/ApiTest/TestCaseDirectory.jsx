@@ -8,6 +8,7 @@ import {
   Divider,
   Form,
   Input,
+  message,
   Modal,
   Row,
   Select,
@@ -428,17 +429,22 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
               <Row gutter={8} style={{marginTop: 4}}>
                 <Col span={24}>
                   <Button type="primary" onClick={() => {
+                    if (!currentDirectory[0]) {
+                      message.info("请先创建或选择用例目录~")
+                      return;
+                    }
                     window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
                   }}><PlusOutlined/> 添加用例</Button>
                   {selectedRowKeys.length > 0 ?
-                    <LoadingButton text="执行用例" icon={<PlayCircleOutlined/>} onClick={onExecute} style={{marginLeft: 8}}/>: null}
-                    {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
+                    <LoadingButton text="执行用例" icon={<PlayCircleOutlined/>} onClick={onExecute}
+                                   style={{marginLeft: 8}}/> : null}
+                  {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
                 </Col>
               </Row>
               <Row style={{marginTop: 16}}>
                 <Col span={24}>
                   <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
-                         locale={{emptyText: <NoRecord height={200}/>}} pagination={pagination}
+                         pagination={pagination}
                          onChange={pg => {
                            saveCase({pagination: {...pagination, current: pg.current}})
                          }}

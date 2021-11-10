@@ -118,6 +118,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   }
 
   const getTag = tag => {
+    if (tag === null) {
+      return '无'
+    }
     if (typeof tag === 'object' && tag.length > 0) {
       return tag.map(v => <Tag
         style={{marginRight: 8}}

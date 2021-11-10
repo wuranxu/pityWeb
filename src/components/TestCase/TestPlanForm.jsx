@@ -41,7 +41,7 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
 
   useEffect(() => {
     onSave({
-      selectedCaseData: form.getFieldValue('case_list').map(item => ({
+      selectedCaseData: form.getFieldValue('case_list') || [].map(item => ({
         name: caseMap[item.split("_")[1]],
         index: item
       }))
