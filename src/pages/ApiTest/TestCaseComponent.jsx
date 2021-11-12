@@ -379,7 +379,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                                                              target="_blank">去添加</a>}</span>}/>
                           }
                         </TabPane>
-                        <TabPane key="1" tab={<span><IconFont type="icon-DependencyGraph_16x"/>数据构造器</span>}>
+                        <TabPane key="1"
+                                 tab={<span><IconFont type="icon-DependencyGraph_16x"/>数据构造器{`(${constructors.length})`}</span>}>
                           {
                             constructors.length === 0 ?
                               <NoRecord height={180}
@@ -432,7 +433,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                             </Col>
                           </Row>
                         </TabPane>
-                        <TabPane key="3" tab={<span><IconFont type="icon-duanyan"/>断言</span>}>
+                        <TabPane key="3" tab={<span><IconFont type="icon-duanyan"/>断言{`(${asserts.length})`}</span>}>
                           <TestCaseAssert asserts={asserts} caseId={case_id}/>
                         </TabPane>
                         <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}>

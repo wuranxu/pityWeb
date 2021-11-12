@@ -179,7 +179,7 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
               testResults.length === 0 ?
                 <Empty image={noResult} imageStyle={{height: imageHeight || 180}} description="没有『查询结果』哦, 快去执行SQL吧~"/> :
                 <Table columns={getColumns(sqlColumns)} dataSource={testResults} size="small"
-                       scroll={{x: sqlColumns.length > 8 ? 2000 : 1000}}
+                       scroll={{x: sqlColumns.length > 8 ? 2000 : 1000}} bordered={true}
                        pagination={pagination} onChange={pg => setPagination({
                   ...pagination,
                   current: pg.current,

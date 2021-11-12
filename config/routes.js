@@ -98,11 +98,13 @@ export default [
                 path: '/precise',
                 icon: 'icon-jingzhun',
                 name: '精准测试',
+                component: "./Building"
               },
               {
                 path: '/factory',
                 icon: 'icon-hebingxingzhuang',
                 name: '数据工厂',
+                component: "./Building"
               },
               {
                 path: '/config',
