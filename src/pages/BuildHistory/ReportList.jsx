@@ -34,9 +34,9 @@ const ReportList = ({user, report, loading, dispatch}) => {
       key: 'id',
       render: (text, record) => {
         if (record.failed_count === 0 && record.error_count === 0 && record.success_count > 0) {
-          return <span><CheckCircleTwoTone twoToneColor="#52c41a" style={{fontSize: 13}}/> #{text}</span>
+          return <span><CheckCircleTwoTone twoToneColor="#52c41a" style={{fontSize: 13}}/> #<a href={`/#/record/report/${record.id}`}>{text}</a></span>
         }
-        return <span><CloseCircleTwoTone twoToneColor="#eb2f96" style={{fontSize: 13}}/> #{text}</span>
+        return <span><CloseCircleTwoTone twoToneColor="#eb2f96" style={{fontSize: 13}}/> #<a href={`/#/record/report/${record.id}`}>{text}</a></span>
       }
     },
     {
@@ -92,11 +92,11 @@ const ReportList = ({user, report, loading, dispatch}) => {
       key: 'status',
       render: status => reportConfig.STATUS[status],
     },
-    {
-      title: '操作',
-      key: 'operation',
-      render: (_, record) => <><Button type="link" href={`/#/record/report/${record.id}`}>查看</Button></>
-    }
+    // {
+    //   title: '操作',
+    //   key: 'operation',
+    //   render: (_, record) => <><Button type="link" href={`/#/record/report/${record.id}`}>查看</Button></>
+    // }
   ]
 
   const fetchReport = async () => {
@@ -121,7 +121,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
   }
 
   return (
-    <PageContainer title="构建历史">
+    <PageContainer title="构建历史" breadcrumb={false}>
       <Card>
         <Form form={form}>
           <Row gutter={[8, 8]}>
@@ -130,13 +130,13 @@ const ReportList = ({user, report, loading, dispatch}) => {
               <Form.Item label="执行人" name="executor">
                 <Select placeholder="选择执行人" style={{width: '90%'}} allowClear>
                   {
-                    Object.keys(userNameMap).map(v => (<Option value={v}>{userNameMap[v]}</Option>))
+                    Object.keys(userNameMap).map(v => (<Option key={v} value={v}>{userNameMap[v]}</Option>))
                   }
                 </Select>
               </Form.Item>
             </Col>
 
-            <Col span={8}>
+            <Col span={10}>
               <Form.Item label="执行时间" name="date"
                          rules={[{required: true, message: '请选择开始/结束时间'}]}
                          initialValue={[moment().startOf('week'), moment().endOf('week')]}>
@@ -151,13 +151,11 @@ const ReportList = ({user, report, loading, dispatch}) => {
                 />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={6}>
               <div style={{float: 'right'}}>
                 <Button type="primary" onClick={fetchReport}><SearchOutlined/> 查询</Button>
                 <Button style={{marginLeft: 8}} onClick={onReset}><ReloadOutlined/> 重置</Button>
               </div>
-            </Col>
-            <Col span={8}>
             </Col>
           </Row>
 

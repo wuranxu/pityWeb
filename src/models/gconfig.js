@@ -1,14 +1,14 @@
 import {
   deleteDbConfig,
-  deleteGConfig,
+  deleteGConfig, deleteRedisConfig,
   insertDbConfig,
-  insertGConfig,
+  insertGConfig, insertRedisConfig,
   listDbConfig,
   listEnvironment,
-  listGConfig,
+  listGConfig, listRedisConfig, onlineRedisCommand,
   onTestDbConfig,
   updateDbConfig,
-  updateGConfig
+  updateGConfig, updateRedisConfig
 } from '@/services/configure';
 import auth from '@/utils/auth';
 import {message} from 'antd';
@@ -34,6 +34,7 @@ export default {
     },
 
     dbConfigData: [],
+    redisConfig: [],
     // 数据库配置modal
     databaseModal: false,
     databaseRecord: {sql_type: 0},
@@ -212,5 +213,43 @@ export default {
         },
       });
     },
+
+    * fetchRedisConfig({payload}, {call, put}) {
+      const res = yield call(listRedisConfig, payload);
+      if (!auth.response(res)) {
+        message.error(res.msg);
+        return;
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          redisConfig: res.data,
+        },
+      });
+    },
+
+    * insertRedisConfig({payload}, {call, put}) {
+      const res = yield call(insertRedisConfig, payload);
+      return auth.response(res, true);
+    },
+
+    * updateRedisConfig({payload}, {call, put}) {
+      const res = yield call(updateRedisConfig, payload);
+      return auth.response(res, true);
+    },
+
+    * deleteRedisConfig({payload}, {call, put}) {
+      const res = yield call(deleteRedisConfig, payload);
+      return auth.response(res, true);
+
+    },
+
+    *onlineRedisCommand({payload}, {call, put}) {
+      const res = yield call(onlineRedisCommand, payload);
+      if (auth.response(res)) {
+        return res.data;
+      }
+      return res.msg;
+    }
   },
 };

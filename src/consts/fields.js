@@ -153,5 +153,5 @@ export default {
       component: <Input.TextArea maxLength={200}/>,
       span: 24,
     },
-  ]
+  ],
 };

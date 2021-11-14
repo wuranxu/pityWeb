@@ -171,7 +171,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   ]
 
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} breadcrumb={false}>
       <TestResult width={1000} setModal={setCaseModal} modal={caseModal} caseName={caseName} response={response}/>
       <Spin spinning={loading.effects["gconfig/fetchEnvList"]}>
         <Card title={`测试报告#${reportId}`}>

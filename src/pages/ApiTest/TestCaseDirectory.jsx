@@ -312,7 +312,7 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
 
 
   return (
-    <PageContainer title="接口用例管理">
+    <PageContainer title="接口用例管理" breadcrumb={false}>
       <TestResult width={900} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name}/>
       <Row gutter={16}>
@@ -325,7 +325,6 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
           <Card title={
             <Row gutter={8}>
               <Col span={18}>
-                <span>项目 </span>
                 {
                   editing ? <Select style={{marginLeft: 32, width: 120}} showSearch
                                     placeholder="请选择项目" value={project_id} autoFocus={true}

@@ -3,7 +3,7 @@
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
-import ProLayout, {DefaultFooter} from '@ant-design/pro-layout';
+import ProLayout, {DefaultFooter, ProBreadcrumb} from '@ant-design/pro-layout';
 import React, {useEffect, useMemo, useRef} from 'react';
 import {connect, history, Link, useIntl} from 'umi';
 import {GithubOutlined} from '@ant-design/icons';
@@ -115,6 +115,9 @@ const BasicLayout = (props) => {
         {...settings}
         onCollapse={handleMenuCollapse}
         onMenuHeaderClick={() => history.push('/')}
+        headerContentRender={() => {
+          return <ProBreadcrumb />;
+        }}
         menuItemRender={(menuItemProps, defaultDom) => {
           if (
             menuItemProps.isUrl ||
@@ -157,7 +160,7 @@ const BasicLayout = (props) => {
           return menuData || [];
         }}
         iconfontUrl={CONFIG.ICONFONT}
-        layout='top'
+        // layout='top'
       >
         <Authorized authority={authorized.authority} noMatch={noMatch}>
           {children}

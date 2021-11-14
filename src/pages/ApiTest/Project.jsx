@@ -125,7 +125,7 @@ export default () => {
     },
   ];
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} breadcrumb={false}>
       <FormForModal
         width={600}
         title="添加项目"

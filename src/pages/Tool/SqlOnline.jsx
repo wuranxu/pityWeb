@@ -3,7 +3,7 @@ import {PageContainer} from "@ant-design/pro-layout";
 
 export default () => {
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} breadcrumb={false}>
       <SqlOnline/>
     </PageContainer>
   )

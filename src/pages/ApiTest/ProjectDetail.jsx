@@ -45,7 +45,7 @@ export default () => {
 
 
   return (
-    <PageContainer title={<span>
+    <PageContainer breadcrumb={false} title={<span>
       <Avatar
         style={{ backgroundColor: '#87d068' }}>{projectData.name === undefined ? 'loading...' : projectData.name.slice(0, 2)}</Avatar>{projectData.name}</span>}>
       <Card bodyStyle={{padding: '8px 18px'}}>

@@ -276,7 +276,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   }
 
   return (
-    <PageContainer title={<>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''}</>}>
+    <PageContainer title={<>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''}</>} breadcrumb={false}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={caseInfo.name}/>
       <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}

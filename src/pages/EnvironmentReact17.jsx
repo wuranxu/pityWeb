@@ -109,7 +109,7 @@ export default () => {
   }
 
   return (
-    <PageContainer title="环境配置">
+    <PageContainer title="环境配置" breadcrumb={false}>
       <Spin spinning={loading}>
         <FormForModal visible={visible} onCancel={()=>setVisible(false)}
                       title="环境管理" left={6} right={18} width={500} record={record} onFinish={onFinish} fields={fields.Environment}

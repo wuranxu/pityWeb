@@ -195,7 +195,7 @@ const GConfig = ({gconfig, loading, dispatch}) => {
   };
 
   return (
-    <PageContainer title='全局变量'>
+    <PageContainer title='全局变量' breadcrumb={false}>
       <Card>
         <FormForModal fields={fields} visible={modal} left={4} right={20} onFinish={onFinish}
                       onCancel={() => {

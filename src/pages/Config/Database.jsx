@@ -234,7 +234,7 @@ const Database = ({dispatch, gconfig, loading}) => {
   ];
 
   return (
-    <PageContainer title="数据库配置列表">
+    <PageContainer title="数据库配置列表" breadcrumb={false}>
       <Card>
         <FormForModal
           record={databaseRecord} fields={fields} title="数据库配置" onFinish={onFinish}

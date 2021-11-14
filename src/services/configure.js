@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { CONFIG } from '@/consts/config';
+import {CONFIG} from '@/consts/config';
 import auth from '@/utils/auth';
 
 export async function listEnvironment(params) {
@@ -109,3 +109,45 @@ export async function deleteGConfig(params) {
     headers: auth.headers(),
   });
 }
+
+// redis配置
+export async function listRedisConfig(params) {
+  return request(`${CONFIG.URL}/config/redis/list`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+export async function insertRedisConfig(params) {
+  return request(`${CONFIG.URL}/config/redis/insert`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+export async function updateRedisConfig(params) {
+  return request(`${CONFIG.URL}/config/redis/update`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteRedisConfig(params) {
+  return request(`${CONFIG.URL}/config/redis/delete`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+export async function onlineRedisCommand(params) {
+  return request(`${CONFIG.URL}/config/redis/command`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+

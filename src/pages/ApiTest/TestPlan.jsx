@@ -179,7 +179,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
   }, [])
 
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} breadcrumb={false}>
       <Card>
         <TestPlanForm fetchTestPlan={fetchTestPlan}/>
         <Form form={form} {...CONFIG.LAYOUT} onValuesChange={() => {

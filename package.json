@@ -66,6 +66,7 @@
     "qs": "^6.9.0",
     "react": "^17.0.0",
     "react-ace": "^9.4.3",
+    "react-console-emulator": "^5.0.1",
     "react-contexify": "^5.0.0",
     "react-copy-to-clipboard": "^5.0.4",
     "react-dev-inspector": "^1.1.1",
