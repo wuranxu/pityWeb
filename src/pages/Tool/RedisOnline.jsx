@@ -16,14 +16,14 @@ const RedisOnline = ({dispatch, gconfig}) => {
 
   const {redisConfig} = gconfig;
 
-  const getArray = (result)=> {
+  const getArray = (result) => {
     if (typeof result === 'string') {
       return result;
     }
     if (result.length === 0) {
       return "(empty array)"
     }
-    return result.map((item, index) => `${index+1}) ${item}`).join("\n");
+    return result.map((item, index) => `${index + 1}) ${item}`).join("\n");
   }
 
   const commands = {
@@ -123,15 +123,33 @@ const RedisOnline = ({dispatch, gconfig}) => {
         const cmd = "del" + " " + args.join(' ')
         return await onlineRedis(cmd);
       },
-    }
+    },
 
+    zadd: {
+      fn: async (...args) => {
+        const cmd = "zadd" + " " + args.join(' ')
+        return await onlineRedis(cmd);
+      },
+    },
   }
+
+  const cmds = ["exists","select", "expire", "move", "scan", "ttl", "sort", "getbit", "getset", "mget", "mset", "setnx", "strlen"]
+  cmds.forEach(command => {
+    commands[command] = {
+      fn: async (...args) => {
+        const cmd = command + " " + args.join(' ')
+        return await onlineRedis(cmd);
+      },
+    }
+  })
 
   useEffect(() => {
     dispatch({
       type: 'gconfig/fetchRedisConfig',
     })
+
   }, [])
+
 
   const onlineRedis = async command => {
     return await dispatch({
@@ -159,7 +177,7 @@ const RedisOnline = ({dispatch, gconfig}) => {
           </Col>
           <Col span={5}>
             <Menu
-              style={{minHeight: 380, maxHeight: 380, overflow: 'auto', background: 'rgb(33, 33, 33)'}}
+              style={{minHeight: 400, maxHeight: 400, overflow: 'auto', background: 'rgb(33, 33, 33)'}}
               theme="dark"
               onClick={handleClick}
               mode="inline"
@@ -170,7 +188,7 @@ const RedisOnline = ({dispatch, gconfig}) => {
           </Col>
 
           <Col span={19}>
-            <div style={{minHeight: 380, maxHeight: 380, overflow: 'auto', borderLeft: '1px solid rgb(70 68 12)'}}>
+            <div style={{minHeight: 400, maxHeight: 400, overflow: 'auto', borderLeft: '1px solid rgb(70 68 12)'}}>
               <Terminal
                 style={{height: 400, borderRadius: 0}}
                 ignoreCommandCase
