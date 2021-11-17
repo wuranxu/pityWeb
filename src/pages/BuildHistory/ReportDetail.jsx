@@ -70,12 +70,6 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       return [];
     }
     const total = reportDetail.success_count + reportDetail.failed_count + reportDetail.error_count + reportDetail.skipped_count;
-    console.log([
-      {name: '成功', count: reportDetail.success_count, percent: common.calPiePercent(reportDetail.success_count, total)},
-      {name: '失败', count: reportDetail.failed_count, percent: common.calPiePercent(reportDetail.failed_count, total)},
-      {name: '错误', count: reportDetail.error_count, percent: common.calPiePercent(reportDetail.error_count, total)},
-      {name: '跳过', count: reportDetail.skipped_count, percent: common.calPiePercent(reportDetail.skipped_count, total)},
-    ])
     return [
       {name: '成功', count: reportDetail.success_count, percent: common.calPiePercent(reportDetail.success_count, total)},
       {name: '失败', count: reportDetail.failed_count, percent: common.calPiePercent(reportDetail.failed_count, total)},

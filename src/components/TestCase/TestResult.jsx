@@ -30,6 +30,7 @@ const resColumns = [
 export default ({response, caseName, width, modal, setModal}) => {
 
   const [xmindData, setXmindData] = useState(null);
+  const [graph, setGraph] = useState(null);
 
   const getBrain = async () => {
     const res = await queryXmindData({case_id: response.case_id})
@@ -183,7 +184,7 @@ export default ({response, caseName, width, modal, setModal}) => {
           </TabPane>
           <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">
             <div id="container">
-              <TreeXmind data={xmindData}/>
+              <TreeXmind data={xmindData} graph={graph} setGraph={setGraph}/>
             </div>
           </TabPane>
         </Tabs>

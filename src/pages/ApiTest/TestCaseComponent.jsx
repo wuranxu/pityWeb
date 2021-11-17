@@ -105,16 +105,23 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
 
 
   const getDesc = item => {
-    if (item.type !== 0) {
-      return null;
-    }
     const data = JSON.parse(item.constructor_json)
-    const result = constructors_case[data['case_id']]
-    if (!result) {
-      return null
+    if (item.type === 0) {
+      const result = constructors_case[data['case_id']]
+      if (!result) {
+        return null
+      }
+      return <div>用例: <a href={`/#/apiTest/testcase/${result['directory_id']}/${result['id']}`}
+                         target="_blank">{result['name']}</a></div>
     }
-    return <div>用例: <a href={`/#/apiTest/testcase/${result['directory_id']}/${result['id']}`}
-                       target="_blank">{result['name']}</a></div>
+    if (item.type === 1) {
+      return <code>{data.sql}</code>
+    }
+
+    if (item.type === 2) {
+      return <code>{data.command}</code>
+    }
+
   }
 
   const getTag = tag => {

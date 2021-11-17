@@ -39,7 +39,7 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <Row gutter={8} style={{marginTop: 16}}>
+        <Row gutter={8} style={{marginTop: 32}}>
           <Col span={3}>
             <Menu
               onClick={handleClick}

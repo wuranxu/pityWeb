@@ -1,5 +1,5 @@
 import G6 from '@antv/g6';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const minWidth = 60;
 
@@ -12,8 +12,7 @@ const BaseConfig = {
   rootPadding: 18,
 };
 
-export default ({data}) => {
-  let graph = null;
+export default ({data, graph, setGraph}) => {
 
   useEffect(() => {
     if (data === null) {
@@ -222,7 +221,7 @@ export default ({data}) => {
     const width = container.scrollWidth;
     const height = container.scrollHeight || 400;
     if (graph === null) {
-      graph = new G6.TreeGraph({
+      const temp = new G6.TreeGraph({
         container: 'container',
         width,
         height,
@@ -272,9 +271,10 @@ export default ({data}) => {
           },
         },
       })
-      graph.data(data);
-      graph.render();
-      graph.fitView();
+      setGraph(temp)
+      temp.data(data);
+      temp.render();
+      temp.fitView();
     }  else {
       graph.changeData(data);
       graph.render();

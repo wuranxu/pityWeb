@@ -92,15 +92,15 @@ export const CONFIG = {
   CASE_CONSTRUCTOR: {
     0: '测试用例',
     1: 'SQL语句',
-    2: 'Redis操作',
+    2: 'Redis命令',
     3: 'HTTP请求',
     4: 'Python方法'
   },
   CASE_CONSTRUCTOR_COLOR: {
     0: 'success',
     1: 'blue',
-    2: 'danger',
-    3: 'grey'
+    2: 'error',
+    3: 'warning'
   },
   CASE_BADGE: {
     1: {

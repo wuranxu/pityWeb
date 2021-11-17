@@ -6,6 +6,7 @@ import {SaveOutlined} from "@ant-design/icons";
 import {useEffect} from "react";
 import DatabaseConstructor from "@/components/TestCase/Constructor/DatabaseConstructor";
 import {CheckCard} from '@ant-design/pro-card';
+import RedisConstructor from "@/components/TestCase/Constructor/RedisConstructor";
 
 
 const {Meta} = Card;
@@ -40,6 +41,11 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
       return JSON.stringify({
         database: values.database,
         sql: values.sql,
+      })
+    } if (testCaseConstructorData.type === 2) {
+      return JSON.stringify({
+        redis: values.redis,
+        command: values.command,
       })
     }
   }
@@ -176,6 +182,9 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
       }
       if (constructorType === 1) {
         return <DatabaseConstructor form={form}/>
+      }
+      if (constructorType === 2) {
+        return <RedisConstructor form={form}/>
       }
     }
   }
