@@ -5,7 +5,7 @@ import React, {useEffect} from 'react';
 import {CONFIG} from "@/consts/config";
 import IconFont from "@/components/Icon/IconFont";
 import SortedTable from "@/components/Table/SortedTable";
-import '@/components/Table/SortedTable.less';
+// import '@/components/Table/SortedTable.less';
 
 const {Step} = Steps;
 const {Option} = Select;
@@ -14,17 +14,15 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
   const columns = [
     {
       title: '用例id',
-      key: 'index',
-      dataIndex: 'index',
-      className: 'drag-visible',
+      key: 'case_id',
+      dataIndex: 'case_id',
       width: 100,
-      render: index => index.split("_")[1]
+      render: case_id => case_id ? case_id.split("_")[1]: null,
     },
     {
       title: '用例名称',
       key: 'name',
       dataIndex: 'name',
-      className: 'drag-visible',
       render: name => <a>{name}</a>,
     },
   ]
@@ -41,10 +39,13 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
 
   useEffect(() => {
     onSave({
-      selectedCaseData: form.getFieldValue('case_list') || [].map(item => ({
-        name: caseMap[item.split("_")[1]],
-        index: item
-      }))
+      selectedCaseData: (form.getFieldValue('case_list') || []).map((item, index) => {
+        return {
+          name: caseMap[item.split("_")[1]],
+          case_id: item,
+          index,
+        }
+      })
     })
   }, [caseMap])
 
@@ -57,7 +58,7 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
           <TreeSelect treeData={treeData} treeCheckable style={{width: '100%'}} showSearch allowClear
                       maxTagCount={5} onChange={(a, b) => {
             onSave({
-              selectedCaseData: b.map((item, idx) => ({name: item, index: a[idx]}))
+              selectedCaseData: b.map((item, idx) => ({name: item, case_id: a[idx], index: idx}))
             })
           }} loading={loading.effects['testplan/listTestCaseTreeWithProjectId']}/>
         </Form.Item>
@@ -70,7 +71,7 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
               selectedCaseData: data
             })
           }} dragCallback={data => {
-            form.setFieldsValue({case_list: data.map(item => item.index)})
+            form.setFieldsValue({case_list: data.map(item => item.case_id)})
           }}/>
         </Form.Item>
       </Col>

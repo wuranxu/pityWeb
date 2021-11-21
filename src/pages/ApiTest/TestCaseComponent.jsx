@@ -283,7 +283,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   }
 
   return (
-    <PageContainer title={<>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''}</>} breadcrumb={false}>
+    <PageContainer title={false} breadcrumb={false}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={caseInfo.name}/>
       <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}
@@ -301,7 +301,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                 {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
-                    <Card title={<span>用例详情 {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>} extra={<div>
+                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={<span>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>} extra={<div>
                       <Button onClick={() => {
                         dispatch({
                           type: 'testcase/save',
@@ -348,108 +348,108 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                         <Descriptions.Item label='创建时间'>{caseInfo.created_at}</Descriptions.Item>
                         <Descriptions.Item label='更新时间'>{caseInfo.updated_at}</Descriptions.Item>
                       </Descriptions>
-                    </Card>
-                }
-                <Row gutter={8} style={{marginTop: 24}}>
-                  <Col span={24}>
-                    <Card bodyStyle={{height: 600, overflow: "auto"}}>
-                      <Tabs activeKey={activeKey} onChange={key => {
-                        dispatch({
-                          type: 'testcase/save',
-                          payload: {activeKey: key}
-                        })
-                        if (key === '5' && envList.length > 0) {
-                          dispatch({
-                            type: 'testcase/save',
-                            payload: {
-                              envActiveKey: envList[0].id.toString(),
+                      <Row gutter={8} style={{marginTop: 36, minHeight: 500}}>
+                        <Col span={24}>
+                          <Tabs activeKey={activeKey} onChange={key => {
+                            dispatch({
+                              type: 'testcase/save',
+                              payload: {activeKey: key}
+                            })
+                            if (key === '5' && envList.length > 0) {
+                              dispatch({
+                                type: 'testcase/save',
+                                payload: {
+                                  envActiveKey: envList[0].id.toString(),
+                                }
+                              })
                             }
-                          })
-                        }
-                      }}>
+                          }}>
 
-                        <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
-                          icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~"/></span>}>
-                          {
-                            envList.length > 0 ?
-                              <Tabs tabPosition="left" activeKey={envActiveKey} onChange={key => {
-                                dispatch({
-                                  type: 'testcase/save',
-                                  payload: {envActiveKey: key}
-                                })
-                              }}>
-                                {envList.map(item => <TabPane key={item.id} tab={item.name}>
-                                  <TestcaseData caseId={case_id} currentEnv={envActiveKey}/>
-                                </TabPane>)}
-                              </Tabs> : <NoRecord2 height={280}
-                                                   desc={<span>没有任何环境信息, {<a href="/#/config/environment"
-                                                                             target="_blank">去添加</a>}</span>}/>
-                          }
-                        </TabPane>
-                        <TabPane key="1"
-                                 tab={<span><IconFont type="icon-DependencyGraph_16x"/>数据构造器{`(${constructors.length})`}</span>}>
-                          {
-                            constructors.length === 0 ?
-                              <NoRecord height={180}
-                                        desc={<div>没有数据构造器, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
-                              <Row gutter={12}>
-                                <Col span={16}>
-                                  <Row>
-                                    <Col span={24}>
-                                      <Button type="dashed" block style={{
-                                        marginBottom: 16,
-                                      }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
-                                    </Col>
-                                  </Row>
-                                  <SortedTable columns={columns} dataSource={constructors} setDataSource={data => {
+                            <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
+                              icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~"/></span>}>
+                              {
+                                envList.length > 0 ?
+                                  <Tabs tabPosition="left" activeKey={envActiveKey} onChange={key => {
                                     dispatch({
                                       type: 'testcase/save',
-                                      payload: {constructors: data}
+                                      payload: {envActiveKey: key}
                                     })
-                                  }} dragCallback={async newData => {
-                                    return await dispatch({
-                                      type: 'construct/orderConstructor',
-                                      payload: newData.map((v, index) => ({id: v.id, index}))
-                                    })
-                                  }}/>
-                                </Col>
-                                <Col span={8}>
-                                  <Card style={{height: 400}} hoverable bordered={false}>
-                                    <Timeline>
-                                      {
-                                        constructors.map((item, index) => item.enable ? <Timeline.Item key={index}>
-                                          <div key={index}><Badge count={index + 1} key={index}
-                                                                  style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                            <a key={item.name}>{item.name}</a> : item.name}</div>
-                                          {getDesc(item)}
-                                        </Timeline.Item> : null)
-                                      }
-                                    </Timeline>
-                                  </Card>
+                                  }}>
+                                    {envList.map(item => <TabPane key={item.id} tab={item.name}>
+                                      <TestcaseData caseId={case_id} currentEnv={envActiveKey}/>
+                                    </TabPane>)}
+                                  </Tabs> : <NoRecord2 height={280}
+                                                       desc={<span>没有任何环境信息, {<a href="/#/config/environment"
+                                                                                 target="_blank">去添加</a>}</span>}/>
+                              }
+                            </TabPane>
+                            <TabPane key="1"
+                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[9, -2]}
+                                                 count={constructors.length}><IconFont type="icon-DependencyGraph_16x"/>数据构造器</Badge>}>
+                              {
+                                constructors.length === 0 ?
+                                  <NoRecord height={180}
+                                            desc={<div>没有数据构造器, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
+                                  <Row gutter={12}>
+                                    <Col span={16}>
+                                      <Row>
+                                        <Col span={24}>
+                                          <Button type="dashed" block style={{
+                                            marginBottom: 16,
+                                          }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
+                                        </Col>
+                                      </Row>
+                                      <SortedTable columns={columns} dataSource={constructors} setDataSource={data => {
+                                        dispatch({
+                                          type: 'testcase/save',
+                                          payload: {constructors: data}
+                                        })
+                                      }} dragCallback={async newData => {
+                                        return await dispatch({
+                                          type: 'construct/orderConstructor',
+                                          payload: newData.map((v, index) => ({id: v.id, index}))
+                                        })
+                                      }}/>
+                                    </Col>
+                                    <Col span={8}>
+                                      <Card style={{height: 400}} hoverable bordered={false}>
+                                        <Timeline>
+                                          {
+                                            constructors.map((item, index) => item.enable ? <Timeline.Item key={index}>
+                                              <div key={index}><Badge count={index + 1} key={index}
+                                                                      style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
+                                                <a key={item.name}>{item.name}</a> : item.name}</div>
+                                              {getDesc(item)}
+                                            </Timeline.Item> : null)
+                                          }
+                                        </Timeline>
+                                      </Card>
+                                    </Col>
+                                  </Row>
+
+                              }
+                            </TabPane>
+                            <TabPane key="2" tab={<span><IconFont type="icon-qingqiu"/>接口请求</span>}>
+                              <Row gutter={[8, 8]}>
+                                <Col span={24}>
+                                  <PostmanForm form={form} body={body} setBody={setBody} headers={headers}
+                                               setHeaders={setHeaders}
+                                               bordered={false} save={onSubmit}/>
                                 </Col>
                               </Row>
+                            </TabPane>
+                            <TabPane key="3" tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[9, -2]}
+                                                         count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
+                              <TestCaseAssert asserts={asserts} caseId={case_id}/>
+                            </TabPane>
+                            <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}>
 
-                          }
-                        </TabPane>
-                        <TabPane key="2" tab={<span><IconFont type="icon-qingqiu"/>接口请求</span>}>
-                          <Row gutter={[8, 8]}>
-                            <Col span={24}>
-                              <PostmanForm form={form} body={body} setBody={setBody} headers={headers}
-                                           setHeaders={setHeaders}
-                                           bordered={false} save={onSubmit}/>
-                            </Col>
-                          </Row>
-                        </TabPane>
-                        <TabPane key="3" tab={<span><IconFont type="icon-duanyan"/>断言{`(${asserts.length})`}</span>}>
-                          <TestCaseAssert asserts={asserts} caseId={case_id}/>
-                        </TabPane>
-                        <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}>
-
-                        </TabPane>
-                      </Tabs>
+                            </TabPane>
+                          </Tabs>
+                        </Col>
+                      </Row>
                     </Card>
-                  </Col>
-                </Row>
+                }
               </Col>
             </Row>
         }

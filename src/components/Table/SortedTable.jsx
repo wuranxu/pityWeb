@@ -25,7 +25,7 @@ export default ({dataSource, columns, setDataSource, dragCallback}) => {
       const newData = arrayMoveImmutable([].concat(dataSource), oldIndex, newIndex).filter(el => !!el);
       if (dragCallback) {
         const res = await dragCallback(newData);
-        if (res) {
+        if (res || res === undefined) {
           setDataSource(newData);
         }
       } else {

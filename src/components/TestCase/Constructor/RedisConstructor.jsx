@@ -25,6 +25,7 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
   useEffect(async () => {
     form.resetFields();
     form.setFieldsValue(testCaseConstructorData)
+    setCurrentId()
   }, [testCaseConstructorData])
 
   const onExecuteCommand = async (command) => {
@@ -66,8 +67,7 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
               </Form.Item>
               <Form.Item label={<Tooltip title="测试的时候可以选中对应环境的redis，否则可以随便选一个名称符合的redis">Redis <QuestionCircleOutlined /></Tooltip>} name="redis" initialValue={testCaseConstructorData.redis}
                          rules={[{required: true, message: '请选择Redis连接名称, 如果没有请去【Redis配置】页面添加'}]}>
-                <Select showSearch placeholder="请选择Redis连接名称" onChange={(_, node) => {
-                  console.log(node)
+                <Select showSearch placeholder="请选择Redis连接名称" onSelect={(_, node) => {
                   setCurrentId(node.key)
                 }}>
                   {redisConfig.map(item => <Option key={item.id}
