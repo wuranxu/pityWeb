@@ -4,6 +4,7 @@ import {connect} from "umi";
 import {CONFIG} from "@/consts/config";
 import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
 import {PlayCircleTwoTone, QuestionCircleOutlined} from "@ant-design/icons";
+import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 
 const {TabPane} = Tabs;
 const {Option} = Select;
@@ -49,7 +50,8 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <Row gutter={8} style={{marginTop: 32}}>
+        <CopyTreeSelect/>
+        <Row gutter={8}>
           <Col span={3}/>
           <Col span={18}>
             <Form {...CONFIG.SQL_LAYOUT} form={form}>
@@ -65,7 +67,8 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
                          initialValue={testCaseConstructorData.name}>
                 <Input placeholder="请输入数据构造器名称"/>
               </Form.Item>
-              <Form.Item label={<Tooltip title="测试的时候可以选中对应环境的redis，否则可以随便选一个名称符合的redis">Redis <QuestionCircleOutlined /></Tooltip>} name="redis" initialValue={testCaseConstructorData.redis}
+              <Form.Item label={<Tooltip title="测试的时候可以选中对应环境的redis，否则可以随便选一个名称符合的redis">Redis <QuestionCircleOutlined/></Tooltip>}
+                         name="redis" initialValue={testCaseConstructorData.redis}
                          rules={[{required: true, message: '请选择Redis连接名称, 如果没有请去【Redis配置】页面添加'}]}>
                 <Select showSearch placeholder="请选择Redis连接名称" onSelect={(_, node) => {
                   setCurrentId(node.key)

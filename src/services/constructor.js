@@ -4,7 +4,7 @@ import auth from "@/utils/auth";
 
 // 获取构造方法树
 export async function listConstructorData(params) {
-  return request(`${CONFIG.URL}/testcase/constructor/tree`, {
+  return request(`${CONFIG.URL}/testcase/constructor/list`, {
     method: 'GET',
     params,
     headers: auth.headers(),

@@ -1,18 +1,18 @@
-import {Col, Form, Input, Menu, Row, Select, Switch, Tabs, Tooltip} from "antd";
+import {Col, Form, Input, Menu, Row, Select, Switch, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import SqlOnline from "@/components/Online/SqlOnline";
 import {CONFIG} from "@/consts/config";
 import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
 import {QuestionCircleOutlined} from "@ant-design/icons";
+import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 
-const {TabPane} = Tabs;
 const {Option} = Select;
 
 const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
 
   const [currentKey, setCurrentKey] = useState('1');
-  const [editor, setEditor] = useState(null);
+  const [_, setEditor] = useState(null);
   const {testCaseConstructorData, constructorType} = construct;
   const {dbConfigData} = gconfig;
 
@@ -39,7 +39,8 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <Row gutter={8} style={{marginTop: 32}}>
+        <CopyTreeSelect />
+        <Row gutter={8}>
           <Col span={3}>
             <Menu
               onClick={handleClick}

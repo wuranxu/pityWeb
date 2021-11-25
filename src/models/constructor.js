@@ -21,6 +21,7 @@ export default {
       enable: true,
     },
     testcaseData: [],
+    constructorData: [],
   },
 
   reducers: {
@@ -67,7 +68,6 @@ export default {
     },
 
 
-
     * orderConstructor({payload}, {call, put}) {
       const res = yield call(updateConstructorOrder, payload);
       return auth.response(res, true);
@@ -89,18 +89,37 @@ export default {
       const res = yield call(queryConstructorData, payload);
       if (auth.response(res)) {
         const json_data = JSON.parse(res.data.constructor_json);
+        let ans = {
+          value: res.data.value,
+          enable: res.data.enable,
+          type: res.data.type,
+          public: res.data.public,
+          name: res.data.name,
+        };
+        if (res.data.type === 0) {
+          // case
+          ans = {
+            ...ans,
+            params: json_data.params,
+            case_id: [json_data.project_id, json_data.case_id],
+          }
+        } else if (res.data.type === 1) {
+          ans = {
+            ...ans,
+            database: json_data.database,
+            sql: json_data.sql,
+          }
+        } else if (res.data.type === 2) {
+          ans = {
+            ...ans,
+            command: json_data.command,
+            redis: json_data.redis,
+          }
+        }
         yield put({
           type: 'save',
           payload: {
-            testCaseConstructorData: {
-              params: json_data.params,
-              case_id: [json_data.project_id, json_data.case_id],
-              value: res.data.value,
-              enable: res.data.enable,
-              type: res.data.type,
-              public: res.data.public,
-              name: res.data.name,
-            }
+            testCaseConstructorData: ans
           }
         })
       }
