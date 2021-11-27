@@ -1,6 +1,6 @@
 import {PageContainer} from "@ant-design/pro-layout";
-import {connect} from 'umi';
-import {Badge, Button, Card, Col, Divider, Form, Input, Row, Select, Table, Tag, Tooltip} from "antd";
+import {connect, history} from 'umi';
+import {Badge, Button, Card, Col, Divider, Form, Input, Modal, Row, Select, Table, Tag, Tooltip} from "antd";
 import React, {useEffect} from "react";
 import {CONFIG} from "@/consts/config";
 import {PlusOutlined} from "@ant-design/icons";
@@ -75,6 +75,23 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
     }
   }
 
+  // 执行测试计划
+  const onExecute = async id => {
+    const res = await dispatch({
+      type: 'testplan/executeTestPlan',
+      payload: {id}
+    })
+    if (res) {
+      Modal.confirm({
+        title: '🎉 测试计划执行完成',
+        content: '是否跳转到报告页面?',
+        onOk() {
+          history.push("/record/list")
+        },
+      })
+    }
+  }
+
   const columns = [
     {
       title: '项目',
@@ -133,6 +150,10 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
         }}>编辑</a>
         <Divider type="vertical"/>
         <a onClick={async () => {
+          await onExecute(record.id)
+        }}>运行</a>
+        <Divider type="vertical"/>
+        <a onClick={async () => {
           await onDelete(record.id)
         }}>删除</a>
       </>
@@ -142,7 +163,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
   ]
 
 
-  const spin = loading.effects['testplan/listTestPlan'] || loading.effects['project/listProject']
+  const spin = loading.effects['testplan/listTestPlan'] || loading.effects['project/listProject'] || loading.effects['testplan/executeTestPlan']
 
 
   const fetchProjectList = () => {

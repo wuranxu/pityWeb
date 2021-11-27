@@ -8,6 +8,7 @@ import {connect} from "umi";
 import {useEffect} from "react";
 import reportConfig from "@/consts/reportConfig";
 import styles from './ReportList.less';
+import {CONFIG} from "@/consts/config";
 
 
 const {RangePicker} = DatePicker;
@@ -32,6 +33,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
       title: '构建id',
       dataIndex: 'id',
       key: 'id',
+      fixed: 'left',
       render: (text, record) => {
         if (record.failed_count === 0 && record.error_count === 0 && record.success_count > 0) {
           return <span><CheckCircleTwoTone twoToneColor="#52c41a" style={{fontSize: 13}}/> #<a href={`/#/record/report/${record.id}`}>{text}</a></span>
@@ -40,56 +42,64 @@ const ReportList = ({user, report, loading, dispatch}) => {
       }
     },
     {
+      title: '类型',
+      dataIndex: 'mode',
+      key: 'mode',
+      fixed: 'left',
+      render: mode => CONFIG.REPORT_MODE[mode],
+    },
+    {
       title: '执行人',
       dataIndex: 'executor',
       key: 'executor',
+      fixed: 'left',
       render: executor => executor === 0 ? 'CPU' : userNameMap[executor] || '未知',
     },
     {
-      title: '执行总数',
+      title: '总数',
       key: 'total',
       render: (_, record) =>
-        <Tag>总数 {record.success_count + record.failed_count + record.skipped_count + record.error_count}</Tag>,
+        <Tag> {record.success_count + record.failed_count + record.skipped_count + record.error_count} </Tag>,
     },
     {
       title: '成功',
       dataIndex: 'success_count',
       key: 'success_count',
-      render: success_count => <Tag color="success">成功 {success_count}</Tag>,
+      render: successCount => <Tag color="success"> {successCount} </Tag>,
     },
     {
       title: '失败',
       dataIndex: 'failed_count',
       key: 'failed_count',
-      render: failed_count => <Tag color="error">失败 {failed_count}</Tag>,
+      render: failedCount => <Tag color="error"> {failedCount} </Tag>,
     },
     {
       title: '出错',
       dataIndex: 'error_count',
       key: 'error_count',
-      render: error_count => <Tag color="warning">出错 {error_count}</Tag>,
+      render: errorCount => <Tag color="warning"> {errorCount} </Tag>,
     },
     {
       title: '跳过',
       dataIndex: 'skipped_count',
       key: 'skipped_count',
-      render: skipped_count => <Tag color="blue">跳过 {skipped_count}</Tag>,
+      render: skippedCount => <Tag color="blue"> {skippedCount} </Tag>,
     },
     {
       title: '开始时间',
       key: 'start_at',
       dataIndex: 'start_at',
-
     },
-    {
-      title: '结束时间',
-      key: 'finish_at',
-      dataIndex: 'finished_at',
-    },
+    // {
+    //   title: '结束时间',
+    //   key: 'finish_at',
+    //   dataIndex: 'finished_at',
+    // },
     {
       title: '任务状态',
       dataIndex: 'status',
       key: 'status',
+      fixed: 'right',
       render: status => reportConfig.STATUS[status],
     },
     // {
@@ -116,6 +126,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
   }
 
   const onReset = async () => {
+    form.resetFields();
     form.setFieldsValue({date: [moment().startOf('week'), moment().endOf('week')]})
     await fetchReport();
   }
@@ -164,6 +175,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
           <Col span={24}>
             <Table columns={columns} locale={{emptyText: <NoRecord height={200}/>}} dataSource={reportData}
                    pagination={pagination}
+                   // scroll={{ x: 1800 }}
                    loading={loading.effects['report/fetchReportList']}
                    onChange={pg => {
                      dispatch({

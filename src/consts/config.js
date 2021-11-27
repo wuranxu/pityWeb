@@ -2,7 +2,7 @@ import {Tag} from "antd";
 import React from "react";
 
 export const CONFIG = {
-  // URL: 'http://47.112.32.195:7777',
+  // URL: 'http://121.5.2.74:7777',
   URL: 'http://localhost:7777',
   // URL: '',
   ICONFONT: '//at.alicdn.com/t/font_915840_xhtofa1czc7.js',
@@ -83,6 +83,12 @@ export const CONFIG = {
     'P2': 'volcano',
     'P3': 'orange',
     'P4': 'green',
+  },
+  REPORT_MODE: {
+    0: <Tag>普通</Tag>,
+    1: <Tag color="blue">测试计划</Tag>,
+    2: <Tag color="success">CI</Tag>,
+    3: <Tag>其他</Tag>,
   },
   CASE_TYPE: {
     0: <Tag color="success" style={{marginLeft: 8}}>普通</Tag>,

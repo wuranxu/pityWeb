@@ -1,4 +1,11 @@
-import {deleteTestPlan, insertTestPlan, listTestPlan, listTestPlanCaseTree, updateTestPlan} from "@/services/testplan";
+import {
+  deleteTestPlan,
+  executeTestPlan,
+  insertTestPlan,
+  listTestPlan,
+  listTestPlanCaseTree,
+  updateTestPlan
+} from "@/services/testplan";
 import auth from "@/utils/auth";
 
 export default {
@@ -46,14 +53,19 @@ export default {
       return auth.response(res, true);
     },
 
-    * updateTestPlan({payload}, {call, put}) {
+    * updateTestPlan({payload}, {call}) {
       const res = yield call(updateTestPlan, payload);
       return auth.response(res, true)
     },
 
-    * deleteTestPlan({payload}, {call, put}) {
+    * deleteTestPlan({payload}, {call}) {
       const res = yield call(deleteTestPlan, payload);
       return auth.response(res, true)
+    },
+
+    * executeTestPlan({payload}, {call}) {
+      const res = yield call(executeTestPlan, payload);
+      return auth.response(res)
     },
 
     * listTestCaseTreeWithProjectId({payload}, {call, put}) {

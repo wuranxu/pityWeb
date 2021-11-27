@@ -43,3 +43,12 @@ export async function deleteTestPlan(params) {
     headers: auth.headers(),
   });
 }
+
+
+export async function executeTestPlan(params) {
+  return request(`${CONFIG.URL}/testcase/plan/execute`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
