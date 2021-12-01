@@ -4,9 +4,8 @@ import styles from "@/components/Drawer/CaseDetail.less";
 import getComponent from "@/components/PityForm";
 import PostmanForm from "@/components/Postman/PostmanForm";
 import fields from "@/consts/fields";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {SaveOutlined} from "@ant-design/icons";
-import common from "@/utils/common";
 
 const FormItem = Form.Item;
 
@@ -24,12 +23,13 @@ const TestCaseEditor = ({
                         }) => {
 
   const {caseInfo} = testcase;
+  const [bodyType, setBodyType] = useState(0);
+  const [formData, setFormData] = useState(0);
 
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(caseInfo);
     setBody(caseInfo.body)
-    console.log(caseInfo)
     // setHeaders(common.parseHeaders(caseInfo.request_headers))
   }, [caseInfo])
 
@@ -71,7 +71,8 @@ const TestCaseEditor = ({
           <Row gutter={[8, 8]}>
             <Col span={24}>
               <PostmanForm form={form} body={body} setBody={setBody} headers={headers} setHeaders={setHeaders}
-                           bordered={false}/>
+                           setFormData={setFormData} formData={formData}
+                           bordered={false} caseInfo={caseInfo} bodyType={bodyType} setBodyType={setBodyType}/>
             </Col>
           </Row>
         </Card> : null

@@ -71,7 +71,7 @@ export default ({response, caseName, width, modal, setModal}) => {
   ]
 
   const getSource = () => {
-    if (!response.asserts) {
+    if (response.asserts === undefined || !response.asserts) {
       return [];
     }
     const temp = JSON.parse(response.asserts)

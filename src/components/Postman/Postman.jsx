@@ -4,7 +4,9 @@ import {DeleteTwoTone, DownOutlined, EditTwoTone, SendOutlined} from '@ant-desig
 import EditableTable from '@/components/Table/EditableTable';
 import CodeEditor from '@/components/Postman/CodeEditor';
 import {httpRequest} from '@/services/request';
+import {connect} from 'umi'
 import auth from '@/utils/auth';
+import FormData from "@/components/Postman/FormData";
 
 const {Option} = Select;
 const {TabPane} = Tabs;
@@ -38,8 +40,8 @@ const tabExtra = (response) => {
   ) : null;
 };
 
-export default () => {
-  const [bodyType, setBodyType] = useState('none');
+const Postman = ({loading: gloading, gconfig, dispatch}) => {
+  const [bodyType, setBodyType] = useState(0);
   const [rawType, setRawType] = useState('JSON');
   const [method, setMethod] = useState('GET');
   const [paramsData, setParamsData] = useState([]);
@@ -49,6 +51,9 @@ export default () => {
   const [body, setBody] = useState(null);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({});
+  const [formData, setFormData] = useState([]);
+
+  const {ossFileList} = gconfig;
 
   // 请求url+params
   const [url, setUrl] = useState('');
@@ -152,10 +157,11 @@ export default () => {
     const params = {
       method,
       url,
-      body,
+      body: bodyType === 2 ? JSON.stringify(formData): body,
+      body_type: bodyType,
       headers: getHeaders(),
     };
-    if (bodyType === 'none') {
+    if (bodyType === 0) {
       params.body = null;
     }
     const res = await httpRequest(params);
@@ -269,6 +275,24 @@ export default () => {
     ];
   };
 
+  const getBody = bd => {
+    if (bd === 0) {
+      return <div style={{height: '20vh', lineHeight: '20vh', textAlign: 'center'}}>
+        This request does not have a body
+      </div>
+    }
+    if (bd === 2) {
+      return <FormData ossFileList={ossFileList} dataSource={formData} setDataSource={setFormData}/>
+    }
+    return <Row style={{marginTop: 12}}>
+      <Col span={24}>
+        <Card bodyStyle={{padding: 0}}>
+          <CodeEditor value={body} onChange={e => setBody(e)} height="20vh"/>
+        </Card>
+      </Col>
+    </Row>
+  }
+
   return (
     <Card title="在线调试HTTP请求">
       <Row gutter={[8, 8]}>
@@ -323,18 +347,26 @@ export default () => {
           <TabPane tab="Body" key="3">
             <Row>
               <Radio.Group
-                defaultValue="none"
+                defaultValue={0}
                 value={bodyType}
-                onChange={(e) => setBodyType(e.target.value)}
+                onChange={(e) => {
+                  setBodyType(e.target.value)
+                  if (e.target.value === 2) {
+                    // 获取oss文件
+                    dispatch({
+                      type: 'gconfig/listOssFile'
+                    })
+                  }
+                }}
               >
-                <Radio value="none">none</Radio>
-                <Radio value="form-data">form-data</Radio>
-                <Radio value="x-www-form-urlencoded">x-www-form-urlencoded</Radio>
-                <Radio value="raw">raw</Radio>
-                <Radio value="binary">binary</Radio>
-                <Radio value="GraphQL">GraphQL</Radio>
+                <Radio value={0}>none</Radio>
+                <Radio value={2}>form-data</Radio>
+                <Radio value={3}>x-www-form-urlencoded</Radio>
+                <Radio value={1}>raw</Radio>
+                <Radio value={4}>binary</Radio>
+                <Radio value={5}>GraphQL</Radio>
               </Radio.Group>
-              {bodyType === 'raw' ? (
+              {bodyType === 1 ? (
                 <Dropdown style={{marginLeft: 8}} overlay={menu} trigger={['click']}>
                   <a onClick={(e) => e.preventDefault()}>
                     {rawType} <DownOutlined/>
@@ -342,19 +374,7 @@ export default () => {
                 </Dropdown>
               ) : null}
             </Row>
-            {bodyType !== 'none' ? (
-              <Row style={{marginTop: 12}}>
-                <Col span={24}>
-                  <Card bodyStyle={{padding: 0}}>
-                    <CodeEditor value={body} onChange={e => setBody(e)} height="20vh"/>
-                  </Card>
-                </Col>
-              </Row>
-            ) : (
-              <div style={{height: '20vh', lineHeight: '20vh', textAlign: 'center'}}>
-                This request does not have a body
-              </div>
-            )}
+            {getBody(bodyType)}
           </TabPane>
         </Tabs>
       </Row>
@@ -363,7 +383,7 @@ export default () => {
           <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
             <TabPane tab="Body" key="1">
               <CodeEditor
-                language={response.response && typeof response.response === 'object' ? 'json' : 'text'}
+                language={response.response && response.response_headers.indexOf("json") > -1 ? 'json' : 'text'}
                 value={response.response && typeof response.response === 'object' ? JSON.stringify(response.response, null, 2) : response.response || ''}
                 height="30vh"
               />
@@ -390,3 +410,5 @@ export default () => {
     </Card>
   );
 };
+
+export default connect(({loading, gconfig}) => ({loading, gconfig}))(Postman);

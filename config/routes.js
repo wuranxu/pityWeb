@@ -136,6 +136,11 @@ export default [
                     name: '用户管理',
                     component: './Config/UserList',
                   },
+                  {
+                    path: '/config/oss',
+                    name: 'oss文件',
+                    component: './Config/Oss',
+                  },
                 ],
               },
               {
@@ -144,7 +149,7 @@ export default [
                 icon: 'tool',
                 routes: [
                   {
-                    path: '/Tool/request',
+                    path: '/tool/request',
                     name: 'HTTP测试',
                     icon: 'icon-yunhang',
                     component: './Tool/Request',

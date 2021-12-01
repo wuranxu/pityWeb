@@ -1,14 +1,22 @@
 import {
   deleteDbConfig,
-  deleteGConfig, deleteRedisConfig,
+  deleteFile,
+  deleteGConfig,
+  deleteRedisConfig,
   insertDbConfig,
-  insertGConfig, insertRedisConfig,
+  insertGConfig,
+  insertRedisConfig,
   listDbConfig,
   listEnvironment,
-  listGConfig, listRedisConfig, onlineRedisCommand,
+  listFile,
+  listGConfig,
+  listRedisConfig,
+  onlineRedisCommand,
   onTestDbConfig,
   updateDbConfig,
-  updateGConfig, updateRedisConfig
+  updateGConfig,
+  updateRedisConfig,
+  uploadFile
 } from '@/services/configure';
 import auth from '@/utils/auth';
 import {message} from 'antd';
@@ -32,6 +40,9 @@ export default {
       1: 'json',
       2: 'yaml',
     },
+
+    ossFileList: [],
+    searchOssFileList: [],
 
     dbConfigData: [],
     redisConfig: [],
@@ -244,12 +255,39 @@ export default {
 
     },
 
-    *onlineRedisCommand({payload}, {call, put}) {
+    * onlineRedisCommand({payload}, {call, put}) {
       const res = yield call(onlineRedisCommand, payload);
       if (auth.response(res)) {
         return res.data;
       }
       return res.msg;
+    },
+
+    * uploadFile({payload}, {call}) {
+      const res = yield call(uploadFile, payload);
+      return auth.response(res, true);
+    },
+
+    * removeOssFile({payload}, {call, put}) {
+      const res = yield call(deleteFile, payload);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'listOssFile',
+        })
+      }
+    },
+
+    * listOssFile({_}, {call, put}) {
+      const res = yield call(listFile);
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            ossFileList: res.data,
+            searchOssFileList: res.data,
+          }
+        })
+      }
     }
   },
 };

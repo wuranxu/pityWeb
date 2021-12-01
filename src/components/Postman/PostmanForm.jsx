@@ -28,6 +28,8 @@ import CodeEditor from '@/components/Postman/CodeEditor';
 import {httpRequest} from '@/services/request';
 import auth from '@/utils/auth';
 import {listGConfig} from "@/services/configure";
+import FormData from "@/components/Postman/FormData";
+import {connect} from 'umi';
 
 const {Option} = Select;
 const {TabPane} = Tabs;
@@ -61,8 +63,11 @@ const tabExtra = (response) => {
   ) : null;
 };
 
-export default ({form, body, setBody, headers, setHeaders, save = null, bordered = false}) => {
-  const [bodyType, setBodyType] = useState('none');
+const PostmanForm = ({
+                       form, gconfig, dispatch, body, setBody, headers, setHeaders,
+                       formData, setFormData, caseInfo,
+                       bodyType, setBodyType, save = null, bordered = false
+                     }) => {
   const [rawType, setRawType] = useState('JSON');
   const [method, setMethod] = useState('GET');
   const [paramsData, setParamsData] = useState([]);
@@ -73,11 +78,38 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
   const [options, setOptions] = useState([]);
   const [url, setUrl] = useState('');
   const [open, setOpen] = useState(false);
+  const {ossFileList} = gconfig;
+
+  const parseFormData = () => {
+    if (body) {
+      const temp = JSON.parse(body);
+      if (typeof temp === 'object' && temp[0] !== undefined) {
+        setFormData(temp);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (caseInfo) {
+      setMethod(caseInfo.request_method);
+    }
+  }, [caseInfo.request_method])
+
+  useEffect(() => {
+    if (bodyType === 2) {
+      dispatch({
+        type: 'gconfig/listOssFile'
+      })
+      try {
+        parseFormData()
+      } catch (e) {
+      }
+    }
+
+  }, [bodyType])
+
 
   useEffect(async () => {
-    if (body) {
-      setBodyType("raw")
-    }
     const res = await listGConfig({page: 1, size: 500});
     if (auth.response(res)) {
       const data = res.data.map((v) => ({
@@ -91,6 +123,7 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
     setUrl(form.getFieldValue('url'));
     splitUrl(form.getFieldValue('url'))
   }, [body])
+
 
   // 请求url+params
   const resColumns = [
@@ -191,9 +224,10 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
       method,
       url,
       body,
+      body_type: bodyType,
       headers: getHeaders(),
     };
-    if (bodyType === 'none') {
+    if (bodyType === 0) {
       params.body = null;
     }
     const res = await httpRequest(params);
@@ -307,6 +341,24 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
     ];
   };
 
+  const getBody = bd => {
+    if (bd === 0) {
+      return <div style={{height: '20vh', lineHeight: '20vh', textAlign: 'center'}}>
+        This request does not have a body
+      </div>
+    }
+    if (bd === 2) {
+      return <FormData ossFileList={ossFileList} dataSource={formData} setDataSource={setFormData}/>
+    }
+    return <Row style={{marginTop: 12}}>
+      <Col span={24}>
+        <Card bodyStyle={{padding: 0}}>
+          <CodeEditor value={body} onChange={e => setBody(e)} height="20vh"/>
+        </Card>
+      </Col>
+    </Row>
+  }
+
   return (
     <Card bordered={bordered}>
       <Form form={form}>
@@ -319,7 +371,7 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
                 } initialValue={method}>
                   <Select
                     placeholder="选择请求方式"
-                    // onChange={(data) => setMethod(data)}
+                    onChange={(data) => setMethod(data)}
                     style={{width: 120, textAlign: 'left'}}
                   >
                     <Option key="GET" value="GET">GET</Option>
@@ -400,18 +452,26 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
             <TabPane tab="Body" key="3">
               <Row>
                 <Radio.Group
-                  defaultValue={body === "" ? 'none': "raw"}
+                  defaultValue={0}
                   value={bodyType}
-                  onChange={(e) => setBodyType(e.target.value)}
+                  onChange={(e) => {
+                    setBodyType(e.target.value)
+                    if (e.target.value === 'form-data') {
+                      // 获取oss文件
+                      dispatch({
+                        type: 'gconfig/listOssFile'
+                      })
+                    }
+                  }}
                 >
-                  <Radio value="none">none</Radio>
-                  <Radio value="form-data">form-data</Radio>
-                  <Radio value="x-www-form-urlencoded">x-www-form-urlencoded</Radio>
-                  <Radio value="raw">raw</Radio>
-                  <Radio value="binary">binary</Radio>
-                  <Radio value="GraphQL">GraphQL</Radio>
+                  <Radio value={0}>none</Radio>
+                  <Radio value={2}>form-data</Radio>
+                  <Radio value={3}>x-www-form-urlencoded</Radio>
+                  <Radio value={1}>raw</Radio>
+                  <Radio value={4}>binary</Radio>
+                  <Radio value={5}>GraphQL</Radio>
                 </Radio.Group>
-                {bodyType === 'raw' ? (
+                {bodyType === 1 ? (
                   <Dropdown style={{marginLeft: 8}} overlay={menu} trigger={['click']}>
                     <a onClick={(e) => e.preventDefault()}>
                       {rawType} <DownOutlined/>
@@ -419,19 +479,7 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
                   </Dropdown>
                 ) : null}
               </Row>
-              {bodyType !== 'none' ? (
-                <Row style={{marginTop: 12}}>
-                  <Col span={24}>
-                    <Card bodyStyle={{padding: 0}}>
-                      <CodeEditor value={body} onChange={e => setBody(e)} height="20vh"/>
-                    </Card>
-                  </Col>
-                </Row>
-              ) : (
-                <div style={{height: '20vh', lineHeight: '20vh', textAlign: 'center'}}>
-                  This request does not have a body
-                </div>
-              )}
+              {getBody(bodyType)}
             </TabPane>
           </Tabs>
         </Row>
@@ -467,3 +515,5 @@ export default ({form, body, setBody, headers, setHeaders, save = null, bordered
     </Card>
   );
 };
+
+export default connect(({gconfig}) => ({gconfig}))(PostmanForm);

@@ -51,8 +51,10 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const [form] = Form.useForm();
   const [constructorForm] = Form.useForm();
   const [body, setBody] = useState('');
+  const [bodyType, setBodyType] = useState(0);
   const [headers, setHeaders] = useState([]);
-  const [testDataKey, setTestDataKey] = useState(null);
+  const [formData, setFormData] = useState([]);
+
 
 
   useEffect(async () => {
@@ -86,6 +88,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     form.setFieldsValue(caseInfo);
     setHeaders(common.parseHeaders(caseInfo.request_headers))
     setBody(caseInfo.body);
+    setBodyType(caseInfo.body_type)
   }, [caseInfo, editing])
 
   const fetchTestCaseInfo = async () => {
@@ -146,14 +149,15 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       status: parseInt(values.status, 10),
       tag: values.tag ? values.tag.join(',') : null,
       directory_id: directory_id,
+      body_type: bodyType,
       request_headers: common.translateHeaders(headers),
-      body
+      body: bodyType === 2 ? JSON.stringify(formData): body,
     };
     if (!editing && !isCreate) {
       params.priority = caseInfo.priority;
       params.name = caseInfo.name;
       params.status = caseInfo.status;
-      params.tag = typeof caseInfo.tag === 'object' ? caseInfo.tag.join(',') : caseInfo.tag ? caseInfo.tag : null;
+      params.tag = caseInfo.tag !== null ? typeof caseInfo.tag === 'object' ? caseInfo.tag.join(',') : caseInfo.tag ? caseInfo.tag : null : null;
       params.request_type = caseInfo.request_type;
     }
     if (caseInfo.id) {
@@ -301,26 +305,28 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                 {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
-                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={<span>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>} extra={<div>
-                      <Button onClick={() => {
-                        dispatch({
-                          type: 'testcase/save',
-                          payload: {
-                            editing: true,
-                            caseInfo: {
-                              ...caseInfo,
-                              status: caseInfo.status.toString(),
-                              request_type: caseInfo.request_type.toString(),
-                              tag: typeof caseInfo.tag !== 'object' ? caseInfo.tag ? caseInfo.tag.split(",") : [] : caseInfo.tag
-                            },
-                            activeKey: '2',
-                          }
-                        })
-                      }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
-                      <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
-                              loading={loading.effects['testcase/onExecuteTestCase']}
-                              onClick={onExecuteTestCase}><PlayCircleOutlined/> 运行</Button>
-                    </div>}>
+                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={
+                      <span>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>}
+                          extra={<div>
+                            <Button onClick={() => {
+                              dispatch({
+                                type: 'testcase/save',
+                                payload: {
+                                  editing: true,
+                                  caseInfo: {
+                                    ...caseInfo,
+                                    status: caseInfo.status.toString(),
+                                    request_type: caseInfo.request_type.toString(),
+                                    tag: typeof caseInfo.tag !== 'object' ? caseInfo.tag ? caseInfo.tag.split(",") : [] : caseInfo.tag
+                                  },
+                                  activeKey: '2',
+                                }
+                              })
+                            }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
+                            <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
+                                    loading={loading.effects['testcase/onExecuteTestCase']}
+                                    onClick={onExecuteTestCase}><PlayCircleOutlined/> 运行</Button>
+                          </div>}>
                       <Descriptions size='small' column={4}>
                         <Descriptions.Item label='用例名称'><a>{caseInfo.name}</a></Descriptions.Item>
 
@@ -433,13 +439,15 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                               <Row gutter={[8, 8]}>
                                 <Col span={24}>
                                   <PostmanForm form={form} body={body} setBody={setBody} headers={headers}
-                                               setHeaders={setHeaders}
+                                               formData={formData} setFormData={setFormData} caseInfo={caseInfo}
+                                               setHeaders={setHeaders} bodyType={bodyType} setBodyType={setBodyType}
                                                bordered={false} save={onSubmit}/>
                                 </Col>
                               </Row>
                             </TabPane>
-                            <TabPane key="3" tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[9, -2]}
-                                                         count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
+                            <TabPane key="3"
+                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[9, -2]}
+                                                 count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
                               <TestCaseAssert asserts={asserts} caseId={case_id}/>
                             </TabPane>
                             <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}>

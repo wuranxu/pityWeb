@@ -151,3 +151,33 @@ export async function onlineRedisCommand(params) {
   });
 }
 
+export async function uploadFile(params) {
+  const formData = new FormData();
+  formData.append("file", params.files[0].originFileObj)
+  return request(`${CONFIG.URL}/oss/upload`, {
+    method: 'POST',
+    params: {filepath: params.filepath},
+    data: formData,
+    requestType: 'form',
+    headers: auth.headers(false),
+  });
+}
+
+export async function listFile() {
+  return request(`${CONFIG.URL}/oss/list`, {
+    method: 'GET',
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteFile(params) {
+  return request(`${CONFIG.URL}/oss/delete`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+
+
+
