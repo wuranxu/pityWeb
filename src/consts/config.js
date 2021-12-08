@@ -2,8 +2,8 @@ import {Tag} from "antd";
 import React from "react";
 
 export const CONFIG = {
-  // URL: 'http://121.5.2.74:7777',
-  URL: 'http://localhost:7777',
+  URL: 'http://121.5.2.74:7777',
+  // URL: 'http://localhost:7777',
   // URL: '',
   ICONFONT: '//at.alicdn.com/t/font_915840_xhtofa1czc7.js',
   ROLE: {
@@ -99,8 +99,8 @@ export const CONFIG = {
     0: '测试用例',
     1: 'SQL语句',
     2: 'Redis命令',
-    3: 'HTTP请求',
-    4: 'Python方法'
+    4: 'HTTP请求',
+    3: 'Python方法'
   },
   CASE_CONSTRUCTOR_COLOR: {
     0: 'success',
@@ -142,8 +142,8 @@ export const CONFIG = {
     0: '测试用例',
     1: 'SQL语句',
     2: 'Redis语句',
-    3: 'HTTP请求',
-    4: 'Python方法'
+    4: 'HTTP请求',
+    3: 'Python方法'
   },
   MSG_TYPE: {
     0: '邮件',

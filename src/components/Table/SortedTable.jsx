@@ -19,7 +19,7 @@ const defaultCols = [
 const SortableItem = sortableElement(props => <tr {...props} />);
 const SortableContainer = sortableContainer(props => <tbody {...props} />);
 
-export default ({dataSource, columns, setDataSource, dragCallback}) => {
+export default ({dataSource, columns, setDataSource, dragCallback, loading}) => {
   const onSortEnd = async ({oldIndex, newIndex}) => {
     if (oldIndex !== newIndex) {
       const newData = arrayMoveImmutable([].concat(dataSource), oldIndex, newIndex).filter(el => !!el);
@@ -54,6 +54,7 @@ export default ({dataSource, columns, setDataSource, dragCallback}) => {
       size="small"
       pagination={false}
       dataSource={dataSource}
+      loading={loading}
       columns={[...defaultCols, ...columns]}
       rowKey="index"
       components={{

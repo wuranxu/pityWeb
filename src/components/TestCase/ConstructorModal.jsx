@@ -7,6 +7,7 @@ import {useEffect} from "react";
 import DatabaseConstructor from "@/components/TestCase/Constructor/DatabaseConstructor";
 import {CheckCard} from '@ant-design/pro-card';
 import RedisConstructor from "@/components/TestCase/Constructor/RedisConstructor";
+import PythonConstructor from "@/components/TestCase/Constructor/PythonConstructor";
 
 
 const {Meta} = Card;
@@ -36,16 +37,23 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
         case_id: values.case_id[1],
         params: values.params
       })
-    } if (testCaseConstructorData.type === 1) {
+    }
+    if (testCaseConstructorData.type === 1) {
       // 说明是sql构造方法
       return JSON.stringify({
         database: values.database,
         sql: values.sql,
       })
-    } if (testCaseConstructorData.type === 2) {
+    }
+    if (testCaseConstructorData.type === 2) {
       return JSON.stringify({
         redis: values.redis,
         command: values.command,
+      })
+    }
+    if (testCaseConstructorData.type === 3) {
+      return JSON.stringify({
+        command: values.command
       })
     }
   }
@@ -140,38 +148,20 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
           />
         </Col>
         <Col span={8}>
-          {/*<Card*/}
-          {/*  bodyStyle={{background: '#ffffff', padding: 16}}*/}
-          {/*  hoverable*/}
-          {/*  className={styles.mycard}*/}
-          {/*  cover={<IconFont type="icon-qingqiu" onClick={() => onSelectType(3)}*/}
-          {/*                   className={styles.icons}/>}*/}
-          {/*>*/}
-          {/*  <Meta title="HTTP请求" className={styles.metadata}/>*/}
-          {/*</Card>*/}
           <CheckCard
-            avatar={<IconFont type="icon-qingqiu" style={{fontSize: 32}}/>}
-            title="HTTP请求"
-            description="依赖于第三方的接口，推荐使用HTTP请求，如通过百度api识别对应图片验证码"
+            avatar={<IconFont type="icon-python" style={{fontSize: 32}}/>}
+            title="Python方法"
+            description="需要自定义造数方法的，可以使用Python编写对应的核心方法"
             onClick={() => onSelectType(3)}
           />
         </Col>
         <Col span={8}>
           <CheckCard
-            avatar={<IconFont type="icon-python" style={{fontSize: 32}}/>}
-            title="Python方法"
-            description="需要自定义造数方法的，可以使用Python编写对应的核心方法"
+            avatar={<IconFont type="icon-qingqiu" style={{fontSize: 32}}/>}
+            title="HTTP请求"
+            description="依赖于第三方的接口，推荐使用HTTP请求，如通过百度api识别对应图片验证码"
             onClick={() => onSelectType(4)}
           />
-          {/*<Card*/}
-          {/*  bodyStyle={{background: '#ffffff', padding: 16}}*/}
-          {/*  hoverable*/}
-          {/*  className={styles.mycard}*/}
-          {/*  cover={<IconFont type="icon-python" onClick={() => onSelectType(4)}*/}
-          {/*                   className={styles.icons}/>}*/}
-          {/*>*/}
-          {/*  <Meta title="Python方法" className={styles.metadata}/>*/}
-          {/*</Card>*/}
         </Col>
 
       </Row>
@@ -185,6 +175,9 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
       }
       if (constructorType === 2) {
         return <RedisConstructor form={form}/>
+      }
+      if (constructorType === 3) {
+        return <PythonConstructor form={form}/>
       }
     }
   }
@@ -213,11 +206,6 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
         </Row>
         {getContent()}
         <div style={{marginTop: 24, textAlign: 'center'}}>
-          {/*{0 < currentStep < totalStep - 1 && (*/}
-          {/*  <Button type="primary" onClick={() => next()}>*/}
-          {/*    下一步*/}
-          {/*  </Button>*/}
-          {/*)}*/}
           {currentStep === totalStep && (
             <Button type="primary" onClick={onSubmit}>
               <SaveOutlined/> 完成
@@ -235,6 +223,6 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
 }
 
 export default connect(({construct, loading}) => ({
-  construct: construct,
-  loading: loading,
+  construct,
+  loading,
 }))(ConstructorModal)

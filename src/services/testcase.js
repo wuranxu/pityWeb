@@ -147,3 +147,12 @@ export async function deleteTestcaseData(params) {
     headers: auth.headers(),
   });
 }
+
+// 在线执行py脚本
+export async function onlinePyScript(params) {
+  return request(`${CONFIG.URL}/online/script`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}

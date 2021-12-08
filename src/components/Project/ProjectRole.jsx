@@ -156,7 +156,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
               <Skeleton avatar title={false} loading={item.loading} active>
                 <List.Item.Meta
                   avatar={<Avatar
-                    src={item.avatar || "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"}/>}
+                    src={item.avatar || `https://joeschmoe.io/api/v1/${item.user_id}`}/>}
                   title={userMap[item.user_id] ? userMap[item.user_id].name : 'loading'}
                   description={userMap[item.user_id] ? userMap[item.user_id].email : 'loading'}/>
               </Skeleton>

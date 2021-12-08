@@ -40,7 +40,7 @@ import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
 import LoadingButton from "@/components/Button/LoadingButton";
-
+import md5 from 'md5';
 const {Option} = Select;
 const {DirectoryTree} = Tree;
 
@@ -337,7 +337,7 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
                                     }>
                     {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
                   </Select> : <>
-                    <Avatar style={{marginLeft: 8, marginRight: 6}}>{getProjectName().slice(0, 2)}</Avatar>
+                    <Avatar style={{marginLeft: 8, marginRight: 6}} src={`https://api.prodless.com/avatar.png`}/>
                     <a onClick={() => setEditing(true)}>{getProjectName()}</a>
                     <IconFont type="icon-qiehuan2" onClick={() => setEditing(true)}
                               style={{fontSize: 15, marginLeft: 8}}/>

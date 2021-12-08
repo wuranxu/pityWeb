@@ -115,7 +115,13 @@ export default {
             command: json_data.command,
             redis: json_data.redis,
           }
+        } else if (res.data.type === 3) {
+          ans = {
+            ...ans,
+            command: json_data.command,
+          }
         }
+        console.log(ans)
         yield put({
           type: 'save',
           payload: {

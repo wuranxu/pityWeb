@@ -26,7 +26,7 @@ const getContent = currentUser => {
     <div className={styles.pageHeaderContent}>
       <div className={styles.avatar}>
         <Avatar size="large"
-                src={currentUser.avatar || 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'}/>
+                src={currentUser.avatar || `https://joeschmoe.io/api/v1/${currentUser.email}`}/>
       </div>
       <div className={styles.content}>
         <div className={styles.contentTitle}>

@@ -38,3 +38,7 @@ screenshot
 .eslintcache
 
 build
+
+dist
+
+dist.zip

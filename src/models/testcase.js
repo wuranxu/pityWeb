@@ -9,6 +9,7 @@ import {
   insertTestcaseDirectory,
   listTestcase,
   listTestcaseTree,
+  onlinePyScript,
   queryTestCase,
   queryTestcaseDirectory,
   updateTestCase,
@@ -221,6 +222,14 @@ export default {
     * deleteTestcaseData({payload}, {call, _}) {
       const res = yield call(deleteTestcaseData, payload);
       return auth.response(res, true);
+    },
+
+    * onlinePyScript({payload}, {call, _}) {
+      const res = yield call(onlinePyScript, payload);
+      if (auth.response(res, false)) {
+        return res.data
+      }
+      return "None"
     }
 
   },

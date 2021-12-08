@@ -1,7 +1,7 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Descriptions, Form, Modal, Row, Spin, Tabs, Tag, Timeline} from "antd";
+import {Badge, Button, Card, Col, Descriptions, Form, Modal, Row, Spin, Switch, Tabs, Tag, Timeline} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
@@ -9,6 +9,7 @@ import IconFont from "@/components/Icon/IconFont";
 import NoRecord from "@/components/NotFound/NoRecord";
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
 import SortedTable from "@/components/Table/SortedTable";
+import "./TestCaseComponent.less";
 import {
   DeleteTwoTone,
   EditOutlined,
@@ -31,7 +32,7 @@ const {TabPane} = Tabs;
 const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const params = useParams();
   const directory_id = params.directory;
-  const case_id = params.case_id;
+  const {case_id} = params;
   const {
     directoryName,
     caseInfo,
@@ -56,6 +57,16 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const [formData, setFormData] = useState([]);
 
 
+  const fetchTestCaseInfo = async () => {
+    if (case_id) {
+      await dispatch({
+        type: 'testcase/queryTestcase',
+        payload: {
+          caseId: case_id,
+        }
+      })
+    }
+  }
 
   useEffect(async () => {
     await dispatch({
@@ -91,16 +102,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     setBodyType(caseInfo.body_type)
   }, [caseInfo, editing])
 
-  const fetchTestCaseInfo = async () => {
-    if (case_id) {
-      await dispatch({
-        type: 'testcase/queryTestcase',
-        payload: {
-          caseId: case_id,
-        }
-      })
-    }
-  }
 
   const load = !!(loading.effects['testcase/queryTestcaseDirectory']
     || loading.effects['testcase/queryTestcase']
@@ -110,19 +111,30 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const getDesc = item => {
     const data = JSON.parse(item.constructor_json)
     if (item.type === 0) {
-      const result = constructors_case[data['case_id']]
+      const result = constructors_case[data.case_id]
       if (!result) {
         return null
       }
-      return <div>用例: <a href={`/#/apiTest/testcase/${result['directory_id']}/${result['id']}`}
-                         target="_blank">{result['name']}</a></div>
+      return <div>用例: <a href={`/#/apiTest/testcase/${result.directory_id}/${result.id}`}
+                         target="_blank" rel="noreferrer">{result.name}</a></div>
     }
     if (item.type === 1) {
       return <code>{data.sql}</code>
     }
 
     if (item.type === 2) {
-      return <code>{data.command}</code>
+      return <code>
+        <pre>
+          {data.command}
+        </pre>
+      </code>
+    }
+    if (item.type === 3) {
+      return <code>
+        <pre>
+          {data.command}
+        </pre>
+      </code>
     }
 
   }
@@ -141,23 +153,37 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       color='blue'>{v}</Tag>) : '无'
   }
 
+  // 编辑数据构造器
+  const onEditConstructor = record => {
+    const dt = JSON.parse(record.constructor_json);
+    dispatch({
+      type: 'construct/save',
+      payload: {currentStep: 1, testCaseConstructorData: {...record, ...dt}, constructorType: record.type}
+    })
+    dispatch({
+      type: 'testcase/save',
+      payload: {constructorModal: true, constructRecord: record}
+    })
+  }
+
   const onSubmit = async (isCreate = false) => {
     const values = await form.validateFields()
-    let params = {
+    const params = {
       ...values,
       request_type: parseInt(values.request_type, 10),
       status: parseInt(values.status, 10),
       tag: values.tag ? values.tag.join(',') : null,
-      directory_id: directory_id,
+      directory_id,
       body_type: bodyType,
       request_headers: common.translateHeaders(headers),
-      body: bodyType === 2 ? JSON.stringify(formData): body,
+      body: bodyType === 2 ? JSON.stringify(formData) : body,
     };
     if (!editing && !isCreate) {
       params.priority = caseInfo.priority;
       params.name = caseInfo.name;
       params.status = caseInfo.status;
-      params.tag = caseInfo.tag !== null ? typeof caseInfo.tag === 'object' ? caseInfo.tag.join(',') : caseInfo.tag ? caseInfo.tag : null : null;
+      params.tag = caseInfo.tag !== null ? typeof caseInfo.tag === 'object' ?
+        caseInfo.tag.join(',') : caseInfo.tag ? caseInfo.tag : null : null;
       params.request_type = caseInfo.request_type;
     }
     if (caseInfo.id) {
@@ -172,6 +198,45 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       dispatch({
         type: 'testcase/insertTestcase',
         payload: params,
+      })
+    }
+  }
+
+  const onSwitchConstructor = async (record, value) => {
+    const res = await dispatch({
+      type: 'construct/update',
+      payload: {
+        ...record,
+        enable: value
+      }
+    })
+    if (res) {
+      const newData = [...constructors]
+      newData.forEach(v => {
+        if (v.id === record.id) {
+          v.enable = value
+        }
+      })
+      dispatch({
+        type: 'testcase/save',
+        payload: {constructors: newData}
+      })
+    }
+
+  }
+
+
+  // 删除数据构造器
+  const onDeleteConstructor = async record => {
+    const res = await dispatch({
+      type: 'construct/delete',
+      payload: {id: record.id}
+    })
+    if (res) {
+      const newData = constructors.filter(v => v.id !== record.id)
+      dispatch({
+        type: 'testcase/save',
+        payload: {constructors: newData}
       })
     }
   }
@@ -197,10 +262,10 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       title: '状态',
       key: 'enable',
       dataIndex: 'enable',
-      render: enable => <Badge
-        status={enable ? 'processing' : 'error'}
-        text={enable ? '开启' : '关闭'}/>,
       className: 'drag-visible',
+      render: (enable, record) => <Switch defaultChecked={record.enable} size="small" onChange={async value => {
+        await onSwitchConstructor(record, value)
+      }}/>
     },
     {
       title: '返回值',
@@ -244,35 +309,12 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
         currentStep: 0
       }
     })
-  }
-
-  // 编辑数据构造器
-  const onEditConstructor = record => {
-    const dt = JSON.parse(record.constructor_json);
     dispatch({
       type: 'construct/save',
-      payload: {currentStep: 1, testCaseConstructorData: {...record, ...dt}, constructorType: record.type}
-    })
-    dispatch({
-      type: 'testcase/save',
-      payload: {constructorModal: true, constructRecord: record}
+      payload: {currentStep: 0}
     })
   }
 
-  // 删除数据构造器
-  const onDeleteConstructor = async record => {
-    const res = await dispatch({
-      type: 'construct/delete',
-      payload: {id: record.id}
-    })
-    if (res) {
-      const newData = constructors.filter(v => v.id !== record.id)
-      dispatch({
-        type: 'testcase/save',
-        payload: {constructors: newData}
-      })
-    }
-  }
 
   // 在线运行用例
   const onExecuteTestCase = async () => {
@@ -306,7 +348,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
                     <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={
-                      <span>{directoryName} {caseInfo.name ? " / " + caseInfo.name : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>}
+                      <span>{directoryName} {caseInfo.name ? ` / ${caseInfo.name}` : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>}
                           extra={<div>
                             <Button onClick={() => {
                               dispatch({
@@ -405,20 +447,24 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                           }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
                                         </Col>
                                       </Row>
-                                      <SortedTable columns={columns} dataSource={constructors} setDataSource={data => {
-                                        dispatch({
-                                          type: 'testcase/save',
-                                          payload: {constructors: data}
-                                        })
-                                      }} dragCallback={async newData => {
-                                        return await dispatch({
-                                          type: 'construct/orderConstructor',
-                                          payload: newData.map((v, index) => ({id: v.id, index}))
-                                        })
-                                      }}/>
+                                      <SortedTable columns={columns} dataSource={constructors}
+                                                   setDataSource={
+                                                     data => {
+                                                       dispatch({
+                                                         type: 'testcase/save',
+                                                         payload: {constructors: data}
+                                                       })
+                                                     }}
+                                                   loading={loading.effects['construct/delete'] || loading.effects['construct/update']}
+                                                   dragCallback={async newData => {
+                                                     return await dispatch({
+                                                       type: 'construct/orderConstructor',
+                                                       payload: newData.map((v, index) => ({id: v.id, index}))
+                                                     })
+                                                   }}/>
                                     </Col>
                                     <Col span={8}>
-                                      <Card style={{height: 400}} hoverable bordered={false}>
+                                      <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
                                         <Timeline>
                                           {
                                             constructors.map((item, index) => item.enable ? <Timeline.Item key={index}>
@@ -450,9 +496,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                                  count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
                               <TestCaseAssert asserts={asserts} caseId={case_id}/>
                             </TabPane>
-                            <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}>
-
-                            </TabPane>
+                            <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}/>
                           </Tabs>
                         </Col>
                       </Row>

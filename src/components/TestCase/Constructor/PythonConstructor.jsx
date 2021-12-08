@@ -1,4 +1,4 @@
-import {Col, Form, Input, message, notification, Row, Select, Switch, Tabs, Tooltip} from "antd";
+import {Col, Form, Input, message, notification, Row, Select, Switch, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import {CONFIG} from "@/consts/config";
@@ -6,37 +6,29 @@ import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
 import {PlayCircleTwoTone, QuestionCircleOutlined} from "@ant-design/icons";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 
-const {TabPane} = Tabs;
 const {Option} = Select;
 
-const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
+const PythonConstructor = ({form, dispatch, construct}) => {
 
-  const [editor, setEditor] = useState(null);
-  const [currentId, setCurrentId] = useState(null);
+  const [_, setEditor] = useState(null);
   const {testCaseConstructorData, constructorType} = construct;
-  const {redisConfig, envMap} = gconfig;
 
-
-  useEffect(async () => {
-    dispatch({
-      type: 'gconfig/fetchRedisConfig'
-    })
-  }, [])
-
-  useEffect(async () => {
+  useEffect(() => {
     form.resetFields();
     form.setFieldsValue(testCaseConstructorData)
   }, [testCaseConstructorData])
 
-  const onExecuteCommand = async (command) => {
-    if (!currentId || !command) {
-      message.info("请选择redis或完善Redis命令")
+  const onExecuteCommand = async () => {
+    const command = form.getFieldValue("command")
+    const value = form.getFieldValue("value")
+    if (!command) {
+      message.info("脚本内容不能为空")
       return;
     }
     const data = await dispatch({
-      type: 'gconfig/onlineRedisCommand',
+      type: 'testcase/onlinePyScript',
       payload: {
-        id: currentId,
+        value,
         command,
       }
     })
@@ -66,17 +58,7 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
                          initialValue={testCaseConstructorData.name}>
                 <Input placeholder="请输入数据构造器名称"/>
               </Form.Item>
-              <Form.Item label={<Tooltip title="测试的时候可以选中对应环境的redis，否则可以随便选一个名称符合的redis">Redis <QuestionCircleOutlined/></Tooltip>}
-                         name="redis" initialValue={testCaseConstructorData.redis}
-                         rules={[{required: true, message: '请选择Redis连接名称, 如果没有请去【Redis配置】页面添加'}]}>
-                <Select showSearch placeholder="请选择Redis连接名称" onSelect={(_, node) => {
-                  setCurrentId(node.key)
-                }}>
-                  {redisConfig.map(item => <Option key={item.id}
-                                                   value={item.name}>{item.name}({envMap[item.env]})</Option>)}
-                </Select>
-              </Form.Item>
-              <Form.Item label={<Tooltip title="点击可执行Redis命令">Redis命令
+              <Form.Item label={<Tooltip title="点击可测试Python脚本">Python脚本
                 <PlayCircleTwoTone twoToneColor="#67C23A"
                                    onClick={async () => {
                                      await onExecuteCommand(form.getFieldValue("command"))
@@ -87,9 +69,10 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
                                      cursor: 'pointer'
                                    }}/></Tooltip>}
                          name="command" colon={false}
-                         rules={[{required: true, message: '请填写redis执行语句'}]}
-                         initialValue={testCaseConstructorData.command}>
-                <PityAceEditor language="text" height={100} setEditor={setEditor}/>
+                         initialValue={testCaseConstructorData.command}
+                         rules={[{required: true, message: '请输入python代码'}]}
+              >
+                <PityAceEditor language="python" height={180} setEditor={setEditor}/>
               </Form.Item>
               <Form.Item label="返回值" name="value">
                 <Input placeholder="请填写造数后的返回值，可不填"/>
@@ -124,8 +107,7 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
   )
 }
 
-export default connect(({construct, gconfig, loading}) => ({
+export default connect(({construct, loading}) => ({
   construct,
-  gconfig,
   loading,
-}))(RedisConstructor)
+}))(PythonConstructor)

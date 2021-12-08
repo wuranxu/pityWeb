@@ -1,5 +1,5 @@
 const proSettings = {
-  navTheme: 'dark',
+  navTheme: 'realdark',
   // 拂晓蓝
   primaryColor: '#1890ff',
   layout: 'side',

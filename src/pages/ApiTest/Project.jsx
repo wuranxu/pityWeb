@@ -175,9 +175,7 @@ export default () => {
                       history.push(`/apiTest/project/${item.id}`);
                     }}
                   >
-                    <Avatar style={{backgroundColor: '#87d068'}} size={64}>
-                      {item.name.slice(0, 2)}
-                    </Avatar>
+                    <Avatar src="https://api.prodless.com/avatar.png" style={{backgroundColor: '#87d068'}} size={64}/>
                     <p
                       style={{
                         textAlign: 'center',

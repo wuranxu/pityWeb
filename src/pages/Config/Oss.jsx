@@ -54,7 +54,7 @@ const Oss = ({loading, dispatch, gconfig}) => {
       key: 'ops',
       render: (record) => <>
         <a onClick={() => {
-          window.open(`${CONFIG.URL}/oss/download?filepath=${record.key}`)
+          window.open(`${CONFIG.URL}/oss/download?filepath=${record.key}${record.sha ? `$${record.sha}` : ''}`)
         }}>下载</a>
         <Divider type="vertical"/>
         <a onClick={() => {
