@@ -6,8 +6,10 @@ import {
   Card,
   Col,
   Divider,
+  Dropdown,
   Form,
   Input,
+  Menu as AMenu,
   message,
   Modal,
   Row,
@@ -22,6 +24,7 @@ import {connect} from "umi";
 import React, {useEffect, useState} from "react";
 import {
   DeleteTwoTone,
+  DownOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
   FolderAddTwoTone,
@@ -39,15 +42,15 @@ import IconFont from "@/components/Icon/IconFont";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
-import LoadingButton from "@/components/Button/LoadingButton";
-import md5 from 'md5';
+
 const {Option} = Select;
 const {DirectoryTree} = Tree;
 
 
-const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
+const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}) => {
 
   const {projects, project_id} = project;
+  const {envList} = gconfig;
   const {userList, userMap} = user;
   const {directory, currentDirectory, testcases, testResult, selectedRowKeys, pagination} = testcase;
   const [currentNode, setCurrentNode] = useState(null);
@@ -68,22 +71,24 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
     }
   };
 
-  const execute = async record => {
+  const execute = async (record, env) => {
     await dispatch({
       type: 'testcase/executeTestcase',
       payload: {
         case_id: record.id,
+        env,
       }
     })
     setResultModal(true);
     setName(record.name);
   };
 
-  const onExecute = async () => {
+  const onExecute = async env => {
     const res = await dispatch({
       type: 'testcase/executeSelectedCase',
       payload: {
         case_list: selectedRowKeys,
+        env,
       }
     })
     if (auth.response(res)) {
@@ -98,6 +103,20 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
       });
     }
   }
+
+  const menu = record => (
+    <AMenu>
+      {envList.map(item => <AMenu.Item key={item.id}>
+        <a onClick={async () => {
+          if (record) {
+            await execute(record, item.id)
+          } else {
+            await onExecute(item.id)
+          }
+        }}>{item.name}</a>
+      </AMenu.Item>)}
+    </AMenu>
+  );
 
   const columns = [
     {
@@ -146,21 +165,24 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
       render: (_, record) => <>
         <a href={`/#/apiTest/testcase/${currentDirectory[0]}/${record.id}`} target="_blank">详情</a>
         <Divider type="vertical"/>
-        <a onClick={async () => {
-          await execute(record)
-        }}>执行</a>
+        <Dropdown overlay={menu(record)}>
+          <a onClick={e => {
+            e.stopPropagation();
+          }}>执行 <DownOutlined/></a>
+        </Dropdown>
+
       </>
     }
 
   ]
 
-  const listProjects = async () => {
+  const listProjects = () => {
     dispatch({
       type: 'project/listProject',
     })
   }
 
-  const listTestcaseTree = async () => {
+  const listTestcaseTree = () => {
     if (project_id) {
       dispatch({
         type: 'testcase/listTestcaseDirectory',
@@ -169,9 +191,15 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
     }
   }
 
-  const listUsers = async () => {
+  const listUsers = () => {
     dispatch({
       type: 'user/fetchUserList'
+    })
+  }
+
+  const listEnv = () => {
+    dispatch({
+      type: 'gconfig/fetchEnvList'
     })
   }
 
@@ -189,13 +217,14 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
     }
   }
 
-  useEffect(async () => {
-    await listProjects();
-    await listUsers();
+  useEffect(() => {
+    listProjects();
+    listUsers();
+    listEnv();
   }, [])
 
-  useEffect(async () => {
-    await listTestcaseTree();
+  useEffect(() => {
+    listTestcaseTree();
   }, [project_id])
 
   useEffect(async () => {
@@ -237,7 +266,7 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
 
     if (result) {
       setRootModal(false);
-      await listTestcaseTree();
+      listTestcaseTree();
     }
   }
 
@@ -251,7 +280,7 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
       payload: {id: currentNode},
     })
     if (res) {
-      await listTestcaseTree();
+      listTestcaseTree();
     }
   }
 
@@ -313,8 +342,8 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
 
   return (
     <PageContainer title="接口用例管理" breadcrumb={false}>
-      <TestResult width={900} modal={resultModal} setModal={setResultModal} response={testResult}
-                  caseName={name}/>
+      <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
+                  caseName={name} single={false}/>
       <Row gutter={16}>
         <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
                       fields={fields} onFinish={onCreateDirectory} record={record}
@@ -435,8 +464,12 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
                     window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
                   }}><PlusOutlined/> 添加用例</Button>
                   {selectedRowKeys.length > 0 ?
-                    <LoadingButton text="执行用例" icon={<PlayCircleOutlined/>} onClick={onExecute}
-                                   style={{marginLeft: 8}}/> : null}
+                    <Dropdown overlay={menu()} trigger={['hover']}>
+                      <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
+                        e.stopPropagation()
+                      }}>执行用例 <DownOutlined/></Button>
+                    </Dropdown>
+                    : null}
                   {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
                 </Col>
               </Row>
@@ -447,7 +480,8 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
                          onChange={pg => {
                            saveCase({pagination: {...pagination, current: pg.current}})
                          }}
-                         dataSource={testcases} loading={loading.effects['testcase/listTestcase']}/>
+                         dataSource={testcases}
+                         loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
                 </Col>
               </Row>
             </Form>
@@ -458,8 +492,9 @@ const TestCaseDirectory = ({testcase, project, user, loading, dispatch}) => {
   )
 }
 
-export default connect(({testcase, project, user, loading}) => ({
-  loading: loading,
+export default connect(({testcase, gconfig, project, user, loading}) => ({
+  loading,
+  gconfig,
   user,
   project,
   testcase,

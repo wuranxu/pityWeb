@@ -25,13 +25,13 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
     setCurrentKey(e.key);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     dispatch({
       type: 'gconfig/fetchDbConfig'
     })
   }, [])
 
-  useEffect(async () => {
+  useEffect(() => {
     form.resetFields();
     form.setFieldsValue(testCaseConstructorData)
   }, [testCaseConstructorData])
@@ -39,7 +39,7 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CopyTreeSelect />
+        <CopyTreeSelect/>
         <Row gutter={8}>
           <Col span={3}>
             <Menu
@@ -120,7 +120,7 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
 }
 
 export default connect(({construct, gconfig, loading}) => ({
-  construct: construct,
-  gconfig: gconfig,
-  loading: loading,
+  construct,
+  gconfig,
+  loading,
 }))(DatabaseConstructor)

@@ -21,7 +21,8 @@ export async function executeCase(params) {
 export async function executeSelectedCase(params) {
   return request(`${CONFIG.URL}/request/run/multiple`, {
     method: 'POST',
-    data: params,
+    data: params.case_list,
+    params: {env: params.env},
     headers: auth.headers(),
   });
 }

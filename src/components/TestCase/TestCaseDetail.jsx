@@ -147,7 +147,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
               <Row>
                 {CaseTitle}
                 <Col span={24}>
-                  <TestResult width={900} modal={resultModal} setModal={setResultModal} response={testResult}
+                  <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                               caseName={data.name}/>
                   <Tabs defaultActiveKey="1" style={{marginTop: 12}}>
                     <TabPane key="1" tab="基础信息">

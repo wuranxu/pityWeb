@@ -158,7 +158,7 @@ export default {
     },
 
     * executeSelectedCase({payload}, {call, put}) {
-      return yield call(executeSelectedCase, payload.case_list);
+      return yield call(executeSelectedCase, payload);
     },
 
     // 新增testcase assert

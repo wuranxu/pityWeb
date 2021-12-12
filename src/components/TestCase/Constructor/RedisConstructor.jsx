@@ -17,13 +17,13 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
   const {redisConfig, envMap} = gconfig;
 
 
-  useEffect(async () => {
+  useEffect(() => {
     dispatch({
       type: 'gconfig/fetchRedisConfig'
     })
   }, [])
 
-  useEffect(async () => {
+  useEffect(() => {
     form.resetFields();
     form.setFieldsValue(testCaseConstructorData)
   }, [testCaseConstructorData])

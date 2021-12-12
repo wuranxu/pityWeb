@@ -26,9 +26,9 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
       render: name => <a>{name}</a>,
     },
   ]
-  useEffect(async () => {
+  useEffect(() => {
     if (form.getFieldValue("project_id")) {
-      await dispatch({
+      dispatch({
         type: 'testplan/listTestCaseTreeWithProjectId',
         payload: {
           project_id: form.getFieldValue("project_id"),

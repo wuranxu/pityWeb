@@ -1,7 +1,23 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Descriptions, Form, Modal, Row, Spin, Switch, Tabs, Tag, Timeline} from "antd";
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Dropdown,
+  Form,
+  Menu,
+  Modal,
+  Row,
+  Spin,
+  Switch,
+  Tabs,
+  Tag,
+  Timeline
+} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
@@ -12,6 +28,7 @@ import SortedTable from "@/components/Table/SortedTable";
 import "./TestCaseComponent.less";
 import {
   DeleteTwoTone,
+  DownOutlined,
   EditOutlined,
   EditTwoTone,
   ExclamationCircleOutlined,
@@ -57,9 +74,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const [formData, setFormData] = useState([]);
 
 
-  const fetchTestCaseInfo = async () => {
+  const fetchTestCaseInfo = () => {
     if (case_id) {
-      await dispatch({
+      dispatch({
         type: 'testcase/queryTestcase',
         payload: {
           caseId: case_id,
@@ -68,8 +85,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     }
   }
 
-  useEffect(async () => {
-    await dispatch({
+  useEffect(() => {
+    dispatch({
       type: 'testcase/queryTestcaseDirectory',
       payload: {
         directory_id,
@@ -77,7 +94,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     })
 
     // 获取环境信息
-    await dispatch({
+    dispatch({
       type: 'gconfig/fetchEnvList',
       payload: {
         page: 1,
@@ -86,11 +103,11 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       }
     })
 
-    await dispatch({
+    dispatch({
       type: 'user/fetchUserList'
     })
 
-    await fetchTestCaseInfo();
+    fetchTestCaseInfo();
 
   }, [])
 
@@ -317,21 +334,29 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
 
 
   // 在线运行用例
-  const onExecuteTestCase = async () => {
+  const onExecuteTestCase = async env => {
     const res = await dispatch({
       type: 'testcase/onExecuteTestCase',
-      payload: {case_id}
+      payload: {case_id, env}
     })
-    if (auth.response(res, true)) {
+    if (auth.notificationResponse(res, true)) {
       setResultModal(true);
       setTestResult(res.data);
     }
   }
 
+  const menu = <Menu>
+    {envList.map(item => <Menu.Item key={item.id} onClick={async () => {
+      await onExecuteTestCase(item.id)
+    }}>
+      <a>{item.name}</a>
+    </Menu.Item>)}
+  </Menu>
+
   return (
     <PageContainer title={false} breadcrumb={false}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
-                  caseName={caseInfo.name}/>
+                  caseName={caseInfo.name} single={false}/>
       <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}
             size="large">
         {
@@ -365,9 +390,11 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                 }
                               })
                             }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
-                            <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
-                                    loading={loading.effects['testcase/onExecuteTestCase']}
-                                    onClick={onExecuteTestCase}><PlayCircleOutlined/> 运行</Button>
+                            <Dropdown overlay={menu}>
+                              <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
+                                      loading={loading.effects['testcase/onExecuteTestCase']}
+                                      onClick={e => {e.stopPropagation()}}><PlayCircleOutlined/> 运行<DownOutlined/></Button>
+                            </Dropdown>
                           </div>}>
                       <Descriptions size='small' column={4}>
                         <Descriptions.Item label='用例名称'><a>{caseInfo.name}</a></Descriptions.Item>
@@ -432,7 +459,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                               }
                             </TabPane>
                             <TabPane key="1"
-                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[9, -2]}
+                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
                                                  count={constructors.length}><IconFont type="icon-DependencyGraph_16x"/>数据构造器</Badge>}>
                               {
                                 constructors.length === 0 ?
@@ -492,7 +519,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                               </Row>
                             </TabPane>
                             <TabPane key="3"
-                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[9, -2]}
+                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
                                                  count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
                               <TestCaseAssert asserts={asserts} caseId={case_id}/>
                             </TabPane>

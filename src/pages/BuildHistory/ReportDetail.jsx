@@ -49,7 +49,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
     // </Tag>
   }
 
-  const fetchEnv = async () => {
+  const fetchEnv = () => {
     if (envList.length === 0) {
       dispatch({
         type: 'gconfig/fetchEnvList',
@@ -57,12 +57,10 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
     }
   }
 
-  const fetchUsers = async () => {
-    if (userList.length === 0) {
-      dispatch({
-        type: 'user/fetchUserList',
-      })
-    }
+  const fetchUsers = () => {
+    dispatch({
+      type: 'user/fetchUserList',
+    })
   }
 
   const getPieData = () => {
@@ -97,8 +95,8 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   }
 
   useEffect(async () => {
-    await fetchEnv();
-    await fetchUsers();
+    fetchEnv();
+    fetchUsers();
     const res = await queryReport({id: reportId})
     if (auth.response(res)) {
       setCaseList(res.data.case_list);

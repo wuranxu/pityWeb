@@ -12,7 +12,7 @@ const BaseConfig = {
   rootPadding: 18,
 };
 
-export default ({data, graph, setGraph}) => {
+export default ({data, graph, setGraph, container_id="container"}) => {
 
   useEffect(() => {
     if (data === null) {
@@ -217,12 +217,12 @@ export default ({data, graph, setGraph}) => {
       },
     });
 
-    const container = document.getElementById('container');
+    const container = document.getElementById(container_id);
     const width = container.scrollWidth;
     const height = container.scrollHeight || 400;
-    if (graph === null) {
+    if (graph === null || graph === undefined) {
       const temp = new G6.TreeGraph({
-        container: 'container',
+        container: container_id,
         width,
         height,
         modes: {
@@ -271,7 +271,7 @@ export default ({data, graph, setGraph}) => {
           },
         },
       })
-      setGraph(temp)
+      setGraph({[container_id]: temp})
       temp.data(data);
       temp.render();
       temp.fitView();

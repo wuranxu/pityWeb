@@ -102,11 +102,11 @@ const ReportList = ({user, report, loading, dispatch}) => {
       fixed: 'right',
       render: status => reportConfig.STATUS[status],
     },
-    // {
-    //   title: '操作',
-    //   key: 'operation',
-    //   render: (_, record) => <><Button type="link" href={`/#/record/report/${record.id}`}>查看</Button></>
-    // }
+    {
+      title: '操作',
+      key: 'operation',
+      render: (_, record) => <><Button type="link" href={`/#/record/report/${record.id}`}>查看</Button></>
+    }
   ]
 
   const fetchReport = async () => {

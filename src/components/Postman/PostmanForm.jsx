@@ -411,18 +411,18 @@ const PostmanForm = ({
           </Col>
           <Col span={6}>
             <div style={{float: 'right'}}>
-              <Button
+              {!save ? <Button
                 onClick={onRequest}
                 loading={loading}
                 type="primary"
               >
                 <SendOutlined/>
                 Send{' '}
-              </Button>
+              </Button> : null}
               {save ?
                 <Button onClick={async () => {
                   save(false)
-                }} style={{margin: '0 12px', float: 'right'}}><SaveOutlined/>Save</Button> : null}
+                }} style={{margin: '0 12px', float: 'right'}}><SaveOutlined/>保存</Button> : null}
             </div>
           </Col>
         </Row>

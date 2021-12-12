@@ -27,29 +27,45 @@ const resColumns = [
     key: 'value',
   },
 ];
-export default ({response, caseName, width, modal, setModal}) => {
+export default ({response, caseName, width, modal, setModal, single = true}) => {
 
   const [xmindData, setXmindData] = useState(null);
-  const [graph, setGraph] = useState(null);
+  const [xmindDataList, setXmindDataList] = useState([]);
+  const [graph, setGraph] = useState({});
 
-  const getBrain = async () => {
-    const res = await queryXmindData({case_id: response.case_id})
+  const getBrain = async (case_id = response.case_id, single = true) => {
+    const res = await queryXmindData({case_id})
     if (auth.response(res)) {
-      setXmindData(res.data)
+      if (single) {
+        setXmindData(res.data)
+      } else {
+        const temp = Object.keys(response).map(k => res.data)
+        setXmindDataList(temp)
+      }
     }
   }
 
   useEffect(async () => {
-    if (response.case_id !== undefined) {
-      await getBrain();
+    if (single) {
+      if (response.case_id !== undefined) {
+        await getBrain();
+      }
+    } else {
+      for (const key of Object.keys(response)) {
+        if (response[key].case_id !== undefined) {
+          await getBrain(response[key].case_id, false);
+        }
+        return
+      }
     }
+
   }, [response])
 
-  const toTable = (field) => {
-    if (response[field] === null || response[field] === undefined || response[field] === '{}') {
+  const toTable = (field, resp = response) => {
+    if (resp[field] === null || resp[field] === undefined || resp[field] === '{}') {
       return [];
     }
-    const temp = JSON.parse(response[field]);
+    const temp = JSON.parse(resp[field]);
     return Object.keys(temp).map((key) => ({
       key,
       value: temp[key],
@@ -70,11 +86,11 @@ export default ({response, caseName, width, modal, setModal}) => {
     },
   ]
 
-  const getSource = () => {
-    if (response.asserts === undefined || !response.asserts) {
+  const getSource = (res = response) => {
+    if (res.asserts === undefined || !res.asserts) {
       return [];
     }
-    const temp = JSON.parse(response.asserts)
+    const temp = JSON.parse(res.asserts)
     const result = [];
     Object.keys(temp).forEach(k => {
       if (typeof temp[k].msg === "string") {
@@ -99,16 +115,113 @@ export default ({response, caseName, width, modal, setModal}) => {
             visible={modal} placement="right"
             onClose={() => setModal(false)}>
       <Row gutter={[8, 8]}>
-        <Tabs style={{width: '100%'}} tabPosition="left">
-          <TabPane tab={<span><IconFont type="icon-yongliliebiao"/>基本信息</span>} key="1">
-            <Descriptions column={2} bordered size="middle">
-              <Descriptions.Item label="测试结果">
-                <Badge status={response.status ? "success" : "error"} text={response.status ? "成功" : "失败"}/>
-              </Descriptions.Item>
-              <Descriptions.Item label="请求方式">
-                {response.request_method}
-              </Descriptions.Item>
-              <Descriptions.Item label="HTTP状态码">
+        {
+          !single ? <Tabs style={{width: '100%'}}>
+            {
+              Object.keys(response).map((name, index) => <TabPane tab={name} key={index.toString()}>
+                <Tabs style={{width: '100%'}} tabPosition="left">
+                  <TabPane tab={<span><IconFont type="icon-yongliliebiao"/>基本信息</span>} key="1">
+                    <Descriptions column={2} bordered size="middle">
+                      <Descriptions.Item label="测试结果">
+                        <Badge status={response[name].status ? "success" : "error"}
+                               text={response[name].status ? "成功" : "失败"}/>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="请求方式">
+                        {response[name].request_method}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="HTTP状态码">
+                  <span
+                    style={{
+                      color: STATUS[response[name].status_code] ? STATUS[response[name].status_code].color : '#F56C6C',
+                      marginLeft: 8,
+                      marginRight: 8,
+                    }}
+                  >
+                    {response[name].status_code}{' '}
+                    {STATUS[response[name].status_code] ? STATUS[response[name].status_code].text : ''}
+                  </span>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="执行时间">
+                  <span style={{marginLeft: 8, marginRight: 8}}>
+                    <span style={{color: '#67C23A'}}>{response[name].cost}</span>
+                  </span>
+                      </Descriptions.Item>
+                      <Descriptions.Item label="请求url" span={2}>
+                        {response[name].url}
+                      </Descriptions.Item>
+                      <Descriptions.Item label="请求body" span={2}>
+                        {
+                          response[name].request_data ? <SyntaxHighlighter language='json' style={vs2015}>
+                            {response[name].request_data}
+                          </SyntaxHighlighter> : <NoRecord height={120}/>
+                        }
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-duanyan"/>断言</span>} key="3">
+                    <Table
+                      columns={assertTable}
+                      dataSource={getSource(response[name])}
+                      size="small"
+                      pagination={false}
+                    />
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
+                    <CodeEditor
+                      language="text"
+                      value={response[name].logs}
+                      height="80vh"
+                    />
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
+                    <Table
+                      columns={resColumns}
+                      dataSource={toTable('request_headers', response[name])}
+                      size="small"
+                      pagination={false}
+                    />
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-cookies-1"/>Cookie</span>} key="6">
+                    <Table
+                      columns={resColumns}
+                      dataSource={toTable('cookies', response[name])}
+                      size="small"
+                      pagination={false}
+                    />
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-header"/>Response Headers</span>} key="7">
+                    <Table
+                      columns={resColumns}
+                      dataSource={toTable('response_headers', response[name])}
+                      size="small"
+                      pagination={false}
+                    />
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-xiangying"/>Response</span>} key="4">
+                    <CodeEditor
+                      value={response[name].response ? response[name].response : ''}
+                      height="45vh"
+                    />
+                  </TabPane>
+                  <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">
+                    <div id={`container_${index}`}>
+                      <TreeXmind data={xmindDataList[index]} graph={graph[`container_${index}`]} setGraph={setGraph}
+                                 container_id={`container_${index}`}/>
+                    </div>
+                  </TabPane>
+                </Tabs>
+              </TabPane>)
+            }
+          </Tabs> : <Tabs style={{width: '100%'}} tabPosition="left">
+            <TabPane tab={<span><IconFont type="icon-yongliliebiao"/>基本信息</span>} key="1">
+              <Descriptions column={2} bordered size="middle">
+                <Descriptions.Item label="测试结果">
+                  <Badge status={response.status ? "success" : "error"} text={response.status ? "成功" : "失败"}/>
+                </Descriptions.Item>
+                <Descriptions.Item label="请求方式">
+                  {response.request_method}
+                </Descriptions.Item>
+                <Descriptions.Item label="HTTP状态码">
                   <span
                     style={{
                       color: STATUS[response.status_code] ? STATUS[response.status_code].color : '#F56C6C',
@@ -119,76 +232,78 @@ export default ({response, caseName, width, modal, setModal}) => {
                     {response.status_code}{' '}
                     {STATUS[response.status_code] ? STATUS[response.status_code].text : ''}
                   </span>
-              </Descriptions.Item>
-              <Descriptions.Item label="执行时间">
+                </Descriptions.Item>
+                <Descriptions.Item label="执行时间">
                   <span style={{marginLeft: 8, marginRight: 8}}>
                     <span style={{color: '#67C23A'}}>{response.cost}</span>
                   </span>
-              </Descriptions.Item>
-              <Descriptions.Item label="请求url" span={2}>
-                {response.url}
-              </Descriptions.Item>
-              <Descriptions.Item label="请求body" span={2}>
-                {
-                  response.request_data ? <SyntaxHighlighter language='json' style={vs2015}>
-                    {response.request_data}
-                  </SyntaxHighlighter> : <NoRecord height={120}/>
-                }
-              </Descriptions.Item>
-            </Descriptions>
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-duanyan"/>断言</span>} key="3">
-            <Table
-              columns={assertTable}
-              dataSource={getSource()}
-              size="small"
-              pagination={false}
-            />
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-            <CodeEditor
-              language="text"
-              value={response.logs}
-              height="80vh"
-            />
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
-            <Table
-              columns={resColumns}
-              dataSource={toTable('request_headers')}
-              size="small"
-              pagination={false}
-            />
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-cookies-1"/>Cookie</span>} key="6">
-            <Table
-              columns={resColumns}
-              dataSource={toTable('cookies')}
-              size="small"
-              pagination={false}
-            />
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-header"/>Response Headers</span>} key="7">
-            <Table
-              columns={resColumns}
-              dataSource={toTable('response_headers')}
-              size="small"
-              pagination={false}
-            />
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-xiangying"/>Response</span>} key="4">
-            <CodeEditor
-              value={response.response ? response.response : ''}
-              height="45vh"
-            />
-          </TabPane>
-          <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">
-            <div id="container">
-              <TreeXmind data={xmindData} graph={graph} setGraph={setGraph}/>
-            </div>
-          </TabPane>
-        </Tabs>
+                </Descriptions.Item>
+                <Descriptions.Item label="请求url" span={2}>
+                  {response.url}
+                </Descriptions.Item>
+                <Descriptions.Item label="请求body" span={2}>
+                  {
+                    response.request_data ? <SyntaxHighlighter language='json' style={vs2015}>
+                      {response.request_data}
+                    </SyntaxHighlighter> : <NoRecord height={120}/>
+                  }
+                </Descriptions.Item>
+              </Descriptions>
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-duanyan"/>断言</span>} key="3">
+              <Table
+                columns={assertTable}
+                dataSource={getSource()}
+                size="small"
+                pagination={false}
+              />
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
+              <CodeEditor
+                language="text"
+                value={response.logs}
+                height="80vh"
+              />
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
+              <Table
+                columns={resColumns}
+                dataSource={toTable('request_headers')}
+                size="small"
+                pagination={false}
+              />
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-cookies-1"/>Cookie</span>} key="6">
+              <Table
+                columns={resColumns}
+                dataSource={toTable('cookies')}
+                size="small"
+                pagination={false}
+              />
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-header"/>Response Headers</span>} key="7">
+              <Table
+                columns={resColumns}
+                dataSource={toTable('response_headers')}
+                size="small"
+                pagination={false}
+              />
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-xiangying"/>Response</span>} key="4">
+              <CodeEditor
+                value={response.response ? response.response : ''}
+                height="45vh"
+              />
+            </TabPane>
+            <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">
+              <div id="container">
+                <TreeXmind data={xmindData} graph={graph['container']} setGraph={setGraph}/>
+              </div>
+            </TabPane>
+          </Tabs>
+        }
       </Row>
     </Drawer>
   )
+
 }
