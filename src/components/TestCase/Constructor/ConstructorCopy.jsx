@@ -2,7 +2,7 @@ import {Col, Row, TreeSelect} from "antd";
 import {connect} from 'umi';
 import {useEffect} from "react";
 
-const CopyTreeSelect = ({construct, dispatch}) => {
+const CopyTreeSelect = ({construct, dispatch, suffix=true}) => {
 
   const {constructorData, searchConstructor, constructorType} = construct;
 
@@ -18,7 +18,8 @@ const CopyTreeSelect = ({construct, dispatch}) => {
     dispatch({
       type: 'construct/getConstructorTree',
       payload: {
-        constructor_type: constructorType
+        constructor_type: constructorType,
+        suffix,
       }
     })
   }

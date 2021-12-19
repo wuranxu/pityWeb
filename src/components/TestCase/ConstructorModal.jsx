@@ -13,7 +13,18 @@ import PythonConstructor from "@/components/TestCase/Constructor/PythonConstruct
 const {Meta} = Card;
 const {Step} = Steps;
 
-const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, width, fetchData, record}) => {
+const ConstructorModal = ({
+                            modal,
+                            form,
+                            setModal,
+                            caseId,
+                            dispatch,
+                            construct,
+                            width,
+                            fetchData,
+                            record,
+                            suffix = false
+                          }) => {
 
   const {currentStep, totalStep, constructorType, testCaseConstructorData} = construct;
 
@@ -76,12 +87,16 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
         payload: {
           ...params,
           id: record.id,
+          suffix,
         }
       })
     } else {
       result = await dispatch({
         type: 'construct/insert',
-        payload: params
+        payload: {
+          ...params,
+          suffix,
+        }
       })
     }
     if (result) {
@@ -192,7 +207,8 @@ const ConstructorModal = ({modal, form, setModal, caseId, dispatch, construct, w
 
 
   return (
-    <Drawer title="数据构造器" width={width || 1100} visible={modal} onClose={() => setModal(false)} footer={null}>
+    <Drawer title={suffix ? '后置条件' : '前置条件'} width={width || 1100} visible={modal} onClose={() => setModal(false)}
+            footer={null}>
       <>
         <Row>
           <Col span={6}/>

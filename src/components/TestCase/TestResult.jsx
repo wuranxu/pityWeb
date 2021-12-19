@@ -116,7 +116,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
             onClose={() => setModal(false)}>
       <Row gutter={[8, 8]}>
         {
-          !single ? <Tabs style={{width: '100%'}}>
+          !single ? <Tabs style={{width: '100%', minHeight: 460}}>
             {
               Object.keys(response).map((name, index) => <TabPane tab={name} key={index.toString()}>
                 <Tabs style={{width: '100%'}} tabPosition="left">
@@ -212,7 +212,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                 </Tabs>
               </TabPane>)
             }
-          </Tabs> : <Tabs style={{width: '100%'}} tabPosition="left">
+          </Tabs> : <Tabs style={{width: '100%', minHeight: 460}} tabPosition="left">
             <TabPane tab={<span><IconFont type="icon-yongliliebiao"/>基本信息</span>} key="1">
               <Descriptions column={2} bordered size="middle">
                 <Descriptions.Item label="测试结果">

@@ -72,7 +72,11 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const [bodyType, setBodyType] = useState(0);
   const [headers, setHeaders] = useState([]);
   const [formData, setFormData] = useState([]);
+  const [suffix, setSuffix] = useState(false);
 
+  const getConstructor = sfx => {
+    return constructors.filter(item => item.suffix === sfx)
+  }
 
   const fetchTestCaseInfo = () => {
     if (case_id) {
@@ -368,7 +372,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                 <ConstructorModal width={1100} modal={constructorModal} setModal={e => {
                   dispatch({type: 'testcase/save', payload: {constructorModal: e}})
                 }} caseId={case_id} form={constructorForm} record={constructRecord}
-                                  fetchData={fetchTestCaseInfo}/>
+                                  fetchData={fetchTestCaseInfo} suffix={suffix}/>
                 {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
@@ -393,7 +397,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                             <Dropdown overlay={menu}>
                               <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
                                       loading={loading.effects['testcase/onExecuteTestCase']}
-                                      onClick={e => {e.stopPropagation()}}><PlayCircleOutlined/> 运行<DownOutlined/></Button>
+                                      onClick={e => {
+                                        e.stopPropagation()
+                                      }}><PlayCircleOutlined/> 运行<DownOutlined/></Button>
                             </Dropdown>
                           </div>}>
                       <Descriptions size='small' column={4}>
@@ -430,6 +436,11 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                               type: 'testcase/save',
                               payload: {activeKey: key}
                             })
+                            if (key === '4') {
+                              setSuffix(true);
+                            } else {
+                              setSuffix(false);
+                            }
                             if (key === '5' && envList.length > 0) {
                               dispatch({
                                 type: 'testcase/save',
@@ -460,11 +471,12 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                             </TabPane>
                             <TabPane key="1"
                                      tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                                                 count={constructors.length}><IconFont type="icon-DependencyGraph_16x"/>数据构造器</Badge>}>
+                                                 count={getConstructor(false).length}><IconFont
+                                       type="icon-DependencyGraph_16x"/>前置条件</Badge>}>
                               {
-                                constructors.length === 0 ?
+                                getConstructor(false).length === 0 ?
                                   <NoRecord height={180}
-                                            desc={<div>没有数据构造器, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
+                                            desc={<div>还没有前置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
                                   <Row gutter={12}>
                                     <Col span={16}>
                                       <Row>
@@ -474,7 +486,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                           }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
                                         </Col>
                                       </Row>
-                                      <SortedTable columns={columns} dataSource={constructors}
+                                      <SortedTable columns={columns} dataSource={getConstructor(false)}
                                                    setDataSource={
                                                      data => {
                                                        dispatch({
@@ -494,12 +506,13 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                       <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
                                         <Timeline>
                                           {
-                                            constructors.map((item, index) => item.enable ? <Timeline.Item key={index}>
-                                              <div key={index}><Badge count={index + 1} key={index}
-                                                                      style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                                <a key={item.name}>{item.name}</a> : item.name}</div>
-                                              {getDesc(item)}
-                                            </Timeline.Item> : null)
+                                            getConstructor(false).map((item, index) => item.enable ?
+                                              <Timeline.Item key={index}>
+                                                <div key={index}><Badge count={index + 1} key={index}
+                                                                        style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
+                                                  <a key={item.name}>{item.name}</a> : item.name}</div>
+                                                {getDesc(item)}
+                                              </Timeline.Item> : null)
                                           }
                                         </Timeline>
                                       </Card>
@@ -523,7 +536,58 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                                  count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
                               <TestCaseAssert asserts={asserts} caseId={case_id}/>
                             </TabPane>
-                            <TabPane key="4" tab={<span><IconFont type="icon-qingliwuliuliang"/>数据清理器</span>}/>
+                            <TabPane key="4"
+                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
+                                                 count={getConstructor(true).length}><IconFont
+                                       type="icon-qingliwuliuliang"/>后置条件</Badge>}>
+                              {
+                                getConstructor(true).length === 0 ?
+                                  <NoRecord height={180}
+                                            desc={<div>还没有后置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
+                                  <Row gutter={12}>
+                                    <Col span={16}>
+                                      <Row>
+                                        <Col span={24}>
+                                          <Button type="dashed" block style={{
+                                            marginBottom: 16,
+                                          }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
+                                        </Col>
+                                      </Row>
+                                      <SortedTable columns={columns} dataSource={getConstructor(true)}
+                                                   setDataSource={
+                                                     data => {
+                                                       dispatch({
+                                                         type: 'testcase/save',
+                                                         payload: {constructors: data}
+                                                       })
+                                                     }}
+                                                   loading={loading.effects['construct/delete'] || loading.effects['construct/update']}
+                                                   dragCallback={async newData => {
+                                                     return await dispatch({
+                                                       type: 'construct/orderConstructor',
+                                                       payload: newData.map((v, index) => ({id: v.id, index}))
+                                                     })
+                                                   }}/>
+                                    </Col>
+                                    <Col span={8}>
+                                      <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
+                                        <Timeline>
+                                          {
+                                            getConstructor(true).map((item, index) => item.enable ?
+                                              <Timeline.Item key={index}>
+                                                <div key={index}><Badge count={index + 1} key={index}
+                                                                        style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
+                                                  <a key={item.name}>{item.name}</a> : item.name}</div>
+                                                {getDesc(item)}
+                                              </Timeline.Item> : null)
+                                          }
+                                        </Timeline>
+                                      </Card>
+                                    </Col>
+                                  </Row>
+
+                              }
+                            </TabPane>
                           </Tabs>
                         </Col>
                       </Row>
