@@ -154,7 +154,9 @@ export default {
             testResult: res.data,
           }
         })
+        return true;
       }
+      return false;
     },
 
     * executeSelectedCase({payload}, {call, put}) {

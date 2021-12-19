@@ -61,7 +61,7 @@ const UserLayout = (props) => {
                 </div>
                 {children}
                 <DefaultFooter copyright={`${new Date().getFullYear()} woody个人出品`} links={false} style={{
-                  background: '#eef3f1'
+                  background: '#eefaff'
                 }}/>
               </div>
             </Col>

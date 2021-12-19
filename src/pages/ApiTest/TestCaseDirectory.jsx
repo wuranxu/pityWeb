@@ -72,15 +72,17 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   };
 
   const execute = async (record, env) => {
-    await dispatch({
+    const result = await dispatch({
       type: 'testcase/executeTestcase',
       payload: {
         case_id: record.id,
         env,
       }
     })
-    setResultModal(true);
-    setName(record.name);
+    if (result) {
+      setResultModal(true);
+      setName(record.name);
+    }
   };
 
   const onExecute = async env => {
@@ -93,10 +95,10 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     })
     if (auth.response(res)) {
       Modal.confirm({
-        title: '用例执行完毕, 是否跳转到报告页面?',
+        title: '用例正在后台执行, 去报告页面查看任务状态🔔',
         icon: <QuestionCircleOutlined/>,
         onOk() {
-          window.open(`/#/record/report/${res.data}`)
+          window.open(`/#/record/list`)
         },
         onCancel() {
         },
