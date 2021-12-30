@@ -42,7 +42,7 @@ const getContent = currentUser => {
 
 const Workspace = ({user, dispatch}) => {
   const {currentUser} = user;
-  return <PageHeaderWrapper content={getContent(currentUser)} breadcrumb={false}>
+  return <PageHeaderWrapper content={getContent(currentUser)} breadcrumb={null}>
   </PageHeaderWrapper>
 }
 

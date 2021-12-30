@@ -5,11 +5,22 @@ export const CONFIG = {
   // URL: 'http://121.5.2.74:7777',
   URL: 'http://localhost:7777',
   // URL: '',
-  ICONFONT: '//at.alicdn.com/t/font_915840_xhtofa1czc7.js',
+  ICONFONT: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
+  AVATAR_URL: 'https://joeschmoe.io/api/v1/',
   ROLE: {
     0: 'user',
     1: 'admin',
     2: 'superAdmin',
+  },
+  USER_ROLE: {
+    0: '普通用户',
+    1: '组长',
+    2: '超级管理员',
+  },
+  USER_ROLE_TAG: {
+    0: 'default',
+    1: 'blue',
+    2: 'success',
   },
   EDITOR_THEME: ["material-one-dark", 'atom-one-dark', 'vs-dark', 'ambiance', 'chrome', 'dracula', 'eclipse', 'github', 'merbivore', 'merbivore_soft', 'monokai', 'terminal', 'xcode'],
   PIC_URL: 'https://cdn.pity.fun/',

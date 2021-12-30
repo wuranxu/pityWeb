@@ -8,10 +8,12 @@ import FormForModal from '@/components/PityForm/FormForModal';
 import CodeEditor from '@/components/Postman/CodeEditor';
 import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import SyntaxHighlighter from "react-syntax-highlighter";
+import UserLink from "@/components/Button/UserLink";
 
 const {Option} = Select;
-const GConfig = ({gconfig, loading, dispatch}) => {
+const GConfig = ({gconfig, user, loading, dispatch}) => {
   const {data, envList, key_type, envMap, modal, currentEnv, name, pagination} = gconfig;
+  const {userMap} = user;
   const [record, setRecord] = useState({id: 0, key_type: 0});
   const [language, setLanguage] = useState(0);
 
@@ -81,6 +83,11 @@ const GConfig = ({gconfig, loading, dispatch}) => {
       render: text => <Badge status={text ? 'processing' : 'default'} text={text ? '使用中' : '已禁止'}/>,
     },
     {
+      title: "创建人",
+      key: "create_user",
+      render: (_, record) => <UserLink user={userMap[record.create_user.toString()]}/>
+    },
+    {
       title: '操作',
       key: 'operation',
       render: (_, record) => <>
@@ -145,6 +152,12 @@ const GConfig = ({gconfig, loading, dispatch}) => {
     });
   };
 
+  const fetchUserList = () => {
+    dispatch({
+      type: 'user/fetchUserList',
+    });
+  }
+
   const getConfig = async (page = pagination.current, size = pagination.pageSize) => {
     await dispatch({
       type: 'gconfig/fetchGConfig',
@@ -165,6 +178,7 @@ const GConfig = ({gconfig, loading, dispatch}) => {
   };
 
   useEffect(async () => {
+    fetchUserList()
     await initial();
   }, [currentEnv, name, pagination.current]);
 
@@ -195,7 +209,7 @@ const GConfig = ({gconfig, loading, dispatch}) => {
   };
 
   return (
-    <PageContainer title='全局变量' breadcrumb={false}>
+    <PageContainer title='全局变量' breadcrumb={null}>
       <Card>
         <FormForModal fields={fields} visible={modal} left={4} right={20} onFinish={onFinish}
                       onCancel={() => {
@@ -237,7 +251,7 @@ const GConfig = ({gconfig, loading, dispatch}) => {
   );
 };
 
-export default connect(({gconfig, loading}) => ({
-  gconfig: gconfig,
-  loading: loading,
+export default connect(({gconfig, user, loading}) => ({
+  gconfig, user,
+  loading,
 }))(GConfig);

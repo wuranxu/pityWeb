@@ -6,6 +6,7 @@ import { deleteEnvironment, insertEnvironment, listEnvironment, updateEnvironmen
 import auth from '@/utils/auth';
 import FormForModal from '@/components/PityForm/FormForModal';
 import fields from '@/consts/fields';
+import UserLink from "@/components/Button/UserLink";
 
 class Environment extends Component {
 
@@ -87,7 +88,9 @@ class Environment extends Component {
       {
         title: '创建人',
         key: 'create_user',
-        render: (_, record) => this.state.users[record.create_user.toString()] || '加载中...',
+        // render: (_, record) => this.state.users[record.create_user.toString()] || '加载中...',
+        render: (_, record) => <UserLink user={this.state.users[record.create_user.toString()]}/>,
+
       },
       {
         title: '更新时间',
@@ -109,7 +112,7 @@ class Environment extends Component {
       }];
 
     return (
-      <PageContainer title='环境配置' breadcrumb={false}>
+      <PageContainer title='环境配置' breadcrumb={null}>
         <Spin spinning={this.state.loading}>
           <Card>
             <FormForModal visible={this.state.visible} onCancel={() => {

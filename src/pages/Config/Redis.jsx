@@ -132,7 +132,7 @@ const Redis = ({gconfig, loading, dispatch}) => {
   }
 
   return (
-    <PageContainer title="Redis配置" breadcrumb={false}>
+    <PageContainer title="Redis配置" breadcrumb={null}>
       <Card>
         <Form form={form} {...CONFIG.LAYOUT} onValuesChange={() => {
           fetchRedisConfig();

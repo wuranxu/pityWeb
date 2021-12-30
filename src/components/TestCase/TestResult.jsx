@@ -169,6 +169,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                   <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
                     <CodeEditor
                       language="text"
+                      theme="vs-dark"
                       value={response[name].logs}
                       height="80vh"
                     />
@@ -263,6 +264,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                 language="text"
                 value={response.logs}
                 height="80vh"
+                theme="vs-dark"
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">

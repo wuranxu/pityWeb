@@ -9,6 +9,7 @@ import auth from '@/utils/auth';
 import {process} from '@/utils/utils';
 import {listUsers} from '@/services/user';
 import noRecord from '@/assets/no_record.svg'
+import UserLink from "@/components/Button/UserLink";
 
 
 const {Search} = Input;
@@ -66,7 +67,7 @@ export default () => {
   const content = (item) => {
     return (
       <div>
-        <p>负责人: {users[item.owner].name}</p>
+        <p>负责人: {<UserLink user={users[item.owner]}/>}</p>
         <p>简介: {item.description || '无'}</p>
         <p>更新时间: {item.updated_at}</p>
       </div>
@@ -125,7 +126,7 @@ export default () => {
     },
   ];
   return (
-    <PageContainer title={false} breadcrumb={false}>
+    <PageContainer title={false} breadcrumb={null}>
       <FormForModal
         width={600}
         title="添加项目"

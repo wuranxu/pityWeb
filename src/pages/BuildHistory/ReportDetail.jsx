@@ -12,8 +12,7 @@ import {
   CloseCircleOutlined,
   CloseCircleTwoTone,
   FrownTwoTone,
-  LikeTwoTone,
-  SyncOutlined
+  LikeTwoTone
 } from "@ant-design/icons";
 import IconFont from "@/components/Icon/IconFont";
 import reportConfig from "@/consts/reportConfig";
@@ -21,6 +20,7 @@ import common from "@/utils/common";
 import Pie from "@/components/Charts/Pie";
 import NoRecord from "@/components/NotFound/NoRecord";
 import TestResult from "@/components/TestCase/TestResult";
+import UserLink from "@/components/Button/UserLink";
 
 const {TabPane} = Tabs;
 
@@ -33,7 +33,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   const [caseName, setCaseName] = useState('');
   const [caseList, setCaseList] = useState([]);
   const {envMap, envList} = gconfig;
-  const {userList, userNameMap} = user;
+  const {userMap, userNameMap} = user;
 
   const getTag = () => {
     if (reportDetail.failed_count === 0 && reportDetail.error_count === 0 && reportDetail.success_count > 0) {
@@ -163,7 +163,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   ]
 
   return (
-    <PageContainer title={false} breadcrumb={false}>
+    <PageContainer title={false} breadcrumb={null}>
       <TestResult width={1000} setModal={setCaseModal} modal={caseModal} caseName={caseName} response={response}/>
       <Spin spinning={loading.effects["gconfig/fetchEnvList"]}>
         <Card title={`测试报告#${reportId}`}>
@@ -216,7 +216,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
                   {getTag()}
                 </Descriptions.Item>
                 <Descriptions.Item label="执行人">
-                  <a>{reportDetail.executor === 0 ? 'CPU' : userNameMap[reportDetail.executor] || '未知'}</a>
+                  {reportDetail.executor === 0 ? 'CPU' : <UserLink user={userMap[reportDetail.executor]} size={16}/>}
                 </Descriptions.Item>
                 <Descriptions.Item label="执行方式">
                   {reportConfig.EXECUTE_METHOD[reportDetail.mode]}
@@ -225,6 +225,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
                   {reportDetail.skipped_count}
                 </Descriptions.Item>
                 <Descriptions.Item label="测试计划">
+                  {/*TODO 这里需要把测试计划替换为测试计划名字，而不是id，并且给一个id可以查看测试计划*/}
                   {reportDetail.plan_id || '无'}
                 </Descriptions.Item>
                 <Descriptions.Item label="开始时间">

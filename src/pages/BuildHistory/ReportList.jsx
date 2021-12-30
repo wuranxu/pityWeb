@@ -7,8 +7,8 @@ import NoRecord from "@/components/NotFound/NoRecord";
 import {connect} from "umi";
 import {useEffect} from "react";
 import reportConfig from "@/consts/reportConfig";
-import styles from './ReportList.less';
 import {CONFIG} from "@/consts/config";
+import UserLink from "@/components/Button/UserLink";
 
 
 const {RangePicker} = DatePicker;
@@ -17,15 +17,15 @@ const {Option} = Select;
 const ReportList = ({user, report, loading, dispatch}) => {
   const [form] = Form.useForm()
 
-  const {userNameMap} = user;
+  const {userMap} = user;
   const {reportData, pagination} = report;
 
 
-  useEffect(async () => {
+  useEffect(() => {
     dispatch({
       type: 'user/fetchUserList',
     })
-    await fetchReport();
+    fetchReport();
   }, [pagination.current])
 
   const columns = [
@@ -36,9 +36,11 @@ const ReportList = ({user, report, loading, dispatch}) => {
       fixed: 'left',
       render: (text, record) => {
         if (record.failed_count === 0 && record.error_count === 0 && record.success_count > 0) {
-          return <span><CheckCircleTwoTone twoToneColor="#52c41a" style={{fontSize: 13}}/> #<a href={`/#/record/report/${record.id}`}>{text}</a></span>
+          return <span><CheckCircleTwoTone twoToneColor="#52c41a" style={{fontSize: 13}}/> #<a
+            href={`/#/record/report/${record.id}`}>{text}</a></span>
         }
-        return <span><CloseCircleTwoTone twoToneColor="#eb2f96" style={{fontSize: 13}}/> #<a href={`/#/record/report/${record.id}`}>{text}</a></span>
+        return <span><CloseCircleTwoTone twoToneColor="#eb2f96" style={{fontSize: 13}}/> #<a
+          href={`/#/record/report/${record.id}`}>{text}</a></span>
       }
     },
     {
@@ -53,7 +55,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
       dataIndex: 'executor',
       key: 'executor',
       fixed: 'left',
-      render: executor => executor === 0 ? 'CPU' : userNameMap[executor] || '未知',
+      render: executor => executor === 0 ? 'CPU' : <UserLink user={userMap[executor]}/>,
     },
     {
       title: '总数',
@@ -62,25 +64,25 @@ const ReportList = ({user, report, loading, dispatch}) => {
         <Tag> {record.success_count + record.failed_count + record.skipped_count + record.error_count} </Tag>,
     },
     {
-      title: '成功',
+      title: '成功 ✔',
       dataIndex: 'success_count',
       key: 'success_count',
       render: successCount => <Tag color="success"> {successCount} </Tag>,
     },
     {
-      title: '失败',
+      title: '失败 ❌',
       dataIndex: 'failed_count',
       key: 'failed_count',
       render: failedCount => <Tag color="error"> {failedCount} </Tag>,
     },
     {
-      title: '出错',
+      title: '出错 ⚠',
       dataIndex: 'error_count',
       key: 'error_count',
       render: errorCount => <Tag color="warning"> {errorCount} </Tag>,
     },
     {
-      title: '跳过',
+      title: '跳过 🎉',
       dataIndex: 'skipped_count',
       key: 'skipped_count',
       render: skippedCount => <Tag color="blue"> {skippedCount} </Tag>,
@@ -109,8 +111,8 @@ const ReportList = ({user, report, loading, dispatch}) => {
     }
   ]
 
-  const fetchReport = async () => {
-    const value = await form.getFieldsValue();
+  const fetchReport = () => {
+    const value = form.getFieldsValue();
     const start_time = value.date[0].format("YYYY-MM-DD HH:mm:ss")
     const end_time = value.date[1].format("YYYY-MM-DD HH:mm:ss")
     dispatch({
@@ -125,14 +127,14 @@ const ReportList = ({user, report, loading, dispatch}) => {
     })
   }
 
-  const onReset = async () => {
+  const onReset = () => {
     form.resetFields();
     form.setFieldsValue({date: [moment().startOf('week'), moment().endOf('week')]})
-    await fetchReport();
+    fetchReport();
   }
 
   return (
-    <PageContainer title="构建历史" breadcrumb={false}>
+    <PageContainer title="构建历史" breadcrumb={null}>
       <Card>
         <Form form={form}>
           <Row gutter={[8, 8]}>
@@ -141,7 +143,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
               <Form.Item label="执行人" name="executor">
                 <Select placeholder="选择执行人" style={{width: '90%'}} allowClear>
                   {
-                    Object.keys(userNameMap).map(v => (<Option key={v} value={v}>{userNameMap[v]}</Option>))
+                    Object.keys(userMap).map(v => (<Option key={v} value={v}><UserLink user={userMap[v]}/></Option>))
                   }
                 </Select>
               </Form.Item>
@@ -175,7 +177,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
           <Col span={24}>
             <Table columns={columns} locale={{emptyText: <NoRecord height={200}/>}} dataSource={reportData}
                    pagination={pagination}
-                   // scroll={{ x: 1800 }}
+              // scroll={{ x: 1800 }}
                    loading={loading.effects['report/fetchReportList']}
                    onChange={pg => {
                      dispatch({

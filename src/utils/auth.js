@@ -66,7 +66,7 @@ export default {
     const user = await listUsers();
     const temp = {};
     user.forEach((item) => {
-      temp[item.id] = item.name;
+      temp[item.id] = item;
     });
     return temp;
   }

@@ -1,8 +1,16 @@
-import {listUsers, loginGithub, query as queryUsers} from '@/services/user';
+import {
+  deleteUsers,
+  listUserActivities,
+  listUserOperationLog,
+  listUsers,
+  loginGithub,
+  query as queryUsers,
+  updateUsers
+} from '@/services/user';
 import {history} from 'umi';
 import {getPageQuery} from "@/utils/utils";
 import {message} from "antd";
-import {stringify} from "querystring";
+import auth from "@/utils/auth";
 
 // const client_id = `c46c7ae33442d13498cd`;
 // const key = `c79fafe58ff45f6b5b51ddde70d2d645209e38b9`;
@@ -22,8 +30,12 @@ const UserModel = {
   state: {
     currentUser: {},
     userList: [],
+    currentUserList: [],
     userMap: {},
     userNameMap: {},
+    // 用户活动轨迹数据
+    activities: [],
+    operationLog: [],
   },
   effects: {
     * fetch(_, {call, put}) {
@@ -34,6 +46,40 @@ const UserModel = {
       });
     },
 
+    * fetchUserActivities({payload}, {call, put}) {
+      const res = yield call(listUserActivities, payload);
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            activities: res.data,
+          }
+        })
+      }
+    },
+
+    * fetchUserRecord({payload}, {call, put}) {
+      const res = yield call(listUserOperationLog, payload);
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            operationLog: res.data,
+          }
+        })
+      }
+    },
+
+    * updateUser({payload}, {call, put}) {
+      const response = yield call(updateUsers, payload);
+      return auth.response(response, true);
+    },
+
+    * deleteUser({payload}, {call, put}) {
+      const response = yield call(deleteUsers, payload);
+      return auth.response(response, true);
+    },
+
     * fetchUserList(_, {call, put}) {
       const response = yield call(listUsers);
       const {userMap, userNameMap} = getUserMap(response);
@@ -41,6 +87,7 @@ const UserModel = {
         type: 'save',
         payload: {
           userList: response,
+          currentUserList: response,
           userMap,
           userNameMap
         },

@@ -9,6 +9,6 @@ const proSettings = {
   colorWeak: false,
   title: 'Pity',
   pwa: false,
-  iconfontUrl: '',
+  iconfontUrl: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
 };
 export default proSettings;

@@ -1,11 +1,12 @@
-import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Card, Col, Divider, Input, Row, Spin, Table } from 'antd';
-import { useEffect, useState } from 'react';
-import { insertEnvironment, listEnvironment, updateEnvironment } from '@/services/configure';
+import {PageContainer} from '@ant-design/pro-layout';
+import {Button, Card, Col, Divider, Input, Row, Spin, Table} from 'antd';
+import {useEffect, useState} from 'react';
+import {insertEnvironment, listEnvironment, updateEnvironment} from '@/services/configure';
 import auth from '@/utils/auth';
 import FormForModal from '@/components/PityForm/FormForModal';
 import fields from '@/consts/fields';
-import { listUsers } from '@/services/user';
+import {listUsers} from '@/services/user';
+import UserLink from "@/components/Button/UserLink";
 
 
 export default () => {
@@ -32,8 +33,7 @@ export default () => {
   }
 
 
-
-  const fetchEnvironmentList = async (page=pagination.current, size=pagination.pageSize, name=name) => {
+  const fetchEnvironmentList = async (page = pagination.current, size = pagination.pageSize, name = name) => {
     setLoading(true);
     const res = await listEnvironment({page, size, name})
     if (auth.response(res)) {
@@ -64,7 +64,7 @@ export default () => {
     {
       title: "创建人",
       key: "create_user",
-      render: (_, record) =>  users[record.create_user.toString()] || '加载中...'
+      render: (_, record) => <UserLink user={users[record.create_user.toString()]}/>
     },
     {
       title: "更新时间",
@@ -75,7 +75,7 @@ export default () => {
       title: "操作",
       key: "operation",
       render: (_, record) => <>
-        <a onClick={()=>{
+        <a onClick={() => {
           setRecord(record);
           setVisible(true);
         }}>编辑</a>
@@ -109,19 +109,21 @@ export default () => {
   }
 
   return (
-    <PageContainer title="环境配置" breadcrumb={false}>
+    <PageContainer title="环境配置" breadcrumb={null}>
       <Spin spinning={loading}>
-        <FormForModal visible={visible} onCancel={()=>setVisible(false)}
-                      title="环境管理" left={6} right={18} width={500} record={record} onFinish={onFinish} fields={fields.Environment}
+        <FormForModal visible={visible} onCancel={() => setVisible(false)}
+                      title="环境管理" left={6} right={18} width={500} record={record} onFinish={onFinish}
+                      fields={fields.Environment}
         />
         <Card>
           <Row>
             <Col span={6}>
-              <Button type="primary" onClick={()=>setVisible(true)}>新增环境</Button>
+              <Button type="primary" onClick={() => setVisible(true)}>新增环境</Button>
             </Col>
             <Col span={12}/>
             <Col span={6}>
-              <Input.Search value={name} onChange={e=>setName(e.target.value)} onSearch={onHandleSearch} placeholder="请输入环境名"/>
+              <Input.Search value={name} onChange={e => setName(e.target.value)} onSearch={onHandleSearch}
+                            placeholder="请输入环境名"/>
             </Col>
           </Row>
           <Row style={{marginTop: 12}}>

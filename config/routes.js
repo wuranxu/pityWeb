@@ -34,6 +34,12 @@ export default [
                 component: './Dashboard/Workspace',
               },
               {
+                path: '/member/:user_id',
+                name: '用户资料',
+                component: './UserInfo',
+                hideInMenu: true,
+              },
+              {
                 path: '/apiTest',
                 name: '接口测试',
                 icon: 'icon-Project',
@@ -76,7 +82,6 @@ export default [
                   },
                 ]
               },
-
               {
                 path: '/record',
                 icon: 'icon-jilu1',
@@ -95,6 +100,12 @@ export default [
                 ],
               },
               {
+                path: '/ci',
+                icon: 'icon-CI',
+                name: '持续集成',
+                component: "./Building"
+              },
+              {
                 path: '/precise',
                 icon: 'icon-jingzhun',
                 name: '精准测试',
@@ -110,6 +121,7 @@ export default [
                 path: '/config',
                 icon: 'icon-config',
                 name: '管理中心',
+                authority: ['superAdmin', 'admin'],
                 routes: [
                   {
                     path: '/config/environment',
@@ -134,7 +146,8 @@ export default [
                   {
                     path: '/config/user',
                     name: '用户管理',
-                    component: './Config/UserList',
+                    component: './Manager/UserList',
+                    authority: ['superAdmin'],
                   },
                   {
                     path: '/config/oss',

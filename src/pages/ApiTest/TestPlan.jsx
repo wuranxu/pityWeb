@@ -1,10 +1,11 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, history} from 'umi';
-import {Badge, Button, Card, Col, Divider, Form, Input, Modal, Row, Select, Table, Tag, Tooltip} from "antd";
+import {Avatar, Badge, Button, Card, Col, Divider, Form, Input, Modal, Row, Select, Table, Tag, Tooltip} from "antd";
 import React, {useEffect} from "react";
 import {CONFIG} from "@/consts/config";
 import {PlusOutlined} from "@ant-design/icons";
 import TestPlanForm from "@/components/TestCase/TestPlanForm";
+import UserLink from "@/components/Button/UserLink";
 
 const {Option} = Select;
 
@@ -138,8 +139,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
       title: '创建人',
       key: 'create_user',
       dataIndex: 'create_user',
-      // eslint-disable-next-line camelcase
-      render: create_user => userMap[create_user] !== undefined ? userMap[create_user].name : '加载中...'
+      render: create_user => <UserLink user={userMap[create_user]}/>
     },
     {
       title: '操作',
@@ -200,7 +200,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
   }, [])
 
   return (
-    <PageContainer title={false} breadcrumb={false}>
+    <PageContainer title={false} breadcrumb={null}>
       <Card>
         <TestPlanForm fetchTestPlan={fetchTestPlan}/>
         <Form form={form} {...CONFIG.LAYOUT} onValuesChange={() => {
@@ -227,9 +227,10 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="创建人" name="state">
+              <Form.Item label="创建人" name="create_user">
                 <Select placeholder="选择创建人" showSearch allowClear>
-                  {userList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                  {userList.map(item => <Option key={item.id} value={item.id}><Avatar size="small"
+                                                                                      src={item.avatar || CONFIG.AVATAR_URL + item.name}/> {item.name}</Option>)}
                 </Select>
               </Form.Item>
             </Col>

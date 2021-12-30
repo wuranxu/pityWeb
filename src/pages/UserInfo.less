@@ -1,0 +1,93 @@
+
+
+.userBody {
+  min-height: 692px;
+  max-height: 692px
+}
+
+.heatMap {
+  min-height: 280px;
+  max-height: 280px;
+}
+
+.userRecord {
+  margin-top: 12px;
+  min-height: 400px;
+  max-height: 400px;
+}
+
+.textOverflow() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+// mixins for clearfix
+// ------------------------
+.clearfix() {
+  zoom: 1;
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+  &::after {
+    clear: both;
+    height: 0;
+    font-size: 0;
+    visibility: hidden;
+  }
+}
+
+.activitiesList {
+  padding: 0 24px 8px 24px;
+
+  .username {
+    color: fade(#000, 85%);
+  }
+
+  .event {
+    font-weight: normal;
+  }
+}
+
+.pageHeaderContent {
+  display: flex;
+
+  .avatar {
+    flex: 0 1 72px;
+    margin-bottom: 8px;
+
+    & > span {
+      display: block;
+      width: 72px;
+      height: 72px;
+      border-radius: 72px;
+    }
+  }
+
+  .content {
+    position: relative;
+    top: 4px;
+    flex: 1 1 auto;
+    margin-left: 24px;
+    line-height: 22px;
+
+    .contentTitle {
+      margin-bottom: 12px;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+}
+
+.lastLogin {
+  margin-top: 8px;
+}
+
+.statisticsCard {
+  margin-top: 32px;
+  text-align: center;
+}

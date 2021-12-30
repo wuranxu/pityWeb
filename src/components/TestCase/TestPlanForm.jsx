@@ -1,5 +1,5 @@
 import {connect} from 'umi';
-import {Button, Col, Form, Input, InputNumber, Modal, Row, Select, Steps, TreeSelect} from "antd";
+import {Avatar, Button, Col, Form, Input, InputNumber, Modal, Row, Select, Steps, TreeSelect} from "antd";
 import {ApiOutlined, NotificationOutlined, SaveOutlined, TeamOutlined} from "@ant-design/icons";
 import React, {useEffect} from 'react';
 import {CONFIG} from "@/consts/config";
@@ -17,7 +17,7 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
       key: 'case_id',
       dataIndex: 'case_id',
       width: 100,
-      render: case_id => case_id ? case_id.split("_")[1]: null,
+      render: case_id => case_id ? case_id.split("_")[1] : null,
     },
     {
       title: '用例名称',
@@ -107,7 +107,11 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
     if (planRecord.id) {
       res = await dispatch({
         type: 'testplan/updateTestPlan',
-        payload: {...values, id: planRecord.id, case_list: values.case_list.map(item => parseInt(item.split("_")[1], 10))},
+        payload: {
+          ...values,
+          id: planRecord.id,
+          case_list: values.case_list.map(item => parseInt(item.split("_")[1], 10))
+        },
       })
     } else {
       res = await dispatch({
@@ -223,7 +227,8 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
           } name="receiver" {...CONFIG.SQL_LAYOUT}>
             <Select allowClear showSearch placeholder="选择接收人员" mode="multiple">
               {
-                userList.map(v => <Option key={v.id} value={v.id}>{v.name}({v.email})</Option>)
+                userList.map(v => <Option key={v.id} value={v.id}><Avatar size={14}
+                                                                          src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}({v.email})</Option>)
               }
             </Select>
           </Form.Item>

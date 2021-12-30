@@ -2,10 +2,11 @@ import {connect} from 'umi';
 import {Button, Card, Col, Form, Row} from "antd";
 import styles from "@/components/Drawer/CaseDetail.less";
 import getComponent from "@/components/PityForm";
-import PostmanForm from "@/components/Postman/PostmanForm";
 import fields from "@/consts/fields";
-import {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {SaveOutlined} from "@ant-design/icons";
+import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
+import PostmanForm from "@/components/Postman/PostmanForm";
 
 const FormItem = Form.Item;
 
@@ -14,17 +15,23 @@ const TestCaseEditor = ({
                           form,
                           testcase,
                           loading,
+                          caseId,
                           body,
                           setBody,
                           headers,
                           setHeaders,
+                          formData,
+                          setFormData,
+                          bodyType,
+                          setBodyType,
+                          setSuffix,
                           onSubmit,
                           create = false
                         }) => {
 
   const {caseInfo} = testcase;
-  const [bodyType, setBodyType] = useState(0);
-  const [formData, setFormData] = useState(0);
+  // const [bodyType, setBodyType] = useState(0);
+  // const [formData, setFormData] = useState(0);
 
   useEffect(() => {
     form.resetFields();
@@ -75,7 +82,12 @@ const TestCaseEditor = ({
                            bordered={false} caseInfo={caseInfo} bodyType={bodyType} setBodyType={setBodyType}/>
             </Col>
           </Row>
-        </Card> : null
+        </Card> : <Card>
+          <TestCaseBottom case_id={caseId} body={body} bodyType={bodyType} setBody={setBody} headers={headers}
+                          setHeaders={setHeaders} form={form}
+                          formData={formData} setFormData={setFormData} setSuffix={setSuffix}
+                          setBodyType={setBodyType}
+          /></Card>
       }
     </Form>
 

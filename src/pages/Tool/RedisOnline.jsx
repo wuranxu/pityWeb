@@ -133,7 +133,7 @@ const RedisOnline = ({dispatch, gconfig}) => {
     },
   }
 
-  const cmds = ["exists","select", "expire", "move", "scan", "ttl", "sort", "getbit", "getset", "mget", "mset", "setnx", "strlen"]
+  const cmds = ["exists", "select", "expire", "move", "scan", "ttl", "sort", "getbit", "getset", "mget", "mset", "setnx", "strlen"]
   cmds.forEach(command => {
     commands[command] = {
       fn: async (...args) => {
@@ -162,12 +162,14 @@ const RedisOnline = ({dispatch, gconfig}) => {
   }
 
   const handleClick = (a) => {
-    setLabel(a.item.props.children[1].props.children + "> ")
+    // antd 改动
+    // setLabel(a.item.props.children[1].props.children + "> ")
+    setLabel(a.item.props.children[1].props.props.children[1].props.children + "> ")
     setCurrentRedis(parseInt(a.key, 10))
   }
 
   return (
-    <PageContainer title="在线执行Redis" breadcrumb={false}>
+    <PageContainer title="在线执行Redis" breadcrumb={null}>
 
       <Card style={{margin: -12}}>
         <Row>

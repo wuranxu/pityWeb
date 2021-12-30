@@ -1,48 +1,18 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Descriptions,
-  Dropdown,
-  Form,
-  Menu,
-  Modal,
-  Row,
-  Spin,
-  Switch,
-  Tabs,
-  Tag,
-  Timeline
-} from "antd";
+import {Badge, Button, Card, Col, Descriptions, Dropdown, Form, Menu, Row, Spin, Tabs, Tag} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
 import IconFont from "@/components/Icon/IconFont";
-import NoRecord from "@/components/NotFound/NoRecord";
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
-import SortedTable from "@/components/Table/SortedTable";
 import "./TestCaseComponent.less";
-import {
-  DeleteTwoTone,
-  DownOutlined,
-  EditOutlined,
-  EditTwoTone,
-  ExclamationCircleOutlined,
-  PlayCircleOutlined,
-  PlusOutlined,
-  QuestionCircleOutlined
-} from "@ant-design/icons";
-import PostmanForm from "@/components/Postman/PostmanForm";
+import {DownOutlined, EditOutlined, PlayCircleOutlined} from "@ant-design/icons";
 import common from "@/utils/common";
-import TestCaseAssert from "@/components/TestCase/TestCaseAssert";
 import auth from "@/utils/auth";
-import TooltipIcon from "@/components/Icon/TooltipIcon";
-import NoRecord2 from "@/components/NotFound/NoRecord2";
-import TestcaseData from "@/components/TestCase/TestcaseData";
+import UserLink from "@/components/Button/UserLink";
+import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
 
 const {TabPane} = Tabs;
 
@@ -54,11 +24,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     directoryName,
     caseInfo,
     editing,
-    constructors,
     activeKey,
     asserts,
     constructRecord,
-    constructors_case,
     constructorModal,
     envActiveKey
   } = testcase;
@@ -73,10 +41,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const [headers, setHeaders] = useState([]);
   const [formData, setFormData] = useState([]);
   const [suffix, setSuffix] = useState(false);
-
-  const getConstructor = sfx => {
-    return constructors.filter(item => item.suffix === sfx)
-  }
 
   const fetchTestCaseInfo = () => {
     if (case_id) {
@@ -128,38 +92,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     || loading.effects['testcase/queryTestcase']
     || loading.effects['testcase/fetchUserList'])
 
-
-  const getDesc = item => {
-    const data = JSON.parse(item.constructor_json)
-    if (item.type === 0) {
-      const result = constructors_case[data.case_id]
-      if (!result) {
-        return null
-      }
-      return <div>用例: <a href={`/#/apiTest/testcase/${result.directory_id}/${result.id}`}
-                         target="_blank" rel="noreferrer">{result.name}</a></div>
-    }
-    if (item.type === 1) {
-      return <code>{data.sql}</code>
-    }
-
-    if (item.type === 2) {
-      return <code>
-        <pre>
-          {data.command}
-        </pre>
-      </code>
-    }
-    if (item.type === 3) {
-      return <code>
-        <pre>
-          {data.command}
-        </pre>
-      </code>
-    }
-
-  }
-
   const getTag = tag => {
     if (tag === null) {
       return '无'
@@ -172,19 +104,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     return caseInfo.tag ? caseInfo.tag.split(',').map(v => <Tag
       style={{marginRight: 8}}
       color='blue'>{v}</Tag>) : '无'
-  }
-
-  // 编辑数据构造器
-  const onEditConstructor = record => {
-    const dt = JSON.parse(record.constructor_json);
-    dispatch({
-      type: 'construct/save',
-      payload: {currentStep: 1, testCaseConstructorData: {...record, ...dt}, constructorType: record.type}
-    })
-    dispatch({
-      type: 'testcase/save',
-      payload: {constructorModal: true, constructRecord: record}
-    })
   }
 
   const onSubmit = async (isCreate = false) => {
@@ -223,120 +142,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     }
   }
 
-  const onSwitchConstructor = async (record, value) => {
-    const res = await dispatch({
-      type: 'construct/update',
-      payload: {
-        ...record,
-        enable: value
-      }
-    })
-    if (res) {
-      const newData = [...constructors]
-      newData.forEach(v => {
-        if (v.id === record.id) {
-          v.enable = value
-        }
-      })
-      dispatch({
-        type: 'testcase/save',
-        payload: {constructors: newData}
-      })
-    }
-
-  }
-
-
-  // 删除数据构造器
-  const onDeleteConstructor = async record => {
-    const res = await dispatch({
-      type: 'construct/delete',
-      payload: {id: record.id}
-    })
-    if (res) {
-      const newData = constructors.filter(v => v.id !== record.id)
-      dispatch({
-        type: 'testcase/save',
-        payload: {constructors: newData}
-      })
-    }
-  }
-
-  const columns = [
-    {
-      title: '名称',
-      key: 'name',
-      dataIndex: 'name',
-      render: (text, record) => <a onClick={() => {
-        onEditConstructor(record)
-      }}>{text}</a>,
-      className: 'drag-visible',
-    },
-    {
-      title: '类型',
-      key: 'type',
-      dataIndex: 'type',
-      render: tag => <Tag color={CONFIG.CASE_CONSTRUCTOR_COLOR[tag]}>{CONFIG.CASE_CONSTRUCTOR[tag]}</Tag>,
-      className: 'drag-visible',
-    },
-    {
-      title: '状态',
-      key: 'enable',
-      dataIndex: 'enable',
-      className: 'drag-visible',
-      render: (enable, record) => <Switch defaultChecked={record.enable} size="small" onChange={async value => {
-        await onSwitchConstructor(record, value)
-      }}/>
-    },
-    {
-      title: '返回值',
-      key: 'value',
-      dataIndex: 'value',
-      className: 'drag-visible',
-    },
-    {
-      title: '操作',
-      key: 'ops',
-      className: 'drag-visible',
-      render: (_, record) => <>
-        <a onClick={() => {
-          onEditConstructor(record)
-        }}><EditTwoTone/></a>
-        <a style={{marginLeft: 8}} onClick={() => {
-          Modal.confirm({
-            title: '你确定要删除这个数据构造器吗?',
-            icon: <ExclamationCircleOutlined/>,
-            content: '如果只是暂时不开启，可以先暂停它~',
-            okText: '确定',
-            okType: 'danger',
-            cancelText: '点错了',
-            onOk: async () => {
-              await onDeleteConstructor(record)
-            },
-          });
-        }}><DeleteTwoTone twoToneColor="red"/></a>
-      </>
-    },
-  ]
-
-  const onCreateConstructor = () => {
-    dispatch({
-      type: 'testcase/save',
-      payload: {
-        constructorModal: true, testCaseConstructorData: {
-          public: true,
-          enable: true,
-        },
-        currentStep: 0
-      }
-    })
-    dispatch({
-      type: 'construct/save',
-      payload: {currentStep: 0}
-    })
-  }
-
-
   // 在线运行用例
   const onExecuteTestCase = async env => {
     const res = await dispatch({
@@ -357,8 +162,21 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     </Menu.Item>)}
   </Menu>
 
+  const getTagArray = () => {
+    console.log(caseInfo)
+    if (caseInfo.tag === null || caseInfo.tag === "") {
+      return []
+    }
+    if (typeof caseInfo.tag === 'object') {
+      return caseInfo.tag;
+    }
+    return caseInfo.tag.split(",")
+
+
+  }
+
   return (
-    <PageContainer title={false} breadcrumb={false}>
+    <PageContainer title={false} breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={caseInfo.name} single={false}/>
       <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}
@@ -375,6 +193,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                   fetchData={fetchTestCaseInfo} suffix={suffix}/>
                 {
                   editing ? <TestCaseEditor directoryId={directory_id} form={form} body={body} setBody={setBody}
+                                            caseId={case_id} formData={formData} setFormData={setFormData}
+                                            bodyType={bodyType} setBodyType={setBodyType} setSuffix={setSuffix}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
                     <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={
                       <span>{directoryName} {caseInfo.name ? ` / ${caseInfo.name}` : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>}
@@ -388,7 +208,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                     ...caseInfo,
                                     status: caseInfo.status.toString(),
                                     request_type: caseInfo.request_type.toString(),
-                                    tag: typeof caseInfo.tag !== 'object' ? caseInfo.tag ? caseInfo.tag.split(",") : [] : caseInfo.tag
+                                    tag: getTagArray()
                                   },
                                   activeKey: '2',
                                 }
@@ -423,174 +243,17 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                           </div>
                         }</Descriptions.Item>
                         <Descriptions.Item
-                          label='创建人'>{userMap[caseInfo.create_user] !== undefined ? userMap[caseInfo.create_user].name : 'loading...'}</Descriptions.Item>
+                          label='创建人'><UserLink size={16} user={userMap[caseInfo.create_user]}/></Descriptions.Item>
                         <Descriptions.Item
-                          label='更新人'>{userMap[caseInfo.update_user] !== undefined ? userMap[caseInfo.update_user].name : 'loading...'}</Descriptions.Item>
+                          label='更新人'><UserLink size={16} user={userMap[caseInfo.update_user]}/></Descriptions.Item>
                         <Descriptions.Item label='创建时间'>{caseInfo.created_at}</Descriptions.Item>
                         <Descriptions.Item label='更新时间'>{caseInfo.updated_at}</Descriptions.Item>
                       </Descriptions>
-                      <Row gutter={8} style={{marginTop: 36, minHeight: 500}}>
-                        <Col span={24}>
-                          <Tabs activeKey={activeKey} onChange={key => {
-                            dispatch({
-                              type: 'testcase/save',
-                              payload: {activeKey: key}
-                            })
-                            if (key === '4') {
-                              setSuffix(true);
-                            } else {
-                              setSuffix(false);
-                            }
-                            if (key === '5' && envList.length > 0) {
-                              dispatch({
-                                type: 'testcase/save',
-                                payload: {
-                                  envActiveKey: envList[0].id.toString(),
-                                }
-                              })
-                            }
-                          }}>
-
-                            <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
-                              icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~"/></span>}>
-                              {
-                                envList.length > 0 ?
-                                  <Tabs tabPosition="left" activeKey={envActiveKey} onChange={key => {
-                                    dispatch({
-                                      type: 'testcase/save',
-                                      payload: {envActiveKey: key}
-                                    })
-                                  }}>
-                                    {envList.map(item => <TabPane key={item.id} tab={item.name}>
-                                      <TestcaseData caseId={case_id} currentEnv={envActiveKey}/>
-                                    </TabPane>)}
-                                  </Tabs> : <NoRecord2 height={280}
-                                                       desc={<span>没有任何环境信息, {<a href="/#/config/environment"
-                                                                                 target="_blank">去添加</a>}</span>}/>
-                              }
-                            </TabPane>
-                            <TabPane key="1"
-                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                                                 count={getConstructor(false).length}><IconFont
-                                       type="icon-DependencyGraph_16x"/>前置条件</Badge>}>
-                              {
-                                getConstructor(false).length === 0 ?
-                                  <NoRecord height={180}
-                                            desc={<div>还没有前置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
-                                  <Row gutter={12}>
-                                    <Col span={16}>
-                                      <Row>
-                                        <Col span={24}>
-                                          <Button type="dashed" block style={{
-                                            marginBottom: 16,
-                                          }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
-                                        </Col>
-                                      </Row>
-                                      <SortedTable columns={columns} dataSource={getConstructor(false)}
-                                                   setDataSource={
-                                                     data => {
-                                                       dispatch({
-                                                         type: 'testcase/save',
-                                                         payload: {constructors: data}
-                                                       })
-                                                     }}
-                                                   loading={loading.effects['construct/delete'] || loading.effects['construct/update']}
-                                                   dragCallback={async newData => {
-                                                     return await dispatch({
-                                                       type: 'construct/orderConstructor',
-                                                       payload: newData.map((v, index) => ({id: v.id, index}))
-                                                     })
-                                                   }}/>
-                                    </Col>
-                                    <Col span={8}>
-                                      <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
-                                        <Timeline>
-                                          {
-                                            getConstructor(false).map((item, index) => item.enable ?
-                                              <Timeline.Item key={index}>
-                                                <div key={index}><Badge count={index + 1} key={index}
-                                                                        style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                                  <a key={item.name}>{item.name}</a> : item.name}</div>
-                                                {getDesc(item)}
-                                              </Timeline.Item> : null)
-                                          }
-                                        </Timeline>
-                                      </Card>
-                                    </Col>
-                                  </Row>
-
-                              }
-                            </TabPane>
-                            <TabPane key="2" tab={<span><IconFont type="icon-qingqiu"/>接口请求</span>}>
-                              <Row gutter={[8, 8]}>
-                                <Col span={24}>
-                                  <PostmanForm form={form} body={body} setBody={setBody} headers={headers}
-                                               formData={formData} setFormData={setFormData} caseInfo={caseInfo}
-                                               setHeaders={setHeaders} bodyType={bodyType} setBodyType={setBodyType}
-                                               bordered={false} save={onSubmit}/>
-                                </Col>
-                              </Row>
-                            </TabPane>
-                            <TabPane key="3"
-                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                                                 count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
-                              <TestCaseAssert asserts={asserts} caseId={case_id}/>
-                            </TabPane>
-                            <TabPane key="4"
-                                     tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                                                 count={getConstructor(true).length}><IconFont
-                                       type="icon-qingliwuliuliang"/>后置条件</Badge>}>
-                              {
-                                getConstructor(true).length === 0 ?
-                                  <NoRecord height={180}
-                                            desc={<div>还没有后置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
-                                  <Row gutter={12}>
-                                    <Col span={16}>
-                                      <Row>
-                                        <Col span={24}>
-                                          <Button type="dashed" block style={{
-                                            marginBottom: 16,
-                                          }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
-                                        </Col>
-                                      </Row>
-                                      <SortedTable columns={columns} dataSource={getConstructor(true)}
-                                                   setDataSource={
-                                                     data => {
-                                                       dispatch({
-                                                         type: 'testcase/save',
-                                                         payload: {constructors: data}
-                                                       })
-                                                     }}
-                                                   loading={loading.effects['construct/delete'] || loading.effects['construct/update']}
-                                                   dragCallback={async newData => {
-                                                     return await dispatch({
-                                                       type: 'construct/orderConstructor',
-                                                       payload: newData.map((v, index) => ({id: v.id, index}))
-                                                     })
-                                                   }}/>
-                                    </Col>
-                                    <Col span={8}>
-                                      <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
-                                        <Timeline>
-                                          {
-                                            getConstructor(true).map((item, index) => item.enable ?
-                                              <Timeline.Item key={index}>
-                                                <div key={index}><Badge count={index + 1} key={index}
-                                                                        style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                                  <a key={item.name}>{item.name}</a> : item.name}</div>
-                                                {getDesc(item)}
-                                              </Timeline.Item> : null)
-                                          }
-                                        </Timeline>
-                                      </Card>
-                                    </Col>
-                                  </Row>
-
-                              }
-                            </TabPane>
-                          </Tabs>
-                        </Col>
-                      </Row>
+                      <TestCaseBottom setSuffix={setSuffix} headers={headers} setHeaders={setHeaders}
+                                      body={body} setBody={setBody} case_id={case_id} formData={formData}
+                                      setFormData={setFormData} bodyType={bodyType} form={form}
+                                      setBodyType={setBodyType} onSubmit={onSubmit}
+                      />
                     </Card>
                 }
               </Col>

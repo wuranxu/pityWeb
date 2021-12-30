@@ -104,7 +104,7 @@ const Oss = ({loading, dispatch, gconfig}) => {
 
 
   return (
-    <PageContainer title="OSS文件管理" breadcrumb={false}>
+    <PageContainer title="OSS文件管理" breadcrumb={null}>
       <Card>
         <Modal width={600} title="上传文件" visible={visible} onCancel={() => setVisible(false)} onOk={onUpload}>
           <Form form={form} {...CONFIG.SQL_LAYOUT}>
@@ -115,7 +115,7 @@ const Oss = ({loading, dispatch, gconfig}) => {
             <Form.Item label="文件" required>
               <Form.Item name="files" valuePropName="fileList" getValueFromEvent={normFile} noStyle
                          rules={[{required: true, message: '请至少上传一个文件'}]}>
-                <Upload.Dragger name="files" maxCount={1}>
+                <Upload.Dragger name="files" maxCount={1} beforeUpload={() => false}>
                   <p className="ant-upload-drag-icon">
                     <InboxOutlined/>
                   </p>

@@ -42,6 +42,7 @@ import IconFont from "@/components/Icon/IconFont";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
+import UserLink from "@/components/Button/UserLink";
 
 const {Option} = Select;
 const {DirectoryTree} = Tree;
@@ -130,6 +131,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "用例名称",
       dataIndex: "name",
       key: 'name',
+      // 自动省略多余数据
+      ellipsis: true,
     },
     {
       title: "请求类型",
@@ -153,7 +156,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "创建人",
       dataIndex: "create_user",
       key: 'create_user',
-      render: create_user => userMap[create_user].name || '加载中...'
+      render: create_user => <UserLink user={userMap[create_user]}/>
     },
     {
       title: "更新时间",
@@ -343,7 +346,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
 
 
   return (
-    <PageContainer title="接口用例管理" breadcrumb={false}>
+    <PageContainer title="接口用例管理" breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name} single={false}/>
       <Row gutter={16}>
@@ -440,7 +443,9 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                 <Col span={8}>
                   <Form.Item label="创建人"  {...layout} name="create_user">
                     <Select placeholder="选择创建用户" allowClear>
-                      {userList.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)}
+                      {userList.map(v => <Option key={v.id} value={v.id}><Avatar size="small"
+                                                                                 src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}
+                      </Option>)}
                     </Select>
                   </Form.Item>
                 </Col>
