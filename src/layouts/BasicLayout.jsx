@@ -78,11 +78,6 @@ const BasicLayout = (props) => {
   } = props;
   const menuDataRef = useRef([]);
 
-  const ws = new WebSocket("ws://localhost:7777/ws");
-  ws.onmessage = function(event) {
-    console.log(event.data)
-  };
-
   useEffect(() => {
     if (dispatch) {
       dispatch({
@@ -122,7 +117,7 @@ const BasicLayout = (props) => {
         onCollapse={handleMenuCollapse}
         onMenuHeaderClick={() => history.push('/')}
         headerContentRender={() => {
-          return <ProBreadcrumb />;
+          return <ProBreadcrumb/>;
         }}
         menuItemRender={(menuItemProps, defaultDom) => {
           if (

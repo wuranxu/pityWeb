@@ -93,7 +93,7 @@ const Workspace = ({user, dispatch}) => {
     fetchUsers()
     fetchUserActivities()
     fetchUserRecord()
-  }, [])
+  }, [userId])
 
 
   return <PageContainer breadcrumb={null} title={false}>

@@ -6,8 +6,11 @@ export async function query() {
   return request('/api/users');
 }
 
-export async function queryCurrent() {
-  return request('/api/currentUser');
+export async function queryCurrent(params) {
+  return await request(`${CONFIG.URL}/auth/query`, {
+    method: 'GET',
+    params,
+  })
 }
 
 export async function queryNotices() {
@@ -31,6 +34,17 @@ export async function updateUsers(data) {
     method: 'POST',
     data,
     headers: auth.headers(),
+  });
+}
+
+export async function updateAvatar(data) {
+  const formData = new FormData();
+  formData.append("file", data.file)
+  return await request(`${CONFIG.URL}/oss/avatar`, {
+    method: 'POST',
+    data: formData,
+    requestType: 'form',
+    headers: auth.headers(false),
   });
 }
 

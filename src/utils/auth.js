@@ -54,7 +54,7 @@ export default {
       // 说明用户未认证
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
-      localStorage.setItem('pityUser', null);
+      // localStorage.setItem('pityUser', null);
       window.location.href = '/#/user/login';
       message.info(res.msg);
       return false;

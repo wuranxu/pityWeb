@@ -5,7 +5,7 @@ export const CONFIG = {
   // URL: 'http://121.5.2.74:7777',
   URL: 'http://localhost:7777',
   // URL: '',
-  ICONFONT: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
+  ICONFONT: '//at.alicdn.com/t/font_915840_0jm85wjg9gz7.js',
   AVATAR_URL: 'https://joeschmoe.io/api/v1/',
   ROLE: {
     0: 'user',
@@ -125,12 +125,12 @@ export const CONFIG = {
       text: '调试中',
     },
     2: {
-      status: 'default',
-      text: '暂时关闭',
+      status: 'error',
+      text: '已停用',
     },
     3: {
       status: 'success',
-      text: '正常运行',
+      text: '正常',
     },
   },
   SQL_TYPE: {

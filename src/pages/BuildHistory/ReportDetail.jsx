@@ -28,6 +28,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   const params = useParams();
   const reportId = params.id;
   const [reportDetail, setReportDetail] = useState({});
+  const [planName, setPlanName] = useState('');
   const [caseModal, setCaseModal] = useState(false);
   const [response, setResponse] = useState({});
   const [caseName, setCaseName] = useState('');
@@ -101,6 +102,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
     if (auth.response(res)) {
       setCaseList(res.data.case_list);
       setReportDetail(res.data.report);
+      setPlanName(res.data.plan_name);
     }
   }, [])
 
@@ -225,8 +227,8 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
                   {reportDetail.skipped_count}
                 </Descriptions.Item>
                 <Descriptions.Item label="测试计划">
-                  {/*TODO 这里需要把测试计划替换为测试计划名字，而不是id，并且给一个id可以查看测试计划*/}
-                  {reportDetail.plan_id || '无'}
+                  {planName || '无'}
+                  {/*{reportDetail.plan_id || '无'}*/}
                 </Descriptions.Item>
                 <Descriptions.Item label="开始时间">
                   {reportDetail.start_at}

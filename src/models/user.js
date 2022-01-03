@@ -4,7 +4,8 @@ import {
   listUserOperationLog,
   listUsers,
   loginGithub,
-  query as queryUsers,
+  queryCurrent,
+  updateAvatar,
   updateUsers
 } from '@/services/user';
 import {history} from 'umi';
@@ -39,7 +40,8 @@ const UserModel = {
   },
   effects: {
     * fetch(_, {call, put}) {
-      const response = yield call(queryUsers);
+      const token = localStorage.getItem("pityToken")
+      const response = yield call(queryCurrent, {token});
       yield put({
         type: 'save',
         payload: response,
@@ -131,22 +133,39 @@ const UserModel = {
 
     },
 
+    * avatar({payload}, {call, put}) {
+      const res = yield call(updateAvatar, payload)
+      if (auth.response(res, true)) {
+        const pityUser = localStorage.getItem("pityUser")
+        const info = JSON.parse(pityUser)
+        info.avatar = res.data;
+        localStorage.setItem("pityUser", JSON.stringify(info))
+        yield put({
+          type: 'saveCurrentUser',
+          payload: info,
+        });
+      }
+    },
+
+
     * fetchCurrent(_, {call, put}) {
-      // const response = yield call(queryCurrent);
       const token = localStorage.getItem("pityToken")
-      const userInfo = localStorage.getItem("pityUser")
-      if (!token || !userInfo) {
-        // history.push("/user/login");
+      // const userInfo = localStorage.getItem("pityUser")
+      if (!token) {
+        history.push("/user/login");
         // history.replace({
         //   pathname: '/user/login',
         // });
         return;
       }
-      const info = JSON.parse(userInfo)
-      yield put({
-        type: 'saveCurrentUser',
-        payload: info,
-      });
+      const response = yield call(queryCurrent, {token});
+      if (auth.response(response)) {
+        yield put({
+          type: 'saveCurrentUser',
+          payload: response.data,
+        });
+      }
+
     },
   },
   reducers: {
@@ -155,6 +174,7 @@ const UserModel = {
     },
 
     saveCurrentUser(state, action) {
+      localStorage.setItem("pityUser", JSON.stringify(action.payload || {}))
       return {...state, currentUser: action.payload || {}};
     },
 

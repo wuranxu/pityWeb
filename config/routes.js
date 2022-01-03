@@ -34,6 +34,12 @@ export default [
                 component: './Dashboard/Workspace',
               },
               {
+                path: '/account/settings',
+                name: '个人设置',
+                component: './account/settings',
+                hideInMenu: true,
+              },
+              {
                 path: '/member/:user_id',
                 name: '用户资料',
                 component: './UserInfo',

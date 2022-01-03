@@ -81,6 +81,7 @@ const UserInfo = ({user, dispatch, loading}) => {
       render: (_, record) => <>
         <a onClick={() => {
           setRecord(record)
+          form.setFieldsValue(record)
           setModal(true)
         }}>编辑</a>
         <Divider type="vertical"/>

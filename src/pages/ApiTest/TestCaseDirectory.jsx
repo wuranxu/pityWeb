@@ -51,6 +51,7 @@ const {DirectoryTree} = Tree;
 const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}) => {
 
   const {projects, project_id} = project;
+  console.log(project_id)
   const {envList} = gconfig;
   const {userList, userMap} = user;
   const {directory, currentDirectory, testcases, testResult, selectedRowKeys, pagination} = testcase;
@@ -126,6 +127,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "#",
       dataIndex: "id",
       key: 'id',
+      width: 65,
     },
     {
       title: "用例名称",
@@ -156,16 +158,19 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "创建人",
       dataIndex: "create_user",
       key: 'create_user',
+      width: 100,
       render: create_user => <UserLink user={userMap[create_user]}/>
     },
     {
       title: "更新时间",
       dataIndex: "updated_at",
       key: 'updated_at',
+      width: 100,
     },
     {
       title: '操作',
       dataIndex: 'ops',
+      width: 130,
       key: 'ops',
       render: (_, record) => <>
         <a href={`/#/apiTest/testcase/${currentDirectory[0]}/${record.id}`} target="_blank">详情</a>
@@ -241,6 +246,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       type: 'project/save',
       payload: data,
     })
+    // 把项目id写入localStorage
+    localStorage.setItem("project_id", data.project_id)
   }
 
   const saveCase = data => {

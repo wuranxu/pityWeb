@@ -1,10 +1,10 @@
-import { Tooltip, Tag } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import React from 'react';
-import { connect, SelectLang } from 'umi';
+import {Badge, Tag, Tooltip} from 'antd';
+import {NotificationOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import React, {useState} from 'react';
+import {connect} from 'umi';
 import Avatar from './AvatarDropdown';
-import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
+import Version from "@/components/Drawer/Version";
 
 const ENVTagColor = {
   dev: 'orange',
@@ -13,12 +13,14 @@ const ENVTagColor = {
 };
 
 const GlobalHeaderRight = (props) => {
-  const { theme, layout } = props;
+  const {theme, layout} = props;
   let className = styles.right;
 
   if (theme === 'dark' && layout === 'top') {
     className = `${styles.right}  ${styles.dark}`;
   }
+
+  const [visible, setVisible] = useState(false);
 
   return (
     <div className={className}>
@@ -47,20 +49,37 @@ const GlobalHeaderRight = (props) => {
       {/*  //   //console.log('input', value);*/}
       {/*  // }}*/}
       {/*/>*/}
+      <Version visible={visible} setVisible={setVisible}/>
+      <Tooltip title="版本更新">
+        <a
+          onClick={() => {
+            setVisible(true)
+            localStorage.setItem("read", "ok");
+          }}
+          style={{
+            color: 'inherit',
+          }}
+          className={styles.action}
+        >
+          <Badge dot={localStorage.getItem("read") !== 'ok'}>
+            <NotificationOutlined/>
+          </Badge>
+        </a>
+      </Tooltip>
       <Tooltip title="使用文档">
         <a
           style={{
             color: 'inherit',
           }}
           target="_blank"
-          href="https://pro.ant.design/docs/getting-started"
+          href="https://pity.readthedocs.io"
           rel="noopener noreferrer"
           className={styles.action}
         >
-          <QuestionCircleOutlined />
+          <QuestionCircleOutlined/>
         </a>
       </Tooltip>
-      <Avatar />
+      <Avatar menu/>
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
@@ -71,7 +90,7 @@ const GlobalHeaderRight = (props) => {
   );
 };
 
-export default connect(({ settings }) => ({
+export default connect(({settings}) => ({
   theme: settings.navTheme,
   layout: settings.layout,
 }))(GlobalHeaderRight);

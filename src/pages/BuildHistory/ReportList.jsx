@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import reportConfig from "@/consts/reportConfig";
 import {CONFIG} from "@/consts/config";
 import UserLink from "@/components/Button/UserLink";
+import IconFont from "@/components/Icon/IconFont";
 
 
 const {RangePicker} = DatePicker;
@@ -55,7 +56,10 @@ const ReportList = ({user, report, loading, dispatch}) => {
       dataIndex: 'executor',
       key: 'executor',
       fixed: 'left',
-      render: executor => executor === 0 ? 'CPU' : <UserLink user={userMap[executor]}/>,
+      render: executor => executor === 0 ?
+        <span>
+          <IconFont style={{fontSize: 20}} type="icon-a-jiqirenrengongzhineng"/> CPU
+        </span> : <UserLink user={userMap[executor]}/>,
     },
     {
       title: '总数',

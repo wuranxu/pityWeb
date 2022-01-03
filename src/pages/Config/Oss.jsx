@@ -4,20 +4,27 @@ import {InboxOutlined, PlusOutlined} from "@ant-design/icons";
 import {CONFIG} from "@/consts/config";
 import {useEffect, useState} from "react";
 import {connect} from 'umi';
-import moment from "moment";
+import UserLink from "@/components/Button/UserLink";
 
-const Oss = ({loading, dispatch, gconfig}) => {
+const Oss = ({loading, dispatch, gconfig, user}) => {
 
   const [form] = Form.useForm();
   const {ossFileList, searchOssFileList} = gconfig;
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState('');
+  const {userMap} = user;
+
+  const fetchUserLists = () => {
+    dispatch({
+      type: 'user/fetchUserList'
+    })
+  }
 
   const onDeleteFile = record => {
     dispatch({
       type: 'gconfig/removeOssFile',
       payload: {
-        filepath: record.sha ? record.key + "$" + record.sha : record.key
+        filepath: record.file_path
       }
     })
   }
@@ -31,22 +38,30 @@ const Oss = ({loading, dispatch, gconfig}) => {
   const columns = [
     {
       title: '文件路径',
-      key: 'key',
-      dataIndex: 'key',
-      render: (key, record) => <a href={record.download_url || `${CONFIG.URL}/oss/download?filepath=${key}`}
-                                  target="_blank">{key}</a>
+      key: 'file_path',
+      dataIndex: 'file_path',
+      render: (file_path, record) => <a href={record.view_url || `${CONFIG.URL}/oss/download?filepath=${key}`}
+                                  target="_blank">{file_path}</a>
     },
     {
       title: '大小',
-      key: 'size',
-      dataIndex: 'size',
-      render: size => size === 0 ? '不提供此功能' : `${Math.round(size / 1024)}kb`
+      key: 'file_size',
+      dataIndex: 'file_size',
+      // render: size => size === 0 ? '不提供此功能' : `${Math.round(size / 1024)}kb`
+    },
+    {
+      title: '创建人',
+      key: 'create_user',
+      dataIndex: 'create_user',
+      render: createUser => <UserLink user={userMap[createUser]}/>
+      // render: lastModified => lastModified === null ? '不提供此功能' : moment(lastModified * 1000).subtract(moment().utcOffset() / 60 - 8, 'hours').format('YYYY-MM-DD HH:mm:ss')
+
     },
     {
       title: '更新时间',
-      key: 'last_modified',
-      dataIndex: 'last_modified',
-      render: lastModified => lastModified === null ? '不提供此功能' : moment(lastModified * 1000).subtract(moment().utcOffset() / 60 - 8, 'hours').format('YYYY-MM-DD HH:mm:ss')
+      key: 'updated_at',
+      dataIndex: 'updated_at',
+      // render: lastModified => lastModified === null ? '不提供此功能' : moment(lastModified * 1000).subtract(moment().utcOffset() / 60 - 8, 'hours').format('YYYY-MM-DD HH:mm:ss')
 
     },
     {
@@ -54,7 +69,7 @@ const Oss = ({loading, dispatch, gconfig}) => {
       key: 'ops',
       render: (record) => <>
         <a onClick={() => {
-          window.open(`${CONFIG.URL}/oss/download?filepath=${record.key}${record.sha ? `$${record.sha}` : ''}`)
+          window.open(`${CONFIG.URL}/oss/download?filepath=${record.file_path}${record.sha ? `$${record.sha}` : ''}`)
         }}>下载</a>
         <Divider type="vertical"/>
         <a onClick={() => {
@@ -92,7 +107,7 @@ const Oss = ({loading, dispatch, gconfig}) => {
     } else {
       dispatch({
         type: 'gconfig/save',
-        payload: {searchOssFileList: ossFileList.filter(v => v.key.toLowerCase().indexOf(value.toLowerCase()) > -1)}
+        payload: {searchOssFileList: ossFileList.filter(v => v.file_path.toLowerCase().indexOf(value.toLowerCase()) > -1)}
       })
     }
   }, [value])
@@ -100,6 +115,7 @@ const Oss = ({loading, dispatch, gconfig}) => {
 
   useEffect(() => {
     listFile();
+    fetchUserLists();
   }, [])
 
 
@@ -143,4 +159,4 @@ const Oss = ({loading, dispatch, gconfig}) => {
   )
 }
 
-export default connect(({loading, gconfig}) => ({loading, gconfig}))(Oss);
+export default connect(({loading, gconfig, user}) => ({loading, gconfig, user}))(Oss);
