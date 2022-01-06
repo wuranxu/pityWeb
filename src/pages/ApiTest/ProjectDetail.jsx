@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Avatar, Card, Tabs } from 'antd';
-import { useParams } from 'umi';
-import { process } from '@/utils/utils';
-import { queryProject } from '@/services/project';
+import React, {useEffect, useState} from 'react';
+import {PageContainer} from '@ant-design/pro-layout';
+import {Avatar, Card, Tabs} from 'antd';
+import {useParams} from 'umi';
+import {process} from '@/utils/utils';
+import {queryProject} from '@/services/project';
 import auth from '@/utils/auth';
 import ProjectInfo from '@/components/Project/ProjectInfo';
-import { listUsers } from '@/services/user';
+import {listUsers} from '@/services/user';
 import ProjectRole from '@/components/Project/ProjectRole';
-import Directory from '@/components/TestCase/Directory';
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 
 export default () => {
@@ -25,14 +24,14 @@ export default () => {
     const res = await listUsers();
     setUsers(res);
     const temp = {}
-    res.forEach(item => {temp[item.id] = item})
+    res.forEach(item => {
+      temp[item.id] = item
+    })
     return temp;
   };
 
-  const fetchData = async () => {
-    const user = await fetchUsers();
-    setUserMap(user)
-    const res = await queryProject({ projectId });
+  const fetchData = async (projId = projectId) => {
+    const res = await queryProject({projectId: projId});
     if (auth.response(res)) {
       setProjectData(res.data.project);
       setRoles(res.data.roles);
@@ -40,21 +39,24 @@ export default () => {
   };
 
   useEffect(async () => {
-    await process(fetchData);
+    await process(async () => {
+      fetchData()
+      const user = await fetchUsers();
+      setUserMap(user)
+    });
   }, []);
 
 
   return (
     <PageContainer breadcrumb={null} title={<span>
-      <Avatar
-        style={{ backgroundColor: '#87d068' }}>{projectData.name === undefined ? 'loading...' : projectData.name.slice(0, 2)}</Avatar>{projectData.name}</span>}>
+      <Avatar src={projectData.avatar}/>{projectData.name}</span>}>
       <Card bodyStyle={{padding: '8px 18px'}}>
         <Tabs defaultActiveKey='1'>
           <TabPane tab='成员列表' key='1'>
             <ProjectRole users={users} project={projectData} roles={roles} fetchData={fetchData}/>
           </TabPane>
           <TabPane tab='项目设置' key='2'>
-            <ProjectInfo data={projectData} users={users} reloadData={fetchData} />
+            <ProjectInfo data={projectData} users={users} reloadData={fetchData}/>
           </TabPane>
         </Tabs>
       </Card>

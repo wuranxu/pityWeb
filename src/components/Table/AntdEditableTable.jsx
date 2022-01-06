@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "./AntdEditableTable.less";
-import {Button, Col, Form, Input, Popconfirm, Row, Select, Table, Typography} from 'antd';
+import {Button, Col, Divider, Form, Input, Popconfirm, Row, Select, Table, Typography} from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
 import {CONFIG} from "@/consts/config";
 
@@ -66,7 +66,6 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
   const save = async (key) => {
     try {
       const row = await form.validateFields();
-      console.log(row)
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
 
@@ -110,13 +109,14 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
       dataIndex: 'value',
       width: "40%",
       render: (_, record) => record.key === editingKey ? type === 'FILE' ?
-        <Select style={{width: '100%'}} placeholder="please select oss file" showSearch value={filepath}
-                onChange={e => setFilepath(e)}>
-          {ossFileList.map(v => <Option key={v.key} value={v.key}>{v.key}</Option>)}
-        </Select> : <Input placeholder="please input VALUE" value={filepath} onChange={e => {
-          setFilepath(e.target.value)
-        }}/> :
-        type === 'FILE' ? <a href={`${CONFIG.URL}/oss/download?filepath=${record.value}`}>{record.value}</a>: record.value
+          <Select style={{width: '100%'}} placeholder="please select oss file" showSearch value={filepath}
+                  onChange={e => setFilepath(e)}>
+            {ossFileList.map(v => <Option key={v.file_path} value={v.file_path}>{v.file_path}</Option>)}
+          </Select> : <Input placeholder="please input VALUE" value={filepath} onChange={e => {
+            setFilepath(e.target.value)
+          }}/> :
+        type === 'FILE' ?
+          <a href={`${CONFIG.URL}/oss/download?filepath=${record.value}`}>{record.value}</a> : record.value
     },
     {
       title: 'OPERATION',
@@ -138,9 +138,15 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
-            Edit
-          </Typography.Link>
+          <>
+            <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+              Edit
+            </Typography.Link>
+            <Divider type="vertical"/>
+            <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+              Remove
+            </Typography.Link>
+          </>
         );
       },
     },

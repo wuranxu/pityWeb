@@ -1,13 +1,14 @@
 import React from 'react';
-import { Col, Row, Select, Tooltip } from 'antd';
-import CustomForm from '@/components/PityForm/CustomForm';
-import { updateProject } from '@/services/project';
+import {Col, Row, Select, Tooltip} from 'antd';
+import {updateProject} from '@/services/project';
 import auth from '@/utils/auth';
+import UserLink from "@/components/Button/UserLink";
+import ProjectForm from "@/components/PityForm/ProjectForm";
 
 
-const { Option } = Select;
+const {Option} = Select;
 
-export default ({ data, users, reloadData }) => {
+export default ({data, users, reloadData}) => {
 
   const onFinish = async (values) => {
     const project = {
@@ -19,10 +20,12 @@ export default ({ data, users, reloadData }) => {
     await reloadData();
   };
 
-  const opt = <Select placeholder='请选择项目组长'>
+  const opt = <Select placeholder='请选择项目组长' showSearch filterOption={(input, option) =>
+    option.children.props.user.name.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.children.props.user.email.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  } allowClear>
     {
       users.map(item => <Option key={item.value} value={item.id}><Tooltip
-        title={item.email}>{item.name}</Tooltip></Option>)
+        title={item.email}><UserLink user={item}/></Tooltip></Option>)
     }
   </Select>;
 
@@ -72,7 +75,7 @@ export default ({ data, users, reloadData }) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CustomForm left={6} right={18} record={data} onFinish={onFinish} fields={fields} />
+        <ProjectForm left={6} right={18} record={data} onFinish={onFinish} fields={fields} reloadData={reloadData}/>
       </Col>
     </Row>
   );

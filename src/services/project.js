@@ -57,3 +57,14 @@ export async function deleteProjectRole(data) {
     headers: auth.headers(),
   });
 }
+
+export async function updateAvatar(data) {
+  const formData = new FormData();
+  formData.append("file", data.file)
+  return await request(`${CONFIG.URL}/project/avatar/${data.project_id}`, {
+    method: 'POST',
+    data: formData,
+    requestType: 'form',
+    headers: auth.headers(false),
+  });
+}

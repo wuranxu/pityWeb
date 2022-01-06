@@ -39,14 +39,14 @@ const UserModel = {
     operationLog: [],
   },
   effects: {
-    * fetch(_, {call, put}) {
-      const token = localStorage.getItem("pityToken")
-      const response = yield call(queryCurrent, {token});
-      yield put({
-        type: 'save',
-        payload: response,
-      });
-    },
+    // * fetch(_, {call, put}) {
+    //   const token = localStorage.getItem("pityToken")
+    //   const response = yield call(queryCurrent, {token});
+    //   yield put({
+    //     type: 'save',
+    //     payload: response,
+    //   });
+    // },
 
     * fetchUserActivities({payload}, {call, put}) {
       const res = yield call(listUserActivities, payload);
@@ -151,8 +151,8 @@ const UserModel = {
     * fetchCurrent(_, {call, put}) {
       const token = localStorage.getItem("pityToken")
       // const userInfo = localStorage.getItem("pityUser")
-      if (!token) {
-        history.push("/user/login");
+      if (token === null || token === '') {
+        // history.push("/#/user/login");
         // history.replace({
         //   pathname: '/user/login',
         // });

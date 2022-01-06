@@ -7,6 +7,7 @@ import {httpRequest} from '@/services/request';
 import {connect} from 'umi'
 import auth from '@/utils/auth';
 import FormData from "@/components/Postman/FormData";
+import IconFont from "@/components/Icon/IconFont";
 
 const {Option} = Select;
 const {TabPane} = Tabs;
@@ -294,7 +295,7 @@ const Postman = ({loading: gloading, gconfig, dispatch}) => {
   }
 
   return (
-    <Card title="在线调试HTTP请求">
+    <Card title="在线HTTP测试工具">
       <Row gutter={[8, 8]}>
         <Col span={18}>
           <Input
@@ -316,7 +317,7 @@ const Postman = ({loading: gloading, gconfig, dispatch}) => {
             size="large"
             style={{marginRight: 16, float: 'right'}}
           >
-            <SendOutlined/>
+            <IconFont type="icon-fasong1"/>
             Send{' '}
           </Button>
         </Col>

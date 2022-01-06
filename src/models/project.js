@@ -1,4 +1,4 @@
-import {listProject} from "@/services/project";
+import {listProject, updateAvatar} from "@/services/project";
 import auth from "@/utils/auth";
 
 const getProjectId = () => {
@@ -47,5 +47,13 @@ export default {
         })
       }
     },
+
+    * uploadFile({payload}, {call, put}) {
+      const res = yield call(updateAvatar, payload)
+      if (auth.response(res, true)) {
+        return res.data;
+      }
+      return null;
+    }
   },
 }

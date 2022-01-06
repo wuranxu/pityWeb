@@ -96,12 +96,12 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     if (tag === null) {
       return '无'
     }
-    if (typeof tag === 'object' && tag.length > 0) {
-      return tag.map(v => <Tag
+    if (typeof tag === 'object') {
+      return tag.length > 0 ? tag.map(v => <Tag
         style={{marginRight: 8}}
-        color='blue'>{v}</Tag>)
+        color='blue'>{v}</Tag>): '无'
     }
-    return caseInfo.tag ? caseInfo.tag.split(',').map(v => <Tag
+    return tag ? tag.split(',').map(v => <Tag
       style={{marginRight: 8}}
       color='blue'>{v}</Tag>) : '无'
   }

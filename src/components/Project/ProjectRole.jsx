@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Button, List, Select, Popconfirm, Skeleton, Input, Tag} from 'antd';
+import {Avatar, Button, Input, List, Popconfirm, Select, Skeleton, Tag} from 'antd';
 import {CONFIG} from '@/consts/config';
-import {PlusOutlined, DeleteTwoTone} from '@ant-design/icons';
+import {DeleteTwoTone, PlusOutlined} from '@ant-design/icons';
 import FormForModal from "@/components/PityForm/FormForModal";
-import { useParams } from 'umi';
-import { deleteProjectRole, insertProjectRole, updateProjectRole } from '@/services/project';
+import {useParams} from 'umi';
+import {deleteProjectRole, insertProjectRole, updateProjectRole} from '@/services/project';
 import auth from '@/utils/auth';
+import UserLink from "@/components/Button/UserLink";
 
 const {Option} = Select;
 
@@ -15,9 +16,11 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
   const [userMap, setUserMap] = useState({});
   const [data, setData] = useState(roles);
 
-  useEffect(()=>{
+  useEffect(() => {
     const temp = {}
-    users.forEach(item => {temp[item.id] = item})
+    users.forEach(item => {
+      temp[item.id] = item
+    })
     setUserMap(temp)
     setData([
       {
@@ -92,7 +95,8 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
         onUpdateRole(item, data);
       }}>
         {
-          Object.keys(CONFIG.PROJECT_ROLE_MAP).map((key, index) => <Option key={index} value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
+          Object.keys(CONFIG.PROJECT_ROLE_MAP).map((key, index) => <Option key={index}
+                                                                           value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
         }
       </Select>,
       <Popconfirm
@@ -107,15 +111,19 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
       </Popconfirm>
     ]
   }
-  const opt = <Select placeholder="请选择用户">
+  const opt = <Select placeholder="请选择用户" showSearch allowClear filterOption={(input, option) =>
+    option.children.props.user.name.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.children.props.user.email.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }>
     {
-      users.map(item => <Option value={item.id} key={item.id} disabled={item.id === project.owner}>{item.name}</Option>)
+      users.map(item => <Option value={item.id} key={item.id} disabled={item.id === project.owner}><UserLink
+        user={item}/></Option>)
     }
   </Select>
 
   const roleList = <Select placeholder="请选择角色">
     {
-      Object.keys(CONFIG.PROJECT_ROLE_MAP).map((key, index) => <Option key={index} value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
+      Object.keys(CONFIG.PROJECT_ROLE_MAP).map((key, index) => <Option key={index}
+                                                                       value={key}>{CONFIG.PROJECT_ROLE_MAP[key]}</Option>)
     }
   </Select>
 
@@ -156,7 +164,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
               <Skeleton avatar title={false} loading={item.loading} active>
                 <List.Item.Meta
                   avatar={<Avatar
-                    src={item.avatar || `https://joeschmoe.io/api/v1/${item.user_id}`}/>}
+                    src={userMap[item.user_id]?.avatar || `https://joeschmoe.io/api/v1/${item.user_id}`}/>}
                   title={userMap[item.user_id] ? userMap[item.user_id].name : 'loading'}
                   description={userMap[item.user_id] ? userMap[item.user_id].email : 'loading'}/>
               </Skeleton>

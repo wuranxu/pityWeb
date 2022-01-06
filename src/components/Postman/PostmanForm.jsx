@@ -30,6 +30,7 @@ import auth from '@/utils/auth';
 import {listGConfig} from "@/services/configure";
 import FormData from "@/components/Postman/FormData";
 import {connect} from 'umi';
+import IconFont from "@/components/Icon/IconFont";
 
 const {Option} = Select;
 const {TabPane} = Tabs;
@@ -416,7 +417,7 @@ const PostmanForm = ({
                 loading={loading}
                 type="primary"
               >
-                <SendOutlined/>
+                <IconFont type="icon-fasong1"/>
                 Send{' '}
               </Button> : null}
               {save ?

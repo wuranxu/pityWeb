@@ -67,8 +67,7 @@ const Model = {
 
     logout() {
       const { redirect } = getPageQuery(); // Note: There may be security issues, please note
-
-      if (window.location.pathname !== '/user/login' && !redirect) {
+      if (window.location.pathname !== '/#/user/login' && !redirect) {
         localStorage.removeItem("pityToken");
         localStorage.removeItem("pityUser");
         history.replace({

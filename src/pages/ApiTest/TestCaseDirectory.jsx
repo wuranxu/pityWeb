@@ -339,11 +339,11 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     }
   ];
 
-  const getProjectName = () => {
+  const getProject = () => {
     if (projects.length === 0) {
       return 'loading...'
     }
-    return projects.filter(p => p.id === project_id)[0].name
+    return projects.filter(p => p.id === project_id)[0]
   }
 
   const layout = {
@@ -378,8 +378,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                                     }>
                     {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
                   </Select> : <>
-                    <Avatar style={{marginLeft: 8, marginRight: 6}} src={`https://api.prodless.com/avatar.png`}/>
-                    <a onClick={() => setEditing(true)}>{getProjectName()}</a>
+                    <Avatar style={{marginLeft: 8, marginRight: 6}} src={getProject().avatar || `https://api.prodless.com/avatar.png`}/>
+                    <a onClick={() => setEditing(true)}>{getProject().name}</a>
                     <IconFont type="icon-qiehuan2" onClick={() => setEditing(true)}
                               style={{fontSize: 15, marginLeft: 8}}/>
                   </>
