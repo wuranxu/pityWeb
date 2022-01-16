@@ -34,13 +34,14 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       label: '名称',
       required: true,
       type: 'input',
-      placeholder: '请输入数据构造器名称',
+      placeholder: '请输入数据构造器名称222',
       initialValue: data.name,
     },
     {
-      name: 'case_id',
+      name: 'constructor_case_id',
       label: '测试用例',
       required: true,
+      initialValue: data.constructor_case_id,
       placeholder: '请选择用例',
       component: <Select placeholder="请选择用例">
         {

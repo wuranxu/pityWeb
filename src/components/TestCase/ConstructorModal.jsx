@@ -44,8 +44,8 @@ const ConstructorModal = ({
     if (testCaseConstructorData.type === 0) {
       // 说明是用例
       return JSON.stringify({
-        project_id: values.case_id[0],
-        case_id: values.case_id[1],
+        // project_id: values.case_id[0],
+        constructor_case_id: values.constructor_case_id,
         params: values.params
       })
     }

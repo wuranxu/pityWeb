@@ -68,6 +68,7 @@ const TestCaseBottom = ({
   // 编辑数据构造器
   const onEditConstructor = record => {
     const dt = JSON.parse(record.constructor_json);
+    console.log(dt)
     dispatch({
       type: 'construct/save',
       payload: {currentStep: 1, testCaseConstructorData: {...record, ...dt}, constructorType: record.type}

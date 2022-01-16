@@ -130,6 +130,11 @@ export default [
                 authority: ['superAdmin', 'admin'],
                 routes: [
                   {
+                    path: '/config/system',
+                    name: '系统设置',
+                    component: './Config/SystemConfig',
+                  },
+                  {
                     path: '/config/environment',
                     name: '环境管理',
                     component: './Config/Environment',

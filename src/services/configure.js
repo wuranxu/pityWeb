@@ -178,6 +178,20 @@ export async function deleteFile(params) {
   });
 }
 
+export async function getSystemConfig() {
+  return request(`${CONFIG.URL}/config/system`, {
+    method: 'GET',
+    headers: auth.headers(),
+  });
+}
+
+export async function updateSystemConfig(data) {
+  return request(`${CONFIG.URL}/config/system/update`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
 
 
 

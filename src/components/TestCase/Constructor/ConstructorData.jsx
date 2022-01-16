@@ -6,7 +6,7 @@ import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 
 const TestCaseConstructorData = ({caseId, construct, dispatch, form, onFinish}) => {
 
-  const {constructorData, searchConstructor, testcaseData, testCaseConstructorData, constructorType} = construct;
+  const {testcaseData, testCaseConstructorData, constructorType} = construct;
 
   return (
     <Row style={{marginTop: 24}} gutter={[8, 8]}>

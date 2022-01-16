@@ -101,7 +101,7 @@ export default {
           ans = {
             ...ans,
             params: json_data.params,
-            case_id: [json_data.project_id, json_data.case_id],
+            constructor_case_id: json_data.constructor_case_id,
           }
         } else if (res.data.type === 1) {
           ans = {
@@ -121,7 +121,6 @@ export default {
             command: json_data.command,
           }
         }
-        console.log(ans)
         yield put({
           type: 'save',
           payload: {

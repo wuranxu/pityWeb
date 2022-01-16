@@ -2,7 +2,7 @@ import {
   deleteDbConfig,
   deleteFile,
   deleteGConfig,
-  deleteRedisConfig,
+  deleteRedisConfig, getSystemConfig,
   insertDbConfig,
   insertGConfig,
   insertRedisConfig,
@@ -15,7 +15,7 @@ import {
   onTestDbConfig,
   updateDbConfig,
   updateGConfig,
-  updateRedisConfig,
+  updateRedisConfig, updateSystemConfig,
   uploadFile
 } from '@/services/configure';
 import auth from '@/utils/auth';
@@ -25,6 +25,7 @@ export default {
   namespace: 'gconfig',
   state: {
     data: [],
+    configuration: {},
     currentEnv: 0,
     name: '',
     envList: [],
@@ -60,6 +61,24 @@ export default {
     },
   },
   effects: {
+    // 获取系统配置
+    * fetchSystemConfig ({payload}, {call, put}) {
+      const res = yield call(getSystemConfig)
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            configuration: res.data,
+          }
+        })
+      }
+    },
+
+    * updateConfiguration({payload}, {call, _}) {
+      const res = yield call(updateSystemConfig, payload)
+      auth.response(res, true)
+    },
+
     // 获取数据库配置
     * fetchDbConfig({payload}, {call, put}) {
       const res = yield call(listDbConfig, payload);
