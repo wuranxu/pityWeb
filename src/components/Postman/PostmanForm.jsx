@@ -222,7 +222,7 @@ const PostmanForm = ({
     }
     setLoading(true);
     const params = {
-      method,
+      method: method || 'GET',
       url,
       body,
       body_type: bodyType,
