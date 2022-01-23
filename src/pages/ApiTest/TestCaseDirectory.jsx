@@ -22,6 +22,8 @@ import {
 } from "antd";
 import {connect} from "umi";
 import React, {useEffect, useState} from "react";
+import SplitPane from 'react-split-pane';
+import "./TestCaseDirectory.less";
 import {
   DeleteTwoTone,
   DownOutlined,
@@ -165,7 +167,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "更新时间",
       dataIndex: "updated_at",
       key: 'updated_at',
-      width: 100,
+      width: 180,
     },
     {
       title: '操作',
@@ -362,145 +364,148 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                       visible={rootModal} left={6} right={18} width={400} formName="root"
 
         />
-        <Col span={6}>
-          <Card title={
-            <Row gutter={8}>
-              <Col span={18}>
-                {
-                  editing ? <Select style={{marginLeft: 32, width: 120}} showSearch
-                                    placeholder="请选择项目" value={project_id} autoFocus={true}
-                                    onChange={e => {
-                                      save({project_id: e})
-                                      setEditing(false);
-                                    }}
-                                    filterOption={(input, option) =>
-                                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                    }>
-                    {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
-                  </Select> : <>
-                    <Avatar style={{marginLeft: 8, marginRight: 6}} src={getProject().avatar || `https://api.prodless.com/avatar.png`}/>
-                    <a onClick={() => setEditing(true)}>{getProject().name}</a>
-                    <IconFont type="icon-qiehuan2" onClick={() => setEditing(true)}
-                              style={{fontSize: 15, marginLeft: 8}}/>
-                  </>
+        <SplitPane split="vertical" minSize={260} defaultSize={360} maxSize={800}>
+          <div>
+            <Card title={
+              <Row gutter={8}>
+                <Col span={18}>
+                  {
+                    editing ? <Select style={{marginLeft: 32, width: 120}} showSearch
+                                      placeholder="请选择项目" value={project_id} autoFocus={true}
+                                      onChange={e => {
+                                        save({project_id: e})
+                                        setEditing(false);
+                                      }}
+                                      filterOption={(input, option) =>
+                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                      }>
+                      {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
+                    </Select> : <>
+                      <Avatar style={{marginLeft: 8, marginRight: 6}}
+                              src={getProject().avatar || `https://api.prodless.com/avatar.png`}/>
+                      <a onClick={() => setEditing(true)}>{getProject().name}</a>
+                      <IconFont type="icon-qiehuan2" onClick={() => setEditing(true)}
+                                style={{fontSize: 15, marginLeft: 8}}/>
+                    </>
+                  }
+                </Col>
+                <Col span={6}>
+                  <Tooltip title="新建根目录">
+                    <FolderAddTwoTone
+                      onClick={() => {
+                        setRootModal(true)
+                        setRecord({name: ''})
+                        setModalTitle("新建根目录");
+                        setCurrentNode(null);
+                      }}
+                      style={{
+                        float: "right",
+                        fontSize: 22,
+                        lineHeight: '32px',
+                        margin: '0 8px',
+                        cursor: 'pointer'
+                      }}
+                      twoToneColor="#67C23A"/>
+                  </Tooltip>
+                </Col>
+              </Row>}
+                  bodyStyle={{height: 750, overflow: 'auto'}}
+            >
+              <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
+                {directory.length > 0 ?
+                  <>
+                    <DirectoryTree treeData={directory} onContextMenu={handleContextMenu}
+                                   onSelect={keys => {
+                                     saveCase({
+                                       currentDirectory: keys[0] === currentDirectory[0] ? [] : keys,
+                                     })
+                                   }}
+                                   selectedKeys={currentDirectory}
+                                   onRightClick={e => {
+                                     setCurrentNode(e.node.key);
+                                     setRecord({name: e.node.title, id: e.node.key});
+                                   }}/>
+                    <Menu id="directory" theme="dark">
+                      <Item onClick={() => {
+                        handleItemClick(1);
+                      }}><PlusOutlined style={{margin: '0 8px', fontSize: 16}}/> 添加目录</Item>
+                      <Item onClick={() => {
+                        handleItemClick(2);
+                      }}><EditOutlined style={{margin: '0 8px', fontSize: 16}}/> 编辑目录</Item>
+                      <Item onClick={() => {
+                        handleItemClick(3);
+                      }}><DeleteTwoTone twoToneColor="#F56C6C" style={{margin: '0 8px', fontSize: 16}}/> <span
+                        style={{color: '#F56C6C'}}>删除目录</span></Item>
+                    </Menu>
+                  </> : <NoRecord height={180} desc="暂无数据，点击绿色文件夹『添加』一个吧~"/>
                 }
-              </Col>
-              <Col span={6}>
-                <Tooltip title="新建根目录">
-                  <FolderAddTwoTone
-                    onClick={() => {
-                      setRootModal(true)
-                      setRecord({name: ''})
-                      setModalTitle("新建根目录");
-                      setCurrentNode(null);
-                    }}
-                    style={{
-                      float: "right",
-                      fontSize: 22,
-                      lineHeight: '32px',
-                      margin: '0 8px',
-                      cursor: 'pointer'
-                    }}
-                    twoToneColor="#67C23A"/>
-                </Tooltip>
-              </Col>
-            </Row>}
-                bodyStyle={{height: 750, overflow: 'auto'}}
-          >
-            <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
-              {directory.length > 0 ?
-                <>
-                  <DirectoryTree treeData={directory} onContextMenu={handleContextMenu}
-                                 onSelect={keys => {
-                                   saveCase({
-                                     currentDirectory: keys[0] === currentDirectory[0] ? [] : keys,
-                                   })
-                                 }}
-                                 selectedKeys={currentDirectory}
-                                 onRightClick={e => {
-                                   setCurrentNode(e.node.key);
-                                   setRecord({name: e.node.title, id: e.node.key});
-                                 }}/>
-                  <Menu id="directory" theme="dark">
-                    <Item onClick={() => {
-                      handleItemClick(1);
-                    }}><PlusOutlined style={{margin: '0 8px', fontSize: 16}}/> 添加目录</Item>
-                    <Item onClick={() => {
-                      handleItemClick(2);
-                    }}><EditOutlined style={{margin: '0 8px', fontSize: 16}}/> 编辑目录</Item>
-                    <Item onClick={() => {
-                      handleItemClick(3);
-                    }}><DeleteTwoTone twoToneColor="#F56C6C" style={{margin: '0 8px', fontSize: 16}}/> <span
-                      style={{color: '#F56C6C'}}>删除目录</span></Item>
-                  </Menu>
-                </> : <NoRecord height={180} desc="暂无数据，点击绿色文件夹『添加』一个吧~"/>
-              }
-            </Spin>
-          </Card>
-        </Col>
-        <Col span={18}>
-          <Card bodyStyle={{height: 815, overflow: 'auto'}}>
-            <Form form={form}>
-              <Row gutter={6}>
-                <Col span={8}>
-                  <Form.Item label="用例名称"  {...layout} name="name">
-                    <Input placeholder="输入用例名称"/>
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <Form.Item label="创建人"  {...layout} name="create_user">
-                    <Select placeholder="选择创建用户" allowClear>
-                      {userList.map(v => <Option key={v.id} value={v.id}><Avatar size="small"
-                                                                                 src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}
-                      </Option>)}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={8}>
-                  <div style={{float: 'right'}}>
-                    <Button type="primary" onClick={async () => {
-                      await listTestcase();
-                    }}><SearchOutlined/> 查询</Button>
-                    <Button style={{marginLeft: 8}} onClick={async () => {
-                      form.resetFields();
-                      await listTestcase();
-                    }}><ReloadOutlined/> 重置</Button>
-                  </div>
-                </Col>
-              </Row>
-              <Row gutter={8} style={{marginTop: 4}}>
-                <Col span={24}>
-                  <Button type="primary" onClick={() => {
-                    if (!currentDirectory[0]) {
-                      message.info("请先创建或选择用例目录~")
-                      return;
-                    }
-                    window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
-                  }}><PlusOutlined/> 添加用例</Button>
-                  {selectedRowKeys.length > 0 ?
-                    <Dropdown overlay={menu()} trigger={['hover']}>
-                      <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
-                        e.stopPropagation()
-                      }}>执行用例 <DownOutlined/></Button>
-                    </Dropdown>
-                    : null}
-                  {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
-                </Col>
-              </Row>
-              <Row style={{marginTop: 16}}>
-                <Col span={24}>
-                  <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
-                         pagination={pagination} size="small"
-                         onChange={pg => {
-                           saveCase({pagination: {...pagination, current: pg.current}})
-                         }}
-                         dataSource={testcases}
-                         loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
-        </Col>
+              </Spin>
+            </Card>
+          </div>
+          <div>
+            <Card bodyStyle={{height: 815, overflow: 'auto'}}>
+              <Form form={form}>
+                <Row gutter={6}>
+                  <Col span={8}>
+                    <Form.Item label="用例名称"  {...layout} name="name">
+                      <Input placeholder="输入用例名称"/>
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item label="创建人"  {...layout} name="create_user">
+                      <Select placeholder="选择创建用户" allowClear>
+                        {userList.map(v => <Option key={v.id} value={v.id}><Avatar size="small"
+                                                                                   src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}
+                        </Option>)}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <div style={{float: 'right'}}>
+                      <Button type="primary" onClick={async () => {
+                        await listTestcase();
+                      }}><SearchOutlined/> 查询</Button>
+                      <Button style={{marginLeft: 8}} onClick={async () => {
+                        form.resetFields();
+                        await listTestcase();
+                      }}><ReloadOutlined/> 重置</Button>
+                    </div>
+                  </Col>
+                </Row>
+                <Row gutter={8} style={{marginTop: 4}}>
+                  <Col span={24}>
+                    <Button type="primary" onClick={() => {
+                      if (!currentDirectory[0]) {
+                        message.info("请先创建或选择用例目录~")
+                        return;
+                      }
+                      window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
+                    }}><PlusOutlined/> 添加用例</Button>
+                    {selectedRowKeys.length > 0 ?
+                      <Dropdown overlay={menu()} trigger={['hover']}>
+                        <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
+                          e.stopPropagation()
+                        }}>执行用例 <DownOutlined/></Button>
+                      </Dropdown>
+                      : null}
+                    {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
+                  </Col>
+                </Row>
+                <Row style={{marginTop: 16}}>
+                  <Col span={24}>
+                    <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
+                           pagination={pagination} size="small"
+                           onChange={pg => {
+                             saveCase({pagination: {...pagination, current: pg.current}})
+                           }}
+                           dataSource={testcases}
+                           loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
+                  </Col>
+                </Row>
+              </Form>
+            </Card>
+          </div>
+        </SplitPane>
       </Row>
     </PageContainer>
   )

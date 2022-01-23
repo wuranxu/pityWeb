@@ -48,7 +48,9 @@ export const CONFIG = {
     'equal': '等于',
     'not_equal': '不等于',
     'in': '包含于',
+    'text_in': '文本包含于',
     'not_in': '不包含于',
+    'text_not_in': '文本不包含于',
     'contain': '包含',
     'not_contain': '不包含',
     'length_eq': '长度等于',
@@ -71,6 +73,8 @@ export const CONFIG = {
     'length_le': <Tag color="deeppink">长度小于等于</Tag>,
     'length_ge': <Tag>长度大于等于</Tag>,
     'json_equal': <Tag color="pink">JSON等于</Tag>,
+    'text_not_in': <Tag color="skyblue">文本不包含于</Tag>,
+    'text_in': <Tag color="orange">文本包含于</Tag>,
   },
   // 用例状态
   CASE_STATUS: {
