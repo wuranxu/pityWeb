@@ -165,7 +165,6 @@ const UserModel = {
           payload: response.data,
         });
       }
-
     },
   },
   reducers: {

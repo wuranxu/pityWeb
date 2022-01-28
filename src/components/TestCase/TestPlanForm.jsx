@@ -1,11 +1,13 @@
 import {connect} from 'umi';
 import {Avatar, Button, Col, Form, Input, InputNumber, Modal, Row, Select, Steps, TreeSelect} from "antd";
 import {ApiOutlined, NotificationOutlined, SaveOutlined, TeamOutlined} from "@ant-design/icons";
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CONFIG} from "@/consts/config";
 import IconFont from "@/components/Icon/IconFont";
 import SortedTable from "@/components/Table/SortedTable";
 // import '@/components/Table/SortedTable.less';
+import parser from 'cron-parser';
+import moment from "moment";
 
 const {Step} = Steps;
 const {Option} = Select;
@@ -87,6 +89,7 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
   const {envList} = gconfig;
   const {userList} = user;
   const [form] = Form.useForm();
+  const [cronDate, setCronDate] = useState(null);
 
   const onSave = data => {
     dispatch({
@@ -169,10 +172,32 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="cron表达式" rules={
-            [{required: true, message: '请输入测试计划的执行cron表达式'}]
-          } name="cron">
-            <Input placeholder="请输入测试计划的执行cron表达式"/>
+          <Form.Item label="cron表达式"
+                     extra={<div className="m-input-footer-msg">
+                       {cronDate || "* cron表达式只支持5位!"}
+                     </div>}
+                     rules={
+                       [
+                         {required: true},
+                         ({getFieldValue}) => ({
+                           validator(_, value) {
+                             if (value === '') {
+                               setCronDate(null);
+                               return;
+                             }
+                             try {
+                               const date = parser.parseExpression(value)
+                               setCronDate(`下次运行时间: ${moment(new Date(date.next())).format("YYYY-MM-DD HH:mm:ss")}`)
+                               return Promise.resolve();
+                             } catch (e) {
+                               return Promise.reject(new Error("请输入正确的cron表达式"));
+                             }
+                           },
+                         }),
+                       ]
+                     } name="cron"
+          >
+            <Input placeholder="请输入执行cron表达式"/>
           </Form.Item>
         </Col>
         <Col span={12}>

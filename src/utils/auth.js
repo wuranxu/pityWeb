@@ -55,7 +55,8 @@ export default {
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
       // localStorage.setItem('pityUser', null);
-      window.location.href = '/#/';
+      window.location.href = '/#/user/login';
+      window.location.reload();
       message.info(res.msg);
       return false;
     }

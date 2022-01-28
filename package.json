@@ -60,6 +60,7 @@
     "array-move": "^4.0.0",
     "bizcharts": "^4.1.11",
     "classnames": "^2.2.6",
+    "cron-parser": "^4.2.1",
     "eslint": "^5.8.0",
     "lodash": "^4.17.11",
     "md5": "^2.3.0",
