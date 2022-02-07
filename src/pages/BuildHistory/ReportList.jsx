@@ -124,7 +124,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
       payload: {
         start_time,
         end_time,
-        ...value,
+        // ...value,
         page: pagination.current,
         size: pagination.pageSize,
       }

@@ -82,15 +82,15 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
       type: 'testplan/executeTestPlan',
       payload: {id}
     })
-    if (res) {
-      Modal.confirm({
-        title: '🎉 测试计划执行完成',
-        content: '是否跳转到报告页面?',
-        onOk() {
-          history.push("/record/list")
-        },
-      })
-    }
+    // if (res) {
+    //   Modal.confirm({
+    //     title: '🎉 测试计划执行完成',
+    //     content: '是否跳转到报告页面?',
+    //     onOk() {
+    //       history.push("/record/list")
+    //     },
+    //   })
+    // }
   }
 
   const columns = [

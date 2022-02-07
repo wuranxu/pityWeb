@@ -36,7 +36,6 @@ export default {
         if (projId === undefined) {
           projId = res.data.length > 0 ? res.data[0].id : undefined
         }
-        console.log(projId)
         yield put({
           type: 'save',
           payload: {

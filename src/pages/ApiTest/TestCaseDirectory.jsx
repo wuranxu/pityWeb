@@ -53,7 +53,6 @@ const {DirectoryTree} = Tree;
 const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}) => {
 
   const {projects, project_id} = project;
-  console.log(project_id)
   const {envList} = gconfig;
   const {userList, userMap} = user;
   const {directory, currentDirectory, testcases, testResult, selectedRowKeys, pagination} = testcase;
@@ -364,7 +363,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                       visible={rootModal} left={6} right={18} width={400} formName="root"
 
         />
-        <SplitPane split="vertical" minSize={260} defaultSize={360} maxSize={800}>
+        <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={360} maxSize={800}>
           <div>
             <Card title={
               <Row gutter={8}>
@@ -409,7 +408,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                   </Tooltip>
                 </Col>
               </Row>}
-                  bodyStyle={{height: 750, overflow: 'auto'}}
+                  bodyStyle={{height: 550, overflow: 'auto'}}
             >
               <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
                 {directory.length > 0 ?
@@ -443,7 +442,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
             </Card>
           </div>
           <div>
-            <Card bodyStyle={{height: 815, overflow: 'auto'}}>
+            <Card bodyStyle={{minHeight: 615, overflow: 'auto'}}>
               <Form form={form}>
                 <Row gutter={6}>
                   <Col span={8}>

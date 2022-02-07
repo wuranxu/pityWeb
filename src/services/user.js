@@ -13,9 +13,34 @@ export async function queryCurrent(params) {
   })
 }
 
-export async function queryNotices() {
-  return request('/api/notices');
+export async function queryNotices(params) {
+  const res = await request(`${CONFIG.URL}/notification/list`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+  if (auth.response(res)) {
+    return res.data;
+  }
+  return [];
 }
+
+export async function updateNotices(params) {
+  return await request(`${CONFIG.URL}/notification/read`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteNotice(params) {
+  return await request(`${CONFIG.URL}/notification/delete`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
 
 export async function listUsers(params) {
   const res = await request(`${CONFIG.URL}/auth/listUser`, {

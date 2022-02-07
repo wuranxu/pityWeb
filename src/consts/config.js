@@ -2,8 +2,9 @@ import {Tag} from "antd";
 import React from "react";
 
 export const CONFIG = {
-  URL: 'http://121.5.2.74:7777',
-  // URL: 'http://localhost:7777',
+  // URL: 'http://121.5.2.74:7777',
+  URL: 'http://localhost:7777',
+  WS_URL: 'localhost:7777/ws',
   // URL: '',
   ICONFONT: '//at.alicdn.com/t/font_915840_dqy61i5rbz.js',
   AVATAR_URL: 'https://joeschmoe.io/api/v1/',

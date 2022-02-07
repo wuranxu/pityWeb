@@ -1,7 +1,7 @@
 import {Badge, Tag, Tooltip} from 'antd';
-import {NotificationOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {BellOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import React, {useState} from 'react';
-import {connect} from 'umi';
+import {connect, history} from 'umi';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 import Version from "@/components/Drawer/Version";
@@ -21,6 +21,7 @@ const GlobalHeaderRight = (props) => {
   }
 
   const [visible, setVisible] = useState(false);
+  const {noticeCount} = props.global;
 
   return (
     <div className={className}>
@@ -50,19 +51,18 @@ const GlobalHeaderRight = (props) => {
       {/*  // }}*/}
       {/*/>*/}
       <Version visible={visible} setVisible={setVisible}/>
-      <Tooltip title="版本更新">
+      <Tooltip title="消息中心">
         <a
           onClick={() => {
-            setVisible(true)
-            localStorage.setItem("read", "ok");
+            history.push("/notification")
           }}
           style={{
             color: 'inherit',
           }}
           className={styles.action}
         >
-          <Badge dot={localStorage.getItem("read") !== 'ok'}>
-            <NotificationOutlined/>
+          <Badge showZero={false} size="small" count={noticeCount}>
+            <BellOutlined style={{fontSize: 16}}/>
           </Badge>
         </a>
       </Tooltip>
@@ -76,7 +76,7 @@ const GlobalHeaderRight = (props) => {
           rel="noopener noreferrer"
           className={styles.action}
         >
-          <QuestionCircleOutlined/>
+          <QuestionCircleOutlined style={{fontSize: 16}}/>
         </a>
       </Tooltip>
       <Avatar menu/>
@@ -90,7 +90,8 @@ const GlobalHeaderRight = (props) => {
   );
 };
 
-export default connect(({settings}) => ({
+export default connect(({settings, global}) => ({
   theme: settings.navTheme,
   layout: settings.layout,
+  global,
 }))(GlobalHeaderRight);

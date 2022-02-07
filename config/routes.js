@@ -106,6 +106,12 @@ export default [
                 ],
               },
               {
+                path: '/notification',
+                name: '消息中心',
+                hideInMenu: true,
+                component: './Notification'
+              },
+              {
                 path: '/ci',
                 icon: 'icon-CI',
                 name: '持续集成',

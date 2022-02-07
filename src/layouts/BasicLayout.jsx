@@ -4,10 +4,10 @@
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
 import ProLayout, {DefaultFooter, ProBreadcrumb} from '@ant-design/pro-layout';
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {connect, history, Link, useIntl} from 'umi';
 import {GithubOutlined} from '@ant-design/icons';
-import {Button, ConfigProvider, Empty, Result, Spin} from 'antd';
+import {Button, ConfigProvider, Empty, notification, Result, Spin} from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import {getMatchMenu} from '@umijs/route-utils';
@@ -15,6 +15,8 @@ import logo from '../assets/logo.svg';
 import {CONFIG} from "@/consts/config";
 import NoTableData from "@/assets/NoTableData.svg";
 import IconFont from "@/components/Icon/IconFont";
+import NProgress from "nprogress";
+import 'nprogress/nprogress.css'
 
 Spin.setDefaultIndicator(<IconFont type="icon-icon-1" spin style={{fontSize: 36}}/>)
 
@@ -67,6 +69,8 @@ const defaultFooterDom = (
   />
 );
 
+NProgress.configure({showSpinner: true});
+
 const BasicLayout = (props) => {
   const {
     dispatch,
@@ -75,14 +79,39 @@ const BasicLayout = (props) => {
     location = {
       pathname: '/',
     },
+    noticeCount,
   } = props;
+  const {currentUser} = props.user;
   const menuDataRef = useRef([]);
+  const [currentHref, setCurrentHref] = useState('');
 
   useEffect(() => {
     if (dispatch) {
       dispatch({
         type: 'user/fetchCurrent',
       });
+    }
+    if (currentUser) {
+      const ws = new WebSocket(`ws://${CONFIG.WS_URL}/${currentUser.id}`);
+      ws.onmessage = function (event) {
+        event.preventDefault()
+        const messages = event.data;
+        const msg = JSON.parse(messages)
+        if (msg.type === 0) {
+          dispatch({
+            type: 'global/save',
+            payload: {
+              noticeCount: msg.total ? msg.count : msg.count + noticeCount,
+            }
+          })
+        } else {
+          notification.info({
+            message: msg.title,
+            description: msg.content
+          })
+        }
+
+      };
     }
   }, []);
   /** Init variables */
@@ -104,6 +133,17 @@ const BasicLayout = (props) => {
     [location.pathname],
   );
   const {formatMessage} = useIntl();
+
+  const {ld} = props;
+  const {href} = window.location; // 浏览器地址栏中地址
+  if (currentHref !== href) {
+    NProgress.start();
+    if (!ld.global) {
+      NProgress.done();
+      setCurrentHref(href);
+    }
+  }
+
   return (
 
     <ConfigProvider renderEmpty={() => <Empty image={NoTableData} imageStyle={{height: 150}}
@@ -171,7 +211,10 @@ const BasicLayout = (props) => {
   );
 };
 
-export default connect(({global, settings}) => ({
+export default connect(({user, global, settings, loading}) => ({
   collapsed: global.collapsed,
+  noticeCount: global.noticeCount,
   settings,
+  user,
+  ld: loading,
 }))(BasicLayout);

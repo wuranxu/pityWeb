@@ -1,31 +1,23 @@
-import { queryNotices } from '@/services/user';
+import {deleteNotice, queryNotices, updateNotices} from '@/services/user';
+import auth from "@/utils/auth";
 
 const GlobalModel = {
   namespace: 'global',
   state: {
     collapsed: false,
     notices: [],
+    noticeCount: 0,
   },
   effects: {
-    *fetchNotices(_, { call, put, select }) {
-      const data = yield call(queryNotices);
+    * fetchNotices({payload}, {call, put}) {
+      const data = yield call(queryNotices, payload);
       yield put({
         type: 'saveNotices',
         payload: data,
       });
-      const unreadCount = yield select(
-        (state) => state.global.notices.filter((item) => !item.read).length,
-      );
-      yield put({
-        type: 'user/changeNotifyCount',
-        payload: {
-          totalCount: data.length,
-          unreadCount,
-        },
-      });
     },
 
-    *clearNotices({ payload }, { put, select }) {
+    * clearNotices({payload}, {put, select}) {
       yield put({
         type: 'saveClearedNotices',
         payload,
@@ -43,43 +35,41 @@ const GlobalModel = {
       });
     },
 
-    *changeNoticeReadState({ payload }, { put, select }) {
+    * readNotices({_}, {call, put, select}) {
       const notices = yield select((state) =>
-        state.global.notices.map((item) => {
-          const notice = { ...item };
-
-          if (notice.id === payload) {
-            notice.read = true;
-          }
-
-          return notice;
-        }),
-      );
-      yield put({
-        type: 'saveNotices',
-        payload: notices,
-      });
-      yield put({
-        type: 'user/changeNotifyCount',
-        payload: {
-          totalCount: notices.length,
-          unreadCount: notices.filter((item) => !item.read).length,
-        },
-      });
+        state.global.notices)
+      const broadcast = notices.filter(item => item.msg_type === 1).map(item => item.id)
+      const personal = notices.filter(item => item.msg_type === 2).map(item => item.id)
+      const res = yield call(updateNotices, {
+        broadcast,
+        personal,
+      })
+      auth.response(res)
     },
+
+    * deleteNotice({payload}, {call, put}) {
+      const res = yield call(deleteNotice, payload.idList)
+      auth.response(res, true)
+    }
   },
   reducers: {
+    save(state, {payload}) {
+      return {
+        ...state,
+        ...payload,
+      };
+    },
     changeLayoutCollapsed(
       state = {
         notices: [],
         collapsed: true,
       },
-      { payload },
+      {payload},
     ) {
-      return { ...state, collapsed: payload };
+      return {...state, collapsed: payload};
     },
 
-    saveNotices(state, { payload }) {
+    saveNotices(state, {payload}) {
       return {
         collapsed: false,
         ...state,
@@ -92,7 +82,7 @@ const GlobalModel = {
         notices: [],
         collapsed: true,
       },
-      { payload },
+      {payload},
     ) {
       return {
         ...state,

@@ -36,7 +36,7 @@ const Workspace = ({user, dispatch}) => {
           </div>
           <div className={styles.content}>
             <div className={styles.contentTitle}>
-              {currentUser.name}
+              {currentUser.name} {currentUser.deleted_at ? "(已注销)": null}
             </div>
             <div>
               {currentUser.email} {currentUser.nickname}
