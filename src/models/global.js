@@ -40,11 +40,13 @@ const GlobalModel = {
         state.global.notices)
       const broadcast = notices.filter(item => item.msg_type === 1).map(item => item.id)
       const personal = notices.filter(item => item.msg_type === 2).map(item => item.id)
-      const res = yield call(updateNotices, {
-        broadcast,
-        personal,
-      })
-      auth.response(res)
+      if (broadcast.length > 0 || personal.length > 0) {
+        const res = yield call(updateNotices, {
+          broadcast,
+          personal,
+        })
+        auth.response(res)
+      }
     },
 
     * deleteNotice({payload}, {call, put}) {
