@@ -1,7 +1,14 @@
-import {PageHeaderWrapper} from "@ant-design/pro-layout";
-import {connect} from 'umi';
-import {Avatar} from "antd";
+import {PageContainer} from "@ant-design/pro-layout";
+import {connect, history} from 'umi';
+import {Avatar, Button, Card, Col, Empty, Row, Statistic, Tag, Tooltip} from "antd";
 import styles from './Workspace.less';
+import {useEffect} from "react";
+import {InfoCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import noRecord from "@/assets/no_record.svg";
+import {RingProgress} from "@ant-design/plots";
+import common from "@/utils/common";
+import {TinyArea} from "@ant-design/charts";
+import ChartCard from "@/components/Charts/ChartCard";
 
 const getWelcome = user => {
   const now = new Date()
@@ -40,10 +47,169 @@ const getContent = currentUser => {
   )
 }
 
+const LinkTag = ({name, link}) => {
+  return <Tag color="cyan" style={{cursor: 'pointer', marginBottom: 12}} onClick={() => {
+    history.push(link)
+  }}>{name}</Tag>
+}
+
 const Workspace = ({user, dispatch}) => {
-  const {currentUser} = user;
-  return <PageHeaderWrapper content={getContent(currentUser)} breadcrumb={null}>
-  </PageHeaderWrapper>
+
+  const {
+    project_count,
+    case_count,
+    user_rank,
+    total_user
+  } = user;
+
+  useEffect(() => {
+    dispatch({
+      type: "user/queryUserStatistics"
+    })
+    dispatch({
+      type: 'user/queryFollowTestPlanData'
+    })
+  }, [])
+
+  const ExtraContent = () => (
+    <div className={styles.extraContent}>
+      <div className={styles.statItem}>
+        <Statistic title="参与项目" value={project_count}/>
+      </div>
+      <div className={styles.statItem}>
+        <Statistic title="用例数量" value={case_count}/>
+      </div>
+      <div className={styles.statItem}>
+        <Statistic title="团队内排名" value={user_rank} suffix={`/ ${total_user}`}/>
+      </div>
+    </div>
+  );
+
+  // 关注的测试计划
+  const {currentUser, followPlan} = user;
+
+  const calculatePercent = report => {
+    const percent = common.calPiePercent(report.success_count, report.success_count + report.fail_count + report.error_count)
+    return percent * 100
+  }
+
+  const RingPie = ({report}) => {
+    const config = {
+      height: 128,
+      autoFit: true,
+      percent: calculatePercent(report),
+      color: ['#67C23A', '#F4664A'],
+      innerRadius: 0.85,
+      radius: 0.98,
+      statistic: {
+        title: {
+          style: {
+            color: '#363636',
+            fontSize: '12px',
+            lineHeight: '14px',
+          },
+          formatter: () => `上次通过率`,
+        },
+      },
+    };
+    return <RingProgress {...config} />;
+  };
+
+
+  const revertArray = (report) => {
+    const temp = [...report]
+    temp.reverse()
+    return temp.map(v => calculatePercent(v) * 100)
+  }
+
+  return <PageContainer content={getContent(currentUser)} breadcrumb={null} extraContent={<ExtraContent/>}>
+    <Row gutter={16}>
+      <Col span={16}>
+        <Card title="关注中的测试计划" bodyStyle={{minHeight: 400}}>
+          <Row gutter={8}>
+            {
+              followPlan.length === 0 ?
+                <Col span={24}>
+                  <Empty imageStyle={{height: 220}} image={noRecord}
+                         description={<span>你还没有关注测试计划, 赶紧去 <a href="/#/apiTest/testplan">关注</a> 一个吧！</span>}/>
+                </Col> :
+                followPlan.map(item =>
+                  <Col span={12}>
+                    <Card size="small" hoverable
+                          title={<a href="/#/apiTest/testplan" style={{fontSize: 16, marginBottom: 16}}>{item.plan.name}</a>}>
+                      <Row gutter={24}>
+                        <Col span={12}>
+                          <ChartCard bordered={false}
+                                     title={`${item.report[0].start_at}`}
+                                     action={
+                                       <Tooltip title="最近一次执行通过率">
+                                         <InfoCircleOutlined/>
+                                       </Tooltip>
+                                     } contentHeight={128}>
+                            <RingPie plan={item.plan} report={item.report[0]}/>
+                          </ChartCard>
+                        </Col>
+                        <Col span={12}>
+                          {
+                            item.report.length > 0 ? <ChartCard
+                              bordered={false}
+                              title="近7次通过率(%)"
+                              action={
+                                <Tooltip title="最近7次通过率">
+                                  <InfoCircleOutlined/>
+                                </Tooltip>
+                              }
+                              contentHeight={128}
+                            >
+                              <TinyArea
+                                color="#975FE4"
+                                xField="x"
+                                height={120}
+                                forceFit
+                                yField="y"
+                                smooth
+                                data={revertArray(item.report)}
+                              />
+                            </ChartCard> : <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
+                          }
+                        </Col>
+                      </Row>
+                    </Card>
+                  </Col>)
+            }
+          </Row>
+        </Card>
+      </Col>
+      <Col span={8}>
+        <Card title="快速导航">
+          <Row gutter={8}>
+            <Col span={6}>
+              <LinkTag link='/apiTest/project' name="项目列表"/>
+            </Col>
+            <Col span={6}>
+              <LinkTag link='/apiTest/testplan' name="测试计划"/>
+            </Col>
+            <Col span={6}>
+              <LinkTag link='/record/list' name="测试报告"/>
+            </Col>
+            <Col span={6}>
+              <LinkTag link='/tool/request' name="HTTP工具"/>
+            </Col>
+            <Col span={6}>
+              <LinkTag link='/config/database' name="数据库配置"/>
+            </Col>
+            <Col span={6}>
+              <Button size="small" type="primary" ghost style={{fontSize: 12}}>
+                <PlusOutlined/> 添加
+              </Button>
+            </Col>
+          </Row>
+
+        </Card>
+      </Col>
+
+    </Row>
+  </PageContainer>
 }
 
 export default connect(({user}) => ({user}))(Workspace);

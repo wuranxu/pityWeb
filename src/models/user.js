@@ -4,7 +4,8 @@ import {
   listUserOperationLog,
   listUsers,
   loginGithub,
-  queryCurrent,
+  queryCurrent, queryFollowTestPlanData,
+  queryUserStatistics,
   updateAvatar,
   updateUsers
 } from '@/services/user';
@@ -37,6 +38,12 @@ const UserModel = {
     // 用户活动轨迹数据
     activities: [],
     operationLog: [],
+    project_count: 0,
+    case_count: 0,
+    user_rank: 0,
+    total_user: 0,
+    // 关注的测试计划数据
+    followPlan: [],
   },
   effects: {
     // * fetch(_, {call, put}) {
@@ -143,6 +150,40 @@ const UserModel = {
         yield put({
           type: 'saveCurrentUser',
           payload: info,
+        });
+      }
+    },
+
+    * queryUserStatistics(_, {call, put}) {
+      const response = yield call(queryUserStatistics);
+      if (auth.response(response)) {
+        yield put({
+          type: 'save',
+          payload: {
+            project_count: response.data.project_count,
+            "case_count": response.data.case_count,
+            "user_rank": response.data.user_rank,
+            "total_user": response.data.total_user
+          },
+        });
+      }
+    },
+
+    /**
+     * 获取用户关注的测试计划执行数据
+     * @param _
+     * @param call
+     * @param put
+     * @returns {Generator<*, void, *>}
+     */
+    * queryFollowTestPlanData(_, {call, put}) {
+      const response = yield call(queryFollowTestPlanData);
+      if (auth.response(response)) {
+        yield put({
+          type: 'save',
+          payload: {
+            followPlan: response.data,
+          },
         });
       }
     },

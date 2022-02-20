@@ -1,9 +1,11 @@
 import {
   deleteTestPlan,
   executeTestPlan,
+  followTestPlan,
   insertTestPlan,
   listTestPlan,
   listTestPlanCaseTree,
+  unFollowTestPlan,
   updateTestPlan
 } from "@/services/testplan";
 import auth from "@/utils/auth";
@@ -66,6 +68,28 @@ export default {
     * executeTestPlan({payload}, {call}) {
       const res = yield call(executeTestPlan, payload);
       return auth.response(res)
+    },
+
+    /**
+     * 关注测试计划
+     * @param payload
+     * @param call
+     * @param put
+     */
+    * followTestPlan({payload}, {call}) {
+      const res = yield call(followTestPlan, payload);
+      return auth.response(res, true)
+    },
+
+    /**
+     * 取关测试计划
+     * @param payload
+     * @param call
+     * @param put
+     */
+    * unFollowTestPlan({payload}, {call}) {
+      const res = yield call(unFollowTestPlan, payload);
+      return auth.response(res, true)
     },
 
     * listTestCaseTreeWithProjectId({payload}, {call, put}) {

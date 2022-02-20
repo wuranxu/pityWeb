@@ -1,44 +1,56 @@
-import React from 'react';
-import {Axis, Chart, Coordinate, getTheme, Interaction, Interval, Tooltip} from 'bizcharts';
+// import React from 'react';
 
-export default ({data, height, name}) => {
-  const cols = {
-    percent: {
-      formatter: val => {
-        val = val * 100 + '%';
-        return val;
+
+import React from 'react';
+import {Pie} from '@ant-design/plots';
+
+export default ({data, height, name, value = 'count'}) => {
+  const config = {
+    appendPadding: 10,
+    data,
+    theme: {
+      colors10: ["#67C23A", "#F56C6C", "#E6A23C", "#409EFF"]
+    },
+    angleField: value,
+    colorField: name,
+    radius: 1,
+    innerRadius: 0.6,
+    label: {
+      type: 'inner',
+      offset: '-50%',
+      content: ({percent}) => `${(percent * 100).toFixed(0)}%`,
+      style: {
+        textAlign: 'center',
+        fontSize: 14,
       },
     },
-  };
+    tooltip: {
+      title: (title) => `${(title * 100).toFixed(0)}%`
+    },
+    interactions: [
+      {
+        type: 'element-selected',
+      },
+      {
+        type: 'element-active',
+      },
+    ],
+    statistic: {
+      title: false,
+      content: {
+        style: {
+          whiteSpace: 'pre-wrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          fontSize: 14,
+        },
+        content: '执行统计',
 
-  return (
-    <Chart height={height} data={data} scale={cols} autoFit>
-      <Coordinate type="theta" radius={0.75}/>
-      <Tooltip showTitle={false}/>
-      <Axis visible={false}/>
-      <Interval
-        position="percent"
-        adjust="stack"
-        color={[name, ["#67C23A", "#F56C6C", "#E6A23C", "#409EFF"]]}
-        style={{
-          lineWidth: 1,
-          stroke: '#fff',
-        }}
-        label={['count', {
-          content: (data) => {
-            return `${data[name]}: ${data.percent * 100}%(${data.count})`;
-          },
-        }]}
-        state={{
-          selected: {
-            style: (t) => {
-              const res = getTheme().geometries.interval.rect.selected.style(t);
-              return {...res, fill: 'red'}
-            }
-          }
-        }}
-      />
-      <Interaction type='element-single-selected'/>
-    </Chart>
-  );
-}
+      },
+    },
+    height,
+    autoFit: true,
+  };
+  return <Pie {...config} />;
+};
+

@@ -1,9 +1,9 @@
 import {PageContainer} from "@ant-design/pro-layout";
-import {connect, history} from 'umi';
-import {Avatar, Badge, Button, Card, Col, Divider, Form, Input, Modal, Row, Select, Table, Tag, Tooltip} from "antd";
+import {connect} from 'umi';
+import {Avatar, Badge, Button, Card, Col, Divider, Form, Input, Row, Select, Switch, Table, Tag, Tooltip} from "antd";
 import React, {useEffect} from "react";
 import {CONFIG} from "@/consts/config";
-import {PlusOutlined} from "@ant-design/icons";
+import {PlusOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import TestPlanForm from "@/components/TestCase/TestPlanForm";
 import UserLink from "@/components/Button/UserLink";
 
@@ -76,6 +76,16 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
     }
   }
 
+  const onFollowTestPlan = (id, value) => {
+    const type = value ? 'testplan/followTestPlan' : 'testplan/unFollowTestPlan';
+    dispatch({
+      type,
+      payload: {
+        id,
+      }
+    })
+  }
+
   // 执行测试计划
   const onExecute = async id => {
     const res = await dispatch({
@@ -134,6 +144,16 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
       key: 'next_run',
       dataIndex: 'next_run',
       render: (_, record) => getStatus(record)
+    },
+    {
+      title: <span>
+          是否关注 <Tooltip title="点击可关注项目数据"><QuestionCircleOutlined/></Tooltip>
+        </span>,
+      key: 'follow',
+      dataIndex: 'follow',
+      render: (follow, record) => <Switch defaultChecked={follow} onChange={value => {
+        onFollowTestPlan(record.id, value)
+      }}/>
     },
     {
       title: '创建人',
@@ -207,30 +227,39 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
           fetchTestPlan();
         }}>
           <Row gutter={[12, 12]}>
-            <Col span={6}>
+            <Col span={5}>
               <Form.Item label="项目" name="project_id">
                 <Select allowClear showSearch placeholder="选择项目">
                   {projects.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={5}>
               <Form.Item label="名称" name="name">
                 <Input placeholder="输入测试计划名称"/>
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <Form.Item label="优先级" name="priority">
                 <Select placeholder="选择优先级" allowClear>
                   {CONFIG.PRIORITY.map(v => <Option key={v} value={v}>{v}</Option>)}
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={6}>
+            <Col span={5}>
+              <Form.Item label="关注" name="follow">
+                <Select placeholder="选择是否关注" allowClear>
+                  <Option value="true">是</Option>
+                  <Option value="false">否</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={5}>
               <Form.Item label="创建人" name="create_user">
                 <Select placeholder="选择创建人" showSearch allowClear>
                   {userList.map(item => <Option key={item.id} value={item.id}><Avatar size="small"
-                                                                                      src={item.avatar || CONFIG.AVATAR_URL + item.name}/> {item.name}</Option>)}
+                                                                                      src={item.avatar || CONFIG.AVATAR_URL + item.name}/> {item.name}
+                  </Option>)}
                 </Select>
               </Form.Item>
             </Col>

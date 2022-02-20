@@ -243,7 +243,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
 
             </Col>
             <Col span={7}>
-              <Pie height={230} data={getPieData()} name="name"/>
+              <Pie height={230} data={getPieData()} name="name" value="percent"/>
             </Col>
           </Row>
         </Card>

@@ -105,3 +105,20 @@ export async function loginGithub(params) {
     headers: auth.headers(),
   });
 }
+
+export async function queryUserStatistics(params) {
+  return await request(`${CONFIG.URL}/workspace/`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+export async function queryFollowTestPlanData(params) {
+  return await request(`${CONFIG.URL}/workspace/testplan`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+

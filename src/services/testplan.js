@@ -52,3 +52,29 @@ export async function executeTestPlan(params) {
     headers: auth.headers(),
   });
 }
+
+/**
+ * 关注测试计划
+ * @param params
+ * @returns {Promise<*>}
+ */
+export async function followTestPlan(params) {
+  return request(`${CONFIG.URL}/testcase/plan/follow`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}
+
+/**
+ * 取关测试计划
+ * @param params
+ * @returns {Promise<*>}
+ */
+export async function unFollowTestPlan(params) {
+  return request(`${CONFIG.URL}/testcase/plan/unfollow`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}

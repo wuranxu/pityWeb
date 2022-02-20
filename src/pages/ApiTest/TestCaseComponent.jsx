@@ -99,7 +99,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     if (typeof tag === 'object') {
       return tag.length > 0 ? tag.map(v => <Tag
         style={{marginRight: 8}}
-        color='blue'>{v}</Tag>): '无'
+        color='blue'>{v}</Tag>) : '无'
     }
     return tag ? tag.split(',').map(v => <Tag
       style={{marginRight: 8}}
@@ -184,6 +184,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
         {
           !case_id ? <TestCaseEditor directoryId={directory_id} create={true} form={form} body={body} setBody={setBody}
                                      headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}
+                                     setBodyType={setBodyType} bodyType={bodyType}
             /> :
             <Row>
               <Col span={24}>
