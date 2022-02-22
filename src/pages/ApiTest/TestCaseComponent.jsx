@@ -1,7 +1,7 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Descriptions, Dropdown, Form, Menu, Row, Spin, Tabs, Tag} from "antd";
+import {Badge, Button, Card, Col, Descriptions, Dropdown, Empty, Form, Menu, Row, Spin, Tabs, Tag} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
@@ -13,6 +13,7 @@ import common from "@/utils/common";
 import auth from "@/utils/auth";
 import UserLink from "@/components/Button/UserLink";
 import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
+import noResult from '@/assets/noResult.svg';
 
 const {TabPane} = Tabs;
 
@@ -154,7 +155,13 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     }
   }
 
-  const menu = <Menu>
+  const menu = envList.length === 0 ? <Card>
+    <div>
+      <Empty image={noResult} imageStyle={{height: 90, width: 90, margin: '0 auto'}}
+             description={<p>还没有任何环境, 去<a href="/#/config/environment" target="_blank">添加一个</a>?</p>}/>
+    </div>
+
+  </Card>: <Menu>
     {envList.map(item => <Menu.Item key={item.id} onClick={async () => {
       await onExecuteTestCase(item.id)
     }}>

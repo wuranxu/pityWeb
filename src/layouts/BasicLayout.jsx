@@ -18,7 +18,7 @@ import IconFont from "@/components/Icon/IconFont";
 import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
 
-Spin.setDefaultIndicator(<IconFont type="icon-icon-1" spin style={{fontSize: 36}}/>)
+// Spin.setDefaultIndicator(<IconFont type="icon-icon-1" spin style={{fontSize: 36}}/>)
 
 const noMatch = (
   <Result
