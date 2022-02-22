@@ -28,8 +28,8 @@ export default {
   },
   METHOD_TAG: {
     "GET": <Tag color="success">GET</Tag>,
-    "POST": <Tag color="blue">GET</Tag>,
-    "PUT": <Tag color="purple">GET</Tag>,
-    "DELETE": <Tag color="red">GET</Tag>,
+    "POST": <Tag color="blue">POST</Tag>,
+    "PUT": <Tag color="purple">PUT</Tag>,
+    "DELETE": <Tag color="red">DELETE</Tag>,
   }
 }
