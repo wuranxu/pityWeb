@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "./AntdEditableTable.less";
-import {Button, Col, Divider, Form, Input, Popconfirm, Row, Select, Table, Typography} from 'antd';
+import {Button, Col, message, Divider, Form, Input, Popconfirm, Row, Select, Table, Typography} from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
 import {CONFIG} from "@/consts/config";
 
@@ -66,11 +66,20 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
   const save = async (key) => {
     try {
       const row = await form.validateFields();
+      if (type === 'FILE' && !filepath) {
+        message.info("请选择文件");
+        return;
+      }
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
 
       if (index > -1) {
         const item = newData[index];
+        const exists = newData.findIndex((item) => row.key === item.key);
+        if (exists > -1) {
+          message.info("该key已存在");
+          return;
+        }
         newData.splice(index, 1, {...item, ...row, type, value: filepath});
         setData(newData);
         setEditingKey('');
@@ -83,6 +92,12 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
       console.log('Validate Failed:', errInfo);
     }
   };
+
+  const onDeleteItem = key => {
+    const newData = [...data];
+    newData.splice(newData.findIndex((item) => key === item.key), 1);
+    setData(newData);
+  }
 
   const columns = [
     {
@@ -143,7 +158,7 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
               Edit
             </Typography.Link>
             <Divider type="vertical"/>
-            <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
+            <Typography.Link disabled={editingKey !== ''} onClick={() => onDeleteItem(record.key)}>
               Remove
             </Typography.Link>
           </>
