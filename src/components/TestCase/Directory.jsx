@@ -18,7 +18,7 @@ import fields from '@/consts/fields';
 import FormForModal from '@/components/PityForm/FormForModal';
 import Asserts from '@/components/TestCase/Asserts';
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 
 export default ({loading, treeData, fetchData, projectData, userMap}) => {
 

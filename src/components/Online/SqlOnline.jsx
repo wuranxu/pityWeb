@@ -4,7 +4,7 @@ import {connect} from 'umi';
 import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
 import emptyWork from '@/assets/emptyWork.svg';
 import {CopyTwoTone, PlayCircleTwoTone} from "@ant-design/icons";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {CONFIG} from "@/consts/config";
 import {CopyToClipboard} from 'react-copy-to-clipboard';

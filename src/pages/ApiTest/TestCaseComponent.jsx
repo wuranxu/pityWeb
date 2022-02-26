@@ -5,7 +5,7 @@ import {Badge, Button, Card, Col, Descriptions, Dropdown, Empty, Form, Menu, Row
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
 import "./TestCaseComponent.less";
 import {DownOutlined, EditOutlined, PlayCircleOutlined} from "@ant-design/icons";

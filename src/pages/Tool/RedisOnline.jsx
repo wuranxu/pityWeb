@@ -4,7 +4,7 @@ import {connect} from 'umi';
 import React, {useEffect, useState} from 'react'
 import Terminal from 'react-console-emulator'
 import {Alert, Card, Col, Menu, Row, Select} from "antd";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 
 const {Option} = Select;
 

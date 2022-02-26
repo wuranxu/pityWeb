@@ -4,6 +4,7 @@ import {updateProject} from '@/services/project';
 import auth from '@/utils/auth';
 import UserLink from "@/components/Button/UserLink";
 import ProjectForm from "@/components/PityForm/ProjectForm";
+import UserSelect from "@/components/User/UserSelect";
 
 
 const {Option} = Select;
@@ -52,7 +53,7 @@ export default ({data, users, reloadData}) => {
       name: 'owner',
       label: '项目负责人',
       required: true,
-      component: opt,
+      component: <UserSelect users={users} placeholder="选择项目负责人"/>,
       type: 'select',
     },
     {

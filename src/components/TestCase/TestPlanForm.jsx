@@ -3,11 +3,12 @@ import {Avatar, Button, Col, Form, Input, InputNumber, Modal, Row, Select, Steps
 import {ApiOutlined, NotificationOutlined, SaveOutlined, TeamOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from 'react';
 import {CONFIG} from "@/consts/config";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import SortedTable from "@/components/Table/SortedTable";
 // import '@/components/Table/SortedTable.less';
 import parser from 'cron-parser';
 import moment from "moment";
+import UserSelect from "@/components/User/UserSelect";
 
 const {Step} = Steps;
 const {Option} = Select;
@@ -250,12 +251,7 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
           <Form.Item label="推送用户" rules={
             [{required: false, message: '请选择推送人员'}]
           } name="receiver" {...CONFIG.SQL_LAYOUT}>
-            <Select allowClear showSearch placeholder="选择接收人员" mode="multiple">
-              {
-                userList.map(v => <Option key={v.id} value={v.id}><Avatar size={14}
-                                                                          src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}({v.email})</Option>)
-              }
-            </Select>
+            <UserSelect users={userList} mode="multiple"/>
           </Form.Item>
         </Col>
       </>

@@ -14,7 +14,7 @@ import {getMatchMenu} from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
 import {CONFIG} from "@/consts/config";
 import NoTableData from "@/assets/NoTableData.svg";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
 

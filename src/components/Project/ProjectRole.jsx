@@ -7,6 +7,7 @@ import {useParams} from 'umi';
 import {deleteProjectRole, insertProjectRole, updateProjectRole} from '@/services/project';
 import auth from '@/utils/auth';
 import UserLink from "@/components/Button/UserLink";
+import UserSelect from "@/components/User/UserSelect";
 
 const {Option} = Select;
 
@@ -132,7 +133,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
       name: 'user_id',
       label: '用户',
       required: true,
-      component: opt,
+      component: <UserSelect users={users} /> ,
       type: 'select'
     },
     {

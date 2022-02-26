@@ -4,7 +4,7 @@ import getComponent from './index';
 
 const {Item: FormItem} = Form;
 
-const FormForModal = ({title, width, left, right, formName, record, onFinish, loading, fields, visible, onCancel, offset=0}) => {
+const FormForModal = ({title, width, left, right, formName, record, onFinish, loading, fields, visible, onCancel, offset=0, children}) => {
   const [form] = Form.useForm();
   const onOk = () => {
     form.validateFields().then((values) => {
@@ -25,6 +25,7 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
     <Modal style={{marginTop: offset}}
       confirmLoading={loading}
       title={title} width={width} visible={visible} onOk={onOk} onCancel={onCancel}>
+      {children || null}
       <Form
         form={form}
         {...layout}

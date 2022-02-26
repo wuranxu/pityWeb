@@ -14,7 +14,7 @@ import {
   FrownTwoTone,
   LikeTwoTone
 } from "@ant-design/icons";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import reportConfig from "@/consts/reportConfig";
 import common from "@/utils/common";
 import Pie from "@/components/Charts/Pie";

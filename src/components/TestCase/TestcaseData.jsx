@@ -1,5 +1,5 @@
 import {connect} from "umi";
-import {Button, Card, Col, Divider, Modal, Row, Table} from "antd";
+import {Alert, Button, Card, Col, Divider, Modal, Row, Table} from "antd";
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import FormForModal from "@/components/PityForm/FormForModal";
@@ -145,7 +145,10 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
     <Row gutter={8}>
       <FormForModal title="测试数据" record={record} onCancel={() => {
         setModal(false)
-      }} left={4} right={20} width={600} visible={modal} onFinish={onFinish} fields={fields}/>
+      }} left={4} right={20} width={600}
+                    visible={modal} onFinish={onFinish} fields={fields}>
+        <Alert type="info" message="fff" showIcon/>
+      </FormForModal>
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={8}>

@@ -7,7 +7,7 @@ import TreeXmind from "@/components/G6/TreeXmind";
 import {queryXmindData} from "@/services/testcase";
 import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 
 const TabPane = Tabs.TabPane;
 const STATUS = {

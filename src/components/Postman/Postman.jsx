@@ -7,7 +7,7 @@ import {httpRequest} from '@/services/request';
 import {connect} from 'umi'
 import auth from '@/utils/auth';
 import FormData from "@/components/Postman/FormData";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 
 const {Option} = Select;
 const {TabPane} = Tabs;

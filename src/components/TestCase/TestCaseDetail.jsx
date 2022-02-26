@@ -156,7 +156,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
                         <Descriptions.Item label='用例目录'>{data.catalogue}</Descriptions.Item>
                         <Descriptions.Item label='优先级'>{<Tag
                           color={CONFIG.CASE_TAG[data.priority]}>{data.priority}</Tag>}</Descriptions.Item>
-                        <Descriptions.Item label='请求类型'>{CONFIG.REQUEST_TYPE[data.request_type]}</Descriptions.Item>
+                        <Descriptions.Item label='请求协议'>{CONFIG.REQUEST_TYPE[data.request_type]}</Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
                           {data.request_method}
                         </Descriptions.Item>

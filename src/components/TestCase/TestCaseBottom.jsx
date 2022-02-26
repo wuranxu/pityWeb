@@ -1,5 +1,5 @@
 import {Badge, Button, Card, Col, Modal, Row, Switch, Tabs, Tag, Timeline} from "antd";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {
   DeleteTwoTone,

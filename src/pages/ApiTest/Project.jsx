@@ -12,6 +12,7 @@ import noRecord from '@/assets/no_record.svg'
 import UserLink from "@/components/Button/UserLink";
 import {CONFIG} from "@/consts/config";
 import styles from './Project.less';
+import UserSelect from "@/components/User/UserSelect";
 
 
 const {Search} = Input;
@@ -21,7 +22,8 @@ export default () => {
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({current: 1, pageSize: 8, total: 0});
   const [visible, setVisible] = useState(false);
-  const [users, setUsers] = useState({});
+  const [users, setUsers] = useState([]);
+  const [userMap, setUserMap] = useState({});
 
   const fetchData = async (current = pagination.current, size = pagination.size) => {
     await process(async () => {
@@ -39,7 +41,8 @@ export default () => {
     user.forEach((item) => {
       temp[item.id] = item;
     });
-    setUsers(temp);
+    setUsers(user);
+    setUserMap(temp);
   };
 
   useEffect(async () => {
@@ -66,15 +69,6 @@ export default () => {
     }
   };
 
-  const opt = (
-    <Select placeholder="请选择项目负责人">
-      {Object.keys(users).map((id) => (
-        <Option key={id} value={id}>
-          {users[id].name}
-        </Option>
-      ))}
-    </Select>
-  );
   const fields = [
     {
       name: 'name',
@@ -97,7 +91,7 @@ export default () => {
       name: 'owner',
       label: '项目负责人',
       required: true,
-      component: opt,
+      component: <UserSelect users={users} placeholder="选择项目负责人"/>,
       type: 'select',
     },
     {
@@ -168,7 +162,7 @@ export default () => {
                     </div>}
                     description={<div>
                       <p>{item.description || '无'}</p>
-                      <p>负责人 {<UserLink user={users[item.owner]}/>}</p>
+                      <p>负责人 {<UserLink user={userMap[item.owner]}/>}</p>
                       <p>更新时间 {item.updated_at}</p>
                     </div>}
                     onClick={() => {

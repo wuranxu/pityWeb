@@ -9,7 +9,7 @@ import {useEffect} from "react";
 import reportConfig from "@/consts/reportConfig";
 import {CONFIG} from "@/consts/config";
 import UserLink from "@/components/Button/UserLink";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 
 
 const {RangePicker} = DatePicker;

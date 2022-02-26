@@ -42,12 +42,13 @@ import {Item, Menu, useContextMenu} from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import NoRecord from "@/components/NotFound/NoRecord";
 import FormForModal from "@/components/PityForm/FormForModal";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
 import UserLink from "@/components/Button/UserLink";
 import noResult from "@/assets/noResult.svg";
+import UserSelect from "@/components/User/UserSelect";
 
 const {Option} = Select;
 const {DirectoryTree} = Tree;
@@ -149,7 +150,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       ellipsis: true,
     },
     {
-      title: "请求类型",
+      title: "请求协议",
       dataIndex: "request_type",
       key: 'request_type',
       render: request_type => CONFIG.REQUEST_TYPE[request_type]
@@ -473,11 +474,17 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                   </Col>
                   <Col span={8}>
                     <Form.Item label="创建人"  {...layout} name="create_user">
-                      <Select placeholder="选择创建用户" allowClear>
-                        {userList.map(v => <Option key={v.id} value={v.id}><Avatar size="small"
-                                                                                   src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}
-                        </Option>)}
-                      </Select>
+                      <UserSelect users={userList} placeholder="请选择创建用户"/>
+                      {/*<Select placeholder="选择创建用户" filterOption={(input, option) =>*/}
+                      {/*{*/}
+                      {/*  console.log(input, option)*/}
+                      {/*  return option.children.props.user.name.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.children.props.user.email.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
+                      {/*}*/}
+                      {/*} showSearch allowClear>*/}
+                      {/*  {userList.map(v => <Option key={v.id} value={v.id}><Avatar size="small"*/}
+                      {/*                                                             src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}*/}
+                      {/*  </Option>)}*/}
+                      {/*</Select>*/}
                     </Form.Item>
                   </Col>
                   <Col span={8}>

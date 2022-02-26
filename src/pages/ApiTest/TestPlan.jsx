@@ -6,6 +6,7 @@ import {CONFIG} from "@/consts/config";
 import {PlusOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import TestPlanForm from "@/components/TestCase/TestPlanForm";
 import UserLink from "@/components/Button/UserLink";
+import UserSelect from "@/components/User/UserSelect";
 
 const {Option} = Select;
 
@@ -256,11 +257,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
             </Col>
             <Col span={5}>
               <Form.Item label="创建人" name="create_user">
-                <Select placeholder="选择创建人" showSearch allowClear>
-                  {userList.map(item => <Option key={item.id} value={item.id}><Avatar size="small"
-                                                                                      src={item.avatar || CONFIG.AVATAR_URL + item.name}/> {item.name}
-                  </Option>)}
-                </Select>
+                <UserSelect users={userList}/>
               </Form.Item>
             </Col>
           </Row>

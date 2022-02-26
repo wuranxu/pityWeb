@@ -1,6 +1,6 @@
 import {Button, Card, Col, Drawer, Row, Steps} from "antd";
 import {connect} from "umi";
-import IconFont from "@/components/Icon/IconFont";
+import {IconFont} from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
 import {useEffect} from "react";

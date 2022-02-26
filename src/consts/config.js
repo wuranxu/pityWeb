@@ -1,5 +1,7 @@
 import {Tag} from "antd";
 import React from "react";
+import TextIcon from "@/components/Icon/TextIcon";
+import {IconFontUrl} from "@/components/Icon/IconFont";
 
 export const CONFIG = {
   // URL: 'http://121.5.2.74:7777',
@@ -7,7 +9,7 @@ export const CONFIG = {
   // WS_URL: '121.5.2.74:7777/ws',
   WS_URL: 'localhost:7777/ws',
   // URL: '',
-  ICONFONT: '//at.alicdn.com/t/font_915840_dqy61i5rbz.js',
+  ICONFONT: IconFontUrl,
   AVATAR_URL: 'https://joeschmoe.io/api/v1/',
   PROJECT_AVATAR_URL: 'https://api.prodless.com/avatar.png',
   ROLE: {
@@ -65,7 +67,7 @@ export const CONFIG = {
   },
   ASSERT_TYPE_TAG: {
     'equal': <Tag color="success">等于</Tag>,
-    'not_equal': <Tag color="danger">不等于</Tag>,
+    'not_equal': <Tag color="error">不等于</Tag>,
     'in': <Tag color="pink">包含于</Tag>,
     'not_in': <Tag color="blue">不包含于</Tag>,
     'contain': <Tag color="purple">包含</Tag>,
@@ -86,9 +88,9 @@ export const CONFIG = {
     3: '正常运行',
   },
   REQUEST_TYPE: {
-    1: 'Http',
-    2: 'Grpc',
-    3: 'Dubbo',
+    1: <TextIcon font={18} icon="icon-http3" text="HTTP"/>,
+    2: <TextIcon font={18} icon="icon-GRPC" text="GRPC"/>,
+    3: <TextIcon font={18} icon="icon-a-dubbo1" text="Dubbo"/>,
   },
   REQUEST_TYPE_TAG: {
     1: <Tag color="success">HTTP</Tag>,
