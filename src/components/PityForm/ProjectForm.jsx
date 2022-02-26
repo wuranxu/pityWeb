@@ -42,7 +42,7 @@ const ProjectForm = ({left, right, formName, record, reloadData, onFinish, field
                             })
                             await reloadData()
                         }} fileList={[]}>
-                            <Row style={{textAlign: 'center', marginBottom: 16}}>
+                            <Row style={{textAlign: 'center', marginBottom: 24}}>
                                 <ProjectAvatar data={record}/>
                             </Row>
                         </Upload>

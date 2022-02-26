@@ -9,6 +9,7 @@ export const CONFIG = {
   // URL: '',
   ICONFONT: '//at.alicdn.com/t/font_915840_dqy61i5rbz.js',
   AVATAR_URL: 'https://joeschmoe.io/api/v1/',
+  PROJECT_AVATAR_URL: 'https://api.prodless.com/avatar.png',
   ROLE: {
     0: 'user',
     1: 'admin',

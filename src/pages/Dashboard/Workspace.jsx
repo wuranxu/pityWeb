@@ -1,9 +1,15 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, history} from 'umi';
-import {Avatar, Button, Card, Col, Empty, Row, Statistic, Tag, Tooltip} from "antd";
+import {Avatar, Button, Card, Col, Empty, Rate, Row, Statistic, Tag, Tooltip} from "antd";
 import styles from './Workspace.less';
-import {useEffect} from "react";
-import {InfoCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import React, {useEffect} from "react";
+import {
+  AlertTwoTone,
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+  InfoCircleOutlined,
+  PlusOutlined
+} from "@ant-design/icons";
 import noRecord from "@/assets/no_record.svg";
 import {RingProgress} from "@ant-design/plots";
 import common from "@/utils/common";
@@ -48,7 +54,7 @@ const getContent = currentUser => {
 }
 
 const LinkTag = ({name, link}) => {
-  return <Tag color="cyan" style={{cursor: 'pointer', marginBottom: 12}} onClick={() => {
+  return <Tag color="blue" style={{cursor: 'pointer', marginBottom: 12}} onClick={() => {
     history.push(link)
   }}>{name}</Tag>
 }
@@ -85,11 +91,34 @@ const Workspace = ({user, dispatch}) => {
     </div>
   );
 
+  const desc = ['糟糕', '差劲', '普通', '良好', '棒极了'];
+
+  const onCalculateRate = value => {
+    console.log(value)
+    if (value < 0.1) {
+      return 0
+    }
+    if (value < 0.6) {
+      return 1
+    }
+    if (value < 0.7) {
+      return 2
+    }
+    if (value < 0.8) {
+      return 3
+    }
+    return 4
+  }
+
   // 关注的测试计划
   const {currentUser, followPlan} = user;
 
-  const calculatePercent = report => {
+  const calculatePercent = (report, pt = false) => {
     const percent = common.calPiePercent(report.success_count, report.success_count + report.fail_count + report.error_count)
+    if (pt) {
+      console.log(percent)
+      return percent
+    }
     return percent * 100
   }
 
@@ -134,11 +163,45 @@ const Workspace = ({user, dispatch}) => {
                          description={<span>你还没有关注测试计划, 赶紧去 <a href="/#/apiTest/testplan">关注</a> 一个吧！</span>}/>
                 </Col> :
                 followPlan.map(item =>
-                  <Col span={12}>
+                  <Col span={24}>
                     <Card size="small" hoverable
-                          title={<a href="/#/apiTest/testplan" style={{fontSize: 16, marginBottom: 16}}>{item.plan.name}</a>}>
+                          title={<a href="/#/apiTest/testplan"
+                                    style={{fontSize: 16, marginBottom: 16}}>{item.plan.name}</a>}>
                       <Row gutter={24}>
-                        <Col span={12}>
+                        <Col span={8}>
+                          <ChartCard bordered={false}
+                                     title="最近一次评分"
+                                     action={
+                                       <Tooltip title="通过率越高，评分越高哦~">
+                                         <InfoCircleOutlined/>
+                                       </Tooltip>
+                                     } contentHeight={128}>
+                            {
+                              item.report.length > 0 ? <div style={{textAlign: 'center'}}>
+                                <Row gutter={8} style={{marginBottom: 12}}>
+                                  <Col span={8}>
+                                    <Statistic title="成功" valueStyle={{color: '#3f8600'}}
+                                               value={item.report[0].success_count}
+                                               prefix={<CheckCircleTwoTone twoToneColor='#52c41a'/>}/>
+                                  </Col>
+                                  <Col span={8}>
+                                    <Statistic title="失败" valueStyle={{marginLeft: 8}}
+                                               value={item.report[0].failed_count}
+                                               prefix={<CloseCircleTwoTone twoToneColor='#F56C6C'/>}/>
+                                  </Col>
+                                  <Col span={8}>
+                                    <Statistic title="错误" valueStyle={{marginLeft: 8}}
+                                               value={item.report[0].error_count}
+                                               prefix={<AlertTwoTone twoToneColor="#E6A23C"/>}/>
+                                  </Col>
+                                </Row>
+                                <Rate disabled tooltips={desc} defaultValue={onCalculateRate(calculatePercent(item.report[0], true))}/>
+                                <span className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true))]}</span>
+                              </div>: <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
+                            }
+                          </ChartCard>
+                        </Col>
+                        <Col span={8}>
                           <ChartCard bordered={false}
                                      title={`${item.report[0].start_at}`}
                                      action={
@@ -149,7 +212,7 @@ const Workspace = ({user, dispatch}) => {
                             <RingPie plan={item.plan} report={item.report[0]}/>
                           </ChartCard>
                         </Col>
-                        <Col span={12}>
+                        <Col span={8}>
                           {
                             item.report.length > 0 ? <ChartCard
                               bordered={false}

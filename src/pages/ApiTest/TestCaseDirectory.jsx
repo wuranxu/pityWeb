@@ -26,6 +26,7 @@ import React, {useEffect, useState} from "react";
 import SplitPane from 'react-split-pane';
 import "./TestCaseDirectory.less";
 import {
+  DeleteOutlined,
   DeleteTwoTone,
   DownOutlined,
   EditOutlined,
@@ -307,6 +308,16 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     }
   }
 
+  const onDeleteTestcase = async () => {
+    const res = await dispatch({
+      type: 'testcase/deleteTestcase',
+      payload: selectedRowKeys,
+    })
+    if (res) {
+      listTestcase();
+    }
+  }
+
   const handleItemClick = key => {
     if (key === 1) {
       // 新增目录
@@ -497,7 +508,13 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                         }}>执行用例 <DownOutlined/></Button>
                       </Dropdown>
                       : null}
-                    {/*<Button style={{marginLeft: 8}} onClick={onExecute}><PlayCircleOutlined/> 执行用例</Button> : null}*/}
+                    {selectedRowKeys.length > 0 ?
+                      <Button type="primary" danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onDeleteTestcase();
+                              }}>删除用例</Button>
+                      : null}
                   </Col>
                 </Row>
                 <Row style={{marginTop: 16}}>

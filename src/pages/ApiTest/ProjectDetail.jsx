@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Card, Tabs} from 'antd';
+import {Avatar, Card, PageHeader, Tabs} from 'antd';
 import {useParams} from 'umi';
 import {process} from '@/utils/utils';
 import {queryProject} from '@/services/project';
@@ -8,6 +8,8 @@ import auth from '@/utils/auth';
 import ProjectInfo from '@/components/Project/ProjectInfo';
 import {listUsers} from '@/services/user';
 import ProjectRole from '@/components/Project/ProjectRole';
+import {CONFIG} from "@/consts/config";
+import "./Project.less";
 
 const {TabPane} = Tabs;
 
@@ -48,8 +50,16 @@ export default () => {
 
 
   return (
-    <PageContainer breadcrumb={null} title={<span>
-      <Avatar src={projectData.avatar}/>{projectData.name}</span>}>
+    <PageContainer breadcrumb={null} title={
+      <PageHeader
+        className="site-page-header"
+        onBack={() => {
+          window.history.back();
+        }}
+        title={<span>
+      <Avatar src={projectData.avatar || CONFIG.PROJECT_AVATAR_URL}/>{projectData.name}</span>}
+      />
+      }>
       <Card bodyStyle={{padding: '8px 18px'}}>
         <Tabs defaultActiveKey='1'>
           <TabPane tab='成员列表' key='1'>

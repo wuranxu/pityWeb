@@ -121,6 +121,19 @@ export async function deleteTestcaseDirectory(params) {
   });
 }
 
+/**
+ * 删除测试用例
+ * @param params
+ * @returns {Promise<any>}
+ */
+export async function deleteTestcase(params) {
+  return request(`${CONFIG.URL}/testcase/delete`, {
+    method: 'DELETE',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
 // 新增测试数据
 export async function insertTestcaseData(params) {
   return request(`${CONFIG.URL}/testcase/data/insert`, {

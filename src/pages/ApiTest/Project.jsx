@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Button, Card, Col, Empty, Input, Pagination, Popover, Row, Select, Spin, Tooltip,} from 'antd';
+import {Avatar, Button, Card, Col, Empty, Input, Pagination, Row, Select, Spin, Tooltip,} from 'antd';
 import {QuestionCircleOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
 import {history} from 'umi';
@@ -10,6 +10,8 @@ import {process} from '@/utils/utils';
 import {listUsers} from '@/services/user';
 import noRecord from '@/assets/no_record.svg'
 import UserLink from "@/components/Button/UserLink";
+import {CONFIG} from "@/consts/config";
+import styles from './Project.less';
 
 
 const {Search} = Input;
@@ -62,16 +64,6 @@ export default () => {
       // 创建成功后自动获取第一页的数据, 因为项目会按创建时间排序
       await fetchData(1);
     }
-  };
-
-  const content = (item) => {
-    return (
-      <div>
-        <p>负责人: {<UserLink user={users[item.owner]}/>}</p>
-        <p>简介: {item.description || '无'}</p>
-        <p>更新时间: {item.updated_at}</p>
-      </div>
-    );
   };
 
   const opt = (
@@ -138,27 +130,29 @@ export default () => {
         fields={fields}
         onFinish={onHandleCreate}
       />
-      <Row gutter={8} style={{marginBottom: 16}}>
-        <Col span={18}>
-          <Button type="primary" onClick={() => setVisible(true)}>
-            创建项目
-            <Tooltip title="只有超级管理员可以创建项目">
-              <QuestionCircleOutlined/>
-            </Tooltip>
-          </Button>
-        </Col>
-        <Col span={6}>
-          <Search
-            onSearch={onSearchProject}
-            style={{float: 'right'}}
-            placeholder="请输入项目名称"
-          />
-        </Col>
-      </Row>
-      <Spin spinning={false}>
+      <>
+        <Card style={{marginBottom: 24}}>
+          <Row gutter={8}>
+            <Col span={18}>
+              <Button type="primary" onClick={() => setVisible(true)}>
+                创建项目
+                <Tooltip title="只有超级管理员可以创建项目">
+                  <QuestionCircleOutlined/>
+                </Tooltip>
+              </Button>
+            </Col>
+            <Col span={6}>
+              <Search
+                onSearch={onSearchProject}
+                style={{float: 'right'}}
+                placeholder="请输入项目名称"
+              />
+            </Col>
+          </Row>
+        </Card>
         <Row gutter={24}>
           {data.length === 0 ? (
-            <Col span={24} style={{textAlign: 'center', marginBottom: 12}}>
+            <Col span={24} style={{textAlign: 'center', marginBottom: 24}}>
               <Card>
                 <Empty description="暂无项目, 快点击『创建项目』创建一个吧!" image={noRecord} imageStyle={{height: 220}}/>
               </Card>
@@ -166,29 +160,22 @@ export default () => {
           ) : (
             data.map((item) => (
               <Col key={item.id} span={6} style={{marginBottom: 24}}>
-                <Popover content={content(item)} placement="rightTop">
-                  <Card
-                    hoverable
-                    bordered={false}
-                    style={{borderRadius: 16, textAlign: 'center'}}
-                    bodyStyle={{padding: 16}}
+                <Card hoverable className={styles.card}>
+                  <Card.Meta
+                    avatar={<Avatar src={item.avatar || CONFIG.PROJECT_AVATAR_URL} size={48}/>}
+                    title={<div style={{fontSize: 16, fontWeight: 'bold'}}>
+                      {item.name}
+                    </div>}
+                    description={<div>
+                      <p>{item.description || '无'}</p>
+                      <p>负责人 {<UserLink user={users[item.owner]}/>}</p>
+                      <p>更新时间 {item.updated_at}</p>
+                    </div>}
                     onClick={() => {
                       history.push(`/apiTest/project/${item.id}`);
                     }}
-                  >
-                    <Avatar src={item.avatar || "https://api.prodless.com/avatar.png"} size={64}/>
-                    <p
-                      style={{
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        fontSize: 18,
-                        marginTop: 8,
-                      }}
-                    >
-                      {item.name}
-                    </p>
-                  </Card>
-                </Popover>
+                  />
+                </Card>
               </Col>
             ))
           )}
@@ -200,7 +187,7 @@ export default () => {
             }}/>
           </Col>
         </Row>
-      </Spin>
+      </>
     </PageContainer>
   );
 };

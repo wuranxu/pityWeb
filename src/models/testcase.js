@@ -1,6 +1,6 @@
 import auth from "@/utils/auth";
 import {
-  createTestCase,
+  createTestCase, deleteTestcase,
   deleteTestCaseAsserts,
   deleteTestcaseData,
   deleteTestcaseDirectory,
@@ -106,6 +106,18 @@ export default {
 
     * deleteTestcaseDirectory({payload}, {call, put}) {
       const res = yield call(deleteTestcaseDirectory, payload);
+      return auth.response(res, true);
+    },
+
+    /**
+     * 删除测试用例
+     * @param payload
+     * @param call
+     * @param put
+     * @returns {Generator<*, boolean, *>}
+     */
+    * deleteTestcase({payload}, {call, put}) {
+      const res = yield call(deleteTestcase, payload);
       return auth.response(res, true);
     },
 

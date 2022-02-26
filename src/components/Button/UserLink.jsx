@@ -20,7 +20,9 @@ export default ({user, size = 24, marginLeft = 4}) => {
             <del><a style={{marginLeft: marginLeft, fontSize: 14, color: "#ccc"}} href={`/#/member/${user.id}`}
                     target="_blank"
                     rel="noreferrer">{user.name}</a></del> :
-            <a style={{marginLeft: marginLeft, fontSize: 14}} href={`/#/member/${user.id}`} target="_blank"
+            <a onClick={e => {
+                e.stopPropagation();
+            }} style={{marginLeft: marginLeft, fontSize: 14}} href={`/#/member/${user.id}`} target="_blank"
                rel="noreferrer">{user.name}</a>
         }
 
