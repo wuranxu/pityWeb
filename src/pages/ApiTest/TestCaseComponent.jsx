@@ -230,16 +230,16 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                       }}><PlayCircleOutlined/> 运行<DownOutlined/></Button>
                             </Dropdown>
                           </div>}>
-                      <Descriptions size='small' column={4}>
+                      <Descriptions column={4}>
                         <Descriptions.Item label='用例名称'><a>{caseInfo.name}</a></Descriptions.Item>
 
                         <Descriptions.Item
-                          label='请求类型'>{CONFIG.REQUEST_TYPE_TAG[caseInfo.request_type]}</Descriptions.Item>
+                          label='请求类型'>{CONFIG.REQUEST_TYPE[caseInfo.request_type]}</Descriptions.Item>
                         <Descriptions.Item label='请求url' span={2}>
                           <a href={caseInfo.url} style={{fontSize: 14}}>{caseInfo.url}</a>
                         </Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
-                          {caseInfo.request_method}
+                          {CONFIG.REQUEST_METHOD[caseInfo.request_method]}
                         </Descriptions.Item>
                         <Descriptions.Item label='用例等级'>{<Tag
                           color={CONFIG.CASE_TAG[caseInfo.priority]}>{caseInfo.priority}</Tag>}</Descriptions.Item>

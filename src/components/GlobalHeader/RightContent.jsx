@@ -1,10 +1,11 @@
-import {Badge, Tag, Tooltip} from 'antd';
-import {BellOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {Badge, Modal, Tag, Tooltip} from 'antd';
+import {BellOutlined, QuestionCircleOutlined, WechatOutlined} from '@ant-design/icons';
 import React, {useState} from 'react';
 import {connect, history} from 'umi';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 import Version from "@/components/Drawer/Version";
+import wechat from '@/assets/wechat.png';
 
 const ENVTagColor = {
   dev: 'orange',
@@ -51,6 +52,32 @@ const GlobalHeaderRight = (props) => {
       {/*  // }}*/}
       {/*/>*/}
       <Version visible={visible} setVisible={setVisible}/>
+      <Tooltip title="联系作者">
+        <a
+          onClick={() => {
+            Modal.info({
+              title: '联系作者',
+              width: 600,
+              style: {
+                marginTop: -80,
+              },
+              bodyStyle: {
+                marginLeft: 0,
+              },
+              content: (
+                <div style={{textAlign: 'left'}}>
+                  <img height={540} width={480} src={wechat} alt=""/>
+                </div>
+              )
+          })}}
+          style={{
+            color: '#52c41a',
+          }}
+          className={styles.action}
+        >
+          <WechatOutlined style={{fontSize: 16}}/>
+        </a>
+      </Tooltip>
       <Tooltip title="消息中心">
         <a
           onClick={() => {
@@ -72,7 +99,7 @@ const GlobalHeaderRight = (props) => {
             color: 'inherit',
           }}
           target="_blank"
-          href="https://pity.readthedocs.io"
+          href="https://wuranxu.github.io/pityDoc"
           rel="noopener noreferrer"
           className={styles.action}
         >

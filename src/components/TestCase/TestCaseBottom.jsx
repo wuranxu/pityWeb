@@ -214,7 +214,8 @@ const TestCaseBottom = ({
         }}>
 
           <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
-            icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~"/></span>}>
+            onClick={()=>{window.open(`${CONFIG.DOCUMENT_URL}/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%A6%82%E5%BF%B5/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86`)}}
+            icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~点击此按钮查看详细文档。"/></span>}>
             {
               envList.length > 0 ?
                 <Tabs tabPosition="left" activeKey={envActiveKey} onChange={key => {

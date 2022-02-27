@@ -11,6 +11,7 @@ export const CONFIG = {
   // URL: '',
   ICONFONT: IconFontUrl,
   AVATAR_URL: 'https://joeschmoe.io/api/v1/',
+  DOCUMENT_URL: 'https://wuranxu.github.io/pityDoc',
   PROJECT_AVATAR_URL: 'https://api.prodless.com/avatar.png',
   ROLE: {
     0: 'user',
@@ -96,6 +97,12 @@ export const CONFIG = {
     1: <Tag color="success">HTTP</Tag>,
     2: <Tag color="orange">GRPC</Tag>,
     3: <Tag color="blue">DUBBO</Tag>,
+  },
+  REQUEST_METHOD: {
+    'GET':  <Tag color="success">GET</Tag>,
+    'POST':  <Tag color="blue">POST</Tag>,
+    'PUT':  <Tag color="cyan">PUT</Tag>,
+    'DELETE':  <Tag color="error">DELETE</Tag>,
   },
   CASE_TAG: {
     'P0': 'magenta',

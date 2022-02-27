@@ -94,29 +94,27 @@ const Workspace = ({user, dispatch}) => {
   const desc = ['糟糕', '差劲', '普通', '良好', '棒极了'];
 
   const onCalculateRate = value => {
-    console.log(value)
     if (value < 0.1) {
-      return 0
-    }
-    if (value < 0.6) {
       return 1
     }
-    if (value < 0.7) {
+    if (value < 0.6) {
       return 2
     }
-    if (value < 0.8) {
+    if (value < 0.7) {
       return 3
     }
-    return 4
+    if (value < 0.8) {
+      return 4
+    }
+    return 5
   }
 
   // 关注的测试计划
   const {currentUser, followPlan} = user;
 
   const calculatePercent = (report, pt = false) => {
-    const percent = common.calPiePercent(report.success_count, report.success_count + report.fail_count + report.error_count)
+    const percent = common.calPiePercent(report.success_count, report.success_count + report.failed_count + report.error_count)
     if (pt) {
-      console.log(percent)
       return percent
     }
     return percent * 100
@@ -126,7 +124,7 @@ const Workspace = ({user, dispatch}) => {
     const config = {
       height: 128,
       autoFit: true,
-      percent: calculatePercent(report),
+      percent: calculatePercent(report, true),
       color: ['#67C23A', '#F4664A'],
       innerRadius: 0.85,
       radius: 0.98,
@@ -148,13 +146,13 @@ const Workspace = ({user, dispatch}) => {
   const revertArray = (report) => {
     const temp = [...report]
     temp.reverse()
-    return temp.map(v => calculatePercent(v) * 100)
+    return temp.map(v => calculatePercent(v))
   }
 
   return <PageContainer content={getContent(currentUser)} breadcrumb={null} extraContent={<ExtraContent/>}>
     <Row gutter={16}>
       <Col span={16}>
-        <Card title="关注中的测试计划" bodyStyle={{minHeight: 400}}>
+        <Card title={<div><strong>关注中的测试计划</strong> ({followPlan.length}个)</div>} bodyStyle={{minHeight: 400}}>
           <Row gutter={8}>
             {
               followPlan.length === 0 ?
@@ -164,9 +162,9 @@ const Workspace = ({user, dispatch}) => {
                 </Col> :
                 followPlan.map(item =>
                   <Col span={24}>
-                    <Card size="small" hoverable
+                    <Card size="small" hoverable style={{marginBottom: 16}}
                           title={<a href="/#/apiTest/testplan"
-                                    style={{fontSize: 16, marginBottom: 16}}>{item.plan.name}</a>}>
+                                    style={{fontSize: 16}}>{item.plan.name}</a>}>
                       <Row gutter={24}>
                         <Col span={8}>
                           <ChartCard bordered={false}
@@ -196,7 +194,7 @@ const Workspace = ({user, dispatch}) => {
                                   </Col>
                                 </Row>
                                 <Rate disabled tooltips={desc} defaultValue={onCalculateRate(calculatePercent(item.report[0], true))}/>
-                                <span className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true))]}</span>
+                                <span className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true))-1]}</span>
                               </div>: <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
                             }
                           </ChartCard>
@@ -225,7 +223,7 @@ const Workspace = ({user, dispatch}) => {
                               contentHeight={128}
                             >
                               <TinyArea
-                                color="#975FE4"
+                                color="#1890ff"
                                 xField="x"
                                 height={120}
                                 forceFit

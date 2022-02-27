@@ -145,9 +145,9 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
     <Row gutter={8}>
       <FormForModal title="测试数据" record={record} onCancel={() => {
         setModal(false)
-      }} left={4} right={20} width={600}
+      }} left={4} right={20} width={650}
                     visible={modal} onFinish={onFinish} fields={fields}>
-        <Alert type="info" message="fff" showIcon/>
+        <Alert closable type="info" style={{marginBottom: 12}} message="数据管理接受一串key-value的数据，供大家在case里面使用这些变量，用${变量}的方式。" showIcon/>
       </FormForModal>
       <Col span={24}>
         <Card bordered={false}>

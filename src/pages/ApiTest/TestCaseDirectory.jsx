@@ -527,7 +527,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                 <Row style={{marginTop: 16}}>
                   <Col span={24}>
                     <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
-                           pagination={pagination} size="small"
+                           pagination={pagination}
+                           bordered
                            onChange={pg => {
                              saveCase({pagination: {...pagination, current: pg.current}})
                            }}
