@@ -1,17 +1,58 @@
 ## 项目地址 🖕
 
-[官方文档 🍚](http://pity.readthedocs.org/)
-
 [在线演示 🍍](http://121.5.2.74/)
 
-### 关于Pity平台 😢
+[开发文档 🍚](https://pity.readthedocs.io/)
+
+[使用文档 🎨](https://wuranxu.github.com/pityDoc)
+
+## 平台展示
+
+#### 工作台
+
+![](https://gitee.com/woodywrx/picture/raw/master/2022-2-28/1646063228180-image.png)
+
+
+#### 测试计划
+
+![](https://gitee.com/woodywrx/picture/raw/master/2022-2-25/1645803999678-image.png)
+
+#### 测试报告
+
+![](https://gitee.com/woodywrx/picture/raw/master/2022-2-25/1645804075353-image.png)
+
+#### 测试用例
+
+![](https://gitee.com/woodywrx/picture/raw/master/2022-2-25/1645804276470-image.png)
+
+
+#### SQL客户端
+
+![](https://gitee.com/woodywrx/picture/raw/master/2022-2-25/1645804151559-image.png)
+
+#### 项目管理
+
+![](https://gitee.com/woodywrx/picture/raw/master/2022-2-26/1645854332681-image.png)
+
+## ✉ 使用文档
+
+[使用文档(github)](https://wuranxu.github.io/pityDoc/)
+
+[备用地址(gitee)](https://woodywrx.gitee.io/pityDoc/)
+
+## 😊 开发参考文章
+
+[开发文档-公众号](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIyMjUwOTk5Mw==&action=getalbum&album_id=1983195471686762500&scene=173&from_msgid=2247484522&from_itemidx=8&count=3&nolastread=1#wechat_redirect)
+
+[开发文档-掘金](https://juejin.cn/column/6977933898952998926)
+
+### 😢 关于Pity平台
 
 pity是一款专注于api自动化的工具，采用`Python`+`FastApi`+`React`开发，目前还不能作为生产级别的工具，作者正在努力之中。
 
-这个项目叫pity， 一个从0开始写的自动化测试平台(基于FastApi)，旨在总结自己最近几年的工作经验，也顺便帮助大家进步。目前还在火热更新中，基本上每周都会更新几篇吧，前期以教学+编码为主，后期以实现功能为主。希望大家能够喜欢！~
+这个项目叫pity，一个从0开始写的自动化测试平台(基于FastApi)，旨在总结自己最近几年的工作经验，也顺便帮助大家进步。目前还在火热更新中，基本上每周都会更新几篇吧，前期以教学+编码为主，后期以实现功能为主。希望大家能够喜欢！~
 
-项目起源是本人很期待的某家头部公司🐧拒绝了我，觉得特别遗憾吧😅。加上这一年`浑浑噩噩`
-的，也没有什么产出，做的东西不如18，19年多。所以打算把自己18-19的项目重写出来，给大家一些参考。最重点的是@我去热饭，饭佬的持续更新让我觉得我也得努力一把了。
+项目起源是本人很期待的某家头部公司🐧拒绝了我，觉得特别遗憾吧😅。加上这一年`浑浑噩噩`的，也没有什么产出，做的东西不如18，19年多。所以打算把自己18-19的项目重写出来，给大家一些参考。
 
 ### 作者介绍 📞
 
