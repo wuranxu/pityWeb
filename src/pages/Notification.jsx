@@ -5,11 +5,15 @@ import {connect} from 'umi';
 import UserLink from "@/components/Button/UserLink";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {CloseOutlined, EyeTwoTone} from "@ant-design/icons";
+import Markdown from "@/components/CodeEditor/Markdown";
 
 const Notification = ({global, loading, user, dispatch}) => {
 
   const [current, setCurrent] = useState("0");
   const [activeTab, setActiveTab] = useState("1");
+  const [title, setTitle] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [content, setContent] = useState("");
   const {userMap} = user;
 
   const tabListNoTitle = [
@@ -70,6 +74,11 @@ const Notification = ({global, loading, user, dispatch}) => {
 
   return (
     <PageContainer breadcrumb={null} title="消息中心">
+      <Modal title={title} visible={visible} footer={null} onCancel={() => {
+        setVisible(false)
+      }}>
+        <Markdown value={content}/>
+      </Modal>
       <Row gutter={18}>
         <Col span={1}/>
         <Col span={5}>
@@ -114,10 +123,9 @@ const Notification = ({global, loading, user, dispatch}) => {
                         <TooltipIcon title="查看更多" style={{marginLeft: 8}} font={16} icon={<EyeTwoTone/>}
                                      onClick={() => {
                                        if (item.msg_content) {
-                                         return Modal.info({
-                                           content: item.msg_content,
-                                           title: item.msg_title,
-                                         })
+                                         setContent(item.msg_content)
+                                         setVisible(true)
+                                         setTitle(item.msg_title)
                                        }
                                      }}/> : null
                     }

@@ -42,6 +42,7 @@ const UserModel = {
     case_count: 0,
     user_rank: 0,
     total_user: 0,
+    weekly_case: [],
     // 关注的测试计划数据
     followPlan: [],
   },
@@ -161,9 +162,11 @@ const UserModel = {
           type: 'save',
           payload: {
             project_count: response.data.project_count,
-            "case_count": response.data.case_count,
-            "user_rank": response.data.user_rank,
-            "total_user": response.data.total_user
+            case_count: response.data.case_count,
+            user_rank: response.data.user_rank,
+            total_user: response.data.total_user,
+            weekly_case: response.data.weekly_case,
+
           },
         });
       }

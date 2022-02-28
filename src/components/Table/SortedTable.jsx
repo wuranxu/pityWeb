@@ -10,7 +10,7 @@ const defaultCols = [
   {
     title: '排序',
     dataIndex: 'sort',
-    width: 50,
+    width: 65,
     className: 'drag-visible',
     render: () => <DragHandle/>,
   },
@@ -51,7 +51,6 @@ export default ({dataSource, columns, setDataSource, dragCallback, loading}) => 
   };
   return (
     <Table
-      size="small"
       pagination={false}
       dataSource={dataSource}
       loading={loading}

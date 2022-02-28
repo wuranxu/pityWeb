@@ -155,7 +155,7 @@ const TestCaseBottom = ({
       key: 'enable',
       dataIndex: 'enable',
       className: 'drag-visible',
-      render: (enable, record) => <Switch defaultChecked={record.enable} size="small" onChange={async value => {
+      render: (enable, record) => <Switch defaultChecked={record.enable} onChange={async value => {
         await onSwitchConstructor(record, value)
       }}/>
     },

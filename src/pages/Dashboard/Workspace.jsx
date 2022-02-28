@@ -15,6 +15,7 @@ import {RingProgress} from "@ant-design/plots";
 import common from "@/utils/common";
 import {TinyArea} from "@ant-design/charts";
 import ChartCard from "@/components/Charts/ChartCard";
+import Area from "@/components/Charts/Area";
 
 const getWelcome = user => {
   const now = new Date()
@@ -27,7 +28,7 @@ const getWelcome = user => {
     return `上午好, ${user}!`
   } else if (hour < 14) {
     return `中午好, ${user}!`
-  } else if (hour < 17) {
+  } else if (hour < 19) {
     return `下午好, ${user}!`
   } else if (hour < 24) {
     return `晚上好, ${user}! 不早了，喝杯热牛奶🥛再去休息吧~`
@@ -65,7 +66,8 @@ const Workspace = ({user, dispatch}) => {
     project_count,
     case_count,
     user_rank,
-    total_user
+    total_user,
+    weekly_case,
   } = user;
 
   useEffect(() => {
@@ -193,9 +195,11 @@ const Workspace = ({user, dispatch}) => {
                                                prefix={<AlertTwoTone twoToneColor="#E6A23C"/>}/>
                                   </Col>
                                 </Row>
-                                <Rate disabled tooltips={desc} defaultValue={onCalculateRate(calculatePercent(item.report[0], true))}/>
-                                <span className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true))-1]}</span>
-                              </div>: <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
+                                <Rate disabled tooltips={desc}
+                                      defaultValue={onCalculateRate(calculatePercent(item.report[0], true))}/>
+                                <span
+                                  className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true)) - 1]}</span>
+                              </div> : <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
                             }
                           </ChartCard>
                         </Col>
@@ -265,7 +269,11 @@ const Workspace = ({user, dispatch}) => {
               </Button>
             </Col>
           </Row>
-
+        </Card>
+        <Card title="最近7天编写用例数量" style={{marginTop: 16}} extra={<Button type="link" onClick={() => {
+          history.push("/apiTest/testcase")
+        }}>去编写</Button>}>
+          <Area xField="date" yField="count" data={weekly_case}/>
         </Card>
       </Col>
 
