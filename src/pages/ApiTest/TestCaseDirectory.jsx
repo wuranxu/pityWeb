@@ -366,7 +366,12 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     if (projects.length === 0) {
       return 'loading...'
     }
-    return projects.filter(p => p.id === project_id)[0]
+    const filter_project = projects.filter(p => p.id === project_id)
+    if (filter_project.length === 0) {
+      save({project_id: projects[0].id})
+      return projects[0]
+    }
+    return filter_project[0]
   }
 
   const layout = {
@@ -391,7 +396,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
               <Row gutter={8}>
                 <Col span={18}>
                   {
-                    editing ? <Select style={{marginLeft: 32, width: 120}} showSearch
+                    editing ? <Select style={{marginLeft: 32, width: 180}} showSearch
                                       placeholder="请选择项目" value={project_id} autoFocus={true}
                                       onChange={e => {
                                         save({project_id: e})

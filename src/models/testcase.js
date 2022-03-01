@@ -26,6 +26,7 @@ export default {
     currentDirectory: [],
     selectedRowKeys: [],
     directoryName: '加载中...',
+    casePermission: false,
     testcases: [],
     testResult: {},
     editing: false,
@@ -89,6 +90,7 @@ export default {
           type: 'save',
           payload: {
             directoryName: res.data.name,
+            casePermission: true
           }
         })
       }

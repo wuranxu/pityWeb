@@ -1,4 +1,4 @@
-import {listProject, updateAvatar} from "@/services/project";
+import {deleteProject, listProject, updateAvatar} from "@/services/project";
 import auth from "@/utils/auth";
 
 const getProjectId = () => {
@@ -53,6 +53,12 @@ export default {
         return res.data;
       }
       return null;
-    }
+    },
+
+    * deleteProject({payload}, {call, put}) {
+      const res = yield call(deleteProject, payload)
+      return auth.response(res, true);
+    },
+
   },
 }

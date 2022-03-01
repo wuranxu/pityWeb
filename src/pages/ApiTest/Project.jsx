@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Button, Card, Col, Empty, Input, Pagination, Row, Select, Spin, Tooltip,} from 'antd';
-import {QuestionCircleOutlined} from '@ant-design/icons';
+import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Select, Tooltip,} from 'antd';
+import {AliwangwangOutlined, DeleteTwoTone, ExclamationCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
-import {history} from 'umi';
+import {connect, history} from 'umi';
 import {insertProject, listProject} from '@/services/project';
 import auth from '@/utils/auth';
 import {process} from '@/utils/utils';
@@ -13,12 +13,13 @@ import UserLink from "@/components/Button/UserLink";
 import {CONFIG} from "@/consts/config";
 import styles from './Project.less';
 import UserSelect from "@/components/User/UserSelect";
+import {IconFont} from "@/components/Icon/IconFont";
 
 
 const {Search} = Input;
 const {Option} = Select;
 
-export default () => {
+const Project = ({dispatch, project, loading}) => {
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({current: 1, pageSize: 8, total: 0});
   const [visible, setVisible] = useState(false);
@@ -26,13 +27,11 @@ export default () => {
   const [userMap, setUserMap] = useState({});
 
   const fetchData = async (current = pagination.current, size = pagination.size) => {
-    await process(async () => {
-      const res = await listProject({page: current, size});
-      if (auth.response(res)) {
-        setData(res.data);
-        setPagination({...pagination, current, total: res.total});
-      }
-    });
+    const res = await listProject({page: current, size});
+    if (auth.response(res)) {
+      setData(res.data);
+      setPagination({...pagination, current, total: res.total});
+    }
   };
 
   const getUsers = async () => {
@@ -44,6 +43,18 @@ export default () => {
     setUsers(user);
     setUserMap(temp);
   };
+
+  const onDeleteProject = async projectId => {
+    const res = await dispatch({
+      type: 'project/deleteProject',
+      payload: {
+        projectId,
+      },
+    });
+    if (res) {
+      fetchData();
+    }
+  }
 
   useEffect(async () => {
     await getUsers();
@@ -111,6 +122,46 @@ export default () => {
       valuePropName: 'checked',
     },
   ];
+
+  const menu = item => <Menu>
+    <Menu.Item icon={<AliwangwangOutlined/>}>
+      <a>
+        申请权限
+      </a>
+    </Menu.Item>
+    <Menu.Item icon={<DeleteTwoTone twoToneColor="red"/>}>
+      <a onClick={e => {
+        e.stopPropagation();
+        Modal.confirm({
+          title: '你确定要删除此项目吗?',
+          icon: <ExclamationCircleOutlined/>,
+          content: '删除后不可恢复，请谨慎~',
+          okText: '确定',
+          okType: 'danger',
+          cancelText: '点错了',
+          onOk: async () => {
+            await onDeleteProject(item.id);
+          },
+        });
+      }}>
+        删除项目
+      </a>
+    </Menu.Item>
+  </Menu>;
+
+  const CardTitle = ({item}) => (
+    <div style={{fontSize: 16, fontWeight: 'bold', color: 'rgb(65, 74, 105)'}}>
+      {item.name}
+      <span style={{float: 'right', lineHeight: '24px', fontSize: 24, marginRight: 4}}>
+          <Dropdown overlay={menu(item)} onClick={e => {
+            e.stopPropagation();
+          }}>
+            <IconFont type="icon-more1" style={{cursor: 'pointer'}}/>
+          </Dropdown>
+        </span>
+    </div>
+  )
+
   return (
     <PageContainer title={false} breadcrumb={null}>
       <FormForModal
@@ -125,7 +176,7 @@ export default () => {
         onFinish={onHandleCreate}
       />
       <>
-        <Card style={{marginBottom: 24}}>
+        <Card style={{marginBottom: 12}}>
           <Row gutter={8}>
             <Col span={18}>
               <Button type="primary" onClick={() => setVisible(true)}>
@@ -146,7 +197,7 @@ export default () => {
         </Card>
         <Row gutter={24}>
           {data.length === 0 ? (
-            <Col span={24} style={{textAlign: 'center', marginBottom: 24}}>
+            <Col span={24} style={{textAlign: 'center', marginBottom: 12}}>
               <Card>
                 <Empty description="暂无项目, 快点击『创建项目』创建一个吧!" image={noRecord} imageStyle={{height: 220}}/>
               </Card>
@@ -157,9 +208,7 @@ export default () => {
                 <Card hoverable className={styles.card}>
                   <Card.Meta
                     avatar={<Avatar src={item.avatar || CONFIG.PROJECT_AVATAR_URL} size={48}/>}
-                    title={<div style={{fontSize: 16, fontWeight: 'bold'}}>
-                      {item.name}
-                    </div>}
+                    title={<CardTitle item={item}/>}
                     description={<div>
                       <p>{item.description || '无'}</p>
                       <p>负责人 {<UserLink user={userMap[item.owner]}/>}</p>
@@ -185,3 +234,6 @@ export default () => {
     </PageContainer>
   );
 };
+
+
+export default connect(({loading, project}) => ({loading, project}))(Project);

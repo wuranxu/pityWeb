@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { CONFIG } from '@/consts/config';
+import {CONFIG} from '@/consts/config';
 import auth from '@/utils/auth';
 
 export async function listProject(params) {
@@ -66,5 +66,16 @@ export async function updateAvatar(data) {
     data: formData,
     requestType: 'form',
     headers: auth.headers(false),
+  });
+}
+
+/**
+ * 删除项目
+ */
+export async function deleteProject(params) {
+  return request(`${CONFIG.URL}/project/delete`, {
+    method: 'DELETE',
+    params,
+    headers: auth.headers(),
   });
 }

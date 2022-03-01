@@ -1,7 +1,7 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Descriptions, Dropdown, Empty, Form, Menu, Row, Spin, Tabs, Tag} from "antd";
+import {Badge, Button, Card, Col, Descriptions, Dropdown, Empty, Form, Menu, Result, Row, Spin, Tabs, Tag} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
@@ -26,6 +26,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     caseInfo,
     editing,
     activeKey,
+    casePermission,
     asserts,
     constructRecord,
     constructorModal,
@@ -161,7 +162,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
              description={<p>还没有任何环境, 去<a href="/#/config/environment" target="_blank">添加一个</a>?</p>}/>
     </div>
 
-  </Card>: <Menu>
+  </Card> : <Menu>
     {envList.map(item => <Menu.Item key={item.id} onClick={async () => {
       await onExecuteTestCase(item.id)
     }}>
@@ -184,8 +185,10 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
 
   return (
     <PageContainer title={false} breadcrumb={null}>
+
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={caseInfo.name} single={false}/>
+
       <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}
             size="large">
         {
@@ -193,7 +196,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                      headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}
                                      setBodyType={setBodyType} bodyType={bodyType}
             /> :
-            <Row>
+
+            casePermission ? <Row>
               <Col span={24}>
                 <ConstructorModal width={1100} modal={constructorModal} setModal={e => {
                   dispatch({type: 'testcase/save', payload: {constructorModal: e}})
@@ -265,9 +269,11 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                     </Card>
                 }
               </Col>
-            </Row>
+            </Row> : <Result status="403" title="你无法查看此用例，请联系对应项目组长开通权限。"/>
         }
       </Spin>
+
+
     </PageContainer>
   )
 }
