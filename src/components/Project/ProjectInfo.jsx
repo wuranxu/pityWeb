@@ -65,6 +65,14 @@ export default ({data, users, reloadData}) => {
       placeholder: '请输入项目描述',
     },
     {
+      name: 'dingtalk_url',
+      label: '钉钉通知openapi',
+      required: false,
+      message: '请输入项目对应钉钉群机器人api',
+      type: 'input',
+      placeholder: '请输入项目对应钉钉群机器人api',
+    },
+    {
       name: 'private',
       label: '是否私有',
       required: true,

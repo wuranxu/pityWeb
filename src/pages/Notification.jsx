@@ -4,7 +4,7 @@ import {Card, Col, List, Menu, Modal, Row} from "antd";
 import {connect} from 'umi';
 import UserLink from "@/components/Button/UserLink";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
-import {CloseOutlined, EyeTwoTone} from "@ant-design/icons";
+import {CloseOutlined, EyeTwoTone, NotificationOutlined} from "@ant-design/icons";
 import Markdown from "@/components/CodeEditor/Markdown";
 
 const Notification = ({global, loading, user, dispatch}) => {

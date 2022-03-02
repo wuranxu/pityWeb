@@ -106,6 +106,18 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
 
   const fields = [
     {
+      name: 'env',
+      label: '环境',
+      required: true,
+      component: <Select defaultValue={currentEnv}>
+        <Option value={0}>全部</Option>
+        {
+          envList.map(v => <Option value={v.id}>{v.name}</Option>)
+        }
+      </Select>,
+      type: 'select',
+    },
+    {
       name: 'key_type',
       label: '类型',
       required: true,
@@ -186,7 +198,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
     const params = {
       ...record,
       ...values,
-      env: currentEnv,
+      // env: currentEnv,
     };
     if (record.id === 0) {
       dispatch({
