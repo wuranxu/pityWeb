@@ -130,7 +130,23 @@ const TestCaseBottom = ({
         </pre>
       </code>
     }
+  }
 
+  const BadgeButton = ({number, bgColor, color, style}) => {
+    if (number === 0) {
+      return null;
+    }
+    return <div style={{
+      display: 'inline-block',
+      marginLeft: 2,
+      textAlign: "center",
+      width: 24,
+      borderRadius: 10,
+      background: bgColor,
+      color, ...style,
+    }}>
+      {number}
+    </div>
   }
 
   const columns = [
@@ -214,7 +230,9 @@ const TestCaseBottom = ({
         }}>
 
           <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
-            onClick={()=>{window.open(`${CONFIG.DOCUMENT_URL}/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%A6%82%E5%BF%B5/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86`)}}
+            onClick={() => {
+              window.open(`${CONFIG.DOCUMENT_URL}/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%A6%82%E5%BF%B5/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86`)
+            }}
             icon={<QuestionCircleOutlined/>} title="在这里你可以对多套环境的测试数据进行管理，从而达到数据驱动的目的~点击此按钮查看详细文档。"/></span>}>
             {
               envList.length > 0 ?
@@ -233,9 +251,14 @@ const TestCaseBottom = ({
             }
           </TabPane>
           <TabPane key="1"
-                   tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                               count={getConstructor(false).length}><IconFont
-                     type="icon-DependencyGraph_16x"/>前置条件</Badge>}>
+                   tab={
+                     <div>
+                       <IconFont
+                         type="icon-DependencyGraph_16x"/>前置条件
+                       <BadgeButton number={getConstructor(false).length} bgColor="rgb(237, 242, 251)"
+                                    color="rgb(29, 98, 203)"/>
+                     </div>
+                   }>
             {
               getConstructor(false).length === 0 ?
                 <NoRecord height={180}
@@ -295,14 +318,21 @@ const TestCaseBottom = ({
             </Row>
           </TabPane>
           <TabPane key="3"
-                   tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                               count={asserts.length}><IconFont type="icon-duanyan"/>断言</Badge>}>
+                   tab={<div>
+                     <IconFont type="icon-duanyan"/>断言 <BadgeButton number={asserts.length} bgColor="rgb(233, 249, 245)"
+                                                                    color="rgb(40, 195, 151)"/>
+                   </div>}>
             <TestCaseAssert asserts={asserts} caseId={case_id}/>
           </TabPane>
           <TabPane key="4"
-                   tab={<Badge size="small" style={{backgroundColor: '#52c41a'}} offset={[11, 6]}
-                               count={getConstructor(true).length}><IconFont
-                     type="icon-qingliwuliuliang"/>后置条件</Badge>}>
+                   tab={
+                     <div>
+                       <IconFont
+                         type="icon-qingliwuliuliang"/>后置条件
+                       <BadgeButton number={getConstructor(true).length} bgColor="rgb(255, 238, 239)"
+                                    color="rgb(255, 87, 95)"/>
+                     </div>
+                   }>
             {
               getConstructor(true).length === 0 ?
                 <NoRecord height={180}

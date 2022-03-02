@@ -211,7 +211,7 @@ const Workspace = ({user, dispatch}) => {
                                          <InfoCircleOutlined/>
                                        </Tooltip>
                                      } contentHeight={128}>
-                            <RingPie plan={item.plan} report={item.report[0]}/>
+                            <RingPie report={item.report[0]}/>
                           </ChartCard>
                         </Col>
                         <Col span={8}>

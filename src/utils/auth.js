@@ -1,5 +1,7 @@
 import {message, notification} from 'antd';
 import {listUsers} from '@/services/user';
+import {history} from "_umi@3.5.20@umi";
+import {stringify} from "_querystring@0.2.1@querystring";
 
 export default {
   headers: (json = true) => {
@@ -55,8 +57,14 @@ export default {
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
       // localStorage.setItem('pityUser', null);
-      window.location.href = '/#/user/login';
-      window.location.reload();
+      // window.location.href = '/#/user/login';
+      // window.location.reload();
+      history.replace({
+        pathname: '/user/login',
+        search: stringify({
+          redirect: window.location.href,
+        }),
+      });
       message.info(res.msg);
       return false;
     }

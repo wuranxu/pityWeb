@@ -15,14 +15,7 @@ import {
   Tabs,
   Tooltip,
 } from 'antd';
-import {
-  DeleteTwoTone,
-  DownOutlined,
-  EditTwoTone,
-  QuestionCircleOutlined,
-  SaveOutlined,
-  SendOutlined
-} from '@ant-design/icons';
+import {DeleteTwoTone, DownOutlined, EditTwoTone, QuestionCircleOutlined, SaveOutlined} from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
 import CodeEditor from '@/components/Postman/CodeEditor';
 import {httpRequest} from '@/services/request';
@@ -367,7 +360,7 @@ const PostmanForm = ({
           <Col span={18}>
             <Form layout="inline" form={form}>
               <Col span={6}>
-                <Form.Item name="request_method" rules={
+                <Form.Item colon={false} name="request_method" label="请求方式" rules={
                   [{required: true, message: "请选择请求方法"}]
                 } initialValue={method}>
                   <Select
@@ -384,8 +377,10 @@ const PostmanForm = ({
               </Col>
               <Col span={18}>
                 <Form.Item name="url" colon={false}
-                           label={<Tooltip title="点击可展开全局变量提示"><QuestionCircleOutlined
-                             onClick={() => setOpen(true)}/></Tooltip>}
+                           label={<Tooltip title="点击可展开全局变量提示">
+                             请求地址
+                             <QuestionCircleOutlined style={{marginLeft: 4}}
+                               onClick={() => setOpen(true)}/></Tooltip>}
                            rules={
                              [{required: true, message: "请输入请求url"}]
                            }>

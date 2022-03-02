@@ -1,7 +1,23 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, useParams} from 'umi';
 import React, {useEffect, useState} from "react";
-import {Badge, Button, Card, Col, Descriptions, Dropdown, Empty, Form, Menu, Result, Row, Spin, Tabs, Tag} from "antd";
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Dropdown,
+  Empty,
+  Form,
+  Menu,
+  Result,
+  Row,
+  Spin,
+  Tabs,
+  Tag,
+  Tooltip
+} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
 import {CONFIG} from "@/consts/config";
@@ -239,8 +255,15 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
 
                         <Descriptions.Item
                           label='请求类型'>{CONFIG.REQUEST_TYPE[caseInfo.request_type]}</Descriptions.Item>
-                        <Descriptions.Item label='请求url' span={2}>
-                          <a href={caseInfo.url} style={{fontSize: 14}}>{caseInfo.url}</a>
+                        <Descriptions.Item label='请求url' span={2} style={{
+                          fontSize: 14,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          <Tooltip title={caseInfo.url}>
+                            <a href={caseInfo.url}>{caseInfo.url}</a>
+                          </Tooltip>
                         </Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
                           {CONFIG.REQUEST_METHOD[caseInfo.request_method]}

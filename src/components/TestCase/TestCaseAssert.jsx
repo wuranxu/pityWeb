@@ -133,7 +133,7 @@ const TestCaseAssert = ({dispatch, testcase, caseId}) => {
             <Button type="primary" onClick={() => setAssertModal(true)}><PlusOutlined/>添加断言</Button>
           </Col>
         </Row>
-        <Table columns={columns} dataSource={asserts} size="small" rowKey={record => record.id}
+        <Table columns={columns} dataSource={asserts} rowKey={record => record.id}
                locale={{emptyText: <NoRecord height={150}/>}}/>
       </Col>
     </Row>
