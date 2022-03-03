@@ -15,14 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: use Node.js 14
+      - name: use Node.js 16
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - name: npm install and build
         run: |
-          npm install -g cnpm
-          cnpm install
+          npm install
           npm run build
         env:
           CI: true
