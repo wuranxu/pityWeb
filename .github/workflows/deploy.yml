@@ -36,6 +36,8 @@ jobs:
           TARGET: '/home/tester/pityWeb/'
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
+
+      - name: Restart
         run: |
           pm2 restart 4
           pm2 restart 5
