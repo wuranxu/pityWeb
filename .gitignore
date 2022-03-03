@@ -42,3 +42,7 @@ build
 dist
 
 dist.zip
+
+src/.umi
+
+src/.umi-production
