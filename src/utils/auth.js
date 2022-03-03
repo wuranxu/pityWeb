@@ -1,7 +1,7 @@
 import {message, notification} from 'antd';
 import {listUsers} from '@/services/user';
-import {history} from "_umi@3.5.20@umi";
-import {stringify} from "_querystring@0.2.1@querystring";
+import {history} from "umi";
+import { stringify } from 'querystring';
 
 export default {
   headers: (json = true) => {
