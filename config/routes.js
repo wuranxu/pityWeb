@@ -63,7 +63,7 @@ export default [
                   {
                     path: '/apiTest/testcase',
                     name: '接口用例',
-                    component: "./ApiTest/TestcaseDirectory"
+                    component: "./ApiTest/TestCaseDirectory"
                   },
                   {
                     path: '/apiTest/testcase/:directory/add',
