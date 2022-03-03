@@ -21,7 +21,8 @@ jobs:
           node-version: 14
       - name: npm install and build
         run: |
-          npm install
+          npm install -g cnpm
+          cnpm install
           npm run build
         env:
           CI: true
@@ -32,7 +33,11 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.PITY }}
           SOURCE: 'dist/'
           ARGS: "-avz --delete"
-          TARGET: '/home/github/pityWeb/'
+          TARGET: '/home/tester/pityWeb/'
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
+        run: |
+          pm2 restart 4
+          pm2 restart 5
+
 
