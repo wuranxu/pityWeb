@@ -26,15 +26,15 @@ jobs:
         env:
           CI: true
 
-      - name: Delpy
-        uses: easingthemes/ssh-deploy@v2.0.7
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@main
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.PITY }}
-          SOURCE: 'dist/'
-          ARGS: "-avz --delete"
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: '/home/tester/pityWeb/'
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
 
       - name: Restart
         run: |
