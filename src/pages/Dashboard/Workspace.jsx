@@ -88,7 +88,7 @@ const Workspace = ({user, dispatch}) => {
         <Statistic title="用例数量" value={case_count}/>
       </div>
       <div className={styles.statItem}>
-        <Statistic title="团队内排名" value={user_rank} suffix={`/ ${total_user}`}/>
+        <Statistic title="团队内排名" value={user_rank === 0 ? '-': user_rank} suffix={`/ ${total_user}`}/>
       </div>
     </div>
   );
