@@ -451,7 +451,6 @@ const PostmanForm = ({
                   defaultValue={0}
                   value={bodyType}
                   onChange={(e) => {
-                    console.log(setBodyType)
                     setBodyType(e.target.value)
                     if (e.target.value === 'form-data') {
                       // 获取oss文件

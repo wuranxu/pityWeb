@@ -14,7 +14,6 @@ import {
   Result,
   Row,
   Spin,
-  Tabs,
   Tag,
   Tooltip
 } from "antd";
@@ -31,7 +30,6 @@ import UserLink from "@/components/Button/UserLink";
 import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
 import noResult from '@/assets/noResult.svg';
 
-const {TabPane} = Tabs;
 
 const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const params = useParams();
@@ -41,12 +39,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     directoryName,
     caseInfo,
     editing,
-    activeKey,
     casePermission,
-    asserts,
     constructRecord,
     constructorModal,
-    envActiveKey
   } = testcase;
   const {envList} = gconfig;
   const {userMap} = user;
@@ -187,7 +182,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   </Menu>
 
   const getTagArray = () => {
-    console.log(caseInfo)
     if (caseInfo.tag === null || caseInfo.tag === "") {
       return []
     }
