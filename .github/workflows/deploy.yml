@@ -1,0 +1,38 @@
+name: Deploy PityWeb
+
+on:
+  push:
+    branches:
+      - master # 只在master上push触发部署
+    paths-ignore: # 下列文件的变更不触发部署，可以自行添加
+      - README.md
+      - LICENSE
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build
+        env:
+          CI: true
+
+      - name: Delpy
+        uses: easingthemes/ssh-deploy@v2.0.7
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.PITY }}
+          SOURCE: 'dist/'
+          ARGS: "-avz --delete"
+          TARGET: '/home/github/pityWeb/'
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+
