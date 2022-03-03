@@ -4,10 +4,10 @@ import TextIcon from "@/components/Icon/TextIcon";
 import {IconFontUrl} from "@/components/Icon/IconFont";
 
 export const CONFIG = {
-  // URL: 'http://121.5.2.74:7777',
-  URL: 'http://localhost:7777',
-  // WS_URL: '121.5.2.74:7777/ws',
-  WS_URL: '127.0.0.1:7777/ws',
+  URL: 'http://121.5.2.74:7777',
+  // URL: 'http://localhost:7777',
+  WS_URL: '121.5.2.74:7777/ws',
+  // WS_URL: '127.0.0.1:7777/ws',
   // WS_URL: '/ws',
   // URL: '',
   ICONFONT: IconFontUrl,
