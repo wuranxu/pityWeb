@@ -21,7 +21,8 @@ jobs:
           node-version: 16
       - name: npm install and build
         run: |
-          npm install --legacy-peer-deps
+          npm install -g yarn
+          yarn
           npm run build
         env:
           CI: true
