@@ -112,6 +112,19 @@ export async function updateTestcaseDirectory(params) {
   });
 }
 
+/**
+ * 移动用例到新目录
+ * @param params
+ * @returns {Promise<any>}
+ */
+export async function moveTestCase(params) {
+  return request(`${CONFIG.URL}/testcase/move`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
 // 删除目录
 export async function deleteTestcaseDirectory(params) {
   return request(`${CONFIG.URL}/testcase/directory/delete`, {

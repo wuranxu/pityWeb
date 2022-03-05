@@ -8,7 +8,7 @@ import {
   insertTestcaseData,
   insertTestcaseDirectory,
   listTestcase,
-  listTestcaseTree,
+  listTestcaseTree, moveTestCase,
   onlinePyScript,
   queryTestCase,
   queryTestcaseDirectory,
@@ -103,6 +103,11 @@ export default {
 
     * updateTestcaseDirectory({payload}, {call, put}) {
       const res = yield call(updateTestcaseDirectory, payload);
+      return auth.response(res, true);
+    },
+
+    * moveTestCaseToDirectory({payload}, {call, put}) {
+      const res = yield call(moveTestCase, payload);
       return auth.response(res, true);
     },
 

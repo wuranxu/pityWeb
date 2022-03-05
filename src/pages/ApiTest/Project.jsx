@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
 import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Select, Tooltip,} from 'antd';
 import {AliwangwangOutlined, DeleteTwoTone, ExclamationCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
@@ -236,4 +236,4 @@ const Project = ({dispatch, project, loading}) => {
 };
 
 
-export default connect(({loading, project}) => ({loading, project}))(Project);
+export default connect(({loading, project}) => ({loading, project}))(memo(Project));

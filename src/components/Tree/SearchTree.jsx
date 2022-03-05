@@ -98,6 +98,7 @@ export default ({treeData: gData, blockNode = true, onAddNode, menu, selectedKey
       </Row>
       <Tree
         onExpand={onExpand}
+        defaultExpandAll
         blockNode={blockNode}
         selectedKeys={selectedKeys}
         onSelect={onSelect}

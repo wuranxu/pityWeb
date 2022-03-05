@@ -18,7 +18,8 @@ import {
   Spin,
   Table,
   Tag,
-  Tooltip
+  Tooltip,
+  TreeSelect
 } from "antd";
 import {connect} from "umi";
 import React, {memo, useEffect, useState} from "react";
@@ -29,6 +30,7 @@ import {
   DownOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
+  ExportOutlined,
   FolderAddTwoTone,
   PlayCircleOutlined,
   PlusOutlined,
@@ -65,6 +67,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   const [form] = Form.useForm();
   const [resultModal, setResultModal] = useState(false);
   const [name, setName] = useState('');
+  const [moveModal, setMoveModal] = useState(false);
 
   const rowSelection = {
     selectedRowKeys,
@@ -284,10 +287,30 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
         payload: params,
       })
     }
-
     if (result) {
       setRootModal(false);
+      saveCase({
+        selectedRowKeys: []
+      })
       listTestcaseTree();
+    }
+  }
+
+  const onMove = async values => {
+    const res = await dispatch({
+      type: 'testcase/moveTestCaseToDirectory',
+      payload: {
+        id_list: selectedRowKeys,
+        directory_id: values.directory_id,
+        project_id,
+      },
+    })
+    if (res) {
+      setMoveModal(false);
+      saveCase({
+        selectedRowKeys: []
+      })
+      listTestcase();
     }
   }
 
@@ -309,6 +332,10 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     if (res) {
       listTestcase();
     }
+  }
+
+  const onMoveTestCase = () => {
+    setMoveModal(true);
   }
 
   const handleItemClick = (key, node) => {
@@ -347,6 +374,17 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     }
   ];
 
+  const moveFields = [
+    {
+      name: 'directory_id',
+      label: '目标目录',
+      required: true,
+      placeholder: "请选择要移动到的目录",
+      type: 'select',
+      component: <TreeSelect treeData={directory} showSearch treeDefaultExpandAll/>
+    }
+  ]
+
   const getProject = () => {
     if (projects.length === 0) {
       return 'loading...'
@@ -384,12 +422,13 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     <PageContainer title="用例列表" breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name} single={false}/>
+      <FormForModal title="移动用例" onCancel={() => setMoveModal(false)}
+                    fields={moveFields} onFinish={onMove}
+                    visible={moveModal} left={6} right={18} width={500} formName="move"/>
       <Row gutter={16}>
         <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
                       fields={fields} onFinish={onCreateDirectory} record={record}
-                      visible={rootModal} left={6} right={18} width={400} formName="root"
-
-        />
+                      visible={rootModal} left={6} right={18} width={400} formName="root"/>
         <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
           <div>
             <Card bodyStyle={{height: 615, overflow: 'auto', padding: 16}}>
@@ -501,6 +540,13 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                                 e.stopPropagation()
                                 onDeleteTestcase();
                               }}>删除用例</Button>
+                      : null}
+                    {selectedRowKeys.length > 0 ?
+                      <Button type="dashed" style={{marginLeft: 8}} icon={<ExportOutlined/>}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onMoveTestCase();
+                              }}>移动用例</Button>
                       : null}
                   </Col>
                 </Row>
