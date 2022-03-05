@@ -5,6 +5,7 @@ import React, {useEffect, useState} from "react";
 import {queryReport} from "@/services/report";
 import auth from "@/utils/auth";
 import styles from './ReportDetail.less';
+import './ReportDetail.less';
 import {
   AlertTwoTone,
   CheckCircleOutlined,
@@ -12,7 +13,8 @@ import {
   CloseCircleOutlined,
   CloseCircleTwoTone,
   FrownTwoTone,
-  LikeTwoTone
+  LikeTwoTone,
+  SearchOutlined
 } from "@ant-design/icons";
 import {IconFont} from "@/components/Icon/IconFont";
 import reportConfig from "@/consts/reportConfig";
@@ -251,12 +253,12 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
           <Row gutter={[8, 8]}>
             <Col span={18}/>
             <Col span={6}>
-              <Input placeholder="请输入用例名称"/>
+              <Input prefix={<SearchOutlined/>} placeholder="请输入用例名称" className="borderSearch"/>
             </Col>
           </Row>
           <Row gutter={[8, 8]}>
             <Col span={24}>
-              <Table style={{marginTop: 8}} columns={columns} dataSource={caseList}
+              <Table columns={columns} dataSource={caseList}
                      locale={{emptyText: <NoRecord height={200}/>}}/>
             </Col>
           </Row>

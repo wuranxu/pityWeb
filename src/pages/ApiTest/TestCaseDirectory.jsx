@@ -18,16 +18,14 @@ import {
   Spin,
   Table,
   Tag,
-  Tooltip,
-  Tree
+  Tooltip
 } from "antd";
 import {connect} from "umi";
-import React, {useEffect, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import SplitPane from 'react-split-pane';
 import "./TestCaseDirectory.less";
 import {
   DeleteOutlined,
-  DeleteTwoTone,
   DownOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
@@ -38,7 +36,6 @@ import {
   ReloadOutlined,
   SearchOutlined
 } from "@ant-design/icons";
-import {Item, Menu, useContextMenu} from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
 import NoRecord from "@/components/NotFound/NoRecord";
 import FormForModal from "@/components/PityForm/FormForModal";
@@ -49,9 +46,9 @@ import TestResult from "@/components/TestCase/TestResult";
 import UserLink from "@/components/Button/UserLink";
 import noResult from "@/assets/noResult.svg";
 import UserSelect from "@/components/User/UserSelect";
+import SearchTree from "@/components/Tree/SearchTree";
 
 const {Option} = Select;
-const {DirectoryTree} = Tree;
 
 
 const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}) => {
@@ -120,7 +117,6 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
           <Empty image={noResult} imageStyle={{height: 90, width: 90, margin: '0 auto'}}
                  description={<p>还没有任何环境, 去<a href="/#/config/environment" target="_blank">添加一个</a>?</p>}/>
         </div>
-
       </Card> :
       <AMenu>
         {envList.map(item => <AMenu.Item key={item.id}>
@@ -295,14 +291,10 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     }
   }
 
-  const {show} = useContextMenu({
-    id: "directory",
-  });
-
-  const onDeleteDirectory = async () => {
+  const onDeleteDirectory = async key => {
     const res = await dispatch({
       type: 'testcase/deleteTestcaseDirectory',
-      payload: {id: currentNode},
+      payload: {id: key},
     })
     if (res) {
       listTestcaseTree();
@@ -319,13 +311,15 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     }
   }
 
-  const handleItemClick = key => {
+  const handleItemClick = (key, node) => {
     if (key === 1) {
       // 新增目录
+      setCurrentNode(node.key)
       setModalTitle("新增目录");
       setRecord({name: ''})
       setRootModal(true)
     } else if (key === 2) {
+      setRecord({name: node.title.props.children[2], id: node.key});
       setModalTitle("编辑目录");
       setRootModal(true)
     } else if (key === 3) {
@@ -336,21 +330,12 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
         okText: '确定',
         okType: 'danger',
         cancelText: '点错了',
-        async onOk() {
-          await onDeleteDirectory();
+        onOk() {
+          onDeleteDirectory(node.key);
         },
       });
     }
   };
-
-  function handleContextMenu(event) {
-    event.preventDefault();
-    show(event, {
-      props: {
-        key: 'value'
-      }
-    })
-  }
 
   const fields = [
     {
@@ -379,9 +364,24 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     wrapperCol: {span: 16},
   };
 
+  // menu
+  const content = node => <AMenu>
+    <AMenu.Item key="1">
+      <a onClick={e => {
+        e.stopPropagation();
+        handleItemClick(2, node)
+      }}><EditOutlined/> 编辑目录</a>
+    </AMenu.Item>
+    <AMenu.Item key="2" danger>
+      <a onClick={e => {
+        e.stopPropagation();
+        handleItemClick(3, node)
+      }}><DeleteOutlined/> 删除目录</a>
+    </AMenu.Item>
+  </AMenu>
 
   return (
-    <PageContainer title="接口用例管理" breadcrumb={null}>
+    <PageContainer title="用例列表" breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name} single={false}/>
       <Row gutter={16}>
@@ -390,9 +390,9 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                       visible={rootModal} left={6} right={18} width={400} formName="root"
 
         />
-        <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={360} maxSize={800}>
+        <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
           <div>
-            <Card title={
+            <Card bodyStyle={{height: 615, overflow: 'auto', padding: 16}}>
               <Row gutter={8}>
                 <Col span={18}>
                   {
@@ -416,56 +416,41 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                   }
                 </Col>
                 <Col span={6}>
-                  <Tooltip title="新建根目录">
-                    <FolderAddTwoTone
-                      onClick={() => {
-                        setRootModal(true)
-                        setRecord({name: ''})
-                        setModalTitle("新建根目录");
-                        setCurrentNode(null);
-                      }}
-                      style={{
-                        float: "right",
-                        fontSize: 22,
-                        lineHeight: '32px',
-                        margin: '0 8px',
-                        cursor: 'pointer'
-                      }}
-                      twoToneColor="#67C23A"/>
+                  <Tooltip title="点击可新建根目录, 子目录需要在树上新建">
+                    <Button type="primary" size="small" className="directoryButton" onClick={() => {
+                      setRootModal(true)
+                      setRecord({name: ''})
+                      setModalTitle("新建根目录");
+                      setCurrentNode(null);
+                    }}>
+                      <FolderAddTwoTone/> 新建目录
+                    </Button>
+
                   </Tooltip>
                 </Col>
-              </Row>}
-                  bodyStyle={{height: 550, overflow: 'auto'}}
-            >
-              <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
-                {directory.length > 0 ?
-                  <>
-                    <DirectoryTree treeData={directory} onContextMenu={handleContextMenu}
-                                   onSelect={keys => {
-                                     saveCase({
-                                       currentDirectory: keys[0] === currentDirectory[0] ? [] : keys,
-                                     })
-                                   }}
-                                   selectedKeys={currentDirectory}
-                                   onRightClick={e => {
-                                     setCurrentNode(e.node.key);
-                                     setRecord({name: e.node.title, id: e.node.key});
-                                   }}/>
-                    <Menu id="directory" theme="dark">
-                      <Item onClick={() => {
-                        handleItemClick(1);
-                      }}><PlusOutlined style={{margin: '0 8px', fontSize: 16}}/> 添加目录</Item>
-                      <Item onClick={() => {
-                        handleItemClick(2);
-                      }}><EditOutlined style={{margin: '0 8px', fontSize: 16}}/> 编辑目录</Item>
-                      <Item onClick={() => {
-                        handleItemClick(3);
-                      }}><DeleteTwoTone twoToneColor="#F56C6C" style={{margin: '0 8px', fontSize: 16}}/> <span
-                        style={{color: '#F56C6C'}}>删除目录</span></Item>
-                    </Menu>
-                  </> : <NoRecord height={180} desc="暂无数据，点击绿色文件夹『添加』一个吧~"/>
-                }
-              </Spin>
+              </Row>
+              <div style={{marginTop: 24}}>
+                <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
+                  {directory.length > 0 ?
+                    <>
+                      <SearchTree treeData={directory} menu={content} onSelect={keys => {
+                        saveCase({currentDirectory: keys[0] === currentDirectory[0] ? [] : keys})
+                      }} onAddNode={node => {
+                        setCurrentNode(node.key)
+                        handleItemClick(1, node)
+                      }} selectedKeys={currentDirectory}
+                      />
+                    </> : <NoRecord height={180} desc={<div>
+                      还没有目录，<a onClick={() => {
+                      setRootModal(true)
+                      setRecord({name: ''})
+                      setModalTitle("新建根目录");
+                      setCurrentNode(null);
+                    }}>添加</a>一个吧~
+                    </div>}/>
+                  }
+                </Spin>
+              </div>
             </Card>
           </div>
           <div>
@@ -480,16 +465,6 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                   <Col span={8}>
                     <Form.Item label="创建人"  {...layout} name="create_user">
                       <UserSelect users={userList} placeholder="请选择创建用户"/>
-                      {/*<Select placeholder="选择创建用户" filterOption={(input, option) =>*/}
-                      {/*{*/}
-                      {/*  console.log(input, option)*/}
-                      {/*  return option.children.props.user.name.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.children.props.user.email.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
-                      {/*}*/}
-                      {/*} showSearch allowClear>*/}
-                      {/*  {userList.map(v => <Option key={v.id} value={v.id}><Avatar size="small"*/}
-                      {/*                                                             src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}*/}
-                      {/*  </Option>)}*/}
-                      {/*</Select>*/}
                     </Form.Item>
                   </Col>
                   <Col span={8}>
@@ -556,4 +531,4 @@ export default connect(({testcase, gconfig, project, user, loading}) => ({
   user,
   project,
   testcase,
-}))(TestCaseDirectory)
+}))(memo(TestCaseDirectory))
