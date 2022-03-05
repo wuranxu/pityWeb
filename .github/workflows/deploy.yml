@@ -21,8 +21,7 @@ jobs:
           node-version: 16
       - name: npm install and build
         run: |
-          npm install -g yarn
-          yarn
+          npm install --force
           npm run build
         env:
           CI: true
