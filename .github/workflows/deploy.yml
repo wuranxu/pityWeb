@@ -21,8 +21,7 @@ jobs:
           node-version: 16
       - name: npm install and build
         run: |
-          npm install -g cnpm
-          cnpm install --force
+          npm install --legacy-peer-deps
           npm run build
         env:
           CI: true
