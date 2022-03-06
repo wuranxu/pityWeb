@@ -435,7 +435,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
               <Row gutter={8}>
                 <Col span={18}>
                   {
-                    editing ? <Select style={{marginLeft: 32, width: 180}} showSearch
+                    editing ? <Select style={{marginLeft: 32, width: 150}} showSearch
                                       placeholder="请选择项目" value={project_id} autoFocus={true}
                                       onChange={e => {
                                         save({project_id: e})

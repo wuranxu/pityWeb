@@ -46,15 +46,16 @@ export default [
                 hideInMenu: true,
               },
               {
+                path: '/apiTest/project',
+                name: '项目管理',
+                icon: 'icon-Project',
+                component: './ApiTest/Project',
+              },
+              {
                 path: '/apiTest',
                 name: '接口测试',
-                icon: 'icon-Project',
+                icon: 'api',
                 routes: [
-                  {
-                    path: '/apiTest/project',
-                    name: '项目列表',
-                    component: './ApiTest/Project',
-                  },
                   {
                     path: '/apiTest/project/:id',
                     hideInMenu: true,
@@ -132,14 +133,9 @@ export default [
               {
                 path: '/config',
                 icon: 'icon-config',
-                name: '管理中心',
+                name: '测试配置',
                 authority: ['superAdmin', 'admin'],
                 routes: [
-                  {
-                    path: '/config/system',
-                    name: '系统设置',
-                    component: './Config/SystemConfig',
-                  },
                   {
                     path: '/config/environment',
                     name: '环境管理',
@@ -161,15 +157,28 @@ export default [
                     component: './Config/Redis',
                   },
                   {
-                    path: '/config/user',
-                    name: '用户管理',
-                    component: './Manager/UserList',
-                    authority: ['superAdmin'],
-                  },
-                  {
                     path: '/config/oss',
                     name: 'oss文件',
                     component: './Config/Oss',
+                  },
+                ]
+              },
+              {
+                path: '/system',
+                icon: 'icon-config',
+                name: '后台管理',
+                authority: ['superAdmin', 'admin'],
+                routes: [
+                  {
+                    path: '/system/configure',
+                    name: '系统设置',
+                    component: './Config/SystemConfig',
+                  },
+                  {
+                    path: '/system/user',
+                    name: '用户管理',
+                    component: './Manager/UserList',
+                    authority: ['superAdmin'],
                   },
                 ],
               },
