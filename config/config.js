@@ -43,4 +43,9 @@ export default defineConfig({
     basePath: '/',
   },
   esbuild: {},
+  lessLoader: {
+    modifyVars: {
+      'root-entry-name': 'default'
+    }
+  }
 });
