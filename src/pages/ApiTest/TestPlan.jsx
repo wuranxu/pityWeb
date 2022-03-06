@@ -1,6 +1,6 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect} from 'umi';
-import {Avatar, Badge, Button, Card, Col, Divider, Form, Input, Row, Select, Switch, Table, Tag, Tooltip} from "antd";
+import {Alert, Badge, Button, Card, Col, Divider, Form, Input, Row, Select, Switch, Table, Tag, Tooltip} from "antd";
 import React, {useEffect} from "react";
 import {CONFIG} from "@/consts/config";
 import {PlusOutlined, QuestionCircleOutlined} from "@ant-design/icons";
@@ -221,55 +221,60 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
   }, [])
 
   return (
-    <PageContainer title={false} breadcrumb={null}>
-      <Card>
-        <TestPlanForm fetchTestPlan={fetchTestPlan}/>
-        <Form form={form} {...CONFIG.LAYOUT} onValuesChange={() => {
-          fetchTestPlan();
-        }}>
-          <Row gutter={[12, 12]}>
-            <Col span={5}>
-              <Form.Item label="项目" name="project_id">
-                <Select allowClear showSearch placeholder="选择项目">
-                  {projects.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={5}>
-              <Form.Item label="名称" name="name">
-                <Input placeholder="输入测试计划名称"/>
-              </Form.Item>
-            </Col>
-            <Col span={4}>
-              <Form.Item label="优先级" name="priority">
-                <Select placeholder="选择优先级" allowClear>
-                  {CONFIG.PRIORITY.map(v => <Option key={v} value={v}>{v}</Option>)}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={5}>
-              <Form.Item label="关注" name="follow">
-                <Select placeholder="选择是否关注" allowClear>
-                  <Option value="true">是</Option>
-                  <Option value="false">否</Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={5}>
-              <Form.Item label="创建人" name="create_user">
-                <UserSelect users={userList}/>
-              </Form.Item>
-            </Col>
+    <>
+      <Alert message="由于测试用例暂时无法选取，导致测试计划目前无法修改用例，正在努力抢救中..."
+             description="tips: 执行测试计划前，记得修改测试计划里面的人员信息, 这样就能收到邮件通知啦~"
+             style={{marginBottom: 36}} type="warning" banner closable/>
+      <PageContainer title={false} breadcrumb={null}>
+        <Card>
+          <TestPlanForm fetchTestPlan={fetchTestPlan}/>
+          <Form form={form} {...CONFIG.LAYOUT} onValuesChange={() => {
+            fetchTestPlan();
+          }}>
+            <Row gutter={[12, 12]}>
+              <Col span={5}>
+                <Form.Item label="项目" name="project_id">
+                  <Select allowClear showSearch placeholder="选择项目">
+                    {projects.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item label="名称" name="name">
+                  <Input placeholder="输入测试计划名称"/>
+                </Form.Item>
+              </Col>
+              <Col span={4}>
+                <Form.Item label="优先级" name="priority">
+                  <Select placeholder="选择优先级" allowClear>
+                    {CONFIG.PRIORITY.map(v => <Option key={v} value={v}>{v}</Option>)}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item label="关注" name="follow">
+                  <Select placeholder="选择是否关注" allowClear>
+                    <Option value="true">是</Option>
+                    <Option value="false">否</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item label="创建人" name="create_user">
+                  <UserSelect users={userList}/>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+          <Row style={{marginBottom: 12}}>
+            <Button type="primary" onClick={() => {
+              onSave({visible: true, title: '新增测试计划', planRecord: {}, currentStep: 0,})
+            }}><PlusOutlined/> 添加计划</Button>
           </Row>
-        </Form>
-        <Row style={{marginBottom: 12}}>
-          <Button type="primary" onClick={() => {
-            onSave({visible: true, title: '新增测试计划', planRecord: {}, currentStep: 0,})
-          }}><PlusOutlined/> 添加计划</Button>
-        </Row>
-        <Table columns={columns} dataSource={planData} rowKey={row => row.id} loading={spin}/>
-      </Card>
-    </PageContainer>
+          <Table columns={columns} dataSource={planData} rowKey={row => row.id} loading={spin}/>
+        </Card>
+      </PageContainer>
+    </>
   )
 }
 
