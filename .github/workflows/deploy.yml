@@ -21,8 +21,8 @@ jobs:
           node-version: 16
       - name: npm install and build
         run: |
-          npm install -g yarn
-          yarn install
+          npm install -g cnpm
+          cnpm install
           npm run build
         env:
           CI: true
