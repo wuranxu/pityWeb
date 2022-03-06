@@ -35,6 +35,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   const [response, setResponse] = useState({});
   const [caseName, setCaseName] = useState('');
   const [caseList, setCaseList] = useState([]);
+  const [currentCaseList, setCurrentCaseList] = useState([]);
   const {envMap, envList} = gconfig;
   const {userMap, userNameMap} = user;
 
@@ -97,12 +98,19 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
     }
   }
 
+  const onSearchCase = e => {
+    const {value} = e.target;
+    const temp = caseList.filter(item => item.data_name.indexOf(value) > -1 || item.case_name.indexOf(value) > -1);
+    setCurrentCaseList(temp)
+  }
+
   useEffect(async () => {
     fetchEnv();
     fetchUsers();
     const res = await queryReport({id: reportId})
     if (auth.response(res)) {
       setCaseList(res.data.case_list);
+      setCurrentCaseList(res.data.case_list);
       setReportDetail(res.data.report);
       setPlanName(res.data.plan_name);
     }
@@ -253,12 +261,12 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
           <Row gutter={[8, 8]}>
             <Col span={18}/>
             <Col span={6}>
-              <Input prefix={<SearchOutlined/>} placeholder="请输入用例名称" className="borderSearch"/>
+              <Input prefix={<SearchOutlined/>} placeholder="请输入用例名称" className="borderSearch" onPressEnter={onSearchCase}/>
             </Col>
           </Row>
           <Row gutter={[8, 8]}>
             <Col span={24}>
-              <Table columns={columns} dataSource={caseList}
+              <Table columns={columns} dataSource={currentCaseList}
                      locale={{emptyText: <NoRecord height={200}/>}}/>
             </Col>
           </Row>
