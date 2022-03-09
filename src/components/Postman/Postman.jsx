@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {Button, Card, Col, Dropdown, Input, Menu, notification, Radio, Row, Select, Table, Tabs,} from 'antd';
 import {DeleteTwoTone, DownOutlined, EditTwoTone, SendOutlined} from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
-import CodeEditor from '@/components/Postman/CodeEditor';
 import {httpRequest} from '@/services/request';
 import {connect} from 'umi'
 import auth from '@/utils/auth';
 import FormData from "@/components/Postman/FormData";
 import {IconFont} from "@/components/Icon/IconFont";
+import CodeEditor from "@/components/CodeEditor/PityMonacoEditor";
 
 const {Option} = Select;
 const {TabPane} = Tabs;

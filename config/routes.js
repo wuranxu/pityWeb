@@ -142,6 +142,11 @@ export default [
                     component: './Config/Environment',
                   },
                   {
+                    path: '/config/address',
+                    name: '地址管理',
+                    component: './Config/Address',
+                  },
+                  {
                     path: '/config/gconfig',
                     name: '全局变量',
                     component: './Config/GConfig',
@@ -165,7 +170,7 @@ export default [
               },
               {
                 path: '/system',
-                icon: 'icon-config',
+                icon: 'lock',
                 name: '后台管理',
                 authority: ['superAdmin', 'admin'],
                 routes: [

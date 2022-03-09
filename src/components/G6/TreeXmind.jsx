@@ -1,4 +1,4 @@
-import G6 from '@antv/g6';
+import G6 from '@antv/g6/dist/g6.min.js';
 import {useEffect, useState} from "react";
 
 const minWidth = 60;

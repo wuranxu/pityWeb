@@ -127,6 +127,20 @@ export async function insertRedisConfig(params) {
   });
 }
 
+/**
+ * listAddress
+ * @param params
+ * @returns {Promise<any>}
+ */
+export async function listAddress(params) {
+  return request(`${CONFIG.URL}/config/address/list`, {
+    method: 'GET',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
+
 export async function updateRedisConfig(params) {
   return request(`${CONFIG.URL}/config/redis/update`, {
     method: 'POST',

@@ -222,8 +222,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
 
   return (
     <>
-      <Alert message="由于测试用例暂时无法选取，导致测试计划目前无法修改用例，正在努力抢救中..."
-             description="tips: 执行测试计划前，记得修改测试计划里面的人员信息, 这样就能收到邮件通知啦~"
+      <Alert message="执行测试计划前，记得修改测试计划接收人, 这样就能收到邮件通知啦😈~"
              style={{marginBottom: 36}} type="warning" banner closable/>
       <PageContainer title={false} breadcrumb={null}>
         <Card>

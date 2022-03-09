@@ -20,7 +20,10 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
       key: 'case_id',
       dataIndex: 'case_id',
       width: 100,
-      render: case_id => case_id ? case_id.split("_")[1] : null,
+      render: case_id => {
+        console.log(case_id)
+        return case_id ? case_id.split("_")[1] : null
+      },
     },
     {
       title: '用例名称',

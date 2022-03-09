@@ -1,7 +1,7 @@
 import {message, notification} from 'antd';
 import {listUsers} from '@/services/user';
 import {history} from "umi";
-import { stringify } from 'querystring';
+import {stringify} from 'querystring';
 
 export default {
   headers: (json = true) => {
@@ -31,7 +31,14 @@ export default {
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
       localStorage.setItem('pityUser', null);
-      window.location.href = '/#/user/login';
+      if (window.location.href.indexOf("/user/login") === -1) {
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        });
+      }
       notification.info({
         message: res.msg,
         placement: res.msg,
@@ -57,14 +64,23 @@ export default {
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
       // localStorage.setItem('pityUser', null);
-      // window.location.href = '/#/user/login';
+      if (window.location.href.indexOf("/user/login") === -1) {
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        });
+      }
+
+      // window.location.href = `/#/user/login?redirect=${currentUrl}`;
       // window.location.reload();
-      history.replace({
-        pathname: '/user/login',
-        search: stringify({
-          redirect: window.location.href,
-        }),
-      });
+      // history.replace({
+      //   pathname: '/user/login',
+      //   search: stringify({
+      //     redirect: window.location.href,
+      //   }),
+      // });
       message.info(res.msg);
       return false;
     }

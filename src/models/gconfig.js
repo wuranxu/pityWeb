@@ -2,10 +2,11 @@ import {
   deleteDbConfig,
   deleteFile,
   deleteGConfig,
-  deleteRedisConfig, getSystemConfig,
+  deleteRedisConfig,
+  getSystemConfig,
   insertDbConfig,
   insertGConfig,
-  insertRedisConfig,
+  insertRedisConfig, listAddress,
   listDbConfig,
   listEnvironment,
   listFile,
@@ -15,7 +16,8 @@ import {
   onTestDbConfig,
   updateDbConfig,
   updateGConfig,
-  updateRedisConfig, updateSystemConfig,
+  updateRedisConfig,
+  updateSystemConfig,
   uploadFile
 } from '@/services/configure';
 import auth from '@/utils/auth';
@@ -47,6 +49,8 @@ export default {
 
     dbConfigData: [],
     redisConfig: [],
+    // 接口请求host
+    addressList: [],
     // 数据库配置modal
     databaseModal: false,
     databaseRecord: {sql_type: 0},
@@ -62,7 +66,7 @@ export default {
   },
   effects: {
     // 获取系统配置
-    * fetchSystemConfig ({payload}, {call, put}) {
+    * fetchSystemConfig({payload}, {call, put}) {
       const res = yield call(getSystemConfig)
       if (auth.response(res)) {
         yield put({
@@ -254,6 +258,27 @@ export default {
         type: 'save',
         payload: {
           redisConfig: res.data,
+        },
+      });
+    },
+
+    /**
+     * 获取地址配置信息
+     * @param payload
+     * @param call
+     * @param put
+     * @returns {Generator<*, boolean, *>}
+     */
+    * fetchAddress({payload}, {call, put}) {
+      const res = yield call(listAddress, payload);
+      if (!auth.response(res)) {
+        message.error(res.msg);
+        return;
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          addressList: res.data,
         },
       });
     },

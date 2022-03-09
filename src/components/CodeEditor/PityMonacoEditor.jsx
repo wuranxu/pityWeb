@@ -4,8 +4,7 @@ import Editor, {loader} from "@monaco-editor/react";
 // you can change the source of the monaco files
 loader.config({paths: {vs: "/monaco/vs"}});
 
-const CodeEditor = (props) => {
-  const {content, setContent} = props;
+const CodeEditor = ({language="json", value, height, theme, options, onChange}) => {
   const [isThemeLoaded, setIsThemeLoaded] = useState(false);
 
   function customPrompt(monaco) {
@@ -16,7 +15,7 @@ const CodeEditor = (props) => {
         label: item,
       };
     });
-    monaco.languages.registerCompletionItemProvider('python', {
+    monaco.languages.registerCompletionItemProvider(language, {
       provideCompletionItems() {
         return {
           suggestions,
@@ -36,19 +35,16 @@ const CodeEditor = (props) => {
     });
   }
 
-  const handleChange = (value) => {
-    setContent(value);
-  };
-
   return (
     <div>
       <Editor
         width="100%"
-        height="calc(100vh - 154px)"
-        value={content}
-        onChange={handleChange}
-        language="python"
-        theme={isThemeLoaded ? "material" : "dark"}
+        height={height || '20vh'}
+        value={value}
+        onChange={onChange}
+        options={options}
+        language={language}
+        theme={isThemeLoaded ? "material" : theme}
         beforeMount={handleEditorWillMount}
       />
     </div>
