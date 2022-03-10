@@ -210,7 +210,7 @@ const Project = ({dispatch, project, loading}) => {
                     avatar={<Avatar src={item.avatar || CONFIG.PROJECT_AVATAR_URL} size={48}/>}
                     title={<CardTitle item={item}/>}
                     description={<div>
-                      <p>{item.description || '无'}</p>
+                      <p className={styles.description}>{item.description || '无'}</p>
                       <p>负责人 {<UserLink user={userMap[item.owner]}/>}</p>
                       <p>更新时间 {item.updated_at}</p>
                     </div>}
