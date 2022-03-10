@@ -130,7 +130,10 @@ const TestCaseAssert = ({dispatch, testcase, caseId}) => {
                       onFinish={onSaveAssert} onCancel={() => setAssertModal(false)} record={record}/>
         <Row style={{marginBottom: 16}}>
           <Col span={8}>
-            <Button type="primary" onClick={() => setAssertModal(true)}><PlusOutlined/>添加断言</Button>
+            <Button type="primary" onClick={() => {
+              setAssertModal(true)
+              setRecord({})
+            }}><PlusOutlined/>添加断言</Button>
           </Col>
         </Row>
         <Table columns={columns} dataSource={asserts} rowKey={record => record.id}
