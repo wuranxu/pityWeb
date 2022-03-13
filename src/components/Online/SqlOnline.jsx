@@ -1,7 +1,7 @@
 import {Card, Col, Empty, message, Row, Select, Spin, Table, Tree} from "antd";
 import React, {useEffect, useState} from 'react';
 import {connect} from 'umi';
-import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
+import SqlAceEditor from "@/components/CodeEditor/AceEditor/SqlAceEditor";
 import emptyWork from '@/assets/emptyWork.svg';
 import {CopyTwoTone, PlayCircleTwoTone} from "@ant-design/icons";
 import {IconFont} from "@/components/Icon/IconFont";
@@ -163,10 +163,10 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
                   <IconFont type="icon-sharpicons_database"/>}
                 size="small" extra={actions}>
             {
-              currentDatabase !== null ? <PityAceEditor height={editorHeight || 280} tables={tables}
-                                                        setEditor={setEditor}
-                                                        language={sqlMode} theme={theme} value={sqlValue}
-                                                        onChange={data => {
+              currentDatabase !== null ? <SqlAceEditor height={editorHeight || 280} tables={tables}
+                                                       setEditor={setEditor}
+                                                       language={sqlMode} theme={theme} value={sqlValue}
+                                                       onChange={data => {
                                                           setSqlValue(data)
                                                         }}/> :
                 <Empty image={emptyWork} imageStyle={{height: imageHeight || 190, marginTop: 32}}

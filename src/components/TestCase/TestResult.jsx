@@ -2,12 +2,12 @@ import {Badge, Descriptions, Drawer, Row, Table, Tabs} from "antd";
 import React, {useEffect, useState} from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import CodeEditor from "@/components/Postman/CodeEditor";
 import TreeXmind from "@/components/G6/TreeXmind";
 import {queryXmindData} from "@/services/testcase";
 import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
 import {IconFont} from "@/components/Icon/IconFont";
+import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 
 const TabPane = Tabs.TabPane;
 const STATUS = {
@@ -32,6 +32,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
   const [xmindData, setXmindData] = useState(null);
   const [xmindDataList, setXmindDataList] = useState([]);
   const [graph, setGraph] = useState({});
+  const [editor, setEditor] = useState(null);
 
   const getBrain = async (case_id = response.case_id, single = true) => {
     const res = await queryXmindData({case_id})
@@ -167,9 +168,10 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                     />
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-                    <CodeEditor
+                    <JSONAceEditor
                       language="text"
-                      theme="vs-dark"
+                      setEditor={setEditor}
+                      readOnly={true}
                       value={response[name].logs}
                       height="80vh"
                     />
@@ -199,9 +201,11 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                     />
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-xiangying"/>Response</span>} key="4">
-                    <CodeEditor
+                    <JSONAceEditor
+                      setEditor={setEditor}
+                      readOnly={true}
                       value={response[name].response ? response[name].response : ''}
-                      height="45vh"
+                      height="80vh"
                     />
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">
@@ -260,11 +264,12 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-              <CodeEditor
+              <JSONAceEditor
                 language="text"
                 value={response.logs}
                 height="80vh"
-                theme="vs-dark"
+                readOnly={true}
+                setEditor={setEditor}
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
@@ -292,9 +297,11 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-xiangying"/>Response</span>} key="4">
-              <CodeEditor
+              <JSONAceEditor
+                readOnly={true}
+                setEditor={setEditor}
                 value={response.response ? response.response : ''}
-                height="45vh"
+                height="80vh"
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-tounaofengbao"/>脑图</span>} key="8">

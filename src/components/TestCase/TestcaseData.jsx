@@ -3,7 +3,7 @@ import {Alert, Button, Card, Col, Divider, Modal, Row, Table} from "antd";
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
 import FormForModal from "@/components/PityForm/FormForModal";
-import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
+import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 import NoRecord from "@/components/NotFound/NoRecord";
 
 const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
@@ -137,7 +137,7 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
       required: true,
       placeholder: '请输入测试场景',
       initialValue: record.name,
-      component: <PityAceEditor language="json" height={200} setEditor={setEditor} theme="material-one-dark"/>
+      component: <JSONAceEditor height={200} setEditor={setEditor} theme="material-one-dark"/>
     },
   ]
 

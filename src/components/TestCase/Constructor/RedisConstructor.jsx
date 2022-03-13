@@ -2,7 +2,7 @@ import {Col, Form, Input, message, notification, Row, Select, Switch, Tabs, Tool
 import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import {CONFIG} from "@/consts/config";
-import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
+import PityAceEditor from "@/components/CodeEditor/AceEditor/index";
 import {PlayCircleTwoTone, QuestionCircleOutlined} from "@ant-design/icons";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 

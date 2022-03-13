@@ -17,13 +17,13 @@ import {
 } from 'antd';
 import {DeleteTwoTone, DownOutlined, EditTwoTone, QuestionCircleOutlined, SaveOutlined} from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
-import CodeEditor from '@/components/Postman/CodeEditor';
 import {httpRequest} from '@/services/request';
 import auth from '@/utils/auth';
 import {listGConfig} from "@/services/configure";
 import FormData from "@/components/Postman/FormData";
 import {connect} from 'umi';
 import {IconFont} from "@/components/Icon/IconFont";
+import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 
 const {Option} = Select;
 const {TabPane} = Tabs;
@@ -71,6 +71,7 @@ const PostmanForm = ({
   const [response, setResponse] = useState({});
   const [options, setOptions] = useState([]);
   const [url, setUrl] = useState('');
+  const [editor, setEditor] = useState(null);
   const [open, setOpen] = useState(false);
   const {ossFileList} = gconfig;
 
@@ -347,7 +348,7 @@ const PostmanForm = ({
     return <Row style={{marginTop: 12}}>
       <Col span={24}>
         <Card bodyStyle={{padding: 0}}>
-          <CodeEditor value={body} onChange={e => setBody(e)} height="20vh"/>
+          <JSONAceEditor value={body} onChange={e => setBody(e)} height="20vh" setEditor={setEditor}/>
         </Card>
       </Col>
     </Row>
@@ -380,7 +381,7 @@ const PostmanForm = ({
                            label={<Tooltip title="点击可展开全局变量提示">
                              请求地址
                              <QuestionCircleOutlined style={{marginLeft: 4}}
-                               onClick={() => setOpen(true)}/></Tooltip>}
+                                                     onClick={() => setOpen(true)}/></Tooltip>}
                            rules={
                              [{required: true, message: "请输入请求url"}]
                            }>
@@ -483,10 +484,8 @@ const PostmanForm = ({
           {Object.keys(response).length === 0 ? null : (
             <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
               <TabPane tab="Body" key="1">
-                <CodeEditor
-                  value={response.response}
-                  height="30vh"
-                />
+                <JSONAceEditor value={response.response} readOnly={true}
+                              height="30vh" setEditor={setEditor}/>
               </TabPane>
               <TabPane tab="Cookie" key="2">
                 <Table

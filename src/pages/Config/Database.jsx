@@ -92,6 +92,11 @@ const Database = ({dispatch, gconfig, loading}) => {
       dataIndex: 'host',
     },
     {
+      title: '库名',
+      key: 'database',
+      dataIndex: 'database',
+    },
+    {
       title: '端口号',
       key: 'port',
       dataIndex: 'port',

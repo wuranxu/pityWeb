@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import SqlOnline from "@/components/Online/SqlOnline";
 import {CONFIG} from "@/consts/config";
-import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
+import SqlAceEditor from "@/components/CodeEditor/AceEditor/SqlAceEditor";
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 
@@ -82,7 +82,7 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
                              name="sql"
                              rules={[{required: true, message: '请填写SQL语句'}]}
                              initialValue={testCaseConstructorData.sql}>
-                    <PityAceEditor language="mysql" height={120} setEditor={setEditor}/>
+                    <SqlAceEditor language="mysql" height={120} setEditor={setEditor}/>
                   </Form.Item>
                   <Form.Item label="返回值" name="value">
                     <Input placeholder="请填写造数后的返回值，可不填"/>

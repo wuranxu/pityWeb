@@ -5,10 +5,10 @@ import {connect} from 'umi';
 
 import {PlusOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
-import CodeEditor from '@/components/Postman/CodeEditor';
 import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import UserLink from "@/components/Button/UserLink";
+import PityAceEditor from "@/components/CodeEditor/AceEditor/index";
 
 const {Option} = Select;
 const GConfig = ({gconfig, user, loading, dispatch}) => {
@@ -16,10 +16,11 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
   const {userMap} = user;
   const [record, setRecord] = useState({id: 0, key_type: 0});
   const [language, setLanguage] = useState(0);
+  const [editor, setEditor] = useState(null);
 
   const getType = () => {
     if (language === 1) {
-      return 'json';
+      return 'yaml';
     }
     if (language === 2) {
       return 'yaml';
@@ -142,7 +143,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       name: 'value',
       label: 'value',
       required: true,
-      component: <CodeEditor language={getType()} theme='vs-dark' height={250} options={{lineNumbers: 'off'}}/>,
+      component: <PityAceEditor language={getType()} setEditor={setEditor} height={250}/>,
     },
     {
       name: 'enable',

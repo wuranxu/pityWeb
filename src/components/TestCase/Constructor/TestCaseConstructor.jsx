@@ -1,13 +1,15 @@
 import {Select, Switch, Tooltip} from "antd";
 import QuestionOutlined from '@ant-design/icons';
-import CodeEditor from "@/components/Postman/CodeEditor";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import CommonForm from "@/components/PityForm/CommonForm";
 import {CONFIG} from "@/consts/config";
+import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 
 const {Option} = Select;
 
 export default ({data, form, dispatch, testcaseData, constructorType}) => {
+
+  const [editor, setEditor] = useState(null);
 
   useEffect(() => {
     dispatch({
@@ -53,7 +55,7 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       name: 'params',
       label: '动态参数',
       required: false,
-      component: <CodeEditor language='json' theme='vs-dark' height={100} options={{lineNumbers: 'off'}}/>,
+      component: <JSONAceEditor height={100} setEditor={setEditor}/>,
     },
     {
       name: 'value',

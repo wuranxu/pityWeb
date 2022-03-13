@@ -2,9 +2,9 @@ import {Col, Form, Input, message, notification, Row, Select, Switch, Tooltip} f
 import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import {CONFIG} from "@/consts/config";
-import PityAceEditor from "@/components/CodeEditor/PityAceEditor";
 import {PlayCircleTwoTone, QuestionCircleOutlined} from "@ant-design/icons";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
+import PythonAceEditor from "@/components/CodeEditor/AceEditor/PythonAceEditor";
 
 const {Option} = Select;
 
@@ -72,7 +72,7 @@ const PythonConstructor = ({form, dispatch, construct}) => {
                          initialValue={testCaseConstructorData.command}
                          rules={[{required: true, message: '请输入python代码'}]}
               >
-                <PityAceEditor language="python" height={180} setEditor={setEditor}/>
+                <PythonAceEditor language="python" height={180} setEditor={setEditor}/>
               </Form.Item>
               <Form.Item label="返回值" name="value">
                 <Input placeholder="请填写造数后的返回值，可不填"/>

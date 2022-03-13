@@ -6,21 +6,19 @@ import {Pie} from '@ant-design/plots';
 
 export default ({data, height, name, value = 'count'}) => {
   const config = {
-    appendPadding: 10,
+    appendPadding: 16,
     data,
     theme: {
-      colors10: ["#67C23A", "#F56C6C", "#E6A23C", "#409EFF"]
+      colors10: ["rgb(63, 205, 127)", "rgb(230, 98, 97)", "rgb(250, 207, 76)", "rgb(86, 97, 235)"]
     },
     angleField: value,
     colorField: name,
-    radius: 1,
-    innerRadius: 0.6,
     label: {
       type: 'inner',
-      offset: '-50%',
+      offset: '-30%',
       content: ({percent}) => `${(percent * 100).toFixed(0)}%`,
       style: {
-        textAlign: 'center',
+        // textAlign: 'center',
         fontSize: 14,
       },
     },
@@ -29,25 +27,9 @@ export default ({data, height, name, value = 'count'}) => {
     },
     interactions: [
       {
-        type: 'element-selected',
-      },
-      {
         type: 'element-active',
       },
     ],
-    statistic: {
-      title: false,
-      content: {
-        style: {
-          whiteSpace: 'pre-wrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          fontSize: 14,
-        },
-        content: '执行统计',
-
-      },
-    },
     height,
     autoFit: true,
   };

@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Button, Card, Col, Dropdown, Input, Menu, notification, Radio, Row, Select, Table, Tabs,} from 'antd';
-import {DeleteTwoTone, DownOutlined, EditTwoTone, SendOutlined} from '@ant-design/icons';
+import {DeleteTwoTone, DownOutlined, EditTwoTone} from '@ant-design/icons';
 import EditableTable from '@/components/Table/EditableTable';
 import {httpRequest} from '@/services/request';
 import {connect} from 'umi'
 import auth from '@/utils/auth';
 import FormData from "@/components/Postman/FormData";
 import {IconFont} from "@/components/Icon/IconFont";
-import CodeEditor from "@/components/CodeEditor/PityMonacoEditor";
+import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 
 const {Option} = Select;
 const {TabPane} = Tabs;
@@ -53,6 +53,7 @@ const Postman = ({loading: gloading, gconfig, dispatch}) => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({});
   const [formData, setFormData] = useState([]);
+  const [editor, setEditor] = useState(null);
 
   const {ossFileList} = gconfig;
 
@@ -288,7 +289,7 @@ const Postman = ({loading: gloading, gconfig, dispatch}) => {
     return <Row style={{marginTop: 12}}>
       <Col span={24}>
         <Card bodyStyle={{padding: 0}}>
-          <CodeEditor value={body} onChange={e => setBody(e)} height="20vh"/>
+          <JSONAceEditor value={body} onChange={e => setBody(e)} height="20vh" setEditor={setEditor}/>
         </Card>
       </Col>
     </Row>
@@ -383,7 +384,9 @@ const Postman = ({loading: gloading, gconfig, dispatch}) => {
         {Object.keys(response).length === 0 ? null : (
           <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
             <TabPane tab="Body" key="1">
-              <CodeEditor
+              <JSONAceEditor
+                readOnly={true}
+                setEditor={setEditor}
                 language={response.response && response.response_headers.indexOf("json") > -1 ? 'json' : 'text'}
                 value={response.response && typeof response.response === 'object' ? JSON.stringify(response.response, null, 2) : response.response || ''}
                 height="30vh"

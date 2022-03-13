@@ -191,23 +191,23 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
                 </Col>
                 <Col span={4}>
                   <Card hoverable bordered={false} className={styles.statisticCard}>
-                    <Statistic title="成功数" valueStyle={{color: '#3f8600'}}
+                    <Statistic title="成功数"
                                value={reportDetail.success_count}
-                               prefix={<CheckCircleTwoTone twoToneColor='#52c41a'/>}/>
+                               prefix={<CheckCircleTwoTone twoToneColor='rgb(63, 205, 127)'/>}/>
                   </Card>
                 </Col>
                 <Col span={4}>
                   <Card hoverable bordered={false} className={styles.statisticCard}>
                     <Statistic title="失败数" valueStyle={{marginLeft: 8}}
                                value={reportDetail.failed_count}
-                               prefix={<CloseCircleTwoTone twoToneColor='#F56C6C'/>}/>
+                               prefix={<CloseCircleTwoTone twoToneColor='rgb(230, 98, 97)'/>}/>
                   </Card>
                 </Col>
                 <Col span={4}>
                   <Card hoverable bordered={false} className={styles.statisticCard}>
                     <Statistic title="错误数" valueStyle={{marginLeft: 8}}
                                value={reportDetail.error_count}
-                               prefix={<AlertTwoTone twoToneColor="#E6A23C"/>}/>
+                               prefix={<AlertTwoTone twoToneColor="rgb(250, 207, 76)"/>}/>
                   </Card>
                 </Col>
                 <Col span={5}>
