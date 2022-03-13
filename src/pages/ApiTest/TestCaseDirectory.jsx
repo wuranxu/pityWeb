@@ -51,6 +51,7 @@ import noResult from "@/assets/noResult.svg";
 import UserSelect from "@/components/User/UserSelect";
 import SearchTree from "@/components/Tree/SearchTree";
 import ScrollCard from "@/components/Scrollbar/ScrollCard";
+import emptyWork from "@/assets/emptyWork.svg";
 
 const {Option} = Select;
 
@@ -137,12 +138,12 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   );
 
   const columns = [
-    {
-      title: "#",
-      dataIndex: "id",
-      key: 'id',
-      width: 65,
-    },
+    // {
+    //   title: "#",
+    //   dataIndex: "id",
+    //   key: 'id',
+    //   width: 65,
+    // },
     {
       title: "用例名称",
       dataIndex: "name",
@@ -172,7 +173,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "创建人",
       dataIndex: "create_user",
       key: 'create_user',
-      width: 100,
+      width: 130,
+      ellipsis: true,
       render: create_user => <UserLink user={userMap[create_user]}/>
     },
     {
@@ -210,7 +212,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     if (project_id) {
       dispatch({
         type: 'testcase/listTestcaseDirectory',
-        payload: {project_id}
+        payload: {project_id, move: true}
       })
     }
   }
@@ -259,6 +261,10 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     dispatch({
       type: 'project/save',
       payload: data,
+    })
+    dispatch({
+      type: 'testcase/save',
+      payload: {currentDirectory: []}
     })
     // 把项目id写入localStorage
     localStorage.setItem("project_id", data.project_id)
@@ -436,7 +442,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                           fields={fields} onFinish={onCreateDirectory} record={record}
                           visible={rootModal} left={6} right={18} width={400} formName="root"/>
             <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
-              <ScrollCard className="card" hideOverflowX>
+              <ScrollCard className="card" hideOverflowX bodyPadding={12}>
                 <Row gutter={8}>
                   <Col span={18}>
                     {
@@ -497,78 +503,81 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                 </div>
               </ScrollCard>
               <ScrollCard className="card" hideOverflowX>
-                <Form form={form}>
-                  <Row gutter={6}>
+                {
+                  currentDirectory.length > 0 ? <>
+                    <Form form={form}>
+                      <Row gutter={6}>
 
-                    <Col span={8}>
-                      <Form.Item label="用例名称"  {...layout} name="name">
-                        <Input placeholder="输入用例名称"/>
-                      </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                      <Form.Item label="创建人"  {...layout} name="create_user">
-                        <UserSelect users={userList} placeholder="请选择创建用户"/>
-                      </Form.Item>
-                    </Col>
-                    <Col span={8}>
-                      <div style={{float: 'right'}}>
-                        <Button type="primary" onClick={async () => {
-                          await listTestcase();
-                        }}><SearchOutlined/> 查询</Button>
-                        <Button style={{marginLeft: 8}} onClick={async () => {
-                          form.resetFields();
-                          await listTestcase();
-                        }}><ReloadOutlined/> 重置</Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </Form>
-                <Row gutter={8} style={{marginTop: 4}}>
-                  <Col span={24}>
-                    <Button type="primary" onClick={() => {
-                      if (!currentDirectory[0]) {
-                        message.info("请先创建或选择用例目录~")
-                        return;
-                      }
-                      window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
-                    }}><PlusOutlined/> 添加用例</Button>
-                    {selectedRowKeys.length > 0 ?
-                      <Dropdown overlay={menu()} trigger={['hover']}>
-                        <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
-                          e.stopPropagation()
-                        }}>执行用例 <DownOutlined/></Button>
-                      </Dropdown>
-                      : null}
-                    {selectedRowKeys.length > 0 ?
-                      <Button type="primary" danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                onDeleteTestcase();
-                              }}>删除用例</Button>
-                      : null}
-                    {selectedRowKeys.length > 0 ?
-                      <Button type="dashed" style={{marginLeft: 8}} icon={<ExportOutlined/>}
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                onMoveTestCase();
-                              }}>移动用例</Button>
-                      : null}
-                  </Col>
-                </Row>
-                <Row style={{marginTop: 16}}>
-                  <Col span={24}>
-                    <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
-                           pagination={pagination}
-                           bordered
-                           onChange={pg => {
-                             saveCase({pagination: {...pagination, current: pg.current}})
-                           }}
-                           dataSource={testcases}
-                           loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
-                  </Col>
-                </Row>
-
-                {/*</Scrollbars>*/}
+                        <Col span={8}>
+                          <Form.Item label="用例名称"  {...layout} name="name">
+                            <Input placeholder="输入用例名称"/>
+                          </Form.Item>
+                        </Col>
+                        <Col span={8}>
+                          <Form.Item label="创建人"  {...layout} name="create_user">
+                            <UserSelect users={userList} placeholder="请选择创建用户"/>
+                          </Form.Item>
+                        </Col>
+                        <Col span={8}>
+                          <div style={{float: 'right'}}>
+                            <Button type="primary" onClick={async () => {
+                              await listTestcase();
+                            }}><SearchOutlined/> 查询</Button>
+                            <Button style={{marginLeft: 8}} onClick={async () => {
+                              form.resetFields();
+                              await listTestcase();
+                            }}><ReloadOutlined/> 重置</Button>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                    <Row gutter={8} style={{marginTop: 4}}>
+                      <Col span={24}>
+                        <Button type="primary" onClick={() => {
+                          if (!currentDirectory[0]) {
+                            message.info("请先创建或选择用例目录~")
+                            return;
+                          }
+                          window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
+                        }}><PlusOutlined/> 添加用例</Button>
+                        {selectedRowKeys.length > 0 ?
+                          <Dropdown overlay={menu()} trigger={['hover']}>
+                            <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
+                              e.stopPropagation()
+                            }}>执行用例 <DownOutlined/></Button>
+                          </Dropdown>
+                          : null}
+                        {selectedRowKeys.length > 0 ?
+                          <Button type="primary" danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    onDeleteTestcase();
+                                  }}>删除用例</Button>
+                          : null}
+                        {selectedRowKeys.length > 0 ?
+                          <Button type="dashed" style={{marginLeft: 8}} icon={<ExportOutlined/>}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    onMoveTestCase();
+                                  }}>移动用例</Button>
+                          : null}
+                      </Col>
+                    </Row>
+                    <Row style={{marginTop: 16}}>
+                      <Col span={24}>
+                        <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
+                               pagination={pagination}
+                               bordered
+                               onChange={pg => {
+                                 saveCase({pagination: {...pagination, current: pg.current}})
+                               }}
+                               dataSource={testcases}
+                               loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
+                      </Col>
+                    </Row>
+                  </> : <Empty image={emptyWork} imageStyle={{height: 230}}
+                               description="快选中左侧的目录畅享用例之旅吧~"/>
+                }
               </ScrollCard>
             </SplitPane>
           </Row>

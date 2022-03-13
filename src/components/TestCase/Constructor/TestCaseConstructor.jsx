@@ -55,7 +55,7 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       name: 'params',
       label: '动态参数',
       required: false,
-      component: <JSONAceEditor height={100} setEditor={setEditor}/>,
+      component: <JSONAceEditor height={120} setEditor={setEditor}/>,
     },
     {
       name: 'value',

@@ -145,7 +145,9 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
           <Form.Item label="项目" rules={
             [{required: true, message: '请选择项目'}]
           } name="project_id">
-            <Select allowClear showSearch placeholder="选择项目">
+            <Select allowClear showSearch placeholder="选择项目" filterOption={(input, option) =>
+              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }>
               {projects.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
             </Select>
           </Form.Item>

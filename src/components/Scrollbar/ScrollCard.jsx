@@ -3,7 +3,7 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import React, {memo} from 'react';
 
 const ScrollCard = (props) => {
-  return <Card {...props} bodyStyle={{height: '100%', overflowX: 'hidden'}}>
+  return <Card {...props} bodyStyle={{padding: props.bodyPadding || 24, height: '100%', overflowX: 'hidden'}}>
     {
       props.hideOverflowX ?
         <Scrollbars autoHide

@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
+// import "ace-builds";
 import AceEditor from 'react-ace';
 import {addCompleter} from 'ace-builds/src-noconflict/ext-language_tools';
 import './MaterialOneDark';
 import './AtomOneDark';
 import '../themes/VsDark';
 import "./editor.less";
-import "ace-builds/webpack-resolver";
-// import "ace-builds/src-noconflict/worker-json";
 import 'ace-builds/src-noconflict/ext-language_tools';
-
+import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/mode-yaml';
+import 'ace-builds/src-noconflict/mode-text';
 
 export default class PityAceEditor extends Component {
 
@@ -46,7 +47,8 @@ export default class PityAceEditor extends Component {
           enableSnippets: true,
           showLineNumbers: true,
           tabSize: 4,
-          useWorker: useWorker === undefined ? useWorker: true,
+          // useWorker: useWorker === undefined ? useWorker: true,
+          useWorker: false,
         }}
       />
     )

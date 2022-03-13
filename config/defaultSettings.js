@@ -5,6 +5,9 @@ const proSettings = {
   // primaryColor: 'rgb(111, 148, 252)',
   layout: 'side',
   contentWidth: 'Fluid',
+  menu: {
+    disableLocal: true, // 禁用多语言功能
+  },
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,

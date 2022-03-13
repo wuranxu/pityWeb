@@ -59,7 +59,7 @@
     "@bytemd/plugin-medium-zoom": "^1.11.0",
     "@bytemd/react": "^1.10.13",
     "@umijs/route-utils": "^1.0.33",
-    "ace-builds": "^1.4.12",
+    "ace-builds": "1.4.12",
     "antd": "4.17.0",
     "array-move": "^4.0.0",
     "classnames": "^2.2.6",

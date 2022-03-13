@@ -46,7 +46,7 @@ export default [
                 hideInMenu: true,
               },
               {
-                path: '/apiTest/project',
+                path: '/project',
                 name: '项目管理',
                 icon: 'icon-Project',
                 component: './ApiTest/Project',

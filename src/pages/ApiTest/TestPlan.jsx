@@ -223,7 +223,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
   return (
     <>
       <Alert message="执行测试计划前，记得修改测试计划接收人, 这样就能收到邮件通知啦😈~"
-             style={{marginBottom: 36}} type="warning" banner closable/>
+             style={{marginBottom: 36}} type="info" banner closable/>
       <PageContainer title={false} breadcrumb={null}>
         <Card>
           <TestPlanForm fetchTestPlan={fetchTestPlan}/>
