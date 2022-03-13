@@ -1,10 +1,26 @@
 import React, {useEffect} from "react";
-import {Form, Modal, Col} from "antd";
+import {Col, Form, Modal} from "antd";
 import getComponent from './index';
 
 const {Item: FormItem} = Form;
 
-const FormForModal = ({title, width, left, right, formName, record, onFinish, loading, fields, visible, onCancel, offset=0, children}) => {
+const FormForModal = ({
+                        title,
+                        width,
+                        left,
+                        right,
+                        formName,
+                        record,
+                        onFinish,
+                        loading,
+                        fields,
+                        visible,
+                        onCancel,
+                        offset = 0,
+                        children,
+                        Footer,
+                        onTest
+                      }) => {
   const [form] = Form.useForm();
   const onOk = () => {
     form.validateFields().then((values) => {
@@ -23,8 +39,13 @@ const FormForModal = ({title, width, left, right, formName, record, onFinish, lo
   }
   return (
     <Modal style={{marginTop: offset}}
-      confirmLoading={loading}
-      title={title} width={width} visible={visible} onOk={onOk} onCancel={onCancel}>
+           confirmLoading={loading}
+           footer={Footer !== undefined ? <Footer onOk={onOk} onCancel={onCancel} onTest={() => {
+             form.validateFields().then((values) => {
+               onTest(values);
+             })
+           }}/> : undefined}
+           title={title} width={width} visible={visible} onOk={onOk} onCancel={onCancel}>
       {children || null}
       <Form
         form={form}

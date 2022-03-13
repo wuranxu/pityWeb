@@ -113,7 +113,7 @@ export default {
 
     * onTestDbConfig({payload}, {call, put}) {
       const res = yield call(onTestDbConfig, payload);
-      auth.response(res, true);
+      return auth.response(res, true);
     },
 
     * updateDbConfig({payload}, {call, put}) {

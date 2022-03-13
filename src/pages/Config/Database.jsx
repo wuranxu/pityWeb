@@ -1,11 +1,18 @@
 import {PageContainer} from "@ant-design/pro-layout";
-import {Button, Card, Col, Divider, Form, Input, Row, Select, Table, Tag} from "antd";
-import {PlusOutlined, ReloadOutlined, SearchOutlined} from "@ant-design/icons";
+import {Alert, Badge, Button, Card, Col, Divider, Form, Input, Row, Select, Table, Tag} from "antd";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+  SearchOutlined
+} from "@ant-design/icons";
 import {connect} from 'umi';
-import {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import FormForModal from "@/components/PityForm/FormForModal";
 import {CONFIG} from "@/consts/config";
 import PityPopConfirm from "@/components/Confirm/PityPopConfirm";
+import {IconFont} from "@/components/Icon/IconFont";
 
 const {Option} = Select;
 const layout = {
@@ -15,6 +22,7 @@ const layout = {
 
 const Database = ({dispatch, gconfig, loading}) => {
   const [form] = Form.useForm();
+  const [connection, setConnection] = useState(null);
 
 
   const {envList, envMap, databaseModal, dbConfigData, databaseRecord} = gconfig;
@@ -27,8 +35,8 @@ const Database = ({dispatch, gconfig, loading}) => {
     })
   }
 
-  const onTest = record => {
-    dispatch({
+  const onTest = async record => {
+    const res = await dispatch({
       type: 'gconfig/onTestDbConfig',
       payload: {
         sql_type: record.sql_type,
@@ -39,6 +47,7 @@ const Database = ({dispatch, gconfig, loading}) => {
         database: record.database,
       }
     })
+    setConnection(res)
   }
 
   const fetchData = async () => {
@@ -238,14 +247,34 @@ const Database = ({dispatch, gconfig, loading}) => {
     },
   ];
 
+  const Footer = ({onOk, onCancel, onTest}) => {
+    return (
+      <div>
+        <div style={{display: 'inline-block', lineHeight: '32px', float: 'left', marginLeft: 4}}>
+          {
+            connection === null ? <span><Badge status="default" text="未测试连接"/></span> :
+              <Badge status={connection ? 'success' : 'error'} text={connection ? '测试连接成功' : '测试连接失败'}/>
+          }
+        </div>
+
+        <Button onClick={onTest} type="dashed" style={{marginLeft: 8}}><IconFont type="icon-fasong1"/> 测试连接</Button>
+        <Button onClick={onOk} type="primary"><CheckCircleOutlined/> 确定</Button>
+        <Button onClick={onCancel} style={{marginLeft: 8}}><CloseCircleOutlined/> 取消</Button>
+      </div>
+    )
+  }
+
   return (
     <PageContainer title="数据库配置列表" breadcrumb={null}>
       <Card>
-        <FormForModal
-          record={databaseRecord} fields={fields} title="数据库配置" onFinish={onFinish}
-          left={6} right={18} visible={databaseModal} offset={-50} onCancel={() => {
+        <FormForModal Footer={Footer} onTest={onTest}
+                      record={databaseRecord} fields={fields} title="数据库配置" onFinish={onFinish}
+                      left={6} right={18} visible={databaseModal} offset={-50} onCancel={() => {
           save({databaseModal: false})
-        }}/>
+        }}>
+          <Alert type="info" style={{marginBottom: 12, marginTop: -12}} closable
+                 message="🥂 在添加/编辑数据库配置之前，记得先测试连接是否可用哟！"/>
+        </FormForModal>
         <Form {...layout} form={form}>
           <Row gutter={8}>
             <Col span={6}>
@@ -281,6 +310,7 @@ const Database = ({dispatch, gconfig, loading}) => {
             <Row style={{marginBottom: 16}}>
               <Button type="primary" onClick={() => {
                 save({databaseModal: true, databaseRecord: {sql_type: 0}});
+                setConnection(null)
               }}><PlusOutlined/> 添加配置</Button>
             </Row>
             <Table columns={columns} dataSource={dbConfigData} rowKey={record => record.id}
