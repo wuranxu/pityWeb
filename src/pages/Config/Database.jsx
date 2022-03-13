@@ -222,6 +222,14 @@ const Database = ({dispatch, gconfig, loading}) => {
       placeholder: '请输入port',
     },
     {
+      name: 'database',
+      label: '库名',
+      required: true,
+      message: '请输入数据库名',
+      type: 'input',
+      placeholder: '请输入数据库名',
+    },
+    {
       name: 'username',
       label: '帐号',
       required: true,
@@ -234,17 +242,9 @@ const Database = ({dispatch, gconfig, loading}) => {
       label: '密码',
       required: true,
       message: '请输入密码',
-      type: 'input',
-      placeholder: '请输入密码',
+      component: <Input type="password" placeholder="请输入密码"/>,
     },
-    {
-      name: 'database',
-      label: '库名',
-      required: true,
-      message: '请输入数据库名',
-      type: 'input',
-      placeholder: '请输入数据库名',
-    },
+
   ];
 
   const Footer = ({onOk, onCancel, onTest}) => {
@@ -256,10 +256,9 @@ const Database = ({dispatch, gconfig, loading}) => {
               <Badge status={connection ? 'success' : 'error'} text={connection ? '测试连接成功' : '测试连接失败'}/>
           }
         </div>
-
         <Button onClick={onTest} type="dashed" style={{marginLeft: 8}}><IconFont type="icon-fasong1"/> 测试连接</Button>
-        <Button onClick={onOk} type="primary"><CheckCircleOutlined/> 确定</Button>
         <Button onClick={onCancel} style={{marginLeft: 8}}><CloseCircleOutlined/> 取消</Button>
+        <Button onClick={onOk} type="primary"><CheckCircleOutlined/> 确定</Button>
       </div>
     )
   }
