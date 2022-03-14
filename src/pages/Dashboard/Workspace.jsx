@@ -88,7 +88,7 @@ const Workspace = ({user, dispatch}) => {
         <Statistic title="用例数量" value={case_count}/>
       </div>
       <div className={styles.statItem}>
-        <Statistic title="团队内排名" value={user_rank === 0 ? '-': user_rank} suffix={`/ ${total_user}`}/>
+        <Statistic title="团队内排名" value={user_rank === 0 ? '-' : user_rank} suffix={`/ ${total_user}`}/>
       </div>
     </div>
   );
@@ -204,15 +204,19 @@ const Workspace = ({user, dispatch}) => {
                           </ChartCard>
                         </Col>
                         <Col span={8}>
-                          <ChartCard bordered={false}
-                                     title={`${item.report[0].start_at}`}
-                                     action={
-                                       <Tooltip title="最近一次执行通过率">
-                                         <InfoCircleOutlined/>
-                                       </Tooltip>
-                                     } contentHeight={128}>
-                            <RingPie report={item.report[0]}/>
-                          </ChartCard>
+                          {
+                            item.report.length === 0 ?
+                              <Empty description="还没有运行记录🍭" imageStyle={{height: 64}} image={noRecord}/> :
+                              <ChartCard bordered={false}
+                                         title={`${item.report[0].start_at}`}
+                                         action={
+                                           <Tooltip title="最近一次执行通过率">
+                                             <InfoCircleOutlined/>
+                                           </Tooltip>
+                                         } contentHeight={128}>
+                                <RingPie report={item.report[0]}/>
+                              </ChartCard>
+                          }
                         </Col>
                         <Col span={8}>
                           {
