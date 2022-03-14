@@ -31,13 +31,9 @@ export default {
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
       localStorage.setItem('pityUser', null);
-      if (window.location.href.indexOf("/user/login") === -1) {
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
+      const href = window.location.href;
+      if (href.indexOf("/user/login") === -1) {
+        window.open(`/#/user/login?redirect=${href}`)
       }
       notification.info({
         message: res.msg,
@@ -64,23 +60,10 @@ export default {
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
       // localStorage.setItem('pityUser', null);
-      if (window.location.href.indexOf("/user/login") === -1) {
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
+      const href = window.location.href;
+      if (href.indexOf("/user/login") === -1) {
+        window.open(`/#/user/login?redirect=${href}`)
       }
-
-      // window.location.href = `/#/user/login?redirect=${currentUrl}`;
-      // window.location.reload();
-      // history.replace({
-      //   pathname: '/user/login',
-      //   search: stringify({
-      //     redirect: window.location.href,
-      //   }),
-      // });
       message.info(res.msg);
       return false;
     }

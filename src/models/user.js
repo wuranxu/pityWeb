@@ -13,6 +13,7 @@ import {history} from 'umi';
 import {getPageQuery} from "@/utils/utils";
 import {message} from "antd";
 import auth from "@/utils/auth";
+import {stringify} from "_querystring@0.2.1@querystring";
 
 // const client_id = `c46c7ae33442d13498cd`;
 // const key = `c79fafe58ff45f6b5b51ddde70d2d645209e38b9`;
@@ -199,6 +200,9 @@ const UserModel = {
         // history.push("/#/user/login");
         // history.replace({
         //   pathname: '/user/login',
+        //   search: stringify({
+        //     redirect: window.location.href,
+        //   }),
         // });
         return;
       }

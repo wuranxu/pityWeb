@@ -161,12 +161,14 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "优先级",
       dataIndex: "priority",
       key: 'priority',
+      width: 130,
       render: priority => <Tag color={CONFIG.CASE_TAG[priority]}>{priority}</Tag>
     },
     {
       title: "用例状态",
       dataIndex: "status",
       key: 'status',
+      width: 130,
       render: status => <Badge {...CONFIG.CASE_BADGE[status]} />
     },
     {
