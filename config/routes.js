@@ -52,15 +52,15 @@ export default [
                 component: './ApiTest/Project',
               },
               {
+                path: '/project/:id',
+                hideInMenu: true,
+                component: './ApiTest/ProjectDetail',
+              },
+              {
                 path: '/apiTest',
                 name: '接口测试',
                 icon: 'api',
                 routes: [
-                  {
-                    path: '/apiTest/project/:id',
-                    hideInMenu: true,
-                    component: './ApiTest/ProjectDetail',
-                  },
                   {
                     path: '/apiTest/testcase',
                     name: '接口用例',
@@ -172,7 +172,7 @@ export default [
                 path: '/system',
                 icon: 'lock',
                 name: '后台管理',
-                authority: ['superAdmin', 'admin'],
+                authority: ['superAdmin'],
                 routes: [
                   {
                     path: '/system/configure',

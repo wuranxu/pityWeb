@@ -109,7 +109,7 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
       title: '项目',
       key: 'project_id',
       dataIndex: 'project_id',
-      render: projectId => <a href={`/#/apiTest/project/${projectId}`}
+      render: projectId => <a href={`/#/project/${projectId}`}
                               target="_blank" rel="noreferrer">{projectsMap[projectId] || 'loading'}</a>
     },
     {

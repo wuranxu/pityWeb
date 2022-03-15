@@ -21,7 +21,7 @@ const {Option} = Select;
 
 const Project = ({dispatch, project, loading}) => {
   const [data, setData] = useState([]);
-  const [pagination, setPagination] = useState({current: 1, pageSize: 8, total: 0});
+  const [pagination, setPagination] = useState({current: 1, pageSize: 8, total: 0, showTotal: count => `共${count}个项目`});
   const [visible, setVisible] = useState(false);
   const [users, setUsers] = useState([]);
   const [userMap, setUserMap] = useState({});
@@ -62,13 +62,11 @@ const Project = ({dispatch, project, loading}) => {
   }, []);
 
   const onSearchProject = async (projectName) => {
-    await process(async () => {
-      const res = await listProject({page: 1, size: pagination.size, name: projectName});
-      if (auth.response(res)) {
-        setData(res.data);
-        setPagination({...pagination, current: 1, total: res.total});
-      }
-    });
+    const res = await listProject({page: 1, size: pagination.size, name: projectName});
+    if (auth.response(res)) {
+      setData(res.data);
+      setPagination({...pagination, current: 1, total: res.total});
+    }
   };
 
   const onHandleCreate = async (values) => {
@@ -215,7 +213,7 @@ const Project = ({dispatch, project, loading}) => {
                       <p>更新时间 {item.updated_at}</p>
                     </div>}
                     onClick={() => {
-                      history.push(`/apiTest/project/${item.id}`);
+                      history.push(`/project/${item.id}`);
                     }}
                   />
                 </Card>

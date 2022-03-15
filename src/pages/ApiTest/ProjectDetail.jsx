@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Card, PageHeader, Tabs} from 'antd';
+import {Avatar, Card, PageHeader, Result, Tabs} from 'antd';
 import {useParams} from 'umi';
-import {process} from '@/utils/utils';
 import {queryProject} from '@/services/project';
-import auth from '@/utils/auth';
 import ProjectInfo from '@/components/Project/ProjectInfo';
 import {listUsers} from '@/services/user';
 import ProjectRole from '@/components/Project/ProjectRole';
 import {CONFIG} from "@/consts/config";
 import "./Project.less";
+import auth from "@/utils/auth";
 
 const {TabPane} = Tabs;
 
@@ -21,6 +20,7 @@ export default () => {
   const [users, setUsers] = useState([]);
   const [userMap, setUserMap] = useState({});
   const [roles, setRoles] = useState([]);
+  const [authority, setAuthority] = useState(false);
 
   const fetchUsers = async () => {
     const res = await listUsers();
@@ -29,28 +29,27 @@ export default () => {
     res.forEach(item => {
       temp[item.id] = item
     })
-    return temp;
+    setUserMap(temp)
   };
 
   const fetchData = async (projId = projectId) => {
     const res = await queryProject({projectId: projId});
+    setAuthority(res.code !== 403);
     if (auth.response(res)) {
       setProjectData(res.data.project);
       setRoles(res.data.roles);
+
     }
   };
 
-  useEffect(async () => {
-    await process(async () => {
-      fetchData()
-      const user = await fetchUsers();
-      setUserMap(user)
-    });
+  useEffect(() => {
+    fetchData()
+    fetchUsers();
   }, []);
 
 
   return (
-    <PageContainer breadcrumb={null} title={
+    authority ? <PageContainer breadcrumb={null} title={
       <PageHeader
         className="site-page-header"
         onBack={() => {
@@ -59,7 +58,7 @@ export default () => {
         title={<span>
       <Avatar src={projectData.avatar || CONFIG.PROJECT_AVATAR_URL}/>{projectData.name}</span>}
       />
-      }>
+    }>
       <Card bodyStyle={{padding: '8px 18px'}}>
         <Tabs defaultActiveKey='1'>
           <TabPane tab='成员列表' key='1'>
@@ -70,7 +69,7 @@ export default () => {
           </TabPane>
         </Tabs>
       </Card>
-    </PageContainer>
+    </PageContainer> : <Result status="403" title="对不起, 你没有权限访问该项目"/>
   );
 };
 

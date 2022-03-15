@@ -3,7 +3,7 @@
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
-import ProLayout, {DefaultFooter, ProBreadcrumb} from '@ant-design/pro-layout';
+import ProLayout, {DefaultFooter, getMenuData, ProBreadcrumb} from '@ant-design/pro-layout';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {connect, history, Link, useIntl} from 'umi';
 import {GithubOutlined} from '@ant-design/icons';
@@ -125,9 +125,14 @@ const BasicLayout = (props) => {
     }
   }; // get children authority
 
+
+  const { route = { routes: [], }, } = props;
+  const { routes = [] } = route
+  const menu = getMenuData(routes)
+
   const authorized = useMemo(
     () =>
-      getMatchMenu(location.pathname || '/', menuDataRef.current).pop() || {
+      getMatchMenu(location.pathname || '/', menu.menuData).pop() || {
         authority: undefined,
       },
     [location.pathname],

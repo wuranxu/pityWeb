@@ -253,7 +253,7 @@ const Workspace = ({user, dispatch}) => {
         <Card title="快速导航">
           <Row gutter={8}>
             <Col span={6}>
-              <LinkTag link='/apiTest/project' name="项目列表"/>
+              <LinkTag link='/project' name="项目列表"/>
             </Col>
             <Col span={6}>
               <LinkTag link='/apiTest/testplan' name="测试计划"/>
