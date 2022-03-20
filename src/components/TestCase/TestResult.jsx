@@ -8,6 +8,7 @@ import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
 import {IconFont} from "@/components/Icon/IconFont";
 import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
+import PityAceEditor from "@/components/CodeEditor/AceEditor";
 
 const TabPane = Tabs.TabPane;
 const STATUS = {
@@ -168,13 +169,18 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                     />
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-                    <JSONAceEditor
-                      language="text"
-                      setEditor={setEditor}
-                      readOnly={true}
-                      value={response[name].logs}
-                      height="80vh"
-                    />
+                    {/*<PityAceEditor*/}
+                    {/*  language="html"*/}
+                    {/*  setEditor={setEditor}*/}
+                    {/*  readOnly={true}*/}
+                    {/*  value={response[name].logs}*/}
+                    {/*  height="80vh"*/}
+                    {/*/>*/}
+                    <div style={{height: '80vh', overflow: 'auto'}}>
+                      <SyntaxHighlighter language='html' style={vs2015}>
+                        {response[name].logs}
+                      </SyntaxHighlighter>
+                    </div>
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
                     <Table
@@ -264,13 +270,11 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-              <JSONAceEditor
-                language="text"
-                value={response.logs}
-                height="80vh"
-                readOnly={true}
-                setEditor={setEditor}
-              />
+              <div style={{height: '80vh', overflow: 'auto'}}>
+                <SyntaxHighlighter language='html' style={vs2015}>
+                  {response.logs}
+                </SyntaxHighlighter>
+              </div>
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
               <Table

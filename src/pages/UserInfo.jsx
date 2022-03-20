@@ -8,6 +8,7 @@ import moment from 'moment';
 import OperationLog from "@/components/Operation/OperationLog";
 import noRecord from "@/assets/no_record.svg";
 import {LikeOutlined, UserOutlined} from "@ant-design/icons";
+import LoadingFailed from '@/assets/LoadingFailed.svg';
 
 const today = new Date()
 
@@ -24,8 +25,8 @@ const Workspace = ({user, dispatch}) => {
   const {userMap, operationLog, activities} = user;
 
   const getContent = currentUser => {
-    if (currentUser === undefined) {
-      return <Empty description="努力加载中..."/>
+    if (currentUser === undefined || currentUser === null) {
+      return <Empty description="努力加载中..." image={LoadingFailed}/>
     }
     return (
       <>
@@ -36,7 +37,7 @@ const Workspace = ({user, dispatch}) => {
           </div>
           <div className={styles.content}>
             <div className={styles.contentTitle}>
-              {currentUser.name} {currentUser.deleted_at ? "(已注销)": null}
+              {currentUser.name} {currentUser.deleted_at ? "(已注销)" : null}
             </div>
             <div>
               {currentUser.email} {currentUser.nickname}
@@ -103,7 +104,8 @@ const Workspace = ({user, dispatch}) => {
           {getContent(userMap[userId])}
           <Row gutter={16} className={styles.statisticsCard}>
             <Col span={12}>
-              <Statistic title="注册时间" valueStyle={{ color: '#1890ff' }} value={getRegisterDays(userMap[userId])} prefix={<UserOutlined/>} suffix="天"/>
+              <Statistic title="注册时间" valueStyle={{color: '#1890ff'}} value={getRegisterDays(userMap[userId])}
+                         prefix={<UserOutlined/>} suffix="天"/>
             </Col>
             <Col span={12}>
               <Statistic title="参与项目" value={0} prefix={<LikeOutlined/>}/>

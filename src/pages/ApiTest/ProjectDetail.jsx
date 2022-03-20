@@ -7,7 +7,7 @@ import ProjectInfo from '@/components/Project/ProjectInfo';
 import {listUsers} from '@/services/user';
 import ProjectRole from '@/components/Project/ProjectRole';
 import {CONFIG} from "@/consts/config";
-import "./Project.less";
+import styles from "./Project.less";
 import auth from "@/utils/auth";
 
 const {TabPane} = Tabs;
@@ -51,7 +51,7 @@ export default () => {
   return (
     authority ? <PageContainer breadcrumb={null} title={
       <PageHeader
-        className="site-page-header"
+        className={styles.sitePageHeader}
         onBack={() => {
           window.history.back();
         }}
