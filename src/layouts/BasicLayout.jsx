@@ -7,14 +7,13 @@ import ProLayout, {DefaultFooter, getMenuData, ProBreadcrumb} from '@ant-design/
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {connect, history, Link, useIntl} from 'umi';
 import {GithubOutlined} from '@ant-design/icons';
-import {Button, ConfigProvider, Empty, notification, Result, Spin} from 'antd';
+import {Button, ConfigProvider, Empty, notification, Result} from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import {getMatchMenu} from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
 import {CONFIG} from "@/consts/config";
 import NoTableData from "@/assets/NoTableData.svg";
-import {IconFont} from "@/components/Icon/IconFont";
 import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
 
@@ -45,11 +44,12 @@ const menuDataRender = (menuList) =>
 
 const defaultFooterDom = (
   <DefaultFooter
-    copyright={`${new Date().getFullYear()} woody个人出品`}
+    copyright={<span>{new Date().getFullYear()} woody个人出品 <a
+      href="https://beian.miit.gov.cn">鄂ICP备20001602号</a></span>}
     links={[
       {
-        key: 'Pity Web',
-        title: 'Pity Web',
+        key: 'pityWeb',
+        title: 'pityWeb',
         href: 'http://47.112.32.195/',
         blankTarget: true,
       },
@@ -60,8 +60,8 @@ const defaultFooterDom = (
         blankTarget: true,
       },
       {
-        key: 'Pity',
-        title: 'Pity',
+        key: 'pity',
+        title: 'pity',
         href: 'https://github.com/wuranxu/pity',
         blankTarget: true,
       },
@@ -126,8 +126,8 @@ const BasicLayout = (props) => {
   }; // get children authority
 
 
-  const { route = { routes: [], }, } = props;
-  const { routes = [] } = route
+  const {route = {routes: [],},} = props;
+  const {routes = []} = route
   const menu = getMenuData(routes)
 
   const authorized = useMemo(

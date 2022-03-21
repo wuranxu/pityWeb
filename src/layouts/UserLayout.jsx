@@ -49,18 +49,20 @@ const UserLayout = (props) => {
                   <div className={styles.header}>
                     <Link to="/">
                       <img alt="logo" className={styles.logo} src={logo}/>
-                      <span className={styles.title}>Pity</span>
+                      <span className={styles.title}>pity</span>
                     </Link>
                   </div>
                   <div className={styles.desc}>
                     <FormattedMessage
                       id="pages.layouts.userLayout.title"
-                      defaultMessage="Pity是一款开源且自由的接口自动化平台"
+                      defaultMessage="pity是一款开源且自由的接口自动化平台"
                     />
                   </div>
                 </div>
                 {children}
-                <DefaultFooter copyright={`${new Date().getFullYear()} woody个人出品`} links={false} style={{
+                <DefaultFooter copyright={
+                  <span>{new Date().getFullYear()} woody个人出品 <a
+                    href="https://beian.miit.gov.cn">鄂ICP备20001602号</a></span>} links={false} style={{
                   background: '#f8f8f8'
                 }}/>
               </div>

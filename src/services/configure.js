@@ -133,7 +133,7 @@ export async function insertRedisConfig(params) {
  * @returns {Promise<any>}
  */
 export async function listAddress(params) {
-  return request(`${CONFIG.URL}/config/address/list`, {
+  return request(`${CONFIG.URL}/config/gateway/list`, {
     method: 'GET',
     data: params,
     headers: auth.headers(),

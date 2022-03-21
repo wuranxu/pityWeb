@@ -11,7 +11,7 @@ const proSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Pity',
+  title: 'pity',
   pwa: false,
   iconfontUrl: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
 };
