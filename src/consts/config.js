@@ -14,9 +14,9 @@ const dev = isDev()
 
 
 export const CONFIG = {
-  URL: dev ? 'http://localhost:7777' : 'http://121.5.2.74:7777',
+  URL: dev ? 'http://localhost:7777' : 'https://api.pity.fun',
   // URL: '',
-  WS_URL: dev ? '127.0.0.1:7777/ws' : '121.5.2.74:7777/ws',
+  WS_URL: dev ? 'ws://127.0.0.1:7777/ws' : 'wss://api.pity.fun/ws',
   // WS_URL: '/ws',
 
   ICONFONT: IconFontUrl,

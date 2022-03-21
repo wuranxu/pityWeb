@@ -92,7 +92,7 @@ const BasicLayout = (props) => {
       });
     }
     if (currentUser) {
-      const ws = new WebSocket(`ws://${CONFIG.WS_URL}/${currentUser.id}`);
+      const ws = new WebSocket(`${CONFIG.WS_URL}/${currentUser.id}`);
       ws.onmessage = function (event) {
         event.preventDefault()
         const messages = event.data;
