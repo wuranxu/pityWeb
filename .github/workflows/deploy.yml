@@ -43,7 +43,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /home/tester/pityWeb
-            pm2 restart web.sh
+            pm2 delete web
+            pm2 start web.sh
 
 
 
