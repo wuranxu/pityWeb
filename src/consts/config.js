@@ -20,6 +20,7 @@ export const CONFIG = {
   // WS_URL: '/ws',
 
   ICONFONT: IconFontUrl,
+  OSS_URL: "http://oss.pity.fun/pity",
   AVATAR_URL: 'https://joeschmoe.io/api/v1/',
   DOCUMENT_URL: 'https://wuranxu.github.io/pityDoc',
   PROJECT_AVATAR_URL: 'https://api.prodless.com/avatar.png',

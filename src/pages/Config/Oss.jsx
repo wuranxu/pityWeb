@@ -40,8 +40,8 @@ const Oss = ({loading, dispatch, gconfig, user}) => {
       title: '文件路径',
       key: 'file_path',
       dataIndex: 'file_path',
-      render: (file_path, record) => <a href={record.view_url || `${CONFIG.URL}/oss/download?filepath=${key}`}
-                                  target="_blank">{file_path}</a>
+      render: (file_path, record) => <a href={`${CONFIG.OSS_URL}/${file_path}`}
+                                        target="_blank">{file_path}</a>
     },
     {
       title: '大小',
@@ -69,7 +69,7 @@ const Oss = ({loading, dispatch, gconfig, user}) => {
       key: 'ops',
       render: (record) => <>
         <a onClick={() => {
-          window.open(`${CONFIG.URL}/oss/download?filepath=${record.file_path}${record.sha ? `$${record.sha}` : ''}`)
+          window.open(`${CONFIG.OSS_URL}/${file_path}`)
         }}>下载</a>
         <Divider type="vertical"/>
         <a onClick={() => {

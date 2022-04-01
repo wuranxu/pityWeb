@@ -42,8 +42,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            pm2 restart 4
-            pm2 restart 5
+            cd /home/tester/pityWeb
+            pm2 restart web.sh
 
 
 
