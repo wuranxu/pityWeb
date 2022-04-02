@@ -26,9 +26,9 @@ export default ({userMap, userId, record}) => {
     const realTitle = titles.join("　")
     return <div>
       <Avatar
-        src={userMap[userId].avatar || `https://joeschmoe.io/api/v1/${userMap[userId].name || 'unknown'}`}/>
+        src={userMap[userId]?.avatar || `https://joeschmoe.io/api/v1/${userMap[userId]?.name || 'unknown'}`}/>
       <span className={styles.tag}><Tag color="green">{item.tag}</Tag></span>
-      <span className={styles.userName}>{userMap[item.user_id].name}</span>
+      <span className={styles.userName}>{userMap[item.user_id]?.name}</span>
       <span>{OperationType[item.mode]}</span>
       <span>{realTitle}</span>
     </div>
