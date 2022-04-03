@@ -128,14 +128,48 @@ export async function insertRedisConfig(params) {
 }
 
 /**
- * listAddress
+ * 获取网关地址
  * @param params
  * @returns {Promise<any>}
  */
-export async function listAddress(params) {
+export async function listGateway(params) {
   return request(`${CONFIG.URL}/config/gateway/list`, {
     method: 'GET',
-    data: params,
+    params,
+    headers: auth.headers(),
+  });
+}
+
+/**
+ * 添加服务地址
+ * @param data
+ * @returns {Promise<any>}
+ */
+export async function insertGateway(data) {
+  return request(`${CONFIG.URL}/config/gateway/insert`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+/**
+ * 修改服务地址
+ * @param data
+ * @returns {Promise<any>}
+ */
+export async function updateGateway(data) {
+  return request(`${CONFIG.URL}/config/gateway/update`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteGateway(params) {
+  return request(`${CONFIG.URL}/config/gateway/delete`, {
+    method: 'GET',
+    params,
     headers: auth.headers(),
   });
 }

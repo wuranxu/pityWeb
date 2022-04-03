@@ -1,20 +1,24 @@
 import {
   deleteDbConfig,
   deleteFile,
+  deleteGateway,
   deleteGConfig,
   deleteRedisConfig,
   getSystemConfig,
   insertDbConfig,
+  insertGateway,
   insertGConfig,
-  insertRedisConfig, listAddress,
+  insertRedisConfig,
   listDbConfig,
   listEnvironment,
   listFile,
+  listGateway,
   listGConfig,
   listRedisConfig,
   onlineRedisCommand,
   onTestDbConfig,
   updateDbConfig,
+  updateGateway,
   updateGConfig,
   updateRedisConfig,
   updateSystemConfig,
@@ -270,7 +274,7 @@ export default {
      * @returns {Generator<*, boolean, *>}
      */
     * fetchAddress({payload}, {call, put}) {
-      const res = yield call(listAddress, payload);
+      const res = yield call(listGateway, payload);
       if (!auth.response(res)) {
         message.error(res.msg);
         return;
@@ -281,6 +285,33 @@ export default {
           addressList: res.data,
         },
       });
+    },
+
+    * insertAddress({payload}, {call, put}) {
+      const res = yield call(insertGateway, payload);
+      if (!auth.response(res, true)) {
+        message.error(res.msg);
+        return false;
+      }
+      return true;
+    },
+
+    * updateAddress({payload}, {call, put}) {
+      const res = yield call(updateGateway, payload);
+      if (!auth.response(res, true)) {
+        message.error(res.msg);
+        return false;
+      }
+      return true;
+    },
+
+    * deleteAddress({payload}, {call, put}) {
+      const res = yield call(deleteGateway, payload);
+      if (!auth.response(res, true)) {
+        message.error(res.msg);
+        return false;
+      }
+      return true;
     },
 
     * insertRedisConfig({payload}, {call, put}) {
