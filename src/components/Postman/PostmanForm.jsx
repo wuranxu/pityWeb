@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {
-  AutoComplete,
   Button,
   Card,
   Col,
   Dropdown,
   Form,
+  Input,
   Menu,
   notification,
   Radio,
@@ -73,7 +73,7 @@ const PostmanForm = ({
   const [url, setUrl] = useState('');
   const [editor, setEditor] = useState(null);
   const [open, setOpen] = useState(false);
-  const {ossFileList} = gconfig;
+  const {ossFileList, envMap, addressList} = gconfig;
 
   const parseFormData = () => {
     if (body) {
@@ -102,6 +102,12 @@ const PostmanForm = ({
     }
 
   }, [bodyType])
+
+  useEffect(() => {
+    dispatch({
+      type: 'gconfig/fetchAddress'
+    })
+  }, [])
 
 
   useEffect(async () => {
@@ -354,6 +360,53 @@ const PostmanForm = ({
     </Row>
   }
 
+  const getAddress = () => {
+    const temp = {}
+    addressList.forEach(v => {
+      if (temp[v.name] === undefined) {
+        temp[v.name] = {[v.env]: v.gateway}
+      } else {
+        temp[v.name][v.env] = v.gateway;
+      }
+    })
+    return temp;
+  }
+
+  const currentAddress = getAddress();
+
+  const prefixSelector = (
+    <Form.Item name="base_path" noStyle>
+      <Select style={{width: 130}} placeholder="选择BasePath" showSearch allowClear
+              optionLabelProp="label"
+              filterOption={(input, option) => {
+                console.log(option.children)
+                if (option.children.length > 1) {
+                  return false;
+                }
+                return option.children.props.children.indexOf(input.toLowerCase()) >= 0
+              }
+              }
+      >
+        <Option value={null} label="无">无<a style={{float: 'right', fontSize: 12}} href="/#/config/address"
+                                           target="_blank">去配置</a></Option>
+        {
+          Object.keys(currentAddress).map(key => <Option value={key} key={key} label={key}><Tooltip title={
+            <div>
+              {
+                Object.keys(currentAddress[key]).map(v => <p>
+                  {envMap[v]}: {currentAddress[key][v]}
+                </p>)
+              }
+            </div>
+          }>
+            {key}
+          </Tooltip>
+          </Option>)
+        }
+      </Select>
+    </Form.Item>
+  );
+
   return (
     <Card bordered={bordered}>
       <Form form={form}>
@@ -385,23 +438,31 @@ const PostmanForm = ({
                            rules={
                              [{required: true, message: "请输入请求url"}]
                            }>
-                  <AutoComplete
-                    open={open}
-                    options={options}
-                    placeholder="请输入要请求的url"
-                    onChange={(string, e) => {
-                      if (e.key && url && url.indexOf(string) === -1) {
-                        const value = `${url}${string}`
-                        splitUrl(value);
-                        form.setFieldsValue({url: value})
-                        setUrl(value);
-                      } else {
-                        splitUrl(string);
-                        form.setFieldsValue({url: string});
-                        setUrl(string);
-                      }
-                    }}
-                  />
+                  <Input addonBefore={prefixSelector} placeholder="请输入要请求的url"
+                         onChange={(e) => {
+                           splitUrl(e.target.value);
+                           form.setFieldsValue({url: e.target.value})
+                           setUrl(e.target.value);
+                         }}/>
+                  {/*<AutoComplete*/}
+                  {/*  open={open}*/}
+                  {/*  options={options}*/}
+                  {/*  placeholder="请输入要请求的url"*/}
+                  {/*  onChange={(string, e) => {*/}
+                  {/*    if (e.key && url && url.indexOf(string) === -1) {*/}
+                  {/*      const value = `${url}${string}`*/}
+                  {/*      splitUrl(value);*/}
+                  {/*      form.setFieldsValue({url: value})*/}
+                  {/*      setUrl(value);*/}
+                  {/*    } else {*/}
+                  {/*      splitUrl(string);*/}
+                  {/*      form.setFieldsValue({url: string});*/}
+                  {/*      setUrl(string);*/}
+                  {/*    }*/}
+                  {/*  }}*/}
+                  {/*>*/}
+                  {/*  <Input addonBefore={prefixSelector}/>*/}
+                  {/*</AutoComplete>*/}
                 </Form.Item>
               </Col>
             </Form>
@@ -485,7 +546,7 @@ const PostmanForm = ({
             <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
               <TabPane tab="Body" key="1">
                 <JSONAceEditor value={response.response} readOnly={true}
-                              height="30vh" setEditor={setEditor}/>
+                               height="30vh" setEditor={setEditor}/>
               </TabPane>
               <TabPane tab="Cookie" key="2">
                 <Table

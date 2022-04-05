@@ -103,7 +103,7 @@ const Address = ({loading, gconfig, dispatch}) => {
     },
     {
       name: 'gateway',
-      label: '服务名',
+      label: '服务地址',
       required: true,
       message: '请输入服务地址',
       type: 'input',
