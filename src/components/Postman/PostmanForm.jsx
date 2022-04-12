@@ -379,13 +379,11 @@ const PostmanForm = ({
       <Select style={{width: 130}} placeholder="选择BasePath" showSearch allowClear
               optionLabelProp="label"
               filterOption={(input, option) => {
-                console.log(option.children)
                 if (option.children.length > 1) {
                   return false;
                 }
                 return option.children.props.children.indexOf(input.toLowerCase()) >= 0
-              }
-              }
+              }}
       >
         <Option value={null} label="无">无<a style={{float: 'right', fontSize: 12}} href="/#/config/address"
                                            target="_blank">去配置</a></Option>
