@@ -1,6 +1,6 @@
 import {
   AlipayCircleOutlined, GithubOutlined,
-  LockOutlined,
+  LockOutlined, MailOutlined,
   MobileOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
@@ -66,6 +66,7 @@ const Login = (props) => {
             size: 'large',
             style: {
               width: '100%',
+              borderRadius: '32px'
             },
           },
         }}
@@ -102,6 +103,7 @@ const Login = (props) => {
               name="username"
               fieldProps={{
                 size: 'large',
+                style: {borderRadius: "24px"},
                 prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
               placeholder={intl.formatMessage({
@@ -124,6 +126,7 @@ const Login = (props) => {
               name="password"
               fieldProps={{
                 size: 'large',
+                style: {borderRadius: "24px"},
                 prefix: <LockOutlined className={styles.prefixIcon} />,
               }}
               placeholder={intl.formatMessage({
@@ -153,6 +156,7 @@ const Login = (props) => {
             <ProFormText
               fieldProps={{
                 size: 'large',
+                style: {borderRadius: "24px"},
                 prefix: <UserOutlined className={styles.prefixIcon} />,
               }}
               name="username"
@@ -167,6 +171,7 @@ const Login = (props) => {
             <ProFormText
               fieldProps={{
                 size: 'large',
+                style: {borderRadius: "24px"},
                 prefix: <MobileOutlined className={styles.prefixIcon} />,
               }}
               name="name"
@@ -181,7 +186,8 @@ const Login = (props) => {
             <ProFormText
               fieldProps={{
                 size: 'large',
-                prefix: <MobileOutlined className={styles.prefixIcon} />,
+                style: {borderRadius: "24px"},
+                prefix: <MailOutlined className={styles.prefixIcon} />,
               }}
               name="email"
               placeholder="请输入用户邮箱"
@@ -195,6 +201,7 @@ const Login = (props) => {
             <ProFormText.Password
               fieldProps={{
                 size: 'large',
+                style: {borderRadius: "24px"},
                 prefix: <LockOutlined className={styles.prefixIcon} />,
                 type: 'password'
               }}
