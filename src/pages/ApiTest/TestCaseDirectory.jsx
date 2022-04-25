@@ -446,8 +446,10 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
             <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
                           fields={fields} onFinish={onCreateDirectory} record={record}
                           visible={rootModal} left={6} right={18} width={400} formName="root"/>
-            <Drawer bodyStyle={{padding: 0}} visible={addCaseVisible} width={1300} title="添加用例" onClose={() => setAddCaseVisible(false)}>
-              <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]} setAddCaseVisible={setAddCaseVisible}/>
+            <Drawer bodyStyle={{padding: 0}} visible={addCaseVisible} width={1300} title="添加用例"
+                    onClose={() => setAddCaseVisible(false)}>
+              <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]}
+                                    setAddCaseVisible={setAddCaseVisible}/>
             </Drawer>
             <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
               <ScrollCard className="card" hideOverflowX bodyPadding={12}>
@@ -547,6 +549,16 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                             return;
                           }
                           setAddCaseVisible(true)
+                          dispatch({
+                            type: 'testcase/save',
+                            payload: {
+                              caseInfo: {},
+                              asserts: [],
+                              postConstructor: [],
+                              preConstructor: [],
+                              testData: {},
+                            }
+                          })
                           // window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
                         }}><PlusOutlined/> 添加用例</Button>
                         {selectedRowKeys.length > 0 ?
