@@ -6,6 +6,7 @@ import {
   Card,
   Col,
   Divider,
+  Drawer,
   Dropdown,
   Empty,
   Form,
@@ -52,6 +53,7 @@ import UserSelect from "@/components/User/UserSelect";
 import SearchTree from "@/components/Tree/SearchTree";
 import ScrollCard from "@/components/Scrollbar/ScrollCard";
 import emptyWork from "@/assets/emptyWork.svg";
+import AddTestCaseComponent from "@/pages/ApiTest/AddTestCaseComponent";
 
 const {Option} = Select;
 
@@ -67,6 +69,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   const [editing, setEditing] = useState(false);
   const [record, setRecord] = useState({});
   const [modalTitle, setModalTitle] = useState('新建目录');
+  const [addCaseVisible, setAddCaseVisible] = useState(false);
   const [form] = Form.useForm();
   const [resultModal, setResultModal] = useState(false);
   const [name, setName] = useState('');
@@ -443,6 +446,9 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
             <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
                           fields={fields} onFinish={onCreateDirectory} record={record}
                           visible={rootModal} left={6} right={18} width={400} formName="root"/>
+            <Drawer bodyStyle={{padding: 0}} visible={addCaseVisible} width={1300} title="添加用例" onClose={() => setAddCaseVisible(false)}>
+              <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]} setAddCaseVisible={setAddCaseVisible}/>
+            </Drawer>
             <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
               <ScrollCard className="card" hideOverflowX bodyPadding={12}>
                 <Row gutter={8}>
@@ -540,7 +546,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                             message.info("请先创建或选择用例目录~")
                             return;
                           }
-                          window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
+                          setAddCaseVisible(true)
+                          // window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
                         }}><PlusOutlined/> 添加用例</Button>
                         {selectedRowKeys.length > 0 ?
                           <Dropdown overlay={menu()} trigger={['hover']}>

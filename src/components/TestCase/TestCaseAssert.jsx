@@ -8,7 +8,7 @@ import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
 import {CONFIG} from "@/consts/config";
 
-const TestCaseAssert = ({dispatch, testcase, caseId}) => {
+const TestCaseAssert = ({dispatch, testcase, caseId, createMode}) => {
   const [assertModal, setAssertModal] = useState(false);
   const [record, setRecord] = useState({});
 
@@ -29,11 +29,22 @@ const TestCaseAssert = ({dispatch, testcase, caseId}) => {
     }
   }
 
+  const onDeleteLocalAsserts = record => {
+    const newData = [...asserts]
+    newData.splice(record.index, 1)
+    dispatch({
+      type: 'testcase/save',
+      payload: {
+        asserts: newData
+      }
+    })
+  }
+
   const columns = [
     {
       title: '#',
       key: 'index',
-      dataIndex: 'id'
+      render: (_, record, index) => index+1 ,
     },
     {
       title: '校验内容',
@@ -61,10 +72,10 @@ const TestCaseAssert = ({dispatch, testcase, caseId}) => {
     {
       title: '操作',
       key: 'ops',
-      render: (_, record) => <>
+      render: (_, record, index) => <>
         <a onClick={() => {
           setAssertModal(true)
-          setRecord(record);
+          setRecord({...record, index});
         }}>编辑</a>
         <Divider type="vertical"/>
         <a onClick={() => {
@@ -76,7 +87,11 @@ const TestCaseAssert = ({dispatch, testcase, caseId}) => {
             okType: 'danger',
             cancelText: '点错了',
             onOk: async () => {
-              await onDeleteAsserts(record)
+              if (createMode) {
+                onDeleteLocalAsserts({...record, index})
+              } else {
+                await onDeleteAsserts(record)
+              }
             },
           });
         }}>删除</a>
@@ -87,39 +102,60 @@ const TestCaseAssert = ({dispatch, testcase, caseId}) => {
   const onSaveAssert = async values => {
     const data = {case_id: caseId, ...values};
     let res;
-    if (record.id) {
-      res = await dispatch({
-        type: 'testcase/updateTestCaseAsserts',
-        payload: {...data, id: record.id}
-      })
-      if (auth.response(res, true)) {
-        setAssertModal(false);
-        const newData = [...asserts];
-        const index = newData.findIndex((item) => record.id === item.id);
-        const item = newData[index]
-        newData.splice(index, 1, {...item, ...res.data});
-        await dispatch({
-          type: 'testcase/save',
-          payload: {
-            asserts: newData,
-          }
-        })
+    if (createMode) {
+      // 说明是本地存储
+      let newData;
+      if (record.index !== undefined) {
+        // 说明是编辑
+        newData = [...asserts]
+        newData.splice(record.index, 1, {...data})
+      } else {
+        newData = [...asserts, {...data}]
       }
-    } else {
-      res = await dispatch({
-        type: 'testcase/insertTestCaseAsserts',
-        payload: data
+      await dispatch({
+        type: 'testcase/save',
+        payload: {
+          asserts: newData
+        }
       })
-      if (auth.response(res, true)) {
-        setAssertModal(false);
-        await dispatch({
-          type: 'testcase/save',
-          payload: {
-            asserts: [...asserts, res.data]
-          }
+      setAssertModal(false);
+
+    } else {
+      if (record.id) {
+        res = await dispatch({
+          type: 'testcase/updateTestCaseAsserts',
+          payload: {...data, id: record.id}
         })
+        if (auth.response(res, true)) {
+          setAssertModal(false);
+          const newData = [...asserts];
+          const index = newData.findIndex((item) => record.id === item.id);
+          const item = newData[index]
+          newData.splice(index, 1, {...item, ...res.data});
+          await dispatch({
+            type: 'testcase/save',
+            payload: {
+              asserts: newData,
+            }
+          })
+        }
+      } else {
+        res = await dispatch({
+          type: 'testcase/insertTestCaseAsserts',
+          payload: data
+        })
+        if (auth.response(res, true)) {
+          setAssertModal(false);
+          await dispatch({
+            type: 'testcase/save',
+            payload: {
+              asserts: [...asserts, res.data]
+            }
+          })
+        }
       }
     }
+
 
   }
 

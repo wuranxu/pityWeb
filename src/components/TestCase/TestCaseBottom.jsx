@@ -22,16 +22,12 @@ const {TabPane} = Tabs
 
 const TestCaseBottom = ({
                           dispatch, testcase, case_id, setSuffix, body, setBody,
-                          formData, setFormData, gconfig, onSubmit, form,
+                          formData, setFormData, gconfig, onSubmit, form, createMode = false,
                           headers, setHeaders, bodyType, setBodyType, loading,
                         }) => {
 
-  const {constructors, activeKey, constructors_case, envActiveKey, asserts, caseInfo} = testcase;
+  const {preConstructor, postConstructor, activeKey, constructors_case, envActiveKey, asserts, caseInfo} = testcase;
   const {envList} = gconfig;
-
-  const getConstructor = sfx => {
-    return constructors.filter(item => item.suffix === sfx)
-  }
 
   const onCreateConstructor = () => {
     dispatch({
@@ -51,18 +47,33 @@ const TestCaseBottom = ({
   }
 
   // 删除数据构造器
-  const onDeleteConstructor = async record => {
+  const onDeleteConstructor = async (record, suffix = false) => {
     const res = await dispatch({
       type: 'construct/delete',
       payload: {id: record.id}
     })
     if (res) {
-      const newData = constructors.filter(v => v.id !== record.id)
+      let newData;
+      if (!suffix) {
+        newData = postConstructor.filter(v => v.id !== record.id)
+      } else {
+        newData = preConstructor.filter(v => v.id !== record.id)
+      }
       dispatch({
         type: 'testcase/save',
-        payload: {constructors: newData}
+        payload: {[!suffix ? "preConstructor" : "postConstructor"]: newData}
       })
     }
+  }
+
+  // 删除本地数据构造器
+  const onDeleteConstructorLocal = async (record, suffix) => {
+    const newData = [...(!suffix ? preConstructor : postConstructor)];
+    newData.splice(record.index, 1)
+    dispatch({
+      type: 'testcase/save',
+      payload: {[!suffix ? "preConstructor" : "postConstructor"]: newData.map((v, index) => ({...v, index}))}
+    })
   }
 
   // 编辑数据构造器
@@ -78,24 +89,37 @@ const TestCaseBottom = ({
     })
   }
 
-  const onSwitchConstructor = async (record, value) => {
-    const res = await dispatch({
-      type: 'construct/update',
-      payload: {
-        ...record,
-        enable: value
-      }
-    })
-    if (res) {
-      const newData = [...constructors]
-      newData.forEach(v => {
-        if (v.id === record.id) {
-          v.enable = value
+  const onSwitchConstructor = async (record, value, suffix = false) => {
+    let res;
+    const newData = [...(!suffix ? preConstructor : postConstructor)]
+    if (createMode) {
+      res = true;
+    } else {
+      res = await dispatch({
+        type: 'construct/update',
+        payload: {
+          ...record,
+          enable: value
         }
       })
+    }
+    if (res) {
+      if (createMode) {
+        newData.forEach((v, index) => {
+          if (index === record.index) {
+            v.enable = value
+          }
+        })
+      } else {
+        newData.forEach(v => {
+          if (v.id === record.id) {
+            v.enable = value
+          }
+        })
+      }
       dispatch({
         type: 'testcase/save',
-        payload: {constructors: newData}
+        payload: {[!suffix ? "preConstructor" : "postConstructor"]: newData}
       })
     }
 
@@ -153,8 +177,8 @@ const TestCaseBottom = ({
       title: '名称',
       key: 'name',
       dataIndex: 'name',
-      render: (text, record) => <a onClick={() => {
-        onEditConstructor(record)
+      render: (text, record, index) => <a onClick={() => {
+        onEditConstructor({...record, tempIndex: index})
       }}>{text}</a>,
       className: 'drag-visible',
     },
@@ -184,9 +208,9 @@ const TestCaseBottom = ({
       title: '操作',
       key: 'ops',
       className: 'drag-visible',
-      render: (_, record) => <>
+      render: (_, record, index) => <>
         <a onClick={() => {
-          onEditConstructor(record)
+          onEditConstructor({...record, tempIndex: index})
         }}><EditTwoTone/></a>
         <a style={{marginLeft: 8}} onClick={() => {
           Modal.confirm({
@@ -197,7 +221,12 @@ const TestCaseBottom = ({
             okType: 'danger',
             cancelText: '点错了',
             onOk: async () => {
-              await onDeleteConstructor(record)
+              if (createMode) {
+                await onDeleteConstructorLocal(record)
+              } else {
+                await onDeleteConstructor(record)
+
+              }
             },
           });
         }}><DeleteTwoTone twoToneColor="red"/></a>
@@ -242,7 +271,7 @@ const TestCaseBottom = ({
                   })
                 }}>
                   {envList.map(item => <TabPane key={item.id} tab={item.name}>
-                    <TestcaseData caseId={case_id} currentEnv={envActiveKey}/>
+                    <TestcaseData caseId={case_id} currentEnv={envActiveKey} createMode={createMode}/>
                   </TabPane>)}
                 </Tabs> : <NoRecord2 height={280}
                                      desc={<span>没有任何环境信息, {<a href="/#/config/environment"
@@ -254,12 +283,12 @@ const TestCaseBottom = ({
                      <div>
                        <IconFont
                          type="icon-DependencyGraph_16x"/>前置条件
-                       <BadgeButton number={getConstructor(false).length} bgColor="rgb(237, 242, 251)"
+                       <BadgeButton number={preConstructor.length} bgColor="rgb(237, 242, 251)"
                                     color="rgb(29, 98, 203)"/>
                      </div>
                    }>
             {
-              getConstructor(false).length === 0 ?
+              preConstructor.length === 0 ?
                 <NoRecord height={180}
                           desc={<div>还没有前置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
                 <Row gutter={12}>
@@ -271,16 +300,19 @@ const TestCaseBottom = ({
                         }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
                       </Col>
                     </Row>
-                    <SortedTable columns={columns} dataSource={getConstructor(false)}
+                    <SortedTable columns={columns} dataSource={preConstructor}
                                  setDataSource={
                                    data => {
                                      dispatch({
                                        type: 'testcase/save',
-                                       payload: {constructors: data}
+                                       payload: {preConstructor: data}
                                      })
                                    }}
                                  loading={loading.effects['construct/delete'] || loading.effects['construct/update']}
                                  dragCallback={async newData => {
+                                   if (createMode) {
+                                     return true;
+                                   }
                                    return await dispatch({
                                      type: 'construct/orderConstructor',
                                      payload: newData.map((v, index) => ({id: v.id, index}))
@@ -291,7 +323,7 @@ const TestCaseBottom = ({
                     <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
                       <Timeline>
                         {
-                          getConstructor(false).map((item, index) => item.enable ?
+                          preConstructor.map((item, index) => item.enable ?
                             <Timeline.Item key={index}>
                               <div key={index}><Badge count={index + 1} key={index}
                                                       style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
@@ -321,19 +353,19 @@ const TestCaseBottom = ({
                      <IconFont type="icon-duanyan"/>断言 <BadgeButton number={asserts.length} bgColor="rgb(233, 249, 245)"
                                                                     color="rgb(40, 195, 151)"/>
                    </div>}>
-            <TestCaseAssert asserts={asserts} caseId={case_id}/>
+            <TestCaseAssert asserts={asserts} caseId={case_id} createMode={createMode}/>
           </TabPane>
           <TabPane key="4"
                    tab={
                      <div>
                        <IconFont
                          type="icon-qingliwuliuliang"/>后置条件
-                       <BadgeButton number={getConstructor(true).length} bgColor="rgb(255, 238, 239)"
+                       <BadgeButton number={postConstructor.length} bgColor="rgb(255, 238, 239)"
                                     color="rgb(255, 87, 95)"/>
                      </div>
                    }>
             {
-              getConstructor(true).length === 0 ?
+              postConstructor.length === 0 ?
                 <NoRecord height={180}
                           desc={<div>还没有后置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
                 <Row gutter={12}>
@@ -345,16 +377,19 @@ const TestCaseBottom = ({
                         }} onClick={onCreateConstructor}><PlusOutlined/>添加</Button>
                       </Col>
                     </Row>
-                    <SortedTable columns={columns} dataSource={getConstructor(true)}
+                    <SortedTable columns={columns} dataSource={postConstructor}
                                  setDataSource={
                                    data => {
                                      dispatch({
                                        type: 'testcase/save',
-                                       payload: {constructors: data}
+                                       payload: {postConstructor: data}
                                      })
                                    }}
                                  loading={loading.effects['construct/delete'] || loading.effects['construct/update']}
                                  dragCallback={async newData => {
+                                   if (createMode) {
+                                     return true;
+                                   }
                                    return await dispatch({
                                      type: 'construct/orderConstructor',
                                      payload: newData.map((v, index) => ({id: v.id, index}))
@@ -365,7 +400,7 @@ const TestCaseBottom = ({
                     <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
                       <Timeline>
                         {
-                          getConstructor(true).map((item, index) => item.enable ?
+                          postConstructor.map((item, index) => item.enable ?
                             <Timeline.Item key={index}>
                               <div key={index}><Badge count={index + 1} key={index}
                                                       style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?

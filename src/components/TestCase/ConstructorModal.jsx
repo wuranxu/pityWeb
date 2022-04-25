@@ -20,13 +20,16 @@ const ConstructorModal = ({
                             caseId,
                             dispatch,
                             construct,
+                            testcase,
                             width,
                             fetchData,
                             record,
-                            suffix = false
+                            suffix = false,
+                            createMode = false, // 默认非创建模式
                           }) => {
 
   const {currentStep, totalStep, constructorType, testCaseConstructorData} = construct;
+  const {preConstructor, postConstructor} = testcase;
 
   useEffect(() => {
     form.resetFields();
@@ -81,26 +84,46 @@ const ConstructorModal = ({
       public: values.public,
     }
     let result;
-    if (record.id) {
-      result = await dispatch({
-        type: 'construct/update',
-        payload: {
-          ...params,
-          id: record.id,
-          suffix,
-        }
-      })
+    if (!createMode) {
+      // 说明是编辑
+      if (record.id) {
+        result = await dispatch({
+          type: 'construct/update',
+          payload: {
+            ...params,
+            id: record.id,
+            suffix,
+          }
+        })
+      } else {
+        result = await dispatch({
+          type: 'construct/insert',
+          payload: {
+            ...params,
+            suffix,
+          }
+        })
+      }
+      if (result) {
+        fetchData();
+      }
     } else {
-      result = await dispatch({
-        type: 'construct/insert',
+      // 说明是临时
+      const newData = [...(!suffix ? preConstructor : postConstructor)]
+      if (record.tempIndex === undefined) {
+        // 说明是新增
+        newData.push({...params, suffix, index: newData.length})
+      } else {
+        // 说明是编辑
+        newData.splice(record.tempIndex, 1, {...params, suffix})
+      }
+      dispatch({
+        type: 'testcase/save',
         payload: {
-          ...params,
-          suffix,
+          [!suffix ? 'preConstructor' : 'postConstructor']: newData,
+          constructorModal: false,
         }
       })
-    }
-    if (result) {
-      fetchData();
     }
   }
 
@@ -238,7 +261,8 @@ const ConstructorModal = ({
   )
 }
 
-export default connect(({construct, loading}) => ({
+export default connect(({construct, testcase, loading}) => ({
   construct,
   loading,
+  testcase,
 }))(ConstructorModal)

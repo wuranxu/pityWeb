@@ -1,6 +1,7 @@
 import auth from "@/utils/auth";
 import {
-  createTestCase, deleteTestcase,
+  createTestCase, createTestCaseV2,
+  deleteTestcase,
   deleteTestCaseAsserts,
   deleteTestcaseData,
   deleteTestcaseDirectory,
@@ -8,7 +9,8 @@ import {
   insertTestcaseData,
   insertTestcaseDirectory,
   listTestcase,
-  listTestcaseTree, moveTestCase,
+  listTestcaseTree,
+  moveTestCase,
   onlinePyScript,
   queryTestCase,
   queryTestcaseDirectory,
@@ -33,7 +35,9 @@ export default {
     caseInfo: {},
     constructRecord: {},
     asserts: [],
-    constructors: [],
+    // constructors: [],
+    postConstructor: [],
+    preConstructor: [],
     testData: {},
     envActiveKey: '',
     constructors_case: {},
@@ -136,7 +140,10 @@ export default {
           payload: {
             caseInfo: res.data.case,
             asserts: res.data.asserts,
-            constructors: res.data.constructors.map((v, index) => ({...v, index})),
+            // 2022-04-23 拆分前后置条件
+            preConstructor: res.data.constructors.filter(v => v.suffix === false).map((v, index) => ({...v, index})),
+            postConstructor: res.data.constructors.filter(v => v.suffix === true).map((v, index) => ({...v, index})),
+            // constructors: res.data.constructors.map((v, index) => ({...v, index})),
             constructors_case: res.data.constructors_case,
             testData: res.data.test_data,
           }
@@ -150,6 +157,11 @@ export default {
         const caseId = res.data;
         window.location.href = `/#/apiTest/testcase/${payload.directory_id}/${caseId}`
       }
+    },
+
+    * createTestCase({payload}, {call, put}) {
+      const res = yield call(createTestCaseV2, payload);
+      return auth.response(res, true)
     },
 
     * updateTestcase({payload}, {call, put}) {

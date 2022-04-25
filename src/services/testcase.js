@@ -18,6 +18,14 @@ export async function createTestCase(params) {
   });
 }
 
+export async function createTestCaseV2(params) {
+  return request(`${CONFIG.URL}/testcase/create`, {
+    method: 'POST',
+    data: params,
+    headers: auth.headers(),
+  });
+}
+
 export async function updateTestCase(params) {
   return request(`${CONFIG.URL}/testcase/update`, {
     method: 'POST',

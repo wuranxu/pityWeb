@@ -6,7 +6,7 @@ import FormForModal from "@/components/PityForm/FormForModal";
 import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 import NoRecord from "@/components/NotFound/NoRecord";
 
-const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
+const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv, createMode = false}) => {
 
   const {testData} = testcase;
   const [pagination, setPagination] = useState({current: 1, total: 0, pageSize: 5})
@@ -27,6 +27,18 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
     }
 
   }, [currentEnv, testData])
+
+  const onRemoveTestData = async (data) => {
+    const newData = {...testData};
+    const temp = newData[parseInt(currentEnv, 10)]
+    newData[parseInt(currentEnv, 10)] = temp.filter((item) => data.name !== item.name)
+    await dispatch({
+      type: 'testcase/save',
+      payload: {
+        testData: newData,
+      }
+    })
+  }
 
   const onDeleteTestData = async id => {
     const res = await dispatch({
@@ -69,9 +81,9 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
     {
       title: '操作',
       key: 'ops',
-      render: (_, record) => <>
+      render: (_, record, index) => <>
         <a onClick={() => {
-          setRecord(record)
+          setRecord({...record, index})
           setModal(true);
         }}>编辑</a>
         <Divider type="vertical"/>
@@ -84,7 +96,11 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
             okType: 'danger',
             cancelText: '点错了',
             onOk: async () => {
-              await onDeleteTestData(record.id)
+              if (createMode) {
+                await onRemoveTestData(record)
+              } else {
+                await onDeleteTestData(record.id)
+              }
             },
           });
         }}>删除</a>
@@ -92,6 +108,32 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
     },
 
   ]
+
+  // 添加用例的模式
+  const onCreateModeFinish = async values => {
+    const newData = {...testData};
+    const data = {
+      env: currentEnv,
+      ...values,
+    }
+    if (record.index !== undefined) {
+      // 说明是新增
+      newData[parseInt(currentEnv, 10)].splice(record.index, 1, data)
+    } else {
+      if (newData[parseInt(currentEnv, 10)] === undefined) {
+        newData[parseInt(currentEnv, 10)] = [data]
+      } else {
+        newData[parseInt(currentEnv, 10)].push(data);
+      }
+    }
+    dispatch({
+      type: "testcase/save",
+      payload: {
+        testData: newData,
+      }
+    })
+    setModal(false)
+  }
 
   const onFinish = async values => {
     let result;
@@ -146,8 +188,9 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
       <FormForModal title="测试数据" record={record} onCancel={() => {
         setModal(false)
       }} left={4} right={20} width={650}
-                    visible={modal} onFinish={onFinish} fields={fields}>
-        <Alert closable type="info" style={{marginBottom: 12}} message="数据管理接受一串key-value的数据，供大家在case里面使用这些变量，用${变量}的方式。" showIcon/>
+                    visible={modal} onFinish={createMode ? onCreateModeFinish : onFinish} fields={fields}>
+        <Alert closable type="info" style={{marginBottom: 12}}
+               message="数据管理接受一串key-value的数据，供大家在case里面使用这些变量，用${变量}的方式。" showIcon/>
       </FormForModal>
       <Col span={24}>
         <Card bordered={false}>
@@ -163,9 +206,9 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv}) => {
             <Col span={24}>
               <Table columns={columns} pagination={pagination} rowKey={record => record.id}
                      loading={loading.effects['testcase/insertTestcaseData'] || loading.effects['testcase/updateTestcaseData'] ||
-                     loading.effects['testcase/deleteTestcaseData']
+                       loading.effects['testcase/deleteTestcaseData']
                      }
-                     dataSource={dataSource} size="small" locale={{emptyText: <NoRecord height="150"/>}}
+                     dataSource={dataSource} locale={{emptyText: <NoRecord height="150"/>}}
                      onChange={pg => setPagination({...pagination, current: pg.current})}/>
             </Col>
           </Row>

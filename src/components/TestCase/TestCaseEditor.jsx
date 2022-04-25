@@ -4,9 +4,8 @@ import styles from "@/components/Drawer/CaseDetail.less";
 import getComponent from "@/components/PityForm";
 import fields from "@/consts/fields";
 import React, {useEffect} from "react";
-import {SaveOutlined} from "@ant-design/icons";
+import {PlayCircleOutlined, SaveOutlined} from "@ant-design/icons";
 import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
-import PostmanForm from "@/components/Postman/PostmanForm";
 
 const FormItem = Form.Item;
 
@@ -56,7 +55,7 @@ const TestCaseEditor = ({
                   type: 'testcase/save',
                   payload: {editing: false}
                 })
-              }}><SaveOutlined/> 取消</Button> : null}
+              }}><SaveOutlined/> 取消</Button> : <Button style={{marginLeft: 8}}><PlayCircleOutlined/> 测试</Button>}
             </>}>
         <Row gutter={[8, 8]}>
           {
@@ -72,23 +71,16 @@ const TestCaseEditor = ({
             </Col>)
           }
         </Row>
+        <Row style={{marginTop: 8}}>
+          <Col span={24}>
+            <TestCaseBottom case_id={caseId} body={body} bodyType={bodyType} setBody={setBody} headers={headers}
+                            setHeaders={setHeaders} form={form} createMode={create}
+                            formData={formData} setFormData={setFormData} setSuffix={setSuffix}
+                            setBodyType={setBodyType}
+            />
+          </Col>
+        </Row>
       </Card>
-      {
-        create ? <Card title={<span className={styles.caseTitle}>请求信息</span>} style={{marginTop: 16}}>
-          <Row gutter={[8, 8]}>
-            <Col span={24}>
-              <PostmanForm form={form} body={body} setBody={setBody} headers={headers} setHeaders={setHeaders}
-                           setFormData={setFormData} formData={formData}
-                           bordered={false} caseInfo={caseInfo} bodyType={bodyType} setBodyType={setBodyType}/>
-            </Col>
-          </Row>
-        </Card> : <Card>
-          <TestCaseBottom case_id={caseId} body={body} bodyType={bodyType} setBody={setBody} headers={headers}
-                          setHeaders={setHeaders} form={form}
-                          formData={formData} setFormData={setFormData} setSuffix={setSuffix}
-                          setBodyType={setBodyType}
-          /></Card>
-      }
     </Form>
 
   )

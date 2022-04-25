@@ -82,7 +82,7 @@ export default {
       name: 'priority',
       label: '优先级',
       required: true,
-      component: <Select>
+      component: <Select placeholder="请选择用例优先级">
         {CONFIG.PRIORITY.map(v => <Option key={v} value={v}>{v}</Option>)}
       </Select>,
       type: 'select',
@@ -92,7 +92,7 @@ export default {
       name: 'status',
       label: '用例状态',
       required: true,
-      component: <Select>
+      component: <Select placeholder="请选择用例当前状态">
         {Object.keys(CONFIG.CASE_STATUS).map(key => <Option key={key} value={key}>{
           <Badge {...CONFIG.CASE_BADGE[key]} />}</Option>)}
       </Select>,
@@ -103,7 +103,7 @@ export default {
       name: 'request_type',
       label: '请求类型',
       required: true,
-      component: <Select>
+      component: <Select placeholder="请选择请求协议类型">
         {Object.keys(CONFIG.REQUEST_TYPE).map(key => <Option key={key} value={key}
                                                              disabled={key !== '1'}>{CONFIG.REQUEST_TYPE[key]}</Option>)}
       </Select>,
