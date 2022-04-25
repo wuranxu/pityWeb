@@ -552,7 +552,6 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                           dispatch({
                             type: 'testcase/save',
                             payload: {
-                              caseInfo: {},
                               asserts: [],
                               postConstructor: [],
                               preConstructor: [],
