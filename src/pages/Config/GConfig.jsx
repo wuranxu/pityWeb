@@ -33,7 +33,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       title: '环境',
       key: 'env',
       dataIndex: 'env',
-      render: env => env === 0 ? <Tag color='blue'>全部</Tag> : <Tag>{envMap[env]}</Tag> || <Tag color='red'>未知</Tag>,
+      render: env => <Tag>{envMap[env]}</Tag>,
     },
     {
       title: 'key',
@@ -110,8 +110,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       name: 'env',
       label: '环境',
       required: true,
-      component: <Select defaultValue={currentEnv}>
-        <Option value={0}>全部</Option>
+      component: <Select defaultValue={currentEnv} placeholder="选择对应环境">
         {
           envList.map(v => <Option value={v.id}>{v.name}</Option>)
         }
@@ -155,8 +154,8 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
     },
   ];
 
-  const getEnvList = () => {
-    dispatch({
+  const getEnvList = async () => {
+    await dispatch({
       type: 'gconfig/fetchEnvList',
       payload: {
         page: 1,
@@ -171,28 +170,25 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
     });
   }
 
-  const getConfig = async (page = pagination.current, size = pagination.pageSize) => {
-    await dispatch({
+  const getConfig = (page = pagination.current, size = pagination.pageSize) => {
+    dispatch({
       type: 'gconfig/fetchGConfig',
       payload: {
         page,
         size,
-        env: currentEnv,
+        env: currentEnv || '',
         key: name,
       },
     });
   };
 
-  const initial = async () => {
-    if (envList.length === 0) {
-      getEnvList();
-    }
-    await getConfig();
-  };
+  useEffect(() => {
+    getEnvList();
+  }, [])
 
-  useEffect(async () => {
+  useEffect(() => {
     fetchUserList()
-    await initial();
+    getConfig();
   }, [currentEnv, name, pagination.current]);
 
   const onFinish = async values => {
@@ -231,17 +227,17 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
         <Row gutter={[8, 8]}>
           <Col span={12}>
             当前环境:
-            <Select value={currentEnv} style={{width: 180, marginLeft: 16}} onChange={e => {
+            <Select placeholder="选择对应环境" value={currentEnv} style={{width: 180, marginLeft: 16}} onChange={e => {
               save({currentEnv: e});
             }}>
-              <Option value={0}>全部</Option>
               {
-                envList.map(v => <Option value={v.id}>{v.name}</Option>)
+                envList.map(v => <Option value={v.id.toString()}>{v.name}</Option>)
               }
             </Select>
             <Button style={{marginLeft: 16}} type='primary'
                     onClick={() => {
                       save({modal: true});
+                      setRecord({id: 0, key_type: 0})
                     }}><PlusOutlined/>添加变量</Button>
           </Col>
           <Col span={6}/>

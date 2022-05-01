@@ -32,7 +32,7 @@ export default {
   state: {
     data: [],
     configuration: {},
-    currentEnv: 0,
+    currentEnv: null,
     name: '',
     envList: [],
     envMap: {},
