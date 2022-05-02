@@ -190,3 +190,11 @@ export async function onlinePyScript(params) {
     headers: auth.headers(),
   });
 }
+
+// 重试测试用例
+export async function retryCase(params) {
+  return request(`${CONFIG.URL}/request/retry`, {
+    params,
+    headers: auth.headers(),
+  });
+}

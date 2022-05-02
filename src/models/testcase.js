@@ -1,6 +1,7 @@
 import auth from "@/utils/auth";
 import {
-  createTestCase, createTestCaseV2,
+  createTestCase,
+  createTestCaseV2,
   deleteTestcase,
   deleteTestCaseAsserts,
   deleteTestcaseData,
@@ -14,6 +15,7 @@ import {
   onlinePyScript,
   queryTestCase,
   queryTestcaseDirectory,
+  retryCase,
   updateTestCase,
   updateTestCaseAsserts,
   updateTestcaseData,
@@ -39,6 +41,9 @@ export default {
     postConstructor: [],
     preConstructor: [],
     testData: {},
+
+    // 重试结果
+    retryResult: {},
     envActiveKey: '',
     constructors_case: {},
     constructorModal: false,
@@ -255,6 +260,13 @@ export default {
     * deleteTestcaseData({payload}, {call, _}) {
       const res = yield call(deleteTestcaseData, payload);
       return auth.response(res, true);
+    },
+
+    * retryCase({payload}, {call, put}) {
+      const res = yield call(retryCase, payload);
+      if (auth.response(res, true)) {
+        return res.data
+      }
     },
 
     * onlinePyScript({payload}, {call, _}) {

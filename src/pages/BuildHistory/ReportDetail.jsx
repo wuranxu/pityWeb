@@ -1,5 +1,5 @@
 import {connect, useParams} from "umi";
-import {Badge, Card, Col, Descriptions, Input, Row, Spin, Statistic, Table, Tabs, Tag} from "antd";
+import {Badge, Card, Col, Descriptions, Divider, Input, Row, Spin, Statistic, Table, Tabs, Tag} from "antd";
 import {PageContainer} from "@ant-design/pro-layout";
 import React, {useEffect, useState} from "react";
 import {queryReport} from "@/services/report";
@@ -98,11 +98,32 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
     }
   }
 
+  const getRetryData = record => {
+    return {
+      case_id: record.case_id,
+      url: record.url,
+      request_method: record.request_method,
+      request_data: record.request_data,
+      request_headers: record.request_headers,
+      response: record.response,
+      logs: record.logs,
+      response_headers: record.response_headers,
+      status_code: record.status_code,
+      cookies: record.cookies,
+      asserts: record.asserts,
+      cost: record.cost,
+      status: record.status,
+    }
+  }
+
   const onSearchCase = e => {
     const {value} = e.target;
     const temp = caseList.filter(item => item.data_name.indexOf(value) > -1 || item.case_name.indexOf(value) > -1);
     setCurrentCaseList(temp)
   }
+
+  const load = !!(loading.effects['testcase/retryCase']
+    || loading.effects['gconfig/fetchEnvList'])
 
   useEffect(async () => {
     fetchEnv();
@@ -115,6 +136,20 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       setPlanName(res.data.plan_name);
     }
   }, [])
+
+  const onHandleRetry = async record => {
+    const retryResult = await dispatch({
+      type: 'testcase/retryCase',
+      payload: {
+        env: reportDetail.env,
+        case_id: record.case_id,
+        data_id: record.data_id,
+      }
+    })
+    setCaseModal(true)
+    setCaseName(record.case_name)
+    setResponse(retryResult)
+  }
 
   const columns = [
     {
@@ -170,7 +205,11 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
           setResponse(getReport(record))
           setCaseModal(true)
           setCaseName(record.case_name)
-        }}>更多</a>
+        }}>日志</a>
+        <Divider type="vertical"/>
+        <a onClick={async () => {
+          await onHandleRetry(record)
+        }}>重试</a>
       </>
     }
   ]
@@ -178,7 +217,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   return (
     <PageContainer title={false} breadcrumb={null}>
       <TestResult width={1000} setModal={setCaseModal} modal={caseModal} caseName={caseName} response={response}/>
-      <Spin spinning={loading.effects["gconfig/fetchEnvList"]}>
+      <Spin spinning={load}>
         <Card title={`测试报告#${reportId}`}>
           <Row gutter={[8, 8]}>
             <Col span={17}>
