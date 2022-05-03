@@ -10,7 +10,6 @@ export default ({form}) => {
           <Form.Item label="类型" name="oss_type" rules={[{required: true, message: '请选择oss类型'}]}>
             <Select placeholder="请选择oss类型">
               <Select.Option value="aliyun">阿里云</Select.Option>
-              <Select.Option value="gitee">gitee</Select.Option>
               <Select.Option value="cos">腾讯云</Select.Option>
               <Select.Option value="qiniu">七牛云</Select.Option>
             </Select>

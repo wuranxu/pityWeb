@@ -40,7 +40,7 @@ const Oss = ({loading, dispatch, gconfig, user}) => {
       title: '文件路径',
       key: 'file_path',
       dataIndex: 'file_path',
-      render: (file_path, record) => <a href={`${CONFIG.OSS_URL}/${file_path}`}
+      render: (file_path, record) => <a href={record.view_url}
                                         target="_blank">{file_path}</a>
     },
     {
@@ -87,7 +87,7 @@ const Oss = ({loading, dispatch, gconfig, user}) => {
 
   const onUpload = async () => {
     const values = await form.validateFields();
-    const res = dispatch({
+    const res = await dispatch({
       type: 'gconfig/uploadFile',
       payload: values,
     })

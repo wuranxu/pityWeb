@@ -440,7 +440,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                     visible={moveModal} left={6} right={18} width={500} formName="move"/>
       {
         projects.length === 0 ? <Result status="404"
-                                        title={<span>你还没有添加任何项目, <a target="_blank" href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
+                                        subTitle={<span>你还没有添加任何项目, <a target="_blank" href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
 
           <Row gutter={16}>
             <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
