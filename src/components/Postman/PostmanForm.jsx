@@ -467,14 +467,14 @@ const PostmanForm = ({
           </Col>
           <Col span={6}>
             <div style={{float: 'right'}}>
-              {!save ? <Button
-                onClick={onRequest}
-                loading={loading}
-                type="primary"
-              >
-                <IconFont type="icon-fasong1"/>
-                Send{' '}
-              </Button> : null}
+              {/*{!save ? <Button*/}
+              {/*  onClick={onRequest}*/}
+              {/*  loading={loading}*/}
+              {/*  type="primary"*/}
+              {/*>*/}
+              {/*  <IconFont type="icon-fasong1"/>*/}
+              {/*  Send{' '}*/}
+              {/*</Button> : null}*/}
               {save ?
                 <Button onClick={async () => {
                   save(false)

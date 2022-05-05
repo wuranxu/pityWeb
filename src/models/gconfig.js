@@ -299,7 +299,6 @@ export default {
     * updateAddress({payload}, {call, put}) {
       const res = yield call(updateGateway, payload);
       if (!auth.response(res, true)) {
-        message.error(res.msg);
         return false;
       }
       return true;
