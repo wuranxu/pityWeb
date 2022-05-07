@@ -34,7 +34,7 @@ const tabExtra = (response) => {
           {STATUS[response.status_code] ? STATUS[response.status_code].text : ''}
         </span>
         <span style={{marginLeft: 8, marginRight: 8}}>
-          Time: <span style={{color: '#67C23A'}}>{response.elapsed}</span>
+          Time: <span style={{color: '#67C23A'}}>{response.cost}</span>
         </span>
       </span>
     </div>
