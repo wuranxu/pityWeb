@@ -113,24 +113,6 @@ export default [
                 component: './Notification'
               },
               {
-                path: '/ci',
-                icon: 'icon-CI',
-                name: '持续集成',
-                component: "./Building"
-              },
-              {
-                path: '/precise',
-                icon: 'icon-jingzhun',
-                name: '精准测试',
-                component: "./Building"
-              },
-              {
-                path: '/factory',
-                icon: 'icon-hebingxingzhuang',
-                name: '数据工厂',
-                component: "./Building"
-              },
-              {
                 path: '/config',
                 icon: 'icon-config',
                 name: '测试配置',
@@ -188,6 +170,12 @@ export default [
                 ],
               },
               {
+                path: '/mock',
+                icon: 'icon-mockplus_doc',
+                name: 'Mock配置',
+                component: "./Building"
+              },
+              {
                 path: '/tool',
                 name: '实用工具',
                 icon: 'tool',
@@ -211,6 +199,24 @@ export default [
                     component: './Tool/RedisOnline',
                   },
                 ]
+              },
+              {
+                path: '/ci',
+                icon: 'icon-CI',
+                name: '持续集成',
+                component: "./Building"
+              },
+              {
+                path: '/precise',
+                icon: 'icon-jingzhun',
+                name: '精准测试',
+                component: "./Building"
+              },
+              {
+                path: '/factory',
+                icon: 'icon-hebingxingzhuang',
+                name: '数据工厂',
+                component: "./Building"
               },
               {
                 component: './404',
