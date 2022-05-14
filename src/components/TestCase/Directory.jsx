@@ -1,8 +1,7 @@
-import {Card, Col, Dropdown, Menu, Alert, Row, Spin, Tooltip} from 'antd';
+import {Alert, Card, Col, Dropdown, Menu, Row, Spin, Tooltip} from 'antd';
 import React, {useState} from 'react';
 import ProfessionalTree from '@/components/Tree/ProfessionalTree';
 import {
-  BugTwoTone,
   CheckCircleTwoTone,
   CloseCircleTwoTone,
   FolderOutlined,

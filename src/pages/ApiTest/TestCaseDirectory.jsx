@@ -33,7 +33,6 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
   ExportOutlined,
-  FolderAddTwoTone,
   PlayCircleOutlined,
   PlusOutlined,
   QuestionCircleOutlined,
@@ -432,7 +431,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   </AMenu>
 
   return (
-    <PageContainer title="用例列表" breadcrumb={null}>
+    <PageContainer title={false} breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name} single={false}/>
       <FormForModal title="移动用例" onCancel={() => setMoveModal(false)}
@@ -440,7 +439,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                     visible={moveModal} left={6} right={18} width={500} formName="move"/>
       {
         projects.length === 0 ? <Result status="404"
-                                        subTitle={<span>你还没有添加任何项目, <a target="_blank" href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
+                                        subTitle={<span>你还没有添加任何项目, <a target="_blank"
+                                                                       href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
 
           <Row gutter={16}>
             <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
@@ -456,10 +456,12 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                 <Row gutter={8}>
                   <Col span={18}>
                     {
-                      editing ? <Select style={{marginLeft: 32, width: 150}} showSearch
+                      editing ? <Select style={{marginLeft: 32, width: 150}} showSearch allowClear
                                         placeholder="请选择项目" value={project_id} autoFocus={true}
                                         onChange={e => {
-                                          save({project_id: e})
+                                          if (e !== undefined) {
+                                            save({project_id: e})
+                                          }
                                           setEditing(false);
                                         }}
                                         filterOption={(input, option) =>
@@ -483,7 +485,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                         setModalTitle("新建根目录");
                         setCurrentNode(null);
                       }}>
-                        <FolderAddTwoTone/> 新建目录
+                        <PlusOutlined/> 新建目录
                       </Button>
 
                     </Tooltip>
