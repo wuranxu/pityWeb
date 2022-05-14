@@ -5,10 +5,6 @@
   overflow: hidden;
 }
 
-* {
-  font-size: 13px;
-}
-
 .container::before {
   content: " ";
   position: absolute;
@@ -145,7 +141,6 @@
   /*  transition: transform 0.9s ease-in-out;*/
   /*  transition-delay: 0.7s;*/
   /*}*/
-
   .desc-warp {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 2fr 1fr;

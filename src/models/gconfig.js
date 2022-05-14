@@ -43,9 +43,9 @@ export default {
       total: 0,
     },
     key_type: {
-      0: 'string',
-      1: 'json',
-      2: 'yaml',
+      0: 'String',
+      1: 'JSON',
+      2: 'Yaml',
     },
 
     ossFileList: [],

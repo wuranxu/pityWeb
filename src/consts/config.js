@@ -55,6 +55,11 @@ export const CONFIG = {
     OWNER: 'purple',
     MEMBER: 'pink',
   },
+  CONFIG_TYPE_TAG: {
+    JSON: 'green',
+    Yaml: 'pink',
+    String: 'blue',
+  },
   PROJECT_ROLE_MAP: {
     1: '组长',
     0: '组员',

@@ -49,8 +49,14 @@ const Login = (props) => {
   };
 
   const redirectToGithub = () => {
-    const current = window.location.href
+    // const current = window.location.href
     window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}`
+  }
+
+  const handleEnterKey = (e) => {
+    if(e.nativeEvent.keyCode === 13){ //e.nativeEvent获取原生的事件对像
+      handleSubmit()
+    }
   }
 
   return (
@@ -59,6 +65,7 @@ const Login = (props) => {
         initialValues={{
           autoLogin: true,
         }}
+        isKeyPressSubmit
         submitter={{
           render: (_, dom) => dom.pop(),
           submitButtonProps: {
