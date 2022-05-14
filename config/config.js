@@ -47,5 +47,15 @@ export default defineConfig({
     modifyVars: {
       'root-entry-name': 'default'
     }
-  }
+  },
+  chainWebpack(conf) {
+    // ....other config
+    conf.module
+      .rule('mjs$')
+      .test(/\.mjs$/)
+      .include
+      .add(/node_modules/)
+      .end()
+      .type('javascript/auto');
+  },
 });
