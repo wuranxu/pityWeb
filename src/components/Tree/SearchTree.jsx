@@ -5,7 +5,7 @@ import {FolderTwoTone, MoreOutlined, PlusOutlined, SearchOutlined} from "@ant-de
 
 const dataList = [];
 
-export default ({treeData: gData, blockNode = true, onAddNode, menu, selectedKeys, onSelect}) => {
+export default ({treeData: gData, blockNode = true, onAddNode, menu, selectedKeys, onSelect, addDirectory}) => {
   const generateList = data => {
     for (let i = 0; i < data.length; i++) {
       const node = data[i];
@@ -84,10 +84,13 @@ export default ({treeData: gData, blockNode = true, onAddNode, menu, selectedKey
     });
   return (
     <div>
-      <Row>
-        <Col span={16}>
+      <Row gutter={8}>
+        <Col span={18}>
           <Input size="small" className="treeSearch" placeholder="输入要查找的目录" onChange={onChange}
                  prefix={<SearchOutlined/>}/>
+        </Col>
+        <Col span={6}>
+          {addDirectory}
         </Col>
       </Row>
       <Tree

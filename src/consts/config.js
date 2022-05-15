@@ -21,9 +21,9 @@ export const CONFIG = {
 
   ICONFONT: IconFontUrl,
   OSS_URL: "http://oss.pity.fun/pity",
-  AVATAR_URL: 'https://joeschmoe.io/api/v1/',
+  AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=2',
   DOCUMENT_URL: 'https://wuranxu.github.io/pityDoc',
-  PROJECT_AVATAR_URL: 'https://api.prodless.com/avatar.png',
+  PROJECT_AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=3',
   ROLE: {
     0: 'user',
     1: 'admin',

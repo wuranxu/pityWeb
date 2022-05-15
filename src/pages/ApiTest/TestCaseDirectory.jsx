@@ -430,6 +430,17 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     </AMenu.Item>
   </AMenu>
 
+  const AddDirectory = <Tooltip title="点击可新建根目录, 子目录需要在树上新建">
+    <a className="directoryButton" onClick={() => {
+      setRootModal(true)
+      setRecord({name: ''})
+      setModalTitle("新建根目录");
+      setCurrentNode(null);
+    }}>
+      <PlusOutlined/>
+    </a>
+  </Tooltip>
+
   return (
     <PageContainer title={false} breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
@@ -454,50 +465,52 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
             <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
               <ScrollCard className="card" hideOverflowX bodyPadding={12}>
                 <Row gutter={8}>
-                  <Col span={18}>
-                    {
-                      editing ? <Select style={{marginLeft: 32, width: 150}} showSearch allowClear
-                                        placeholder="请选择项目" value={project_id} autoFocus={true}
-                                        onChange={e => {
-                                          if (e !== undefined) {
-                                            save({project_id: e})
-                                          }
-                                          setEditing(false);
-                                        }}
-                                        filterOption={(input, option) =>
-                                          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }>
-                        {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
-                      </Select> : <>
-                        <Avatar style={{marginLeft: 8, marginRight: 6}}
-                                src={getProject().avatar || `https://api.prodless.com/avatar.png`}/>
-                        <a onClick={() => setEditing(true)}>{getProject().name}</a>
-                        <IconFont type="icon-qiehuan2" onClick={() => setEditing(true)}
-                                  style={{fontSize: 15, marginLeft: 8}}/>
-                      </>
-                    }
-                  </Col>
-                  <Col span={6}>
-                    <Tooltip title="点击可新建根目录, 子目录需要在树上新建">
-                      <Button type="primary" size="small" className="directoryButton" onClick={() => {
-                        setRootModal(true)
-                        setRecord({name: ''})
-                        setModalTitle("新建根目录");
-                        setCurrentNode(null);
-                      }}>
-                        <PlusOutlined/> 新建目录
-                      </Button>
-
-                    </Tooltip>
+                  <Col span={24}>
+                    <div style={{height: 40, lineHeight: '40px'}}>
+                      {
+                        editing ? <Select style={{marginLeft: 32, width: 150}} showSearch allowClear
+                                          placeholder="请选择项目" value={project_id} autoFocus={true}
+                                          onChange={e => {
+                                            if (e !== undefined) {
+                                              save({project_id: e})
+                                            }
+                                            setEditing(false);
+                                          }}
+                                          filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                          }>
+                            {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
+                          </Select> :
+                          <div onClick={() => setEditing(true)}>
+                            <Avatar style={{marginLeft: 8, marginRight: 6}} size="large"
+                                    src={getProject().avatar || `https://api.prodless.com/avatar.png`}/>
+                            <span style={{
+                              display: 'inline-block',
+                              marginLeft: 12,
+                              fontWeight: 400,
+                              fontSize: 14
+                            }}>{getProject().name}</span>
+                            <IconFont type="icon-qiehuan2" style={{
+                              display: 'inline-block',
+                              cursor: 'pointer',
+                              fontSize: 16,
+                              marginLeft: 16,
+                              lineHeight: '40px'
+                            }}/>
+                          </div>
+                      }
+                    </div>
                   </Col>
                 </Row>
                 <div style={{marginTop: 24}}>
                   <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
                     {directory.length > 0 ?
                       <>
-                        <SearchTree treeData={directory} menu={content} onSelect={keys => {
-                          saveCase({currentDirectory: keys[0] === currentDirectory[0] ? [] : keys})
-                        }} onAddNode={node => {
+                        <SearchTree treeData={directory} menu={content}
+                                    addDirectory={AddDirectory}
+                                    onSelect={keys => {
+                                      saveCase({currentDirectory: keys[0] === currentDirectory[0] ? [] : keys})
+                                    }} onAddNode={node => {
                           setCurrentNode(node.key)
                           handleItemClick(1, node)
                         }} selectedKeys={currentDirectory}

@@ -6,7 +6,6 @@ import FormForModal from '@/components/PityForm/FormForModal';
 import {connect, history} from 'umi';
 import {insertProject, listProject} from '@/services/project';
 import auth from '@/utils/auth';
-import {process} from '@/utils/utils';
 import {listUsers} from '@/services/user';
 import noRecord from '@/assets/no_record.svg'
 import UserLink from "@/components/Button/UserLink";
@@ -14,6 +13,7 @@ import {CONFIG} from "@/consts/config";
 import styles from './Project.less';
 import UserSelect from "@/components/User/UserSelect";
 import {IconFont} from "@/components/Icon/IconFont";
+import {SearchOutlined} from "_@ant-design_icons@4.7.0@@ant-design/icons";
 
 
 const {Search} = Input;
@@ -61,8 +61,9 @@ const Project = ({dispatch, project, loading}) => {
     await fetchData();
   }, []);
 
-  const onSearchProject = async (projectName) => {
-    const res = await listProject({page: 1, size: pagination.size, name: projectName});
+  const onSearchProject = async e => {
+    const projectName = e.target.value;
+    const res = await listProject({page: 1, size: pagination.pageSize, name: projectName});
     if (auth.response(res)) {
       setData(res.data);
       setPagination({...pagination, current: 1, total: res.total});
@@ -185,8 +186,10 @@ const Project = ({dispatch, project, loading}) => {
               </Button>
             </Col>
             <Col span={6}>
-              <Search
-                onSearch={onSearchProject}
+              <Input
+                className="borderSearch"
+                prefix={<SearchOutlined/>}
+                onPressEnter={onSearchProject}
                 style={{float: 'right'}}
                 placeholder="请输入项目名称"
               />
