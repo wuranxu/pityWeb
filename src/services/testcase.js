@@ -198,3 +198,28 @@ export async function retryCase(params) {
     headers: auth.headers(),
   });
 }
+
+// 获取用例录制状态
+export async function queryRecordStatus() {
+  return request(`${CONFIG.URL}/testcase/record/status`, {
+    headers: auth.headers(),
+  });
+}
+
+
+// 开始录制
+export async function startRecord(params) {
+  return request(`${CONFIG.URL}/testcase/record/start`, {
+    headers: auth.headers(),
+    params
+  });
+}
+
+// 停止录制
+// 开始录制
+export async function stopRecord(params) {
+  return request(`${CONFIG.URL}/testcase/record/stop`, {
+    headers: auth.headers(),
+    params
+  });
+}

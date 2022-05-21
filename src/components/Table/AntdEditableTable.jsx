@@ -180,8 +180,9 @@ const AntdEditableTable = ({data, setData, ossFileList}) => {
 
     return {
       ...col,
-      onCell: (record) => ({
+      onCell: (record, index) => ({
         record,
+        index,
         type,
         setType,
         dataIndex: col.dataIndex,

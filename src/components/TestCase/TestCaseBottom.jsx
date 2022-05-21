@@ -6,7 +6,8 @@ import {
   EditTwoTone,
   ExclamationCircleOutlined,
   PlusOutlined,
-  QuestionCircleOutlined
+  QuestionCircleOutlined,
+  SaveOutlined
 } from "@ant-design/icons";
 import TestcaseData from "@/components/TestCase/TestcaseData";
 import NoRecord2 from "@/components/NotFound/NoRecord2";
@@ -17,6 +18,7 @@ import TestCaseAssert from "@/components/TestCase/TestCaseAssert";
 import React from "react";
 import {CONFIG} from "@/consts/config";
 import {connect} from 'umi';
+import TestCaseOutParameters from "@/components/TestCase/TestCaseOutParameters";
 
 const {TabPane} = Tabs
 
@@ -255,9 +257,11 @@ const TestCaseBottom = ({
               }
             })
           }
-        }}>
-
-          <TabPane key="5" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
+        }} tabBarExtraContent={createMode ? null :
+          <Button style={{marginRight: 8}} onClick={() => {
+            onSubmit(false)
+          }}><SaveOutlined/>保存</Button>}>
+          <TabPane key="1" tab={<span><IconFont type="icon-shujuqudong1"/>数据管理 <TooltipIcon
             onClick={() => {
               window.open(`${CONFIG.DOCUMENT_URL}/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%A6%82%E5%BF%B5/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86`)
             }}
@@ -278,7 +282,7 @@ const TestCaseBottom = ({
                                                                target="_blank">去添加</a>}</span>}/>
             }
           </TabPane>
-          <TabPane key="1"
+          <TabPane key="2"
                    tab={
                      <div>
                        <IconFont
@@ -338,7 +342,7 @@ const TestCaseBottom = ({
 
             }
           </TabPane>
-          <TabPane key="2" tab={<span><IconFont type="icon-qingqiu"/>接口请求</span>}>
+          <TabPane key="3" tab={<span><IconFont type="icon-qingqiu"/>接口请求</span>}>
             <Row gutter={[8, 8]}>
               <Col span={24}>
                 <PostmanForm form={form} body={body} setBody={setBody} headers={headers}
@@ -348,14 +352,18 @@ const TestCaseBottom = ({
               </Col>
             </Row>
           </TabPane>
-          <TabPane key="3"
+          <TabPane key="4" tab={<span><IconFont type="icon-canshu2"/>出参提取  <TooltipIcon
+            icon={<QuestionCircleOutlined/>} title="通过管理请求产生的参数，帮助我们更好地改善【断言】"/></span>}>
+            <TestCaseOutParameters caseId={case_id} createMode={createMode} dispatch={dispatch} testcase={testcase}/>
+          </TabPane>
+          <TabPane key="5"
                    tab={<div>
                      <IconFont type="icon-duanyan"/>断言 <BadgeButton number={asserts.length} bgColor="rgb(233, 249, 245)"
                                                                     color="rgb(40, 195, 151)"/>
                    </div>}>
             <TestCaseAssert asserts={asserts} caseId={case_id} createMode={createMode}/>
           </TabPane>
-          <TabPane key="4"
+          <TabPane key="6"
                    tab={
                      <div>
                        <IconFont

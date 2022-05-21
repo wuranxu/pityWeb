@@ -570,6 +570,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                               asserts: [],
                               postConstructor: [],
                               preConstructor: [],
+                              outParameters: [{key: 0, source: 1}],
+                              caseInfo: {},
                               testData: {},
                             }
                           })

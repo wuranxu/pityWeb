@@ -75,6 +75,7 @@ const BasicLayout = (props) => {
   const {
     dispatch,
     children,
+    testcase,
     settings,
     location = {
       pathname: '/',
@@ -104,13 +105,20 @@ const BasicLayout = (props) => {
               noticeCount: msg.total ? msg.count : msg.count + noticeCount,
             }
           })
-        } else {
+        } else if (msg.type === 1) {
           notification.info({
             message: msg.title,
             description: msg.content
           })
+        } else if (msg.type === 2) {
+          // 说明是录制消息
+          dispatch({
+            type: 'testcase/readRecord',
+            payload: {
+              data: JSON.parse(msg.record_msg),
+            }
+          })
         }
-
       };
     }
   }, []);
@@ -216,10 +224,11 @@ const BasicLayout = (props) => {
   );
 };
 
-export default connect(({user, global, settings, loading}) => ({
+export default connect(({user, global, settings, testcase, loading}) => ({
   collapsed: global.collapsed,
   noticeCount: global.noticeCount,
   settings,
+  testcase,
   user,
   ld: loading,
 }))(BasicLayout);

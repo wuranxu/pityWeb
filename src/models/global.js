@@ -7,6 +7,7 @@ const GlobalModel = {
     collapsed: false,
     notices: [],
     noticeCount: 0,
+    ws: null,
   },
   effects: {
     * fetchNotices({payload}, {call, put}) {

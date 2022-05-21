@@ -38,6 +38,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const {
     directoryName,
     caseInfo,
+    outParameters,
     editing,
     casePermission,
     constructRecord,
@@ -119,6 +120,19 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       color='blue'>{v}</Tag>) : '无'
   }
 
+  const filterOutParameters = () => {
+    return outParameters.filter(v => {
+      if (v.id) {
+        return true;
+      }
+      if (v.source === 4) {
+        return v.name;
+      }
+      return v.match_index && v.name && v.expression;
+    })
+
+  }
+
   const onSubmit = async (isCreate = false) => {
     const values = await form.validateFields()
     const params = {
@@ -130,6 +144,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       body_type: bodyType,
       request_headers: common.translateHeaders(headers),
       body: bodyType === 2 ? JSON.stringify(formData) : body,
+      out_parameters: filterOutParameters(),
     };
     if (!editing && !isCreate) {
       params.priority = caseInfo.priority;
@@ -232,7 +247,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                     request_type: caseInfo.request_type.toString(),
                                     tag: getTagArray()
                                   },
-                                  activeKey: '2',
+                                  activeKey: '3',
                                 }
                               })
                             }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>

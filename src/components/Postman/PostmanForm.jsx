@@ -475,10 +475,10 @@ const PostmanForm = ({
               {/*  <IconFont type="icon-fasong1"/>*/}
               {/*  Send{' '}*/}
               {/*</Button> : null}*/}
-              {save ?
-                <Button onClick={async () => {
-                  save(false)
-                }} style={{margin: '0 12px', float: 'right'}}><SaveOutlined/>保存</Button> : null}
+              {/*{save ?*/}
+              {/*  <Button onClick={async () => {*/}
+              {/*    save(false)*/}
+              {/*  }} style={{margin: '0 12px', float: 'right'}}><SaveOutlined/>保存</Button> : null}*/}
             </div>
           </Col>
         </Row>

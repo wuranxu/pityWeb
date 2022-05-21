@@ -1,7 +1,13 @@
 import React, {memo, useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Select, Tooltip,} from 'antd';
-import {AliwangwangOutlined, DeleteTwoTone, ExclamationCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Tooltip,} from 'antd';
+import {
+  AliwangwangOutlined,
+  DeleteTwoTone,
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
+  SearchOutlined
+} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
 import {connect, history} from 'umi';
 import {insertProject, listProject} from '@/services/project';
@@ -13,11 +19,7 @@ import {CONFIG} from "@/consts/config";
 import styles from './Project.less';
 import UserSelect from "@/components/User/UserSelect";
 import {IconFont} from "@/components/Icon/IconFont";
-import {SearchOutlined} from "_@ant-design_icons@4.7.0@@ant-design/icons";
 
-
-const {Search} = Input;
-const {Option} = Select;
 
 const Project = ({dispatch, project, loading}) => {
   const [data, setData] = useState([]);
@@ -26,7 +28,7 @@ const Project = ({dispatch, project, loading}) => {
   const [users, setUsers] = useState([]);
   const [userMap, setUserMap] = useState({});
 
-  const fetchData = async (current = pagination.current, size = pagination.size) => {
+  const fetchData = async (current = pagination.current, size = pagination.pageSize) => {
     const res = await listProject({page: current, size});
     if (auth.response(res)) {
       setData(res.data);

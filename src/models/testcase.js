@@ -13,9 +13,12 @@ import {
   listTestcaseTree,
   moveTestCase,
   onlinePyScript,
+  queryRecordStatus,
   queryTestCase,
   queryTestcaseDirectory,
   retryCase,
+  startRecord,
+  stopRecord,
   updateTestCase,
   updateTestCaseAsserts,
   updateTestcaseData,
@@ -47,20 +50,34 @@ export default {
     envActiveKey: '',
     constructors_case: {},
     constructorModal: false,
-    activeKey: '1',
+    activeKey: '3',
 
     pagination: {
       current: 1,
       total: 0,
       showTotal: total => `共${total}条用例`,
       pageSize: 8,
-    }
+    },
+
+    // 默认出参
+    outParameters: [],
+
+    // 录制用例数据
+    recordStatus: false,
+    recordLists: [],
+    regex: ''
   },
   reducers: {
     save(state, {payload}) {
       return {
         ...state,
         ...payload,
+      }
+    },
+    readRecord(state, {payload}) {
+      return {
+        ...state,
+        recordLists: [...state.recordLists, payload.data]
       }
     }
   },
@@ -151,6 +168,10 @@ export default {
             // constructors: res.data.constructors.map((v, index) => ({...v, index})),
             constructors_case: res.data.constructors_case,
             testData: res.data.test_data,
+            outParameters: [...res.data.out_parameters.map((item, index) => ({...item, key: index})), {
+              key: res.data.out_parameters.length,
+              source: 0
+            }]
           }
         })
       }
@@ -175,7 +196,11 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            caseInfo: res.data,
+            caseInfo: res.data.case_info,
+            outParameters: [...res.data.out_parameters.map((item, index) => ({...item, key: index})), {
+              key: res.data.out_parameters.length,
+              source: 0
+            }],
             editing: false,
           }
         })
@@ -275,6 +300,51 @@ export default {
         return res.data
       }
       return "None"
+    },
+
+    * queryRecordStatus({payload}, {call, put}) {
+      const res = yield call(queryRecordStatus, payload);
+      if (auth.response(res)) {
+        yield put({
+          type: 'save',
+          payload: {
+            recordStatus: res.data.status,
+            recordLists: res.data.data,
+            regex: res.data.regex,
+          }
+        })
+      }
+    },
+
+    * startRecord({payload}, {call, put}) {
+      yield put({
+        type: 'save',
+        payload: {
+          recordLists: [],
+        }
+      })
+      const res = yield call(startRecord, payload);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'save',
+          payload: {
+            recordStatus: true,
+            recordLists: [],
+          }
+        })
+      }
+    },
+
+    * stopRecord({payload}, {call, put}) {
+      const res = yield call(stopRecord, payload);
+      if (auth.response(res, true)) {
+        yield put({
+          type: 'save',
+          payload: {
+            recordStatus: false,
+          }
+        })
+      }
     }
 
   },
