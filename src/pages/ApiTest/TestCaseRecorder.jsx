@@ -178,7 +178,7 @@ const TestCaseRecorder = ({dispatch, testcase, global, loading}) => {
         <Col span={24}>
           <Table columns={columns} pagination={false} dataSource={recordLists}
                  loading={loading.effects['testcase/queryRecordStatus']}
-                 locale={{emptyText: <NoRecord desc="点击录制按钮即可开始录制app/web的接口请求" height="150"/>}}/>
+                 locale={{emptyText: <NoRecord desc="点击录制按钮即可开始录制app/web的接口请求" height={150}/>}}/>
         </Col>
       </Row>
     </Card>
