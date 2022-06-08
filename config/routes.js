@@ -67,6 +67,11 @@ export default [
                     component: "./ApiTest/TestCaseDirectory"
                   },
                   {
+                    path: '/apiTest/record',
+                    name: '用例录制',
+                    component: "./ApiTest/TestCaseRecorder"
+                  },
+                  {
                     path: '/apiTest/testcase/:directory/add',
                     name: '添加用例',
                     hideInMenu: true,

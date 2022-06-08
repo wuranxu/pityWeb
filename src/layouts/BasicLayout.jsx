@@ -118,6 +118,8 @@ const BasicLayout = (props) => {
               data: JSON.parse(msg.record_msg),
             }
           })
+        } else if (msg.type === 3) {
+          // 心跳包，忽略
         }
       };
     }
