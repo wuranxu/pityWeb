@@ -77,7 +77,13 @@ export default {
     readRecord(state, {payload}) {
       return {
         ...state,
-        recordLists: [...state.recordLists, payload.data]
+        recordLists: [...state.recordLists, {
+          ...payload.data,
+          index: state.recordLists.length,
+          cookies: JSON.stringify(payload.data.cookies, null, 2),
+          response_headers: JSON.stringify(payload.data.response_headers, null, 2),
+          request_headers: JSON.stringify(payload.data.request_headers, null, 2),
+        }]
       }
     }
   },
@@ -309,7 +315,13 @@ export default {
           type: 'save',
           payload: {
             recordStatus: res.data.status,
-            recordLists: res.data.data,
+            recordLists: res.data.data.map((v, idx) => ({
+              ...v,
+              index: idx,
+              cookies: JSON.stringify(v.cookies, null, 2),
+              response_headers: JSON.stringify(v.response_headers, null, 2),
+              request_headers: JSON.stringify(v.request_headers, null, 2),
+            })),
             regex: res.data.regex,
           }
         })

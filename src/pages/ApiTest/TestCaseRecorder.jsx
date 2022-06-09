@@ -1,10 +1,9 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {StopOutlined, ToolOutlined, VideoCameraOutlined, VideoCameraTwoTone} from "@ant-design/icons";
-import {Alert, Button, Card, Col, Input, notification, Row, Table, Tag, Tooltip} from "antd";
+import {Alert, Button, Card, Col, Input, Modal, notification, Row, Table, Tag, Tooltip} from "antd";
 import NoRecord from "@/components/NotFound/NoRecord";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "umi";
-import {Modal} from "antd";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
@@ -46,6 +45,15 @@ const TestCaseRecorder = ({dispatch, testcase, global, loading}) => {
     recordLists,
     regex
   } = testcase;
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: keys => {
+      setSelectedRowKeys(keys)
+    }
+  };
 
   useEffect(() => {
     dispatch({
@@ -177,6 +185,7 @@ const TestCaseRecorder = ({dispatch, testcase, global, loading}) => {
       <Row gutter={8} style={{marginTop: 12}}>
         <Col span={24}>
           <Table columns={columns} pagination={false} dataSource={recordLists}
+                 rowSelection={rowSelection} rowKey={record => record.index}
                  loading={loading.effects['testcase/queryRecordStatus']}
                  locale={{emptyText: <NoRecord desc="点击录制按钮即可开始录制app/web的接口请求" height={150}/>}}/>
         </Col>
