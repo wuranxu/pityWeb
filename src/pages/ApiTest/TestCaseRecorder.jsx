@@ -4,9 +4,9 @@ import {Alert, Button, Card, Col, Input, notification, Row, Table, Tag, Tooltip}
 import NoRecord from "@/components/NotFound/NoRecord";
 import React, {useEffect} from "react";
 import {connect} from "umi";
-import {Modal} from "_antd@4.17.0@antd";
-import SyntaxHighlighter from "_react-syntax-highlighter@15.4.5@react-syntax-highlighter";
-import {vs2015} from "_react-syntax-highlighter@15.4.5@react-syntax-highlighter/dist/cjs/styles/hljs";
+import {Modal} from "antd";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 
 const tagColor = method => {
