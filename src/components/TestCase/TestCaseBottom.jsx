@@ -56,7 +56,7 @@ const TestCaseBottom = ({
     })
     if (res) {
       let newData;
-      if (!suffix) {
+      if (suffix) {
         newData = postConstructor.filter(v => v.id !== record.id)
       } else {
         newData = preConstructor.filter(v => v.id !== record.id)
