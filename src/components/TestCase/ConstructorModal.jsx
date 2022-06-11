@@ -1,16 +1,17 @@
-import {Button, Card, Col, Drawer, Row, Steps} from "antd";
+import {Button, Col, Drawer, Row, Steps} from "antd";
 import {connect} from "umi";
 import {IconFont} from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import DatabaseConstructor from "@/components/TestCase/Constructor/DatabaseConstructor";
 import {CheckCard} from '@ant-design/pro-card';
 import RedisConstructor from "@/components/TestCase/Constructor/RedisConstructor";
 import PythonConstructor from "@/components/TestCase/Constructor/PythonConstructor";
+import HTTPConstructor from "@/components/TestCase/Constructor/HTTPConstructor";
+import common from "@/utils/common";
 
 
-const {Meta} = Card;
 const {Step} = Steps;
 
 const ConstructorModal = ({
@@ -30,11 +31,9 @@ const ConstructorModal = ({
 
   const {currentStep, totalStep, constructorType, testCaseConstructorData} = construct;
   const {preConstructor, postConstructor} = testcase;
-
-  useEffect(() => {
-    form.resetFields();
-    form.setFieldsValue(record);
-  }, [record])
+  const [headers, setHeaders] = useState([]);
+  const [body, setBody] = useState('');
+  const [bodyType, setBodyType] = useState(0);
 
   const save = payload => {
     dispatch({
@@ -44,31 +43,36 @@ const ConstructorModal = ({
   }
 
   const getConstructorJson = (values) => {
-    if (testCaseConstructorData.type === 0) {
-      // 说明是用例
-      return JSON.stringify({
-        // project_id: values.case_id[0],
-        constructor_case_id: values.constructor_case_id,
-        params: values.params
-      })
-    }
-    if (testCaseConstructorData.type === 1) {
-      // 说明是sql构造方法
-      return JSON.stringify({
-        database: values.database,
-        sql: values.sql,
-      })
-    }
-    if (testCaseConstructorData.type === 2) {
-      return JSON.stringify({
-        redis: values.redis,
-        command: values.command,
-      })
-    }
-    if (testCaseConstructorData.type === 3) {
-      return JSON.stringify({
-        command: values.command
-      })
+    switch (testCaseConstructorData.type) {
+      case 0:
+        return JSON.stringify({
+          // project_id: values.case_id[0],
+          constructor_case_id: values.constructor_case_id,
+          params: values.params
+        })
+      case 1:
+        return JSON.stringify({
+          database: values.database,
+          sql: values.sql,
+        })
+      case 2:
+        return JSON.stringify({
+          redis: values.redis,
+          command: values.command,
+        })
+      case 3:
+        return JSON.stringify({
+          command: values.command
+        })
+      case 4:
+        return JSON.stringify({
+          body,
+          headers: common.translateHeaders(headers),
+          base_path: values.base_path,
+          url: values.url,
+          request_method: values.request_method,
+          body_type: bodyType,
+        })
     }
   }
 
@@ -142,7 +146,7 @@ const ConstructorModal = ({
 
   const getContent = () => {
     if (currentStep === 0) {
-      return <Row gutter={[24, 24]} style={{marginTop: 36}}>
+      return <Row gutter={[12, 12]} style={{marginTop: 36}}>
         <Col span={8}>
           <CheckCard
             avatar={<IconFont type="icon-yongliliebiao" style={{fontSize: 32}}/>}
@@ -158,26 +162,8 @@ const ConstructorModal = ({
             description="通过执行SQL语句，可以造出/恢复用例场景需要的数据"
             onClick={() => onSelectType(1)}
           />
-          {/*<Card*/}
-          {/*  hoverable*/}
-          {/*  className={styles.mycard}*/}
-          {/*  bodyStyle={{background: '#ffffff', padding: 16}}*/}
-          {/*  cover={<IconFont type="icon-mysql11" className={styles.icons}*/}
-          {/*                   onClick={() => onSelectType(1)}/>}*/}
-          {/*>*/}
-          {/*  <Meta title="SQL语句" className={styles.metadata}/>*/}
-          {/*</Card>*/}
         </Col>
         <Col span={8}>
-          {/*<Card*/}
-          {/*  hoverable*/}
-          {/*  className={styles.mycard}*/}
-          {/*  bodyStyle={{background: '#ffffff', padding: 16}}*/}
-          {/*  cover={<IconFont type="icon-redis2" onClick={() => onSelectType(2)}*/}
-          {/*                   className={styles.icons}/>}*/}
-          {/*>*/}
-          {/*  <Meta title="Redis语句" className={styles.metadata}/>*/}
-          {/*</Card>*/}
           <CheckCard
             avatar={<IconFont type="icon-redis2" style={{fontSize: 32}}/>}
             title="Redis操作"
@@ -217,6 +203,10 @@ const ConstructorModal = ({
       if (constructorType === 3) {
         return <PythonConstructor form={form}/>
       }
+      if (constructorType === 4) {
+        return <HTTPConstructor form={form} headers={headers} bodyType={bodyType} setBodyType={setBodyType}
+                                setHeaders={setHeaders} body={body} setBody={setBody}/>
+      }
     }
   }
 
@@ -230,7 +220,7 @@ const ConstructorModal = ({
 
 
   return (
-    <Drawer title={suffix ? '后置条件' : '前置条件'} width={width || 1100} visible={modal} onClose={() => setModal(false)}
+    <Drawer title={suffix ? '后置条件' : '前置条件'} width={width || 800} visible={modal} onClose={() => setModal(false)}
             footer={null}>
       <>
         <Row>

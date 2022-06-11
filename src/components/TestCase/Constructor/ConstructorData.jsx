@@ -12,17 +12,10 @@ const TestCaseConstructorData = ({caseId, construct, dispatch, form, onFinish}) 
     <Row style={{marginTop: 24}} gutter={[8, 8]}>
       <Col span={24}>
         <CopyTreeSelect />
-        <Row style={{marginTop: 16}}>
+        <Row gutter={8}>
           <Col span={24}>
-            <Row>
-              <Col span={3}/>
-              <Col span={18}>
-                <TestCaseConstructor data={testCaseConstructorData} dispatch={dispatch} testcaseData={testcaseData}
-                                     constructorType={constructorType} form={form}/>
-              </Col>
-              <Col span={3}/>
-            </Row>
-
+            <TestCaseConstructor data={testCaseConstructorData} dispatch={dispatch} testcaseData={testcaseData}
+                                 constructorType={constructorType} form={form}/>
           </Col>
         </Row>
       </Col>

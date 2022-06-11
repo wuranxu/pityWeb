@@ -8,6 +8,7 @@ import {
 } from "@/services/constructor";
 import auth from "@/utils/auth";
 import {listTestCaseTree} from "@/services/testcase";
+import common from "@/utils/common";
 
 export default {
   namespace: 'construct',
@@ -119,6 +120,16 @@ export default {
           ans = {
             ...ans,
             command: json_data.command,
+          }
+        } else if (res.data.type === 4) {
+          ans = {
+            ...ans,
+            body: json_data.body,
+            headers: common.parseHeaders(json_data.headers),
+            base_path: json_data.base_path,
+            url: json_data.url,
+            request_method: json_data.request_method,
+            body_type: json_data.body_type,
           }
         }
         yield put({

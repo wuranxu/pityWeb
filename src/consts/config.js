@@ -149,7 +149,8 @@ export const CONFIG = {
     0: 'success',
     1: 'blue',
     2: 'error',
-    3: 'warning'
+    3: 'warning',
+    4: 'orange',
   },
   CASE_BADGE: {
     1: {
@@ -176,6 +177,10 @@ export const CONFIG = {
   SUB_LAYOUT: {
     labelCol: {span: 8},
     wrapperCol: {span: 16},
+  },
+  SWITCH_LAYOUT: {
+    labelCol: {span: 16},
+    wrapperCol: {span: 8},
   },
   SQL_LAYOUT: {
     labelCol: {span: 4},

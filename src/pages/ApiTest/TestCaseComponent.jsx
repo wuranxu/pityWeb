@@ -224,7 +224,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
 
             casePermission ? <Row>
               <Col span={24}>
-                <ConstructorModal width={1100} modal={constructorModal} setModal={e => {
+                <ConstructorModal width={1050} modal={constructorModal} setModal={e => {
                   dispatch({type: 'testcase/save', payload: {constructorModal: e}})
                 }} caseId={case_id} form={constructorForm} record={constructRecord}
                                   fetchData={fetchTestCaseInfo} suffix={suffix}/>

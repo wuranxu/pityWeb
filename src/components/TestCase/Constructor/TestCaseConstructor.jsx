@@ -9,7 +9,7 @@ const {Option} = Select;
 
 export default ({data, form, dispatch, testcaseData, constructorType}) => {
 
-  const [editor, setEditor] = useState(null);
+  const [_, setEditor] = useState(null);
 
   useEffect(() => {
     dispatch({
@@ -20,24 +20,17 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
 
   const fields = [
     {
-      name: 'type',
-      label: '数据类型',
-      required: true,
-      initialValue: data.type,
-      component: <Select disabled defaultValue={constructorType}>
-        {
-          Object.keys(CONFIG.CONSTRUCTOR_TYPE).map(key => <Option value={parseInt(key, 10)}
-                                                                  key={key}>{CONFIG.CONSTRUCTOR_TYPE[key]}</Option>)
-        }
-      </Select>,
-    },
-    {
       name: 'name',
       label: '名称',
       required: true,
       type: 'input',
-      placeholder: '请输入数据构造器名称222',
+      placeholder: '请输入数据构造器名称',
       initialValue: data.name,
+      span: 12,
+      layout: {
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
+      }
     },
     {
       name: 'constructor_case_id',
@@ -50,19 +43,24 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
           testcaseData.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)
         }
       </Select>,
-    },
-    {
-      name: 'params',
-      label: '动态参数',
-      required: false,
-      component: <JSONAceEditor height={120} setEditor={setEditor}/>,
+      span: 12,
+      layout: {
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
+      }
     },
     {
       name: 'value',
       label: '返回值',
+      placeholder: "请填写返回变量名称，不需要可不填",
       required: false,
       type: 'input',
       initialValue: data.value,
+      span: 12,
+      layout: {
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
+      }
     },
     {
       name: 'public',
@@ -71,10 +69,10 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       component: <Switch/>,
       valuePropName: 'checked',
       initialValue: data.public,
-      span: 12,
+      span: 6,
       layout: {
-        labelCol: {span: 8},
-        wrapperCol: {span: 16},
+        labelCol: {span: 16},
+        wrapperCol: {span: 8},
       }
     },
     {
@@ -86,10 +84,17 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
       initialValue: data.enable,
       span: 6,
       layout: {
-        labelCol: {span: 6},
-        wrapperCol: {span: 18},
+        labelCol: {span: 16},
+        wrapperCol: {span: 8},
       }
     },
+    {
+      name: 'params',
+      label: '动态参数',
+      required: false,
+      component: <JSONAceEditor height={150} setEditor={setEditor}/>,
+    },
+
 
   ];
 

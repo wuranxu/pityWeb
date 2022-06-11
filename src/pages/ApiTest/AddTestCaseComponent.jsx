@@ -128,7 +128,7 @@ const AddTestCaseComponent = ({
                   caseName={caseInfo.name} single={false}/>
       <Row>
         <Col span={24}>
-          <ConstructorModal width={1100} modal={constructorModal} setModal={e => {
+          <ConstructorModal width={1050} modal={constructorModal} setModal={e => {
             dispatch({type: 'testcase/save', payload: {constructorModal: e}})
           }} form={constructorForm} record={constructRecord} createMode
                             suffix={suffix}/>

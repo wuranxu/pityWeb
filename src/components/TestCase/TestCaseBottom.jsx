@@ -19,6 +19,7 @@ import React from "react";
 import {CONFIG} from "@/consts/config";
 import {connect} from 'umi';
 import TestCaseOutParameters from "@/components/TestCase/TestCaseOutParameters";
+import common from "@/utils/common";
 
 const {TabPane} = Tabs
 
@@ -39,7 +40,8 @@ const TestCaseBottom = ({
           public: true,
           enable: true,
         },
-        currentStep: 0
+        currentStep: 0,
+        constructRecord: {}
       }
     })
     dispatch({
@@ -78,12 +80,31 @@ const TestCaseBottom = ({
     })
   }
 
+  const getJson = (record, json_data) => {
+    if (record.type === 4) {
+      return {
+        body: json_data.body,
+        headers: common.parseHeaders(json_data.headers),
+        base_path: json_data.base_path,
+        url: json_data.url,
+        request_method: json_data.request_method,
+        body_type: json_data.body_type,
+      }
+    }
+    console.log(json_data)
+    return json_data
+  }
+
   // 编辑数据构造器
   const onEditConstructor = record => {
     const dt = JSON.parse(record.constructor_json);
     dispatch({
       type: 'construct/save',
-      payload: {currentStep: 1, testCaseConstructorData: {...record, ...dt}, constructorType: record.type}
+      payload: {
+        currentStep: 1,
+        testCaseConstructorData: {...record, ...getJson(record, dt)},
+        constructorType: record.type
+      }
     })
     dispatch({
       type: 'testcase/save',
@@ -244,12 +265,8 @@ const TestCaseBottom = ({
             type: 'testcase/save',
             payload: {activeKey: key}
           })
-          if (key === '4') {
-            setSuffix(true);
-          } else {
-            setSuffix(false);
-          }
-          if (key === '5' && envList.length > 0) {
+          setSuffix(key === '6')
+          if (key === '1' && envList.length > 0) {
             dispatch({
               type: 'testcase/save',
               payload: {
