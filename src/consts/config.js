@@ -17,8 +17,6 @@ export const CONFIG = {
   URL: dev ? 'http://localhost:7777' : 'https://api.pity.fun',
   // URL: '',
   WS_URL: dev ? 'ws://127.0.0.1:7777/ws' : 'wss://api.pity.fun/ws',
-  // WS_URL: '/ws',
-
   ICONFONT: IconFontUrl,
   OSS_URL: "http://oss.pity.fun/pity",
   AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=2',

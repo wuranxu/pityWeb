@@ -6,6 +6,7 @@ import {
   deleteTestCaseAsserts,
   deleteTestcaseData,
   deleteTestcaseDirectory,
+  generateCase,
   insertTestCaseAsserts,
   insertTestcaseData,
   insertTestcaseDirectory,
@@ -357,6 +358,14 @@ export default {
           }
         })
       }
+    },
+
+    * generateCase({payload}, {call, put}) {
+      const res = yield call(generateCase, payload);
+      if (auth.response(res)) {
+        return res
+      }
+      return false
     }
 
   },

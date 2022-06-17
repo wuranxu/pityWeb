@@ -223,3 +223,12 @@ export async function stopRecord(params) {
     params
   });
 }
+
+// 生成用例
+export async function generateCase(data) {
+  return request(`${CONFIG.URL}/testcase/generate`, {
+    headers: auth.headers(),
+    data,
+    method: 'POST'
+  });
+}

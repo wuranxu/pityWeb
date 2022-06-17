@@ -151,6 +151,33 @@ const TestCaseRecorder = ({dispatch, testcase, global, loading}) => {
     })
   }
 
+  const onGenerateCase = async () => {
+    const res = await dispatch({
+      type: 'testcase/generateCase',
+      payload: {
+        directory_id: 5,
+        requests: selectedRowKeys.map(key => ({
+          request_headers: JSON.parse(recordLists[key].request_headers),
+          response_headers: JSON.parse(recordLists[key].response_headers),
+          cookies: JSON.parse(recordLists[key].cookies),
+          request_cookies: recordLists[key].request_cookies,
+          response_content: recordLists[key].response_content,
+          request_method: recordLists[key].request_method,
+          url: recordLists[key].url,
+          body: recordLists[key].body,
+          status_code: recordLists[key].status_code,
+
+        }))
+      }
+    })
+    if (res) {
+      notification.success({
+        message: "用例生成成功",
+        description: <span>点击<a href={`/#/apiTest/testcase/${res.data.directory_id}/${res.data.id}`}>链接</a>可跳转至测试用例</span>
+      })
+    }
+  }
+
   return (<PageContainer breadcrumb={null}
                          title={<span className="ant-page-header-heading-title">用例录制 <VideoCameraTwoTone/></span>}>
     <Card>
@@ -170,7 +197,7 @@ const TestCaseRecorder = ({dispatch, testcase, global, loading}) => {
           }} value={regex} style={{float: 'right'}}/>
         </Col>
         <Col span={6}>
-          <Button style={{float: 'right', marginRight: 8}}
+          <Button style={{float: 'right', marginRight: 8}} onClick={onGenerateCase}
                   disabled={recordLists.length === 0}><ToolOutlined/>生成用例</Button>
           {
             recordStatus ? <Button onClick={stopRecord} type="danger"
