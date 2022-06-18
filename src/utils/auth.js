@@ -33,7 +33,9 @@ export default {
       localStorage.setItem('pityUser', null);
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
-        window.open(`/#/user/login?redirect=${href}`)
+        const uri = href.split("redirect=")
+        window.location.href = `/#/user/login?redirect=${uri[uri.length-1]}`
+        // window.open(`/#/user/login?redirect=${href}`)
       }
       notification.info({
         message: res.msg,
@@ -62,7 +64,9 @@ export default {
       // localStorage.setItem('pityUser', null);
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
-        window.open(`/#/user/login?redirect=${href}`)
+        const uri = href.split("redirect=")
+        window.location.href = `/#/user/login?redirect=${uri[uri.length-1]}`
+        // window.open(`/#/user/login?redirect=${href}`)
       }
       message.info(res.msg);
       return false;
