@@ -4,10 +4,7 @@ import TextIcon from "@/components/Icon/TextIcon";
 import {IconFontUrl} from "@/components/Icon/IconFont";
 
 const isDev = () => {
-  if (window.location.href.indexOf("localhost") > -1 || window.location.href.indexOf("127.0.0.1") > -1) {
-    return true
-  }
-  return false
+  return window.location.href.indexOf("localhost") > -1 || window.location.href.indexOf("127.0.0.1") > -1;
 }
 
 const dev = isDev()
