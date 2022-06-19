@@ -75,7 +75,7 @@ const BasicLayout = (props) => {
   const {
     dispatch,
     children,
-    testcase,
+    recorder,
     settings,
     location = {
       pathname: '/',
@@ -113,7 +113,7 @@ const BasicLayout = (props) => {
         } else if (msg.type === 2) {
           // 说明是录制消息
           dispatch({
-            type: 'testcase/readRecord',
+            type: 'recorder/readRecord',
             payload: {
               data: JSON.parse(msg.record_msg),
             }
@@ -226,11 +226,11 @@ const BasicLayout = (props) => {
   );
 };
 
-export default connect(({user, global, settings, testcase, loading}) => ({
+export default connect(({user, global, settings, recorder, loading}) => ({
   collapsed: global.collapsed,
   noticeCount: global.noticeCount,
   settings,
-  testcase,
+  recorder,
   user,
   ld: loading,
 }))(BasicLayout);

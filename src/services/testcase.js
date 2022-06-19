@@ -232,3 +232,16 @@ export async function generateCase(data) {
     method: 'POST'
   });
 }
+
+// 导入har文件
+export async function importFile(data) {
+  const formData = new FormData();
+  formData.append("file", data.file)
+  return await request(`${CONFIG.URL}/testcase/import`, {
+    method: 'POST',
+    data: formData,
+    params: {import_type: data.import_type},
+    requestType: 'form',
+    headers: auth.headers(false),
+  });
+}

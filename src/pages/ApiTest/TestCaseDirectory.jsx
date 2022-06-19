@@ -28,6 +28,7 @@ import React, {memo, useEffect, useState} from "react";
 import SplitPane from 'react-split-pane';
 import "./TestCaseDirectory.less";
 import {
+  CameraTwoTone,
   DeleteOutlined,
   DownOutlined,
   EditOutlined,
@@ -37,6 +38,7 @@ import {
   PlusOutlined,
   QuestionCircleOutlined,
   ReloadOutlined,
+  RocketOutlined,
   SearchOutlined
 } from "@ant-design/icons";
 import 'react-contexify/dist/ReactContexify.css';
@@ -53,6 +55,7 @@ import SearchTree from "@/components/Tree/SearchTree";
 import ScrollCard from "@/components/Scrollbar/ScrollCard";
 import emptyWork from "@/assets/emptyWork.svg";
 import AddTestCaseComponent from "@/pages/ApiTest/AddTestCaseComponent";
+import RecorderDrawer from "@/components/TestCase/recorder/RecorderDrawer";
 
 const {Option} = Select;
 
@@ -73,6 +76,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   const [resultModal, setResultModal] = useState(false);
   const [name, setName] = useState('');
   const [moveModal, setMoveModal] = useState(false);
+  const [recorderModal, setRecorderModal] = useState(false);
 
   const rowSelection = {
     selectedRowKeys,
@@ -140,14 +144,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   );
 
   const columns = [
-    // {
-    //   title: "#",
-    //   dataIndex: "id",
-    //   key: 'id',
-    //   width: 65,
-    // },
     {
-      title: "用例名称",
+      title: "名称",
       dataIndex: "name",
       key: 'name',
       // 自动省略多余数据
@@ -163,21 +161,21 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "优先级",
       dataIndex: "priority",
       key: 'priority',
-      width: 130,
+      width: 90,
       render: priority => <Tag color={CONFIG.CASE_TAG[priority]}>{priority}</Tag>
     },
     {
-      title: "用例状态",
+      title: "状态",
       dataIndex: "status",
       key: 'status',
-      width: 130,
+      width: 110,
       render: status => <Badge {...CONFIG.CASE_BADGE[status]} />
     },
     {
       title: "创建人",
       dataIndex: "create_user",
       key: 'create_user',
-      width: 130,
+      width: 100,
       ellipsis: true,
       render: create_user => <UserLink user={userMap[create_user]}/>
     },
@@ -185,7 +183,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "更新时间",
       dataIndex: "updated_at",
       key: 'updated_at',
-      width: 180,
+      width: 160,
     },
     {
       title: '操作',
@@ -200,10 +198,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
             e.stopPropagation();
           }}>执行 <DownOutlined/></a>
         </Dropdown>
-
       </>
     }
-
   ]
 
   const listProjects = () => {
@@ -441,8 +437,43 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     </a>
   </Tooltip>
 
+  const onAddTestCase = () => {
+    if (!currentDirectory[0]) {
+      message.info("请先创建或选择用例目录~")
+      return;
+    }
+    setAddCaseVisible(true)
+    dispatch({
+      type: 'testcase/save',
+      payload: {
+        asserts: [],
+        postConstructor: [],
+        preConstructor: [],
+        outParameters: [{key: 0, source: 1}],
+        caseInfo: {},
+        testData: {},
+      }
+    })
+  }
+
+  const AddCaseMenu = <AMenu>
+    <AMenu.Item key="1">
+      <a onClick={() => {
+        onAddTestCase()
+      }}><RocketOutlined/> 普通用例</a>
+    </AMenu.Item>
+    <AMenu.Item key="2">
+      <a onClick={() => setRecorderModal(true)}><CameraTwoTone/> 录制用例<Tag color="red" style={{
+        fontSize: 12,
+        margin: '0 4px',
+        lineHeight: '12px',
+        padding: 2
+      }}>新</Tag></a>
+    </AMenu.Item>
+  </AMenu>
+
   return (
-    <PageContainer title={false} breadcrumb={null}>
+    <PageContainer title={false} breadcrumb={null} style={{margin: -8}}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name} single={false}/>
       <FormForModal title="移动用例" onCancel={() => setMoveModal(false)}
@@ -462,7 +493,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
               <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]}
                                     setAddCaseVisible={setAddCaseVisible}/>
             </Drawer>
-            <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={318} maxSize={800}>
+            <RecorderDrawer directory={directory} visible={recorderModal} setVisible={setRecorderModal}/>
+            <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={300} maxSize={800}>
               <ScrollCard className="card" hideOverflowX bodyPadding={12}>
                 <Row gutter={8}>
                   <Col span={24}>
@@ -558,25 +590,9 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                     </Form>
                     <Row gutter={8} style={{marginTop: 4}}>
                       <Col span={24}>
-                        <Button type="primary" onClick={() => {
-                          if (!currentDirectory[0]) {
-                            message.info("请先创建或选择用例目录~")
-                            return;
-                          }
-                          setAddCaseVisible(true)
-                          dispatch({
-                            type: 'testcase/save',
-                            payload: {
-                              asserts: [],
-                              postConstructor: [],
-                              preConstructor: [],
-                              outParameters: [{key: 0, source: 1}],
-                              caseInfo: {},
-                              testData: {},
-                            }
-                          })
-                          // window.open(`/#/apiTest/testcase/${currentDirectory[0]}/add`)
-                        }}><PlusOutlined/> 添加用例</Button>
+                        <Dropdown overlay={AddCaseMenu} trigger="click">
+                          <Button type="primary"><PlusOutlined/> 添加用例</Button>
+                        </Dropdown>
                         {selectedRowKeys.length > 0 ?
                           <Dropdown overlay={menu()} trigger={['hover']}>
                             <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
