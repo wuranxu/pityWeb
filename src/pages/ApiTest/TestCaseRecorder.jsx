@@ -15,6 +15,7 @@ const TestCaseRecorder = ({dispatch, recorder, loading}) => {
   } = recorder;
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [url, setUrl] = useState(regex);
 
   const rowSelection = {
     selectedRowKeys,
@@ -29,8 +30,12 @@ const TestCaseRecorder = ({dispatch, recorder, loading}) => {
     })
   }, [])
 
+  useEffect(() => {
+    setUrl(regex)
+  }, [regex])
+
   const startRecord = () => {
-    if (!regex) {
+    if (!url) {
       notification.error({
         message: '建议填写过滤url，否则数据会较多'
       })
@@ -39,7 +44,7 @@ const TestCaseRecorder = ({dispatch, recorder, loading}) => {
     dispatch({
       type: 'recorder/startRecord',
       payload: {
-        regex
+        regex: url
       }
     })
   }
@@ -91,11 +96,9 @@ const TestCaseRecorder = ({dispatch, recorder, loading}) => {
           </Col>
           <Col span={1}/>
           <Col span={5}>
-            <Input placeholder="请输入要匹配的url(正则表达式)" onChange={e => {
-              dispatch({
-                type: 'recorder/save', payload: {regex: e.target.value}
-              })
-            }} value={regex} style={{float: 'right'}}/>
+            <Input placeholder="请输入要匹配的url(正则表达式)" value={url} onChange={e => {
+              setUrl(e.target.value)
+            }} style={{float: 'right'}}/>
           </Col>
           <Col span={6}>
             <Button style={{float: 'right', marginRight: 8}} onClick={onGenerateCase}
