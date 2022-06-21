@@ -91,7 +91,6 @@ const TestCaseBottom = ({
         body_type: json_data.body_type,
       }
     }
-    console.log(json_data)
     return json_data
   }
 

@@ -105,7 +105,6 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
         import_type: ImportType.har,
       }
     })
-    console.log(res)
     if (res.length > 0) {
       notification.success({
         message: `🎉 成功导入${res.length}条数据，快去挑选请求生成用例吧~`,

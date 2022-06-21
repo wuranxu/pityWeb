@@ -21,7 +21,6 @@ const CaseList = ({dispatch, form, loading, caseMap, treeData, planRecord, onSav
       dataIndex: 'case_id',
       width: 100,
       render: case_id => {
-        console.log(case_id)
         return case_id ? case_id.split("_")[1] : null
       },
     },

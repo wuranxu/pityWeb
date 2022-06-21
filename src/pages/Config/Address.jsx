@@ -30,7 +30,6 @@ const Address = ({loading, gconfig, dispatch}) => {
 
   const fetchAddress = () => {
     const values = form.getFieldsValue()
-    console.log(values)
     dispatch({
       type: 'gconfig/fetchAddress',
       payload: values,

@@ -42,6 +42,7 @@ export default {
               ...v,
               index: idx,
               cookies: JSON.stringify(v.cookies, null, 2),
+              request_cookies: JSON.stringify(v.request_cookies, null, 2),
               response_headers: JSON.stringify(v.response_headers, null, 2),
               request_headers: JSON.stringify(v.request_headers, null, 2),
             })),

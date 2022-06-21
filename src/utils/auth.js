@@ -1,7 +1,5 @@
 import {message, notification} from 'antd';
 import {listUsers} from '@/services/user';
-import {history} from "umi";
-import {stringify} from 'querystring';
 
 export default {
   headers: (json = true) => {
@@ -30,11 +28,11 @@ export default {
       // 说明用户未认证
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
-      localStorage.setItem('pityUser', null);
+      // localStorage.setItem('pityUser', null);
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
         const uri = href.split("redirect=")
-        window.location.href = `/#/user/login?redirect=${uri[uri.length-1]}`
+        window.location.href = `/#/user/login?redirect=${uri[uri.length - 1]}`
         // window.open(`/#/user/login?redirect=${href}`)
       }
       notification.info({
@@ -65,7 +63,7 @@ export default {
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
         const uri = href.split("redirect=")
-        window.location.href = `/#/user/login?redirect=${uri[uri.length-1]}`
+        window.location.href = `/#/user/login?redirect=${uri[uri.length - 1]}`
         // window.open(`/#/user/login?redirect=${href}`)
       }
       message.info(res.msg);
