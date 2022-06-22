@@ -4,14 +4,14 @@ import {connect} from "umi";
 import TestCaseConstructor from "@/components/TestCase/Constructor/TestCaseConstructor";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 
-const TestCaseConstructorData = ({caseId, construct, dispatch, form, onFinish}) => {
+const TestCaseConstructorData = ({caseId, construct, dispatch, form, onFinish, suffix}) => {
 
   const {testcaseData, testCaseConstructorData, constructorType} = construct;
 
   return (
     <Row style={{marginTop: 24}} gutter={[8, 8]}>
       <Col span={24}>
-        <CopyTreeSelect />
+        <CopyTreeSelect suffix={suffix}/>
         <Row gutter={8}>
           <Col span={24}>
             <TestCaseConstructor data={testCaseConstructorData} dispatch={dispatch} testcaseData={testcaseData}

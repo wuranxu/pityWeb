@@ -143,7 +143,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       payload: {
         env: reportDetail.env,
         case_id: record.case_id,
-        data_id: record.data_id,
+        data_id: record.data_id || 0,
       }
     })
     setCaseModal(true)

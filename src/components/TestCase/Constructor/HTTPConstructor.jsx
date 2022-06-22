@@ -7,7 +7,18 @@ import PostmanBody from "@/components/Postman/PostmanBody";
 import ShareTooltip from "@/components/PityForm/ShareTooltip";
 
 
-const HTTPConstructor = ({form, dispatch, construct, headers, setHeaders, body, setBody, bodyType, setBodyType}) => {
+const HTTPConstructor = ({
+                           form,
+                           dispatch,
+                           construct,
+                           suffix,
+                           headers,
+                           setHeaders,
+                           body,
+                           setBody,
+                           bodyType,
+                           setBodyType
+                         }) => {
   const {testCaseConstructorData} = construct;
 
   useEffect(() => {
@@ -25,7 +36,7 @@ const HTTPConstructor = ({form, dispatch, construct, headers, setHeaders, body, 
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CopyTreeSelect/>
+        <CopyTreeSelect suffix={suffix}/>
         <Form {...CONFIG.SUB_LAYOUT} form={form}>
           <Row gutter={8}>
             <Col span={12}>

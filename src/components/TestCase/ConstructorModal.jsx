@@ -3,7 +3,7 @@ import {connect} from "umi";
 import {IconFont} from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import DatabaseConstructor from "@/components/TestCase/Constructor/DatabaseConstructor";
 import {CheckCard} from '@ant-design/pro-card';
 import RedisConstructor from "@/components/TestCase/Constructor/RedisConstructor";
@@ -192,19 +192,20 @@ const ConstructorModal = ({
     }
     if (currentStep === 1) {
       if (constructorType === 0) {
-        return <TestCaseConstructorData form={form}/>
+        return <TestCaseConstructorData form={form} suffix={suffix}/>
       }
       if (constructorType === 1) {
-        return <DatabaseConstructor form={form}/>
+        return <DatabaseConstructor form={form} suffix={suffix}/>
       }
       if (constructorType === 2) {
-        return <RedisConstructor form={form}/>
+        return <RedisConstructor form={form} suffix={suffix}/>
       }
       if (constructorType === 3) {
-        return <PythonConstructor form={form}/>
+        return <PythonConstructor form={form} suffix={suffix}/>
       }
       if (constructorType === 4) {
-        return <HTTPConstructor form={form} headers={headers} bodyType={bodyType} setBodyType={setBodyType}
+        return <HTTPConstructor suffix={suffix} form={form} headers={headers} bodyType={bodyType}
+                                setBodyType={setBodyType}
                                 setHeaders={setHeaders} body={body} setBody={setBody}/>
       }
     }

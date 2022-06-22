@@ -10,7 +10,7 @@ import ShareTooltip from "@/components/PityForm/ShareTooltip";
 const {TabPane} = Tabs;
 const {Option} = Select;
 
-const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
+const RedisConstructor = ({form, dispatch, construct, gconfig, suffix}) => {
 
   const [editor, setEditor] = useState(null);
   const [currentId, setCurrentId] = useState(null);
@@ -50,7 +50,7 @@ const RedisConstructor = ({form, dispatch, construct, gconfig}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CopyTreeSelect/>
+        <CopyTreeSelect suffix={suffix}/>
         <Row gutter={8}>
           <Col span={24}>
             <Form {...CONFIG.SUB_LAYOUT} form={form}>

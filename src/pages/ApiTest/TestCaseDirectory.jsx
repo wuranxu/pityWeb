@@ -489,7 +489,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                           fields={fields} onFinish={onCreateDirectory} record={record}
                           visible={rootModal} left={6} right={18} width={400} formName="root"/>
             <Drawer bodyStyle={{padding: 0}} visible={addCaseVisible} width={1300} title="添加用例"
-                    onClose={() => setAddCaseVisible(false)}>
+                    onClose={() => setAddCaseVisible(false)} maskClosable={false}>
               <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]}
                                     setAddCaseVisible={setAddCaseVisible}/>
             </Drawer>

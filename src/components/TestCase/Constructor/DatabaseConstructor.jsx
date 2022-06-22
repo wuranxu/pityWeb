@@ -10,7 +10,7 @@ import ShareTooltip from "@/components/PityForm/ShareTooltip";
 
 const {Option} = Select;
 
-const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
+const DatabaseConstructor = ({form, dispatch, construct, gconfig, suffix}) => {
 
   const [currentKey, setCurrentKey] = useState('1');
   const [_, setEditor] = useState(null);
@@ -59,7 +59,7 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig}) => {
                          imageHeight={60}/>
             </Col> : <>
               <Col span={21}>
-                <CopyTreeSelect/>
+                <CopyTreeSelect suffix={suffix}/>
                 <Form {...CONFIG.SUB_LAYOUT} form={form}>
                   <Row gutter={8}>
                     <Col span={12}>

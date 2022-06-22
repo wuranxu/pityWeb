@@ -8,7 +8,7 @@ import PythonAceEditor from "@/components/CodeEditor/AceEditor/PythonAceEditor";
 import ShareTooltip from "@/components/PityForm/ShareTooltip";
 
 
-const PythonConstructor = ({form, dispatch, construct}) => {
+const PythonConstructor = ({form, dispatch, construct, suffix}) => {
 
   const [_, setEditor] = useState(null);
   const {testCaseConstructorData} = construct;
@@ -41,7 +41,7 @@ const PythonConstructor = ({form, dispatch, construct}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <CopyTreeSelect/>
+        <CopyTreeSelect suffix={suffix}/>
         <Form {...CONFIG.SUB_LAYOUT} form={form}>
           <Row gutter={8}>
             <Col span={12}>
