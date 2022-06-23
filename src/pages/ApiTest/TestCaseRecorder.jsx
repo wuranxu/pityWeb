@@ -1,9 +1,20 @@
 import {PageContainer} from "@ant-design/pro-layout";
-import {StopOutlined, ToolOutlined, VideoCameraOutlined, VideoCameraTwoTone} from "@ant-design/icons";
-import {Alert, Button, Card, Col, Input, notification, Row} from "antd";
+import {
+  AndroidOutlined,
+  AppleOutlined,
+  DownOutlined,
+  LaptopOutlined,
+  StopOutlined,
+  ToolOutlined,
+  VideoCameraOutlined,
+  VideoCameraTwoTone,
+  WindowsOutlined
+} from "@ant-design/icons";
+import {Alert, Button, Card, Col, Dropdown, Input, Menu, notification, Row} from "antd";
 import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import RequestInfoList from "@/components/TestCase/recorder/RequestInfoList";
+import {CONFIG} from "@/consts/config";
 
 
 const TestCaseRecorder = ({dispatch, recorder, loading}) => {
@@ -83,22 +94,48 @@ const TestCaseRecorder = ({dispatch, recorder, loading}) => {
     }
   }
 
+  const getDownloadUrl = (cert) => {
+    return `${CONFIG.URL}/request/cert?cert=${cert}`
+  }
+
+  const menu = <Menu>
+    <Menu.Item key="windows"><WindowsOutlined/>
+      <a href={getDownloadUrl(0)}> Windows</a>
+    </Menu.Item>
+    <Menu.Item key="linux"><LaptopOutlined/>
+      <a href={getDownloadUrl(1)}> Linux</a>
+    </Menu.Item>
+    <Menu.Item key="macos"><AppleOutlined/>
+      <a href={getDownloadUrl(2)}> Mac OS</a>
+    </Menu.Item>
+    <Menu.Item key="ios"><AppleOutlined/>
+      <a href={getDownloadUrl(3)}> IOS</a>
+    </Menu.Item>
+    <Menu.Item key="android"><AndroidOutlined/>
+      <a href={getDownloadUrl(4)}> Android</a>
+    </Menu.Item>
+  </Menu>
+
   return (
     <PageContainer breadcrumb={null}
                    title={<span className="ant-page-header-heading-title">用例录制 <VideoCameraTwoTone/></span>}>
       <Card>
-        <Row gutter={8}>
-          <Col span={12}>
+        <Row gutter={12}>
+          <Col span={10}>
             <Alert type="info" banner closable message={<span>
             录制接口之前，请先配置好app/web代理<a href="https://docs.mitmproxy.org/stable/overview-getting-started/"
                                     target="_blank" rel="noreferrer"> 参考文档</a>
           </span>}/>
           </Col>
-          <Col span={1}/>
-          <Col span={5}>
+          <Col span={8}>
+            <Dropdown overlay={menu}>
+              <a onClick={e => e.preventDefault()}>
+                下载证书 <DownOutlined/>
+              </a>
+            </Dropdown>
             <Input placeholder="请输入要匹配的url(正则表达式)" value={url} onChange={e => {
               setUrl(e.target.value)
-            }} style={{float: 'right'}}/>
+            }} style={{width: '75%', marginLeft: 12}}/>
           </Col>
           <Col span={6}>
             <Button style={{float: 'right', marginRight: 8}} onClick={onGenerateCase}
