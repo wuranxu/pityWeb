@@ -147,6 +147,7 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
             </Space>
           </Empty> :
           <RequestInfoList dataSource={record} rowSelection={rowSelection} rowKey="index"
+                           dispatch={dispatch}
                            loading={loading.effects['recorder/generateCase']}/>
       }
     </Drawer>

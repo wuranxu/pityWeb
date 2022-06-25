@@ -1,4 +1,4 @@
-import {generateCase, importFile, queryRecordStatus, startRecord, stopRecord} from "@/services/testcase";
+import {generateCase, importFile, queryRecordStatus, removeRecord, startRecord, stopRecord} from "@/services/testcase";
 import auth from "@/utils/auth";
 
 export default {
@@ -105,5 +105,21 @@ export default {
       }
       return [];
     },
+
+    * remove({payload}, {call, put, select}) {
+      const recorder = yield select(state => state.recorder)
+      const res = yield call(removeRecord, payload)
+      if (auth.response(res, true)) {
+        const data = recorder.recordLists.filter((v, idx) => idx !== payload).map((item, k) => ({
+          ...item, index: k,
+        }))
+        yield put({
+          type: "save",
+          payload: {
+            recordLists: data
+          }
+        })
+      }
+    }
   }
 }

@@ -245,3 +245,12 @@ export async function importFile(data) {
     headers: auth.headers(false),
   });
 }
+
+// 删除录制数据
+export async function removeRecord(index) {
+  return await request(`${CONFIG.URL}/testcase/record/remove`, {
+    method: 'GET',
+    params: {index},
+    headers: auth.headers(),
+  });
+}
