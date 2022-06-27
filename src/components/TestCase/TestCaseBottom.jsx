@@ -341,17 +341,19 @@ const TestCaseBottom = ({
                   </Col>
                   <Col span={8}>
                     <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
-                      <Timeline>
-                        {
-                          preConstructor.map((item, index) => item.enable ?
-                            <Timeline.Item key={index}>
-                              <div key={index}><Badge count={index + 1} key={index}
-                                                      style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                <a key={item.name}>{item.name}</a> : item.name}</div>
-                              {getDesc(item)}
-                            </Timeline.Item> : null)
-                        }
-                      </Timeline>
+                      {
+                        preConstructor.filter(item => item.enable).length === 0 ? <NoRecord2 desc="暂无开启的前置条件"/> : <Timeline>
+                          {
+                            preConstructor.map((item, index) => item.enable ?
+                              <Timeline.Item key={index}>
+                                <div key={index}><Badge count={index + 1} key={index}
+                                                        style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
+                                  <a key={item.name}>{item.name}</a> : item.name}</div>
+                                {getDesc(item)}
+                              </Timeline.Item> : null)
+                          }
+                        </Timeline>
+                      }
                     </Card>
                   </Col>
                 </Row>
@@ -422,17 +424,19 @@ const TestCaseBottom = ({
                   </Col>
                   <Col span={8}>
                     <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
-                      <Timeline>
-                        {
-                          postConstructor.map((item, index) => item.enable ?
-                            <Timeline.Item key={index}>
-                              <div key={index}><Badge count={index + 1} key={index}
-                                                      style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
-                                <a key={item.name}>{item.name}</a> : item.name}</div>
-                              {getDesc(item)}
-                            </Timeline.Item> : null)
-                        }
-                      </Timeline>
+                      {
+                        postConstructor.filter(item => item.enable).length === 0 ? <NoRecord desc="暂无开启的后置条件"/> : <Timeline>
+                          {
+                            postConstructor.map((item, index) => item.enable ?
+                              <Timeline.Item key={index}>
+                                <div key={index}><Badge count={index + 1} key={index}
+                                                        style={{backgroundColor: '#a6d3ff'}}/> 名称: {item.type === 0 ?
+                                  <a key={item.name}>{item.name}</a> : item.name}</div>
+                                {getDesc(item)}
+                              </Timeline.Item> : null)
+                          }
+                        </Timeline>
+                      }
                     </Card>
                   </Col>
                 </Row>

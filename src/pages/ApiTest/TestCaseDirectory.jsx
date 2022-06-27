@@ -49,7 +49,7 @@ import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
 import UserLink from "@/components/Button/UserLink";
-import noResult from "@/assets/noResult.svg";
+import noResult from "@/assets/NoData.svg";
 import UserSelect from "@/components/User/UserSelect";
 import SearchTree from "@/components/Tree/SearchTree";
 import ScrollCard from "@/components/Scrollbar/ScrollCard";

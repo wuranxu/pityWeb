@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Card, PageHeader, Result, Tabs} from 'antd';
+import {Avatar, Card, PageHeader, Tabs} from 'antd';
 import {useParams} from 'umi';
 import {queryProject} from '@/services/project';
 import ProjectInfo from '@/components/Project/ProjectInfo';
@@ -9,6 +9,8 @@ import ProjectRole from '@/components/Project/ProjectRole';
 import {CONFIG} from "@/consts/config";
 import styles from "./Project.less";
 import auth from "@/utils/auth";
+import NoRecord from "@/components/NotFound/NoRecord";
+import LoadingFailed from '@/assets/LoadingFailed.svg';
 
 const {TabPane} = Tabs;
 
@@ -69,7 +71,7 @@ export default () => {
           </TabPane>
         </Tabs>
       </Card>
-    </PageContainer> : <Result status="403" title="对不起, 你没有权限访问该项目"/>
+    </PageContainer> : <NoRecord height={400} desc="对不起, 你没有权限访问该项目" image={LoadingFailed}/>
   );
 };
 

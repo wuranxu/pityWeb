@@ -13,7 +13,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import {getMatchMenu} from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
 import {CONFIG} from "@/consts/config";
-import NoTableData from "@/assets/NoTableData.svg";
+import NoTableData from "@/assets/NoSearch.svg";
 import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
 
@@ -161,7 +161,7 @@ const BasicLayout = (props) => {
 
   return (
 
-    <ConfigProvider renderEmpty={() => <Empty image={NoTableData} imageStyle={{height: 150}}
+    <ConfigProvider renderEmpty={() => <Empty image={NoTableData} imageStyle={{height: 160}}
                                               description="暂无数据"/>}>
       <ProLayout
         logo={logo}

@@ -1,4 +1,4 @@
-import noRecord from '@/assets/noHistoryRecord.svg';
+import noRecord from '@/assets/NoSearch.svg';
 import {Empty} from "antd";
 
 export default ({desc, height = 180}) => {

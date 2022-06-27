@@ -14,5 +14,7 @@ const proSettings = {
   title: 'pity',
   pwa: false,
   iconfontUrl: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
+  apiUrl: "http://api.pity.fun",
+  wssUrl: null,
 };
 export default proSettings;

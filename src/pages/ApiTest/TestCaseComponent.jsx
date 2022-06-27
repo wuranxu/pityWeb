@@ -28,7 +28,8 @@ import common from "@/utils/common";
 import auth from "@/utils/auth";
 import UserLink from "@/components/Button/UserLink";
 import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
-import noResult from '@/assets/noResult.svg';
+import noResult from '@/assets/NoData.svg';
+import NoPermission from '@/assets/NoPermission.svg';
 
 
 const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
@@ -301,7 +302,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                     </Card>
                 }
               </Col>
-            </Row> : <Result status="403" title="你无法查看此用例，请联系对应项目组长开通权限。"/>
+            </Row> : <Empty description="你无法查看此用例，请联系对应项目组长开通权限。" image={NoPermission} imageStyle={{height: 400}}/>
         }
       </Spin>
 

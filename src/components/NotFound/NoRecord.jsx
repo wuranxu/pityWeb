@@ -1,9 +1,8 @@
-import noRecord from '@/assets/noHistoryRecord.svg';
 import {Empty} from "antd";
 
-export default ({desc, height = 180}) => {
+export default ({desc, height = 180, image = require('@/assets/noHistoryRecord.svg')}) => {
   return <Empty
-    image={noRecord}
+    image={image}
     imageStyle={{
       height,
     }}

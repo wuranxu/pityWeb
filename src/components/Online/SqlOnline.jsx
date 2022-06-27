@@ -9,7 +9,7 @@ import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {CONFIG} from "@/consts/config";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
-import noResult from '@/assets/noResult.svg';
+import noResult from '@/assets/NoData.svg';
 
 const {DirectoryTree} = Tree;
 const {Option} = Select;

@@ -1,6 +1,7 @@
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect, history} from 'umi';
 import {Avatar, Button, Card, Col, Empty, Rate, Row, Statistic, Tag, Tooltip} from "antd";
+import NoRecord2 from "@/components/NotFound/NoRecord2";
 import styles from './Workspace.less';
 import React, {useEffect} from "react";
 import {
@@ -159,7 +160,7 @@ const Workspace = ({user, dispatch}) => {
             {
               followPlan.length === 0 ?
                 <Col span={24}>
-                  <Empty imageStyle={{height: 220}} image={noRecord}
+                  <Empty imageStyle={{height: 250}} image={noRecord}
                          description={<span>你还没有关注测试计划, 赶紧去 <a href="/#/apiTest/testplan">关注</a> 一个吧！</span>}/>
                 </Col> :
                 followPlan.map(item =>
@@ -167,46 +168,42 @@ const Workspace = ({user, dispatch}) => {
                     <Card size="small" hoverable style={{marginBottom: 16}}
                           title={<a href="/#/apiTest/testplan"
                                     style={{fontSize: 16}}>{item.plan.name}</a>}>
-                      <Row gutter={24}>
-                        <Col span={8}>
-                          <ChartCard bordered={false}
-                                     title="最近一次评分"
-                                     action={
-                                       <Tooltip title="通过率越高，评分越高哦~">
-                                         <InfoCircleOutlined/>
-                                       </Tooltip>
-                                     } contentHeight={128}>
-                            {
-                              item.report.length > 0 ? <div style={{textAlign: 'center'}}>
-                                <Row gutter={8} style={{marginBottom: 12}}>
-                                  <Col span={8}>
-                                    <Statistic title="成功" valueStyle={{color: '#3f8600'}}
-                                               value={item.report[0].success_count}
-                                               prefix={<CheckCircleTwoTone twoToneColor='#52c41a'/>}/>
-                                  </Col>
-                                  <Col span={8}>
-                                    <Statistic title="失败" valueStyle={{marginLeft: 8}}
-                                               value={item.report[0].failed_count}
-                                               prefix={<CloseCircleTwoTone twoToneColor='#F56C6C'/>}/>
-                                  </Col>
-                                  <Col span={8}>
-                                    <Statistic title="错误" valueStyle={{marginLeft: 8}}
-                                               value={item.report[0].error_count}
-                                               prefix={<AlertTwoTone twoToneColor="#E6A23C"/>}/>
-                                  </Col>
-                                </Row>
-                                <Rate disabled tooltips={desc}
-                                      defaultValue={onCalculateRate(calculatePercent(item.report[0], true))}/>
-                                <span
-                                  className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true)) - 1]}</span>
-                              </div> : <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
-                            }
-                          </ChartCard>
-                        </Col>
-                        <Col span={8}>
-                          {
-                            item.report.length === 0 ?
-                              <Empty description="还没有运行记录🍭" imageStyle={{height: 64}} image={noRecord}/> :
+                      {
+                        item.report.length > 0 ? <Row gutter={24}>
+                            <Col span={8}>
+                              <ChartCard bordered={false}
+                                         title="最近一次评分"
+                                         action={
+                                           <Tooltip title="通过率越高，评分越高哦~">
+                                             <InfoCircleOutlined/>
+                                           </Tooltip>
+                                         } contentHeight={128}>
+                                <div style={{textAlign: 'center'}}>
+                                  <Row gutter={8} style={{marginBottom: 12}}>
+                                    <Col span={8}>
+                                      <Statistic title="成功" valueStyle={{color: '#3f8600'}}
+                                                 value={item.report[0].success_count}
+                                                 prefix={<CheckCircleTwoTone twoToneColor='#52c41a'/>}/>
+                                    </Col>
+                                    <Col span={8}>
+                                      <Statistic title="失败" valueStyle={{marginLeft: 8}}
+                                                 value={item.report[0].failed_count}
+                                                 prefix={<CloseCircleTwoTone twoToneColor='#F56C6C'/>}/>
+                                    </Col>
+                                    <Col span={8}>
+                                      <Statistic title="错误" valueStyle={{marginLeft: 8}}
+                                                 value={item.report[0].error_count}
+                                                 prefix={<AlertTwoTone twoToneColor="#E6A23C"/>}/>
+                                    </Col>
+                                  </Row>
+                                  <Rate disabled tooltips={desc}
+                                        defaultValue={onCalculateRate(calculatePercent(item.report[0], true))}/>
+                                  <span
+                                    className="ant-rate-text">{desc[onCalculateRate(calculatePercent(item.report[0], true)) - 1]}</span>
+                                </div>
+                              </ChartCard>
+                            </Col>
+                            <Col span={8}>
                               <ChartCard bordered={false}
                                          title={`${item.report[0].start_at}`}
                                          action={
@@ -216,33 +213,32 @@ const Workspace = ({user, dispatch}) => {
                                          } contentHeight={128}>
                                 <RingPie report={item.report[0]}/>
                               </ChartCard>
-                          }
-                        </Col>
-                        <Col span={8}>
-                          {
-                            item.report.length > 0 ? <ChartCard
-                              bordered={false}
-                              title="近7次通过率(%)"
-                              action={
-                                <Tooltip title="最近7次通过率">
-                                  <InfoCircleOutlined/>
-                                </Tooltip>
-                              }
-                              contentHeight={128}
-                            >
-                              <TinyArea
-                                color="#1890ff"
-                                xField="x"
-                                height={120}
-                                forceFit
-                                yField="y"
-                                smooth
-                                data={revertArray(item.report)}
-                              />
-                            </ChartCard> : <Empty description="该测试计划没有运行记录" imageStyle={{height: 64}} image={noRecord}/>
-                          }
-                        </Col>
-                      </Row>
+                            </Col>
+                            <Col span={8}>
+                              <ChartCard
+                                bordered={false}
+                                title="近7次通过率(%)"
+                                action={
+                                  <Tooltip title="最近7次通过率">
+                                    <InfoCircleOutlined/>
+                                  </Tooltip>
+                                }
+                                contentHeight={128}
+                              >
+                                <TinyArea
+                                  color="#1890ff"
+                                  xField="x"
+                                  height={120}
+                                  forceFit
+                                  yField="y"
+                                  smooth
+                                  data={revertArray(item.report)}
+                                />
+                              </ChartCard>
+                            </Col>
+                          </Row> :
+                          <NoRecord2 desc="🎅这个测试计划还没有执行记录哦🍭~"/>
+                      }
                     </Card>
                   </Col>)
             }

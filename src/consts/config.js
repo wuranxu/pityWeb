@@ -2,6 +2,8 @@ import {Tag} from "antd";
 import React from "react";
 import TextIcon from "@/components/Icon/TextIcon";
 import {IconFontUrl} from "@/components/Icon/IconFont";
+import defaultSettings from '../../config/defaultSettings';
+
 
 const isDev = () => {
   return window.location.href.indexOf("localhost") > -1 || window.location.href.indexOf("127.0.0.1") > -1;
@@ -9,11 +11,23 @@ const isDev = () => {
 
 const dev = isDev()
 
+const getUrl = () => {
+  if (defaultSettings.apiUrl) {
+    return defaultSettings.apiUrl;
+  }
+  return dev ? 'http://localhost:7777' : 'https://api.pity.fun'
+}
+
+const getWss = () => {
+  if (defaultSettings.wssUrl) {
+    return defaultSettings.wssUrl;
+  }
+  return dev ? 'ws://127.0.0.1:7777/ws' : 'wss://api.pity.fun/ws'
+}
 
 export const CONFIG = {
-  URL: dev ? 'http://localhost:7777' : 'https://api.pity.fun',
-  // URL: '',
-  WS_URL: dev ? 'ws://127.0.0.1:7777/ws' : 'wss://api.pity.fun/ws',
+  URL: getUrl(),
+  WS_URL: getWss(),
   ICONFONT: IconFontUrl,
   OSS_URL: "http://oss.pity.fun/pity",
   AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=2',
