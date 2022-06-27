@@ -186,7 +186,7 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
         <Row gutter={12}>
           <Col span={10}>
             <Alert type="info" banner closable message={<span>
-            录制接口之前，请先配置好app/web代理<a href="https://docs.mitmproxy.org/stable/overview-getting-started/"
+            📢 录制接口之前，请先配置好app/web代理哦~<a href="https://wuranxu.github.io/pityDoc/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%8E%A5%E5%8F%A3%E7%94%A8%E4%BE%8B/%E7%94%A8%E4%BE%8B%E5%BD%95%E5%88%B6"
                                     target="_blank" rel="noreferrer"> 参考文档</a>
           </span>}/>
           </Col>
