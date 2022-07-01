@@ -28,7 +28,7 @@ export default {
       // 说明用户未认证
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
-      // localStorage.setItem('pityUser', null);
+      localStorage.setItem('pityUser', null);
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
         const uri = href.split("redirect=")
@@ -59,7 +59,7 @@ export default {
       // 说明用户未认证
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);
-      // localStorage.setItem('pityUser', null);
+      localStorage.setItem('pityUser', null);
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
         const uri = href.split("redirect=")

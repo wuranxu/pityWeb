@@ -197,13 +197,13 @@ const UserModel = {
       const token = localStorage.getItem("pityToken")
       // const userInfo = localStorage.getItem("pityUser")
       if (token === null || token === '') {
-        // history.push("/#/user/login");
-        // history.replace({
-        //   pathname: '/user/login',
-        //   search: stringify({
-        //     redirect: window.location.href,
-        //   }),
-        // });
+        history.push("/#/user/login");
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        });
         return;
       }
       const response = yield call(queryCurrent, {token});
