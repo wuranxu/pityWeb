@@ -212,6 +212,16 @@ const UserModel = {
           type: 'saveCurrentUser',
           payload: response.data,
         });
+      } else {
+        localStorage.removeItem("pityToken")
+        localStorage.removeItem("pityUser")
+        history.push("/#/user/login");
+        history.replace({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        });
       }
     },
   },

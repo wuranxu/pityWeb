@@ -75,7 +75,6 @@ const BasicLayout = (props) => {
   const {
     dispatch,
     children,
-    recorder,
     settings,
     location = {
       pathname: '/',
@@ -92,7 +91,7 @@ const BasicLayout = (props) => {
         type: 'user/fetchCurrent',
       });
     }
-    if (currentUser) {
+    if (currentUser && currentUser.id) {
       const ws = new WebSocket(`${CONFIG.WS_URL}/${currentUser.id}`);
       ws.onmessage = function (event) {
         event.preventDefault()

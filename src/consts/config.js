@@ -12,7 +12,7 @@ const isDev = () => {
 const dev = isDev()
 
 const getUrl = () => {
-  if (defaultSettings.apiUrl) {
+  if (defaultSettings.apiUrl !== null) {
     return defaultSettings.apiUrl;
   }
   return dev ? 'http://localhost:7777' : 'https://api.pity.fun'

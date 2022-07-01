@@ -11,7 +11,7 @@ export default {
     return headers;
   },
   notificationResponse: (res, info = false, position = 'topRight') => {
-    if (!res) {
+    if (!res || res.code === undefined) {
       notification.error({message: "网络开小差了，请稍后重试", placement: position})
       return false;
     }
@@ -45,7 +45,7 @@ export default {
     return false;
   },
   response: (res, info = false) => {
-    if (!res) {
+    if (!res || res.code === undefined) {
       message.error("网络开小差了，请稍后重试")
       return false;
     }

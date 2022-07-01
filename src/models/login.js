@@ -1,10 +1,10 @@
-import { stringify } from 'querystring';
-import { history } from 'umi';
-import { login, register } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
-import { message } from 'antd';
-import { CONFIG } from '@/consts/config';
+import {stringify} from 'querystring';
+import {history} from 'umi';
+import {login, register} from '@/services/login';
+import {setAuthority} from '@/utils/authority';
+import {getPageQuery} from '@/utils/utils';
+import {message} from 'antd';
+import {CONFIG} from '@/consts/config';
 
 const Model = {
   namespace: 'login',
@@ -12,7 +12,7 @@ const Model = {
     status: undefined,
   },
   effects: {
-    * register({ payload }, { call, _ }) {
+    * register({payload}, {call, _}) {
       const response = yield call(register, {
         username: payload.username,
         password: payload.password,
@@ -28,7 +28,7 @@ const Model = {
 
     },
 
-    * login({ payload }, { call, put }) {
+    * login({payload}, {call, put}) {
       // const response = yield call(fakeAccountLogin, payload);
       const response = yield call(login, payload);
       yield put({
@@ -40,7 +40,7 @@ const Model = {
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         message.success('🎉 🎉 🎉  登录成功！');
-        let { redirect } = params;
+        let {redirect} = params;
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
 
@@ -61,12 +61,12 @@ const Model = {
           window.location.href = '/';
         }
       } else {
-        message.error(response.msg);
+        message.error(response.msg || '网络开小差了，请稍后重试');
       }
     },
 
     logout() {
-      const { redirect } = getPageQuery(); // Note: There may be security issues, please note
+      const {redirect} = getPageQuery(); // Note: There may be security issues, please note
       if (window.location.pathname !== '/#/user/login' && !redirect) {
         localStorage.removeItem("pityToken");
         localStorage.removeItem("pityUser");
@@ -80,13 +80,13 @@ const Model = {
     },
   },
   reducers: {
-    changeLoginStatus(state, { payload }) {
+    changeLoginStatus(state, {payload}) {
       // 写入用户信息
       localStorage.setItem('pityToken', payload.data.token);
       localStorage.setItem('pityUser', JSON.stringify(payload.data.user));
       // setAuthority(payload.currentAuthority);
       setAuthority(CONFIG.ROLE[payload.data.user.role]);
-      return { ...state, status: payload.code === 0 ? 'ok' : 'error', type: 'account' };
+      return {...state, status: payload.code === 0 ? 'ok' : 'error', type: 'account'};
     },
   },
 };
