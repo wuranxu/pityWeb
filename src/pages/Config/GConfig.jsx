@@ -230,7 +230,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
             <Button type='primary'
                     onClick={() => {
                       save({modal: true});
-                      setRecord({id: 0, key_type: 0, env: currentEnv.toString()})
+                      setRecord({id: 0, key_type: 0, env: currentEnv !== null ? currentEnv.toString(): currentEnv})
                     }}><PlusOutlined/>添加变量</Button>
           </Col>
           <Col span={4}/>
