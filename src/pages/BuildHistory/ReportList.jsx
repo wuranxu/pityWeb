@@ -124,7 +124,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
       payload: {
         start_time,
         end_time,
-        // ...value,
+        ...value,
         page: pagination.current,
         size: pagination.pageSize,
       }
@@ -146,6 +146,8 @@ const ReportList = ({user, report, loading, dispatch}) => {
             <Col span={8}>
               <Form.Item label="执行人" name="executor">
                 <Select placeholder="选择执行人" style={{width: '90%'}} allowClear>
+                  <Option value="CPU" key="CPU"><IconFont style={{fontSize: 20}}
+                                                          type="icon-a-jiqirenrengongzhineng"/> CPU</Option>
                   {
                     Object.keys(userMap).map(v => (<Option key={v} value={v}><UserLink user={userMap[v]}/></Option>))
                   }

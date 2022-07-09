@@ -27,7 +27,9 @@ const getWss = () => {
 
 export const CONFIG = {
   URL: getUrl(),
+  // URL: ``,
   WS_URL: getWss(),
+  // WS_URL: `ws://${window.href.host}/ws`,
   ICONFONT: IconFontUrl,
   OSS_URL: "http://oss.pity.fun/pity",
   AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=2',
