@@ -4,7 +4,7 @@ import {
   listUserOperationLog,
   listUsers,
   loginGithub,
-  queryCurrent, queryFollowTestPlanData,
+  queryFollowTestPlanData,
   queryUserStatistics,
   updateAvatar,
   updateUsers
@@ -195,9 +195,13 @@ const UserModel = {
 
     * fetchCurrent(_, {call, put}) {
       const token = localStorage.getItem("pityToken")
-      // const userInfo = localStorage.getItem("pityUser")
-      if (token === null || token === '') {
-        history.push("/#/user/login");
+      const userInfo = localStorage.getItem("pityUser")
+      const pityExpire = localStorage.getItem("pityExpire")
+      if (!token || !userInfo || (new Date().getTime() / 1000) > pityExpire) {
+        // history.push("/#/user/login");
+        message.info("登录信息已失效");
+        localStorage.removeItem("pityToken")
+        localStorage.removeItem("pityUser")
         history.replace({
           pathname: '/user/login',
           search: stringify({
@@ -206,23 +210,40 @@ const UserModel = {
         });
         return;
       }
-      const response = yield call(queryCurrent, {token});
-      if (auth.response(response)) {
-        yield put({
-          type: 'saveCurrentUser',
-          payload: response.data,
-        });
-      } else {
-        localStorage.removeItem("pityToken")
-        localStorage.removeItem("pityUser")
-        history.push("/#/user/login");
-        history.replace({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
-      }
+      const info = JSON.parse(userInfo)
+      yield put({
+        type: 'saveCurrentUser',
+        payload: info,
+      });
+      // const token = localStorage.getItem("pityToken")
+      // // const userInfo = localStorage.getItem("pityUser")
+      // if (token === null || token === '') {
+      //   history.push("/#/user/login");
+      //   history.replace({
+      //     pathname: '/user/login',
+      //     search: stringify({
+      //       redirect: window.location.href,
+      //     }),
+      //   });
+      //   return;
+      // }
+      // const response = yield call(queryCurrent, {token});
+      // if (auth.response(response)) {
+      //   yield put({
+      //     type: 'saveCurrentUser',
+      //     payload: response.data,
+      //   });
+      // } else {
+      //   localStorage.removeItem("pityToken")
+      //   localStorage.removeItem("pityUser")
+      //   history.push("/#/user/login");
+      //   history.replace({
+      //     pathname: '/user/login',
+      //     search: stringify({
+      //       redirect: window.location.href,
+      //     }),
+      //   });
+      // }
     },
   },
   reducers: {

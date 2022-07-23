@@ -84,6 +84,7 @@ const Model = {
       // 写入用户信息
       localStorage.setItem('pityToken', payload.data.token);
       localStorage.setItem('pityUser', JSON.stringify(payload.data.user));
+      localStorage.setItem('pityExpire', payload.data.expire)
       // setAuthority(payload.currentAuthority);
       setAuthority(CONFIG.ROLE[payload.data.user.role]);
       return {...state, status: payload.code === 0 ? 'ok' : 'error', type: 'account'};
