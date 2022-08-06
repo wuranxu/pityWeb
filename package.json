@@ -58,6 +58,7 @@
     "@bytemd/plugin-highlight-ssr": "1.11.0",
     "@bytemd/plugin-medium-zoom": "^1.11.0",
     "@bytemd/react": "^1.10.13",
+    "@icon-park/react": "^1.4.2",
     "@umijs/route-utils": "^1.0.33",
     "ace-builds": "1.4.12",
     "antd": "4.17.0",

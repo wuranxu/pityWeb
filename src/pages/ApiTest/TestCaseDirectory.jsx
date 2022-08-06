@@ -254,7 +254,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   }, [project_id])
 
   useEffect(async () => {
-    await listTestcase();
+    listTestcase();
   }, [currentDirectory])
 
   const save = data => {
@@ -564,7 +564,6 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                   currentDirectory.length > 0 ? <>
                     <Form form={form}>
                       <Row gutter={6}>
-
                         <Col span={8}>
                           <Form.Item label="用例名称"  {...layout} name="name">
                             <Input placeholder="输入用例名称"/>

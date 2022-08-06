@@ -215,8 +215,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={caseInfo.name} single={false}/>
 
-      <Spin spinning={load} tip="努力加载中" indicator={<IconFont type="icon-loading1" spin style={{fontSize: 32}}/>}
-            size="large">
+      <Spin spinning={load} tip="努力加载中" size="large">
         {
           !case_id ? <TestCaseEditor directoryId={directory_id} create={true} form={form} body={body} setBody={setBody}
                                      headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}

@@ -218,10 +218,10 @@ export default [
                 component: "./Building"
               },
               {
-                path: '/factory',
+                path: '/datafactory',
                 icon: 'icon-hebingxingzhuang',
                 name: '数据工厂',
-                component: "./Building"
+                component: "./datafactory"
               },
               {
                 component: './404',

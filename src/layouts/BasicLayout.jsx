@@ -7,7 +7,7 @@ import ProLayout, {DefaultFooter, getMenuData, ProBreadcrumb} from '@ant-design/
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {connect, history, Link, useIntl} from 'umi';
 import {GithubOutlined} from '@ant-design/icons';
-import {Button, ConfigProvider, Empty, notification, Result} from 'antd';
+import {Button, Spin, ConfigProvider, Empty, notification, Result} from 'antd';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import {getMatchMenu} from '@umijs/route-utils';
@@ -16,8 +16,11 @@ import {CONFIG} from "@/consts/config";
 import NoTableData from "@/assets/NoSearch.svg";
 import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
+import "@icon-park/react/styles/index.less"
+import {Loading} from "@icon-park/react";
 
 // Spin.setDefaultIndicator(<IconFont type="icon-icon-1" spin style={{fontSize: 36}}/>)
+Spin.setDefaultIndicator(<Loading theme="filled" size="32" fill="#74aeff" strokeLinecap="square" spin={true} />)
 
 const noMatch = (
   <Result

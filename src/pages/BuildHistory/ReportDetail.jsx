@@ -170,7 +170,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       key: 'data_name',
     },
     {
-      title: '重试次数',
+      title: '尝试次数',
       dataIndex: 'retry',
       key: 'retry',
     },

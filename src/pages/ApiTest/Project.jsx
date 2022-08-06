@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useState} from 'react';
 import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Tooltip,} from 'antd';
+import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Spin, Tooltip,} from 'antd';
 import {
   AliwangwangOutlined,
   DeleteTwoTone,
@@ -23,13 +23,21 @@ import {IconFont} from "@/components/Icon/IconFont";
 
 const Project = ({dispatch, project, loading}) => {
   const [data, setData] = useState([]);
-  const [pagination, setPagination] = useState({current: 1, pageSize: 8, total: 0, showTotal: count => `共${count}个项目`});
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 8,
+    total: 0,
+    showTotal: count => `共${count}个项目`
+  });
   const [visible, setVisible] = useState(false);
   const [users, setUsers] = useState([]);
   const [userMap, setUserMap] = useState({});
+  const [spinning, setSpinning] = useState(false);
 
   const fetchData = async (current = pagination.current, size = pagination.pageSize) => {
+    setSpinning(true)
     const res = await listProject({page: current, size});
+    setSpinning(false)
     if (auth.response(res)) {
       setData(res.data);
       setPagination({...pagination, current, total: res.total});
@@ -58,9 +66,9 @@ const Project = ({dispatch, project, loading}) => {
     }
   }
 
-  useEffect(async () => {
-    await getUsers();
-    await fetchData();
+  useEffect(() => {
+    getUsers();
+    fetchData();
   }, []);
 
   const onSearchProject = async e => {
@@ -176,7 +184,7 @@ const Project = ({dispatch, project, loading}) => {
         fields={fields}
         onFinish={onHandleCreate}
       />
-      <>
+      <Spin spinning={spinning}>
         <Card style={{marginBottom: 12}}>
           <Row gutter={8}>
             <Col span={18}>
@@ -233,7 +241,7 @@ const Project = ({dispatch, project, loading}) => {
             }}/>
           </Col>
         </Row>
-      </>
+      </Spin>
     </PageContainer>
   );
 };
