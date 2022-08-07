@@ -89,8 +89,9 @@ export default [
                     component: './ApiTest/TestPlan'
                   },
                   {
-                    path: '/apiTest/statistic',
+                    path: '/apiTest/statistics',
                     name: '数据统计',
+                    component: "./Statistics"
                   },
                 ]
               },
