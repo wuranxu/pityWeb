@@ -10,6 +10,7 @@ import React from 'react';
 import numeral from 'numeral';
 import { queryFakeList } from '../../service';
 import stylesApplications from './index.less';
+import {CONFIG} from "@/consts/config";
 export function formatWan(val) {
   const v = val * 1;
   if (!v || Number.isNaN(v)) return '';
@@ -113,7 +114,7 @@ const Applications = () => {
               </Dropdown>,
             ]}
           >
-            <Card.Meta avatar={<Avatar size="small" src={item.avatar} />} title={item.title} />
+            <Card.Meta avatar={<Avatar size="small" src={item.avatar || CONFIG.AVATAR_URL} />} title={item.title} />
             <div className={stylesApplications.cardItemContent}>
               <CardInfo
                 activeUser={formatWan(item.activeUser)}

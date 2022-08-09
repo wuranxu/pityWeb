@@ -515,7 +515,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                           </Select> :
                           <div onClick={() => setEditing(true)}>
                             <Avatar style={{marginLeft: 8, marginRight: 6}} size="large"
-                                    src={getProject().avatar || `https://api.prodless.com/avatar.png`}/>
+                                    src={getProject().avatar || CONFIG.PROJECT_AVATAR_URL}/>
                             <span style={{
                               display: 'inline-block',
                               marginLeft: 12,

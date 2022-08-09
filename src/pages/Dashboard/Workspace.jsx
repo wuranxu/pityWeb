@@ -17,6 +17,7 @@ import common from "@/utils/common";
 import {TinyArea} from "@ant-design/charts";
 import ChartCard from "@/components/Charts/ChartCard";
 import Area from "@/components/Charts/Area";
+import {CONFIG} from "@/consts/config";
 
 const getWelcome = user => {
   const now = new Date()
@@ -41,7 +42,7 @@ const getContent = currentUser => {
     <div className={styles.pageHeaderContent}>
       <div className={styles.avatar}>
         <Avatar size="large"
-                src={currentUser.avatar || `https://joeschmoe.io/api/v1/${currentUser.name}`}/>
+                src={currentUser.avatar || CONFIG.AVATAR_URL}/>
       </div>
       <div className={styles.content}>
         <div className={styles.contentTitle}>

@@ -4,6 +4,7 @@ import {Button, Form, Upload} from 'antd';
 import ProForm, {ProFormText,} from '@ant-design/pro-form';
 import {connect} from 'umi';
 import styles from './BaseView.less';
+import {CONFIG} from "@/consts/config";
 
 const validatorPhone = (rule, value, callback) => {
   callback();
@@ -42,7 +43,7 @@ const BaseView = ({user, loading, dispatch}) => {
       if (currentUser.avatar) {
         return currentUser.avatar;
       }
-      return 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
+      return CONFIG.AVATAR_URL;
     }
 
     return '';

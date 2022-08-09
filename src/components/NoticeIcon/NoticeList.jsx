@@ -2,6 +2,7 @@ import { Avatar, List } from 'antd';
 import React from 'react';
 import classNames from 'classnames';
 import styles from './NoticeList.less';
+import {CONFIG} from "@/consts/config";
 
 const NoticeList = ({
   data = [],
@@ -39,7 +40,7 @@ const NoticeList = ({
 
           const leftIcon = item.avatar ? (
             typeof item.avatar === 'string' ? (
-              <Avatar className={styles.avatar} src={item.avatar} />
+              <Avatar className={styles.avatar} src={item.avatar || CONFIG.AVATAR_URL} />
             ) : (
               <span className={styles.iconElement}>{item.avatar}</span>
             )

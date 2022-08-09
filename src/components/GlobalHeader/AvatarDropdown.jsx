@@ -4,6 +4,7 @@ import React from 'react';
 import {connect, history} from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import {CONFIG} from "@/consts/config";
 
 class AvatarDropdown extends React.Component {
   onMenuClick = (event) => {
@@ -63,7 +64,7 @@ class AvatarDropdown extends React.Component {
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar}
-                  src={currentUser.avatar || `https://joeschmoe.io/api/v1/${currentUser.name}`} alt="avatar"/>
+                  src={currentUser.avatar || CONFIG.AVATAR_URL} alt="avatar"/>
           <span className={`${styles.name} anticon`}>{currentUser.name}</span>
         </span>
       </HeaderDropdown>

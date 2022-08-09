@@ -13,7 +13,7 @@ export default ({user, size = 24, marginLeft = 4}) => {
   return (
     <>
       <Avatar size={size} className={styles.avatar}
-              src={user.avatar || `${CONFIG.AVATAR_URL}${user.name}`} alt="avatar"/>
+              src={user.avatar || CONFIG.AVATAR_URL} alt="avatar"/>
       <Tooltip title="点击可查看用户资料">
         {
           user.deleted_at ?

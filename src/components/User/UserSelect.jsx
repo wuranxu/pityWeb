@@ -12,7 +12,7 @@ export default ({users, placeholder = "请选择人员", onChange, value, mode =
                  }}>
     {
       users.map(v => <Option key={v.id} value={v.id}><Avatar size={14}
-                                                             src={v.avatar || CONFIG.AVATAR_URL + v.name}/> {v.name}({v.email})</Option>)
+                                                             src={v.avatar || CONFIG.AVATAR_URL}/> {v.name}({v.email})</Option>)
     }
   </Select>
 }

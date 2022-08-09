@@ -9,6 +9,7 @@ import OperationLog from "@/components/Operation/OperationLog";
 import noRecord from "@/assets/no_record.svg";
 import {LikeOutlined, UserOutlined} from "@ant-design/icons";
 import LoadingFailed from '@/assets/LoadingFailed.svg';
+import {CONFIG} from "@/consts/config";
 
 const today = new Date()
 
@@ -33,7 +34,7 @@ const Workspace = ({user, dispatch}) => {
         <div className={styles.pageHeaderContent}>
           <div className={styles.avatar}>
             <Avatar size="large"
-                    src={currentUser?.avatar || `https://joeschmoe.io/api/v1/${currentUser.name}`}/>
+                    src={currentUser?.avatar || CONFIG.AVATAR_URL}/>
           </div>
           <div className={styles.content}>
             <div className={styles.contentTitle}>

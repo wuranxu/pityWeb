@@ -32,9 +32,9 @@ export const CONFIG = {
   // WS_URL: `ws://${window.href.host}/ws`,
   ICONFONT: IconFontUrl,
   OSS_URL: "http://oss.pity.fun/pity",
-  AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=2',
+  AVATAR_URL: 'https://static.pity.fun/picture/20220809231905.png',
   DOCUMENT_URL: 'https://wuranxu.github.io/pityDoc',
-  PROJECT_AVATAR_URL: 'https://api.sunweihu.com/api/sjtx/api.php?lx=3',
+  PROJECT_AVATAR_URL: 'https://static.pity.fun/picture/20220809232253.png',
   ROLE: {
     0: 'user',
     1: 'admin',

@@ -228,7 +228,7 @@ export default () => {
                 <List.Item actions={[getBonus(item)]}>
                   <Skeleton active loading={loading}>
                     <List.Item.Meta
-                      avatar={<Avatar src={users[item.id]?.avatar || CONFIG.PROJECT_AVATAR_URL}/>}
+                      avatar={<Avatar src={users[item.id]?.avatar || CONFIG.AVATAR_URL}/>}
                       title={
                         <span>
                         {users[item.id]?.name
