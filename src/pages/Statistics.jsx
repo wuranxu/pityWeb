@@ -151,8 +151,7 @@ export default () => {
           <Col span={12}>
             <Skeleton loading={loading} active>
               <StatisticCard className="statistics-card-large" title={
-                <span>{<Success theme="outline" size="15" fill="#b8e986"
-                                strokeLinecap="square"/>} 近一周用例失败个数 </span>
+                <span>近一周运行用例个数 </span>
               } statistic={{
                 value: report?.count,
               }} chart={

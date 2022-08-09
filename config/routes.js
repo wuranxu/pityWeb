@@ -25,13 +25,24 @@ export default [
             routes: [
               {
                 path: '/',
-                redirect: '/index',
+                redirect: '/dashboard/workspace',
               },
               {
-                path: '/index',
-                name: '工作台',
-                icon: 'icon-gongzuotai2',
-                component: './Dashboard/Workspace',
+                path: '/dashboard',
+                name: 'Dashboard',
+                icon: 'dashboard',
+                routes: [
+                  {
+                    path: '/dashboard/workspace',
+                    name: '工作台',
+                    component: './Dashboard/Workspace',
+                  },
+                  {
+                    path: '/dashboard/statistics',
+                    name: '数据统计',
+                    component: "./Statistics"
+                  },
+                ]
               },
               {
                 path: '/account/settings',
@@ -87,12 +98,7 @@ export default [
                     path: '/apiTest/testplan',
                     name: '测试计划',
                     component: './ApiTest/TestPlan'
-                  },
-                  {
-                    path: '/apiTest/statistics',
-                    name: '数据统计',
-                    component: "./Statistics"
-                  },
+                  }
                 ]
               },
               {
