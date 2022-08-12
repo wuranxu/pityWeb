@@ -1,4 +1,4 @@
-import {Card, Col, Empty, message, Row, Select, Spin, Table, Tree} from "antd";
+import {Card, Col, Empty, message, Tabs, Row, Select, Spin, Table, Tree} from "antd";
 import React, {useEffect, useState} from 'react';
 import {connect} from 'umi';
 import SqlAceEditor from "@/components/CodeEditor/AceEditor/SqlAceEditor";
@@ -8,11 +8,11 @@ import {IconFont} from "@/components/Icon/IconFont";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {CONFIG} from "@/consts/config";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
-
 import noResult from '@/assets/NoData.svg';
 
 const {DirectoryTree} = Tree;
 const {Option} = Select;
+const {TabPane} = Tabs;
 const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeight, imageHeight, editorHeight}) => {
 
   const {
@@ -170,22 +170,29 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
                                                           setSqlValue(data)
                                                         }}/> :
                 <Empty image={emptyWork} imageStyle={{height: imageHeight || 190, marginTop: 32}}
-                       description="选中左侧的『数据库』开启sql之旅吧~"/>
+                       description="选中左侧的『数据库连接』开启sql之旅吧~"/>
             }
 
           </Card>
-          <Card style={{marginTop: 12}} bodyStyle={{height: tableHeight || 350, overflowY: 'auto', padding: 8}}>
-            {
-              testResults.length === 0 ?
-                <Empty image={noResult} imageStyle={{height: imageHeight || 180}} description="没有『查询结果』哦, 快去执行SQL吧~"/> :
-                <Table columns={getColumns(sqlColumns)} dataSource={testResults} size="small"
-                       scroll={{x: sqlColumns.length > 8 ? 2000 : 1000}} bordered={true}
-                       pagination={pagination} onChange={pg => setPagination({
-                  ...pagination,
-                  current: pg.current,
-                })} rowKey={(record, index) => record.id || index}
-                       loading={loading.effects['online/onlineExecuteSQL']}/>
-            }
+          <Card style={{marginTop: 12}} bodyStyle={{height: tableHeight || 350, overflowY: 'auto', padding: "8px 24px"}}>
+            <Tabs defaultActiveKey="1">
+              <TabPane key="1" tab="执行结果">
+                {
+                  testResults.length === 0 ?
+                    <Empty image={noResult} imageStyle={{height: imageHeight || 180}} description="没有『查询结果』哦, 快去执行SQL吧~"/> :
+                    <Table columns={getColumns(sqlColumns)} dataSource={testResults} size="small"
+                           scroll={{x: sqlColumns.length > 8 ? 2000 : 1000}} bordered={true}
+                           pagination={pagination} onChange={pg => setPagination({
+                      ...pagination,
+                      current: pg.current,
+                    })} rowKey={(record, index) => record.id || index}
+                           loading={loading.effects['online/onlineExecuteSQL']}/>
+                }
+              </TabPane>
+              <TabPane key="历史记录">
+
+              </TabPane>
+            </Tabs>
           </Card>
         </Col>
       </Row>

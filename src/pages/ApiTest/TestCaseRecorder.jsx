@@ -7,7 +7,6 @@ import {
   StopOutlined,
   ToolOutlined,
   VideoCameraOutlined,
-  VideoCameraTwoTone,
   WindowsOutlined
 } from "@ant-design/icons";
 import {
@@ -29,6 +28,7 @@ import React, {useEffect, useState} from "react";
 import {connect} from "umi";
 import RequestInfoList from "@/components/TestCase/recorder/RequestInfoList";
 import {CONFIG} from "@/consts/config";
+import {CameraOne} from "@icon-park/react";
 
 const {Option} = Select;
 
@@ -162,7 +162,9 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
 
   return (
     <PageContainer breadcrumb={null}
-                   title={<span className="ant-page-header-heading-title">用例录制 <VideoCameraTwoTone/></span>}>
+                   title={<span className="ant-page-header-heading-title">用例录制 <CameraOne theme="outline" size="18"
+                                                                                              fill="#7ed321"
+                                                                                              strokeLinecap="square"/> </span>}>
       <Card>
         <Modal title={<span>生成用例 - 已选中{selectedRowKeys.length}条数据</span>} visible={visible}
                onOk={onGenerateCase}
@@ -186,8 +188,9 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
         <Row gutter={12}>
           <Col span={10}>
             <Alert type="info" banner closable message={<span>
-            📢 录制接口之前，请先配置好app/web代理哦~<a href="https://wuranxu.github.io/pityDoc/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%8E%A5%E5%8F%A3%E7%94%A8%E4%BE%8B/%E7%94%A8%E4%BE%8B%E5%BD%95%E5%88%B6"
-                                    target="_blank" rel="noreferrer"> 参考文档</a>
+            📢 录制接口之前，请先配置好app/web代理哦~<a
+              href="https://wuranxu.github.io/pityDoc/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%8E%A5%E5%8F%A3%E7%94%A8%E4%BE%8B/%E7%94%A8%E4%BE%8B%E5%BD%95%E5%88%B6"
+              target="_blank" rel="noreferrer"> 参考文档</a>
           </span>}/>
           </Col>
           <Col span={8}>
@@ -215,7 +218,8 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
         </Row>
         <Row gutter={8} style={{marginTop: 12}}>
           <Col span={24}>
-            <RequestInfoList rowSelection={rowSelection} rowKey="index" emptyText="点击录制按钮即可开始录制app/web的接口请求"
+            <RequestInfoList rowSelection={rowSelection} rowKey="index"
+                             emptyText="点击录制按钮即可开始录制app/web的接口请求"
                              dataSource={recordLists} dispatch={dispatch}
                              loading={loading.effects['recorder/queryRecordStatus']}/>
           </Col>

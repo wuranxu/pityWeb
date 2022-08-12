@@ -142,7 +142,6 @@ const ReportList = ({user, report, loading, dispatch}) => {
       <Card>
         <Form form={form}>
           <Row gutter={[8, 8]}>
-
             <Col span={8}>
               <Form.Item label="执行人" name="executor">
                 <Select placeholder="选择执行人" style={{width: '90%'}} allowClear>
@@ -181,7 +180,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
         </Form>
         <Row gutter={[8, 8]}>
           <Col span={24}>
-            <Table columns={columns} locale={{emptyText: <NoRecord height={200}/>}} dataSource={reportData}
+            <Table columns={columns} dataSource={reportData}
                    pagination={pagination}
               // scroll={{ x: 1800 }}
                    loading={loading.effects['report/fetchReportList']}

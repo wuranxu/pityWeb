@@ -15,10 +15,10 @@ import {CONFIG} from "@/consts/config";
 
 const MiniProgress = ({rate}) => {
   const config = {
-    height: 18,
+    height: 8,
     autoFit: false,
     percent: rate,
-    color: ['#5B8FF9', '#E8EDF3'],
+    color: ['rgba(103,123,215,0.69)', '#E8EDF3'],
   };
   return <Progress {...config} />;
 };
