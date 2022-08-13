@@ -169,18 +169,18 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                     />
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-                    {/*<PityAceEditor*/}
-                    {/*  language="html"*/}
-                    {/*  setEditor={setEditor}*/}
-                    {/*  readOnly={true}*/}
-                    {/*  value={response[name].logs}*/}
-                    {/*  height="80vh"*/}
-                    {/*/>*/}
-                    <div style={{height: '80vh', overflow: 'auto'}}>
-                      <SyntaxHighlighter language='html' style={vs2015}>
-                        {response[name].logs}
-                      </SyntaxHighlighter>
-                    </div>
+                    <PityAceEditor
+                      language="html"
+                      setEditor={setEditor}
+                      readOnly={true}
+                      value={response[name].logs}
+                      height="80vh"
+                    />
+                    {/*<div style={{height: '80vh', overflow: 'auto'}}>*/}
+                    {/*  <SyntaxHighlighter language='html' style={vs2015}>*/}
+                    {/*    {response[name].logs}*/}
+                    {/*  </SyntaxHighlighter>*/}
+                    {/*</div>*/}
                   </TabPane>
                   <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
                     <Table
@@ -270,11 +270,18 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
               />
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-rizhi"/>执行日志</span>} key="2">
-              <div style={{height: '80vh', overflow: 'auto'}}>
-                <SyntaxHighlighter language='html' style={vs2015}>
-                  {response.logs}
-                </SyntaxHighlighter>
-              </div>
+              <PityAceEditor
+                language="html"
+                setEditor={setEditor}
+                readOnly={true}
+                value={response[name].logs}
+                height="80vh"
+              />
+              {/*<div style={{height: '80vh', overflow: 'auto'}}>*/}
+              {/*  <SyntaxHighlighter language='html' style={vs2015}>*/}
+              {/*    {response.logs}*/}
+              {/*  </SyntaxHighlighter>*/}
+              {/*</div>*/}
             </TabPane>
             <TabPane tab={<span><IconFont type="icon-header"/>Request Headers</span>} key="5">
               <Table
