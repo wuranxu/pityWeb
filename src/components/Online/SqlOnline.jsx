@@ -35,6 +35,7 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
     current: 1,
     total: testResults.length,
     pageSize: 4,
+    pageSizeOptions: [4, 10, 50],
     showTotal: total => `共${total}条数据`
   })
 
@@ -181,7 +182,7 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
           tip="数据加载中, 请耐心等待..." size="large">
       <Row gutter={12}>
         <Col span={8} style={{display: 'table-cell'}}>
-          <Card title="数据库列表" bodyStyle={{height: leftHeight || 656, overflowY: 'auto'}} size="small">
+          <Card title="数据库列表" bodyStyle={{height: leftHeight || 676, overflowY: 'auto'}} size="small">
             <DirectoryTree treeData={databaseSource}
                            loadData={onLoadData}
                            onSelect={(e, data) => {
@@ -218,7 +219,7 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
 
           </Card>
           <Card style={{marginTop: 12}}
-                bodyStyle={{height: tableHeight || 350, overflowY: 'auto', padding: "8px 24px"}}>
+                bodyStyle={{height: tableHeight || 370, overflowY: 'auto', padding: "8px 24px"}}>
             <Tabs defaultActiveKey="1">
               <TabPane key="1" tab={<span><Data theme="outline" size="13" fill="#333"/> 执行结果</span>}>
                 {
@@ -226,10 +227,11 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
                     <Empty image={noResult} imageStyle={{height: imageHeight || 180}}
                            description="没有『查询结果』哦, 快去执行SQL吧~"/> :
                     <Table columns={getColumns(sqlColumns)} dataSource={testResults} size="small"
-                           scroll={{x: sqlColumns.length > 8 ? 2000 : 1000}} bordered={true}
+                           scroll={{x: sqlColumns.length > 8 ? 2000 : 1000, y: 190}} bordered={true}
                            pagination={pagination} onChange={pg => setPagination({
                       ...pagination,
                       current: pg.current,
+                      pageSize: pg.pageSize,
                     })} rowKey={(record, index) => record.id || index}
                            loading={loading.effects['online/onlineExecuteSQL']}/>
                 }
@@ -241,7 +243,6 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
           </Card>
         </Col>
       </Row>
-
     </Spin>
   )
 }
