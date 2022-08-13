@@ -66,7 +66,7 @@ export default {
 
     },
 
-    * onlineExecuteSQL({payload}, {call, put}) {
+    * onlineExecuteSQL({payload}, {call, put, select}) {
       const res = yield call(onlineExecuteSQL, payload);
       if (auth.response(res, true)) {
         yield put({
@@ -76,8 +76,13 @@ export default {
             testResults: res.data.result,
           }
         })
+        const online = yield select(state => state.online)
         yield put({
           type: 'fetchHistorySQL',
+          payload: {
+            page: online.pagination.current,
+            size: online.pagination.pageSize,
+          }
         })
       }
     },
