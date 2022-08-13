@@ -155,6 +155,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "请求协议",
       dataIndex: "request_type",
       key: 'request_type',
+      width: 110,
       render: request_type => CONFIG.REQUEST_TYPE[request_type]
     },
     {
@@ -175,7 +176,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       title: "创建人",
       dataIndex: "create_user",
       key: 'create_user',
-      width: 100,
+      width: 160,
       ellipsis: true,
       render: create_user => <UserLink user={userMap[create_user]}/>
     },

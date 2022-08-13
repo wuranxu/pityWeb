@@ -58,7 +58,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
       fixed: 'left',
       render: executor => executor === 0 ?
         <span>
-          <IconFont style={{fontSize: 20}} type="icon-a-jiqirenrengongzhineng"/> CPU
+          <IconFont style={{fontSize: 20}} type="icon-a-jiqirenrengongzhineng"/> pity机器人
         </span> : <UserLink user={userMap[executor]}/>,
     },
     {
@@ -145,8 +145,8 @@ const ReportList = ({user, report, loading, dispatch}) => {
             <Col span={8}>
               <Form.Item label="执行人" name="executor">
                 <Select placeholder="选择执行人" style={{width: '90%'}} allowClear>
-                  <Option value="CPU" key="CPU"><IconFont style={{fontSize: 20}}
-                                                          type="icon-a-jiqirenrengongzhineng"/> CPU</Option>
+                  <Option value="pity机器人" key="CPU"><IconFont style={{fontSize: 20}}
+                                                          type="icon-a-jiqirenrengongzhineng"/> pity机器人</Option>
                   {
                     Object.keys(userMap).map(v => (<Option key={v} value={v}><UserLink user={userMap[v]}/></Option>))
                   }

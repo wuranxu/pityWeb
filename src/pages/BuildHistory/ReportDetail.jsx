@@ -268,7 +268,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
                   {getTag()}
                 </Descriptions.Item>
                 <Descriptions.Item label="执行人">
-                  {reportDetail.executor === 0 ? 'CPU' : <UserLink user={userMap[reportDetail.executor]} size={16}/>}
+                  {reportDetail.executor === 0 ? 'pity机器人' : <UserLink user={userMap[reportDetail.executor]} size={16}/>}
                 </Descriptions.Item>
                 <Descriptions.Item label="执行方式">
                   {reportConfig.EXECUTE_METHOD[reportDetail.mode]}
