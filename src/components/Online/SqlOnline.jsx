@@ -9,7 +9,7 @@ import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {CONFIG} from "@/consts/config";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import noResult from '@/assets/NoData.svg';
-import {Data, HistoryQuery} from "@icon-park/react";
+import {Data, HistoryQuery, InsertTable, Key, ListView} from "@icon-park/react";
 import SqlHistory from "@/components/Online/SqlHistory";
 
 const {DirectoryTree} = Tree;
@@ -38,13 +38,15 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
     showTotal: total => `共${total}条数据`
   })
 
-
-  useEffect(async () => {
-    const data = await dispatch({
+  useEffect(() => {
+    dispatch({
       type: 'online/fetchDatabaseSource',
     })
-    getTree(data);
   }, [])
+
+  useEffect(() => {
+    getTree(databaseSource);
+  }, [databaseSource])
 
   const save = data => {
     dispatch({
@@ -65,12 +67,14 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
   const parseNewTree = databaseSource => {
     for (let i in databaseSource) {
       if (databaseSource[i].key.indexOf('column') > -1) {
-        databaseSource[i].icon = <IconFont style={{fontSize: 15, marginRight: 2}}
-                                           type={databaseSource[i].primary_key ? "icon-zhujian1" : "icon-shujuziduanliebiao"}/>;
+        databaseSource[i].icon =
+          databaseSource[i].primary_key ?
+            <Key theme="outline" size="15" fill="#f8e725" style={{marginRight: 2}}/> :
+            <ListView theme="outline" size="15" fill="#333" style={{marginRight: 2}}/>
         databaseSource[i].title = <span>{databaseSource[i].title} <span
           style={{fontSize: 12, fontWeight: 200, marginLeft: 8}}>{databaseSource[i].type}</span></span>;
       } else if (databaseSource[i].key.indexOf('table') > -1) {
-        databaseSource[i].icon = <IconFont style={{fontSize: 15, marginRight: 2}} type="icon-se-shujubiao-Filled1"/>
+        databaseSource[i].icon = <InsertTable theme="outline" size="15" fill="#7ed321" style={{marginRight: 2}}/>
       } else if (databaseSource[i].key.indexOf('database') > -1) {
         databaseSource[i].icon = <IconFont style={{fontSize: 15, marginRight: 2}}
                                            type={databaseSource[i].sql_type === 0 ? 'icon-mysql6' : 'icon-PostgreSQL'}/>
@@ -106,6 +110,40 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
       ...pagination,
       current: 1,
     })
+  }
+
+  const fetchTables = async (data) => {
+    return await dispatch({
+      type: 'online/fetchTables',
+      payload: data
+    })
+  }
+
+  const onLoadData = ({key, children, data, title, sql_type}) => {
+    return new Promise(async (resolve) => {
+      if (!key.startsWith("database_") || !children) {
+        resolve();
+        return;
+      }
+      const child = await fetchTables(data)
+      const ans = [...databaseSource]
+      ans.forEach(item => {
+        const idx = item.children?.findIndex(v => v.key === `database_${data.id}`)
+        if (idx > -1) {
+          item.children[idx].children = child
+        }
+      })
+      dispatch({
+        type: 'online/save',
+        payload: {
+          databaseSource: ans,
+          currentDatabaseTitle: title,
+          currentDatabaseSqlType: sql_type
+        }
+      })
+      resolve();
+    });
+
   }
 
   const actions = currentDatabase === null ? null : <>
@@ -144,18 +182,20 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
       <Row gutter={12}>
         <Col span={8} style={{display: 'table-cell'}}>
           <Card title="数据库列表" bodyStyle={{height: leftHeight || 656, overflowY: 'auto'}} size="small">
-            <DirectoryTree treeData={databaseSource} onSelect={(e, data) => {
-              if (e.length > 0 && e[0].indexOf('database_') === 0) {
-                const id = parseInt(e[0].split("_")[1], 10)
-                const tables = Array.from(new Set(table_map[id]));
-                save({
-                  tables,
-                  currentDatabase: id,
-                  currentDatabaseTitle: data.node.title,
-                  currentDatabaseSqlType: data.node.sql_type,
-                })
-              }
-            }}/>
+            <DirectoryTree treeData={databaseSource}
+                           loadData={onLoadData}
+                           onSelect={(e, data) => {
+                             if (e.length > 0 && e[0].indexOf('database_') === 0) {
+                               const id = parseInt(e[0].split("_")[1], 10)
+                               const tables = Array.from(new Set(table_map[id]));
+                               save({
+                                 tables,
+                                 currentDatabase: id,
+                                 currentDatabaseTitle: data.node.title,
+                                 currentDatabaseSqlType: data.node.sql_type,
+                               })
+                             }
+                           }}/>
           </Card>
         </Col>
         <Col span={16} style={{display: 'table-cell'}}>

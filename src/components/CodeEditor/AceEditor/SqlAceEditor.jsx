@@ -20,6 +20,6 @@ import React from 'react';
 import PityAceEditor from "@/components/CodeEditor/AceEditor/index";
 
 export default function SqlAceEditor(props) {
-  return <PityAceEditor {...props} theme="material-one-dark"/>;
+  return <PityAceEditor {...props} theme={props.theme || "material-one-dark"}/>;
 }
 

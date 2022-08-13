@@ -5,6 +5,6 @@ import React from 'react';
 import PityAceEditor from "@/components/CodeEditor/AceEditor/index";
 
 export default function YamlAceEditor(props) {
-  return <PityAceEditor {...props} langugae="yaml" theme="vs-dark"/>;
+  return <PityAceEditor {...props} langugae="yaml" theme={props.theme || "vs-dark"}/>;
 }
 

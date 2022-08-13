@@ -1,4 +1,4 @@
-import {fetchDatabaseSource, listHistory, onlineExecuteSQL} from "@/services/online";
+import {fetchDatabaseSource, fetchTables, listHistory, onlineExecuteSQL} from "@/services/online";
 import auth from "@/utils/auth";
 import React from 'react';
 
@@ -36,16 +36,34 @@ export default {
     * fetchDatabaseSource({payload}, {call, put}) {
       const res = yield call(fetchDatabaseSource);
       if (auth.response(res)) {
-        const {database, tables} = res.data;
         yield put({
           type: 'save',
           payload: {
-            databaseSource: database,
-            table_map: tables,
+            databaseSource: res.data,
           }
         })
-        return database;
+        return res.data;
       }
+    },
+
+    * fetchTables({payload}, {call, put, select}) {
+      const res = yield call(fetchTables, payload);
+      if (auth.response(res)) {
+        const online = yield select(state => state.online)
+        yield put({
+          type: 'save',
+          payload: {
+            table_map: {
+              ...online.table_map,
+              [payload.id]: res.data.tables,
+            },
+            tables: res.data.tables,
+            currentDatabase: payload.id,
+          }
+        })
+        return res.data.children
+      }
+
     },
 
     * onlineExecuteSQL({payload}, {call, put}) {

@@ -5,7 +5,7 @@ import {connect, history} from 'umi';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 import Version from "@/components/Drawer/Version";
-import wechat from '@/assets/wechat.png';
+import {CONFIG} from "@/consts/config";
 
 const ENVTagColor = {
   dev: 'orange',
@@ -65,11 +65,12 @@ const GlobalHeaderRight = (props) => {
                 marginLeft: 0,
               },
               content: (
-                <div style={{textAlign: 'left'}}>
-                  <img height={540} width={480} src={wechat} alt=""/>
+                <div style={{textAlign: 'center'}}>
+                  <img height={400} width={300} src={CONFIG.WECHAT_URL} alt=""/>
                 </div>
               )
-          })}}
+            })
+          }}
           style={{
             color: '#52c41a',
           }}
