@@ -80,8 +80,8 @@ export default {
         yield put({
           type: 'fetchHistorySQL',
           payload: {
-            page: online.pagination.current,
-            size: online.pagination.pageSize,
+            page: online.historyPage.current,
+            size: online.historyPage.pageSize,
           }
         })
       }
