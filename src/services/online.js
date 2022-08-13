@@ -17,3 +17,11 @@ export async function onlineExecuteSQL(params) {
     headers: auth.headers(),
   });
 }
+
+export async function listHistory(params) {
+  return request(`${CONFIG.URL}/online/history/query`, {
+    method: 'GET',
+    params,
+    headers: auth.headers(),
+  });
+}

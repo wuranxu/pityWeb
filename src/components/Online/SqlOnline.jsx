@@ -1,4 +1,4 @@
-import {Card, Col, Empty, message, Tabs, Row, Select, Spin, Table, Tree} from "antd";
+import {Card, Col, Empty, message, Row, Select, Spin, Table, Tabs, Tree} from "antd";
 import React, {useEffect, useState} from 'react';
 import {connect} from 'umi';
 import SqlAceEditor from "@/components/CodeEditor/AceEditor/SqlAceEditor";
@@ -9,6 +9,8 @@ import TooltipIcon from "@/components/Icon/TooltipIcon";
 import {CONFIG} from "@/consts/config";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import noResult from '@/assets/NoData.svg';
+import {Data, HistoryQuery} from "@icon-park/react";
+import SqlHistory from "@/components/Online/SqlHistory";
 
 const {DirectoryTree} = Tree;
 const {Option} = Select;
@@ -121,7 +123,8 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
           CONFIG.EDITOR_THEME.map(v => <Option value={v}>{v}</Option>)
         }
       </Select>
-      <TooltipIcon icon={<PlayCircleTwoTone twoToneColor="#67C23A"/>} title="点击可执行全部SQL，如果选中SQL则执行选中的SQL" font={13}
+      <TooltipIcon icon={<PlayCircleTwoTone twoToneColor="#67C23A"/>}
+                   title="点击可执行全部SQL，如果选中SQL则执行选中的SQL" font={13}
                    style={{marginRight: 16}} onClick={onExecute}/>
       <TooltipIcon icon={
         <CopyToClipboard text={sqlValue}
@@ -136,9 +139,9 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
 
   return (
 
-    <Spin spinning={loading.effects['online/fetchDatabaseSource']}
+    <Spin spinning={!!(loading.effects['online/fetchDatabaseSource'] || loading.effects['online/onlineExecuteSQL'])}
           tip="数据加载中, 请耐心等待..." size="large">
-      <Row gutter={[12]}>
+      <Row gutter={12}>
         <Col span={8} style={{display: 'table-cell'}}>
           <Card title="数据库列表" bodyStyle={{height: leftHeight || 656, overflowY: 'auto'}} size="small">
             <DirectoryTree treeData={databaseSource} onSelect={(e, data) => {
@@ -167,19 +170,21 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
                                                        setEditor={setEditor}
                                                        language={sqlMode} theme={theme} value={sqlValue}
                                                        onChange={data => {
-                                                          setSqlValue(data)
-                                                        }}/> :
+                                                         setSqlValue(data)
+                                                       }}/> :
                 <Empty image={emptyWork} imageStyle={{height: imageHeight || 190, marginTop: 32}}
                        description="选中左侧的『数据库连接』开启sql之旅吧~"/>
             }
 
           </Card>
-          <Card style={{marginTop: 12}} bodyStyle={{height: tableHeight || 350, overflowY: 'auto', padding: "8px 24px"}}>
+          <Card style={{marginTop: 12}}
+                bodyStyle={{height: tableHeight || 350, overflowY: 'auto', padding: "8px 24px"}}>
             <Tabs defaultActiveKey="1">
-              <TabPane key="1" tab="执行结果">
+              <TabPane key="1" tab={<span><Data theme="outline" size="13" fill="#333"/> 执行结果</span>}>
                 {
                   testResults.length === 0 ?
-                    <Empty image={noResult} imageStyle={{height: imageHeight || 180}} description="没有『查询结果』哦, 快去执行SQL吧~"/> :
+                    <Empty image={noResult} imageStyle={{height: imageHeight || 180}}
+                           description="没有『查询结果』哦, 快去执行SQL吧~"/> :
                     <Table columns={getColumns(sqlColumns)} dataSource={testResults} size="small"
                            scroll={{x: sqlColumns.length > 8 ? 2000 : 1000}} bordered={true}
                            pagination={pagination} onChange={pg => setPagination({
@@ -189,8 +194,8 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
                            loading={loading.effects['online/onlineExecuteSQL']}/>
                 }
               </TabPane>
-              <TabPane key="历史记录">
-
+              <TabPane key="2" tab={<span><HistoryQuery theme="outline" size="13" fill="#333"/> 历史记录</span>}>
+                <SqlHistory/>
               </TabPane>
             </Tabs>
           </Card>

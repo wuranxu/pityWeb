@@ -4,7 +4,7 @@ import styles from "@/components/GlobalHeader/index.less";
 import {CONFIG} from "@/consts/config";
 import logo from '@/assets/logo.svg';
 
-export default ({user, size = 24, marginLeft = 4}) => {
+export default ({user, size = 24, marginLeft = 6}) => {
   if (user === undefined) {
     return <Avatar size={size}
                    src={logo} alt="avatar"/>
@@ -17,12 +17,13 @@ export default ({user, size = 24, marginLeft = 4}) => {
       <Tooltip title="点击可查看用户资料">
         {
           user.deleted_at ?
-            <del><a style={{marginLeft: marginLeft, fontSize: 14, color: "#ccc"}} href={`/#/member/${user.id}`}
+            <del><a style={{marginLeft: marginLeft, fontSize: 13, color: "#ccc"}} href={`/#/member/${user.id}`}
                     target="_blank"
                     rel="noreferrer">{user.name}</a></del> :
             <a onClick={e => {
-                e.stopPropagation();
-            }} style={{marginLeft: marginLeft, fontSize: 14}} href={`/#/member/${user.id}`} target="_blank"
+              e.stopPropagation();
+            }} style={{marginLeft: marginLeft, fontSize: 13, verticalAlign: 'middle'}} href={`/#/member/${user.id}`}
+               target="_blank"
                rel="noreferrer">{user.name}</a>
         }
 

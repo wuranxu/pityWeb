@@ -37,15 +37,15 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       render: env => <Tag>{envMap[env]}</Tag>,
     },
     {
-      title: 'key',
-      dataIndex: 'key',
-      key: 'keyword',
-    },
-    {
       title: '类型',
       dataIndex: 'key_type',
       key: 'key_type',
       render: key => <Tag color={CONFIG.CONFIG_TYPE_TAG[key_type[key]]}>{key_type[key]}</Tag>,
+    },
+    {
+      title: 'key',
+      dataIndex: 'key',
+      key: 'keyword',
     },
     {
       title: 'value',
@@ -230,7 +230,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
             <Button type='primary'
                     onClick={() => {
                       save({modal: true});
-                      setRecord({id: 0, key_type: 0, env: currentEnv !== null ? currentEnv.toString(): currentEnv})
+                      setRecord({id: 0, key_type: 0, env: currentEnv !== null ? currentEnv.toString() : currentEnv})
                     }}><PlusOutlined/>添加变量</Button>
           </Col>
           <Col span={4}/>
