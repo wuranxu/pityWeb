@@ -1,7 +1,7 @@
 import React, {memo, useEffect, useState} from 'react';
 import {PageContainer} from "@ant-design/pro-layout";
 import {connect} from "umi";
-import {Button, Card, Col, Divider, Form, Input, Row, Select, Table} from "antd";
+import {Button, Card, Col, Divider, Form, Input, Row, Select, Table, Tag} from "antd";
 import {CONFIG} from "@/consts/config";
 import TooltipTextIcon from "@/components/Icon/TooltipTextIcon";
 import {PlusOutlined} from "@ant-design/icons";
@@ -49,7 +49,7 @@ const Address = ({loading, gconfig, dispatch}) => {
       title: '环境',
       key: 'env',
       dataIndex: 'env',
-      render: env => envMap[env],
+      render: env => <Tag>{envMap[env]}</Tag>,
     },
     {
       title: '名称',

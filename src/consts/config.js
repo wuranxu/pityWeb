@@ -3,6 +3,7 @@ import React from "react";
 import TextIcon from "@/components/Icon/TextIcon";
 import {IconFontUrl} from "@/components/Icon/IconFont";
 import defaultSettings from '../../config/defaultSettings';
+import {Send} from "@icon-park/react";
 
 
 const isDev = () => {
@@ -116,9 +117,10 @@ export const CONFIG = {
     3: '正常运行',
   },
   REQUEST_TYPE: {
-    1: <TextIcon font={18} icon="icon-http3" text="HTTP"/>,
-    2: <TextIcon font={18} icon="icon-GRPC" text="GRPC"/>,
-    3: <TextIcon font={18} icon="icon-a-dubbo1" text="Dubbo"/>,
+    // 1: <TextIcon font={18} icon="icon-http3" text="HTTP"/>,
+    1: <span><Send theme="outline" size="14" fill="#7ed321"/> HTTP</span>,
+    2: <TextIcon font={14} icon="icon-GRPC" text="GRPC"/>,
+    3: <TextIcon font={14} icon="icon-a-dubbo1" text="Dubbo"/>,
   },
   REQUEST_TYPE_TAG: {
     1: <Tag color="success">HTTP</Tag>,

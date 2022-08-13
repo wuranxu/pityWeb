@@ -88,7 +88,7 @@ const Database = ({dispatch, gconfig, loading}) => {
       title: '环境',
       key: 'env',
       dataIndex: 'env',
-      render: text => envMap[text],
+      render: text => <Tag>{envMap[text]}</Tag>,
     },
     {
       title: '名称',

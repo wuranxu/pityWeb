@@ -2,6 +2,7 @@ import {Col, Dropdown, Input, Row, Tree} from 'antd';
 import React, {useState} from "react";
 import './SearchTree.less';
 import {FolderTwoTone, MoreOutlined, PlusOutlined, SearchOutlined} from "@ant-design/icons";
+import {FolderCode} from "@icon-park/react";
 
 const dataList = [];
 
@@ -105,7 +106,8 @@ export default ({treeData: gData, blockNode = true, onAddNode, menu, selectedKey
         titleRender={(node) => {
           return (
             <div onMouseOver={() => setNodeKey(node.key)} onMouseLeave={() => setNodeKey(null)}>
-              <FolderTwoTone className="folder" twoToneColor="rgb(255, 173, 210)"/>
+              {/*<FolderTwoTone className="folder" twoToneColor="rgb(255, 173, 210)"/>*/}
+              <FolderCode theme="outline" size="15" className="folder"/>
               {node.title}
               {
                 nodeKey === node.key ? <span className="suffixButton">

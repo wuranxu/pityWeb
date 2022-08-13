@@ -44,7 +44,6 @@ import {
 import 'react-contexify/dist/ReactContexify.css';
 import NoRecord from "@/components/NotFound/NoRecord";
 import FormForModal from "@/components/PityForm/FormForModal";
-import {IconFont} from "@/components/Icon/IconFont";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
@@ -56,6 +55,7 @@ import ScrollCard from "@/components/Scrollbar/ScrollCard";
 import emptyWork from "@/assets/emptyWork.svg";
 import AddTestCaseComponent from "@/pages/ApiTest/AddTestCaseComponent";
 import RecorderDrawer from "@/components/TestCase/recorder/RecorderDrawer";
+import {Switch} from "@icon-park/react";
 
 const {Option} = Select;
 
@@ -482,7 +482,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       {
         projects.length === 0 ? <Result status="404"
                                         subTitle={<span>你还没有添加任何项目, <a target="_blank"
-                                                                       href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
+                                                                                 href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
 
           <Row gutter={16}>
             <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
@@ -522,13 +522,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                               fontWeight: 400,
                               fontSize: 14
                             }}>{getProject().name}</span>
-                            <IconFont type="icon-qiehuan2" style={{
-                              display: 'inline-block',
-                              cursor: 'pointer',
-                              fontSize: 16,
-                              marginLeft: 16,
-                              lineHeight: '40px'
-                            }}/>
+                            <Switch style={{marginLeft: 12, cursor: 'pointer', lineHeight: '40px'}}
+                                    theme="outline" size="16" fill="#7ed321"/>
                           </div>
                       }
                     </div>
@@ -541,7 +536,10 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                         <SearchTree treeData={directory} menu={content}
                                     addDirectory={AddDirectory}
                                     onSelect={keys => {
-                                      saveCase({currentDirectory: keys[0] === currentDirectory[0] ? [] : keys})
+                                      saveCase({
+                                        currentDirectory: keys[0] === currentDirectory[0] ? [] : keys,
+                                        selectedRowKeys: [],
+                                      })
                                     }} onAddNode={node => {
                           setCurrentNode(node.key)
                           handleItemClick(1, node)
@@ -600,18 +598,18 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                           </Dropdown>
                           : null}
                         {selectedRowKeys.length > 0 ?
-                          <Button type="primary" danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    onDeleteTestcase();
-                                  }}>删除用例</Button>
-                          : null}
-                        {selectedRowKeys.length > 0 ?
                           <Button type="dashed" style={{marginLeft: 8}} icon={<ExportOutlined/>}
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     onMoveTestCase();
                                   }}>移动用例</Button>
+                          : null}
+                        {selectedRowKeys.length > 0 ?
+                          <Button danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    onDeleteTestcase();
+                                  }}>删除用例</Button>
                           : null}
                       </Col>
                     </Row>
