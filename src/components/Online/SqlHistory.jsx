@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
-import {Badge, Table, Typography} from "antd";
+import {Badge, Table, Tag, Typography} from "antd";
 import UserLink from "@/components/Button/UserLink";
 import {connect} from "umi";
-import {Tag} from "_antd@4.17.0@antd";
 
 const {Text} = Typography;
 

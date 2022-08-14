@@ -1,10 +1,8 @@
-import {connect, useLocation} from "umi";
+import {connect, history, useLocation} from "umi";
 import {useEffect, useState} from "react";
 import styles from "@/pages/User/login/index.less";
-import {Alert, Button, Form, Input} from "antd";
+import {Alert, Button, Form, Input, notification} from "antd";
 import {CONFIG} from "@/consts/config";
-import {notification} from "_antd@4.17.0@antd";
-import {history} from "_umi@3.5.21@umi";
 
 const ResetPassword = ({dispatch, login}) => {
   const location = useLocation();
@@ -31,7 +29,8 @@ const ResetPassword = ({dispatch, login}) => {
       setDisable(true)
       notification.success({
         message: "恭喜，您的密码已经重置成功！",
-        description: <span>将在3秒后进入登录界面，点击<a href="https://pity.fun/#/user/login">此处</a>可跳转至登录页面</span>
+        description: <span>将在3秒后进入登录界面，点击<a
+          href="https://pity.fun/#/user/login">此处</a>可跳转至登录页面</span>
       })
       setTimeout(() => {
         history.push("/user/login")
