@@ -173,7 +173,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                       language="html"
                       setEditor={setEditor}
                       readOnly={true}
-                      value={response[name].logs}
+                      value={response[name]?.logs}
                       height="80vh"
                     />
                     {/*<div style={{height: '80vh', overflow: 'auto'}}>*/}
@@ -274,7 +274,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                 language="html"
                 setEditor={setEditor}
                 readOnly={true}
-                value={response[name].logs}
+                value={response[name]?.logs}
                 height="80vh"
               />
               {/*<div style={{height: '80vh', overflow: 'auto'}}>*/}
