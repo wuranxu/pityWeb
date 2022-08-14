@@ -12,6 +12,11 @@ export default [
             path: '/user/login',
             component: './User/login',
           },
+          {
+            name: 'resetPassword',
+            path: "/user/resetPassword",
+            component: "./User/resetPassword"
+          }
         ],
       },
       {

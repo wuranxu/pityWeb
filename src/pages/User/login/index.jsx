@@ -1,21 +1,14 @@
-import {
-  AlipayCircleOutlined, GithubOutlined,
-  LockOutlined, MailOutlined,
-  MobileOutlined,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
-import { Alert, Space, Tabs } from 'antd';
-import React, { useState } from 'react';
-import ProForm, { ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
-import { connect, FormattedMessage, useIntl } from 'umi';
+import {GithubOutlined, LockOutlined, MailOutlined, MobileOutlined, UserOutlined,} from '@ant-design/icons';
+import {Alert, Space, Tabs} from 'antd';
+import React, {useRef, useState} from 'react';
+import ProForm, {ProFormCheckbox, ProFormText} from '@ant-design/pro-form';
+import {connect, FormattedMessage, useIntl} from 'umi';
 import styles from './index.less';
 
 const clientId = `0f4fc0a875de30614a6a`;
 // const clientId = `c46c7ae33442d13498cd`;
 
-const LoginMessage = ({ content }) => (
+const LoginMessage = ({content}) => (
   <Alert
     style={{
       marginBottom: 24,
@@ -27,22 +20,24 @@ const LoginMessage = ({ content }) => (
 );
 
 const Login = (props) => {
-  const { userLogin = {}, submitting } = props;
-  const { status, type: loginType } = userLogin;
+  const {userLogin = {}, submitting} = props;
+  const {status, type: loginType} = userLogin;
+  const formRef = useRef();
   const [type, setType] = useState('account');
   const intl = useIntl();
+  const {dispatch} = props;
+
 
   const handleSubmit = (values) => {
-    const { dispatch } = props;
     if (type === 'account') {
       dispatch({
         type: 'login/login',
-        payload: { username: values.username, password: values.password },
+        payload: {username: values.username, password: values.password},
       });
     } else {
       dispatch({
         type: 'login/register',
-        payload: { ...values, setType } ,
+        payload: {...values, setType},
       });
     }
 
@@ -54,7 +49,7 @@ const Login = (props) => {
   }
 
   const handleEnterKey = (e) => {
-    if(e.nativeEvent.keyCode === 13){ //e.nativeEvent获取原生的事件对像
+    if (e.nativeEvent.keyCode === 13) { //e.nativeEvent获取原生的事件对像
       handleSubmit()
     }
   }
@@ -62,6 +57,7 @@ const Login = (props) => {
   return (
     <div className={styles.main}>
       <ProForm
+        formRef={formRef}
         initialValues={{
           autoLogin: true,
         }}
@@ -111,7 +107,7 @@ const Login = (props) => {
               fieldProps={{
                 size: 'large',
                 style: {borderRadius: "24px"},
-                prefix: <UserOutlined className={styles.prefixIcon} />,
+                prefix: <UserOutlined className={styles.prefixIcon}/>,
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.username.placeholder',
@@ -134,7 +130,7 @@ const Login = (props) => {
               fieldProps={{
                 size: 'large',
                 style: {borderRadius: "24px"},
-                prefix: <LockOutlined className={styles.prefixIcon} />,
+                prefix: <LockOutlined className={styles.prefixIcon}/>,
               }}
               placeholder={intl.formatMessage({
                 id: 'pages.login.password.placeholder',
@@ -156,7 +152,7 @@ const Login = (props) => {
         )}
 
         {status === 'error' && loginType === 'mobile' && !submitting && (
-          <LoginMessage content="验证码错误" />
+          <LoginMessage content="验证码错误"/>
         )}
         {type === 'register' && (
           <>
@@ -164,7 +160,7 @@ const Login = (props) => {
               fieldProps={{
                 size: 'large',
                 style: {borderRadius: "24px"},
-                prefix: <UserOutlined className={styles.prefixIcon} />,
+                prefix: <UserOutlined className={styles.prefixIcon}/>,
               }}
               name="username"
               placeholder="请输入用户名"
@@ -179,7 +175,7 @@ const Login = (props) => {
               fieldProps={{
                 size: 'large',
                 style: {borderRadius: "24px"},
-                prefix: <MobileOutlined className={styles.prefixIcon} />,
+                prefix: <MobileOutlined className={styles.prefixIcon}/>,
               }}
               name="name"
               placeholder="请输入姓名"
@@ -194,14 +190,15 @@ const Login = (props) => {
               fieldProps={{
                 size: 'large',
                 style: {borderRadius: "24px"},
-                prefix: <MailOutlined className={styles.prefixIcon} />,
+                prefix: <MailOutlined className={styles.prefixIcon}/>,
               }}
               name="email"
               placeholder="请输入用户邮箱"
               rules={[
                 {
+                  type: 'email',
                   required: true,
-                  message: "请输入用户邮箱",
+                  message: "请输入合法的邮箱",
                 }
               ]}
             />
@@ -209,7 +206,7 @@ const Login = (props) => {
               fieldProps={{
                 size: 'large',
                 style: {borderRadius: "24px"},
-                prefix: <LockOutlined className={styles.prefixIcon} />,
+                prefix: <LockOutlined className={styles.prefixIcon}/>,
                 type: 'password'
               }}
               name="password"
@@ -229,19 +226,40 @@ const Login = (props) => {
           }}
         >
           <ProFormCheckbox noStyle name="autoLogin">
-            <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+            <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录"/>
           </ProFormCheckbox>
           <a
+            onClick={() => {
+              if (type === 'account') {
+                if (formRef?.current?.getFieldValue("username") === '') {
+                  message.info("请在用户名处输入你的邮箱")
+                  return;
+                }
+                dispatch({
+                  type: 'login/resetPwd',
+                  payload: formRef?.current?.getFieldValue("username")
+                })
+              } else {
+                if (formRef?.current?.getFieldValue("email") === '') {
+                  message.info("请在邮箱处输入你的邮箱")
+                  return;
+                }
+                dispatch({
+                  type: 'login/resetPwd',
+                  payload: formRef?.current?.getFieldValue("email")
+                })
+              }
+            }}
             style={{
               float: 'right',
             }}
           >
-            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+            <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
           </a>
         </div>
       </ProForm>
       <Space className={styles.other}>
-        <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式" />
+        <FormattedMessage id="pages.login.loginWith" defaultMessage="其他登录方式"/>
         <GithubOutlined className={styles.icon} onClick={redirectToGithub}/>
         {/*<TaobaoCircleOutlined className={styles.icon} />*/}
         {/*<WeiboCircleOutlined className={styles.icon} />*/}
@@ -250,7 +268,7 @@ const Login = (props) => {
   );
 };
 
-export default connect(({ login, loading }) => ({
+export default connect(({login, loading}) => ({
   userLogin: login,
   submitting: loading.effects['login/login'],
 }))(Login);

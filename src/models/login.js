@@ -1,15 +1,17 @@
 import {stringify} from 'querystring';
 import {history} from 'umi';
-import {login, register} from '@/services/login';
+import {checkUrl, generateResetLink, login, register, resetPwd} from '@/services/login';
 import {setAuthority} from '@/utils/authority';
 import {getPageQuery} from '@/utils/utils';
-import {message} from 'antd';
+import {message, notification} from 'antd';
 import {CONFIG} from '@/consts/config';
+import auth from "@/utils/auth";
 
 const Model = {
   namespace: 'login',
   state: {
     status: undefined,
+    currentEmail: '',
   },
   effects: {
     * register({payload}, {call, _}) {
@@ -78,6 +80,34 @@ const Model = {
         });
       }
     },
+
+    * resetPwd({payload}, {call, put}) {
+      const res = yield call(generateResetLink, payload);
+      if (auth.response(res)) {
+        notification.success({
+          message: `正在发送重置密码邮件`,
+          description: `我们正在为${payload}发送重置密码邮件, 如果您已注册过pity，请注意查收邮件。`
+        })
+      }
+    },
+
+    * doResetPassword({payload}, {call, put}) {
+      const res = yield call(resetPwd, payload);
+      return auth.response(res)
+    },
+
+    * checkResetUrl({payload}, {call, put}) {
+      const res = yield call(checkUrl, payload);
+      if (!auth.notificationResponse(res)) {
+        return
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          currentEmail: res.data
+        }
+      })
+    }
   },
   reducers: {
     changeLoginStatus(state, {payload}) {
@@ -89,6 +119,12 @@ const Model = {
       setAuthority(CONFIG.ROLE[payload.data.user.role]);
       return {...state, status: payload.code === 0 ? 'ok' : 'error', type: 'account'};
     },
+    save(state, {payload}) {
+      return {
+        ...state,
+        ...payload,
+      }
+    }
   },
 };
 export default Model;
