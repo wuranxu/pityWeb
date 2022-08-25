@@ -91,7 +91,7 @@
     "react-split-pane": "^0.1.92",
     "react-syntax-highlighter": "^15.4.3",
     "react-tooltip": "^4.2.21",
-    "umi": "^3.5.22",
+    "umi": "3.5.22",
     "umi-request": "1.0.8"
   },
   "devDependencies": {
