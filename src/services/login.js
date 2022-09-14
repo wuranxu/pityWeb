@@ -9,7 +9,7 @@ export async function fakeAccountLogin(params) {
 }
 
 export async function login(params) {
-  return request(`${CONFIG.URL}/auth/login`, {
+  return request(`${CONFIG.URL}/v1/user/login`, {
     method: 'POST',
     data: params,
   });
