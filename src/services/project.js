@@ -4,8 +4,8 @@ import auth from '@/utils/auth';
 
 export async function listProject(params) {
   return request(`${CONFIG.URL}/project/list`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data: params,
     headers: auth.headers(),
   });
 }

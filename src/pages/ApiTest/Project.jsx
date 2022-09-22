@@ -39,8 +39,8 @@ const Project = ({dispatch, project, loading}) => {
     const res = await listProject({page: current, size});
     setSpinning(false)
     if (auth.response(res)) {
-      setData(res.data);
-      setPagination({...pagination, current, total: res.total});
+      setData(res.data.data);
+      setPagination({...pagination, current, total: res.data.total});
     }
   };
 

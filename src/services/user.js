@@ -43,7 +43,7 @@ export async function deleteNotice(params) {
 
 
 export async function listUsers(params) {
-  const res = await request(`${CONFIG.URL}/v1/user/listUser`, {
+  const res = await request(`${CONFIG.URL}/user/listUser`, {
     method: 'POST',
     params,
     headers: auth.headers(),
@@ -55,7 +55,7 @@ export async function listUsers(params) {
 }
 
 export async function updateUsers(data) {
-  return await request(`${CONFIG.URL}/v1/user/update`, {
+  return await request(`${CONFIG.URL}/user/update`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -74,7 +74,7 @@ export async function updateAvatar(data) {
 }
 
 export async function deleteUsers(params) {
-  return await request(`${CONFIG.URL}/v1/user/delete`, {
+  return await request(`${CONFIG.URL}/user/delete`, {
     method: 'POST',
     params,
     headers: auth.headers(),
@@ -99,15 +99,15 @@ export async function listUserOperationLog(params) {
 }
 
 export async function loginGithub(params) {
-  return await request(`${CONFIG.URL}/v1/user/github/login`, {
-    method: 'GET',
-    params,
+  return await request(`${CONFIG.URL}/user/loginWithGithub`, {
+    method: 'POST',
+    data: params,
     headers: auth.headers(),
   });
 }
 
 export async function queryUserStatistics(params) {
-  return await request(`${CONFIG.URL}/v1/dashboard/workspace`, {
+  return await request(`${CONFIG.URL}/dashboard/workspace`, {
     method: 'POST',
     params,
     headers: auth.headers(),

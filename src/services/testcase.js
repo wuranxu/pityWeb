@@ -2,10 +2,10 @@ import request from '@/utils/request';
 import {CONFIG} from '@/consts/config';
 import auth from '@/utils/auth';
 
-export async function listTestCaseTree(params) {
-  return request(`${CONFIG.URL}/testcase/list`, {
-    method: 'GET',
-    params,
+export async function listTestCaseTree(data) {
+  return request(`${CONFIG.URL}/testcase/listTestCase`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }

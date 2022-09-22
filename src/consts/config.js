@@ -13,6 +13,7 @@ const isDev = () => {
 const dev = isDev()
 
 const getUrl = () => {
+  return "http://localhost:8080/v1"
   if (defaultSettings.apiUrl !== null) {
     return defaultSettings.apiUrl;
   }
