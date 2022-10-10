@@ -42,10 +42,10 @@ export async function deleteNotice(params) {
 }
 
 
-export async function listUsers(params) {
+export async function listUsers() {
   const res = await request(`${CONFIG.URL}/user/listUser`, {
     method: 'POST',
-    params,
+    data: {},
     headers: auth.headers(),
   });
   if (auth.response(res)) {

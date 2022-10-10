@@ -113,10 +113,16 @@ const Model = {
     changeLoginStatus(state, {payload}) {
       // 写入用户信息
       localStorage.setItem('pityToken', payload.data.token);
-      localStorage.setItem('pityUser', JSON.stringify(payload.data.user));
+      localStorage.setItem('pityUser', JSON.stringify({
+        email: payload.data.email,
+        name: payload.data.name,
+        id: payload.data.id,
+        role: payload.data.role,
+        avatar: payload.data.avatar,
+      }));
       localStorage.setItem('pityExpire', payload.data.expire)
       // setAuthority(payload.currentAuthority);
-      setAuthority(CONFIG.ROLE[payload.data.user.role]);
+      setAuthority(CONFIG.ROLE[payload.data.role]);
       return {...state, status: payload.code === 0 ? 'ok' : 'error', type: 'account'};
     },
     save(state, {payload}) {

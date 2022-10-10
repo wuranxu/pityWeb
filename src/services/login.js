@@ -16,21 +16,23 @@ export async function login(params) {
 }
 
 export async function generateResetLink(params) {
-  return request(`${CONFIG.URL}/auth/reset/generate/${params}`, {
-    method: 'GET',
+  return request(`${CONFIG.URL}/user/generatePassword`, {
+    method: 'POST',
+    data: {email: params}
   });
 }
 
 
 export async function checkUrl(params) {
-  return request(`${CONFIG.URL}/auth/reset/check/${params}`, {
-    method: 'GET',
+  return request(`${CONFIG.URL}/user/checkToken`, {
+    method: 'POST',
+    data: {token: params},
   });
 }
 
 // 重置密码接口
 export async function resetPwd(data) {
-  return request(`${CONFIG.URL}/auth/reset`, {
+  return request(`${CONFIG.URL}/user/resetPassword`, {
     method: 'POST',
     data,
   });
@@ -38,7 +40,7 @@ export async function resetPwd(data) {
 
 // 注册接口
 export async function register(params) {
-  return request(`${CONFIG.URL}/auth/register`, {
+  return request(`${CONFIG.URL}/user/register`, {
     method: 'POST',
     data: params,
   });
