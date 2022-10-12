@@ -48,11 +48,7 @@ export default {
     },
 
     * uploadFile({payload}, {call, put}) {
-      const res = yield call(updateAvatar, payload)
-      if (auth.response(res, true)) {
-        return res.data;
-      }
-      return null;
+      return yield call(updateAvatar, payload)
     },
 
     * deleteProject({payload}, {call, put}) {

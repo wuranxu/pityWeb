@@ -35,12 +35,11 @@ export default () => {
   };
 
   const fetchData = async (projId = projectId) => {
-    const res = await queryProject({projectId: projId});
+    const res = await queryProject({id: parseInt(projId, 10)});
     setAuthority(res.code !== 403);
     if (auth.response(res)) {
       setProjectData(res.data.project);
       setRoles(res.data.roles);
-
     }
   };
 

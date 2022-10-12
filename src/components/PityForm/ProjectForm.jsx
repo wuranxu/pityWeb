@@ -38,9 +38,9 @@ const ProjectForm = ({left, right, formName, record, reloadData, onFinish, field
                                 payload: {
                                     file: fileData.file,
                                     project_id: record.id,
+                                    reloadData,
                                 }
                             })
-                            await reloadData()
                         }} fileList={[]}>
                             <Row style={{textAlign: 'center', marginBottom: 24}}>
                                 <ProjectAvatar data={record}/>

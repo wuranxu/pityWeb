@@ -18,10 +18,10 @@ export async function insertProject(params) {
   });
 }
 
-export async function queryProject(params) {
+export async function queryProject(data) {
   return request(`${CONFIG.URL}/project/query`, {
-    method: 'GET',
-    params,
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
@@ -59,14 +59,23 @@ export async function deleteProjectRole(data) {
 }
 
 export async function updateAvatar(data) {
-  const formData = new FormData();
-  formData.append("file", data.file)
-  return await request(`${CONFIG.URL}/project/avatar/${data.project_id}`, {
-    method: 'POST',
-    data: formData,
-    requestType: 'form',
-    headers: auth.headers(false),
-  });
+  const reader = new FileReader();
+  reader.readAsDataURL(data.file)
+  reader.onload = async () => {
+    const res = await request(`${CONFIG.URL}/project/updateAvatar`, {
+      method: 'POST',
+      data: {
+        filename: data.file.name,
+        content: reader.result,
+        project_id: data.project_id
+      },
+      headers: auth.headers(),
+    });
+    if (auth.response(res, true)) {
+      await data.reloadData()
+    }
+    return res.data
+  }
 }
 
 /**
