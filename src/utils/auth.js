@@ -55,7 +55,7 @@ export default {
       }
       return true;
     }
-    if (res.code === 401) {
+    if (res.code === 401 || res.code === 10002) {
       // 说明用户未认证
       // message.info(res.msg);
       localStorage.setItem('pityToken', null);

@@ -58,7 +58,7 @@ const Project = ({dispatch, project, loading}) => {
     const res = await dispatch({
       type: 'project/deleteProject',
       payload: {
-        projectId,
+        id: projectId,
       },
     });
     if (res) {

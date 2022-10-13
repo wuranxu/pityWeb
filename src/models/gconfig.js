@@ -274,7 +274,7 @@ export default {
      * @returns {Generator<*, boolean, *>}
      */
     * fetchAddress({payload}, {call, put}) {
-      const res = yield call(listGateway, payload);
+      const res = yield call(listGateway, payload || {});
       if (!auth.response(res)) {
         message.error(res.msg);
         return;

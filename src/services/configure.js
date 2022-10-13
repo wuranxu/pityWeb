@@ -132,10 +132,10 @@ export async function insertRedisConfig(params) {
  * @param params
  * @returns {Promise<any>}
  */
-export async function listGateway(params) {
-  return request(`${CONFIG.URL}/config/gateway/list`, {
-    method: 'GET',
-    params,
+export async function listGateway(data) {
+  return request(`${CONFIG.URL}/config/listGateway`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
@@ -146,7 +146,7 @@ export async function listGateway(params) {
  * @returns {Promise<any>}
  */
 export async function insertGateway(data) {
-  return request(`${CONFIG.URL}/config/gateway/insert`, {
+  return request(`${CONFIG.URL}/config/insertGateway`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -159,17 +159,17 @@ export async function insertGateway(data) {
  * @returns {Promise<any>}
  */
 export async function updateGateway(data) {
-  return request(`${CONFIG.URL}/config/gateway/update`, {
+  return request(`${CONFIG.URL}/config/updateGateway`, {
     method: 'POST',
     data,
     headers: auth.headers(),
   });
 }
 
-export async function deleteGateway(params) {
-  return request(`${CONFIG.URL}/config/gateway/delete`, {
-    method: 'GET',
-    params,
+export async function deleteGateway(data) {
+  return request(`${CONFIG.URL}/config/deleteGateway`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }

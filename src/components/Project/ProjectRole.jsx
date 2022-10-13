@@ -35,7 +35,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
   const onUpdateRole = async (item, value) => {
     const body = {
       ...item,
-      project_role: value,
+      project_role: parseInt(value, 10),
     }
     const res = await updateProjectRole(body);
     if (auth.response(res, true)) {
@@ -46,7 +46,8 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
   const onFinish = async values => {
     const info = {
       ...values,
-      project_id: params.id,
+      project_id: parseInt(params.id, 10),
+      project_role: parseInt(values.project_role, 10)
     }
     const res = await insertProjectRole(info);
     if (auth.response(res, true)) {

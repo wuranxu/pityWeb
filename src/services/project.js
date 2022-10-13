@@ -35,7 +35,7 @@ export async function updateProject(data) {
 }
 
 export async function insertProjectRole(data) {
-  return request(`${CONFIG.URL}/project/role/insert`, {
+  return request(`${CONFIG.URL}/project/insertRole`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -43,7 +43,7 @@ export async function insertProjectRole(data) {
 }
 
 export async function updateProjectRole(data) {
-  return request(`${CONFIG.URL}/project/role/update`, {
+  return request(`${CONFIG.URL}/project/updateRole`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -51,7 +51,7 @@ export async function updateProjectRole(data) {
 }
 
 export async function deleteProjectRole(data) {
-  return request(`${CONFIG.URL}/project/role/delete`, {
+  return request(`${CONFIG.URL}/project/deleteRole`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -81,10 +81,10 @@ export async function updateAvatar(data) {
 /**
  * 删除项目
  */
-export async function deleteProject(params) {
+export async function deleteProject(data) {
   return request(`${CONFIG.URL}/project/delete`, {
-    method: 'DELETE',
-    params,
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
