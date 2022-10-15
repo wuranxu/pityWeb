@@ -148,11 +148,11 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            data: res.data,
+            data: res.data.data,
             pagination: {
               ...state.pagination,
               current: payload.page,
-              total: res.total,
+              total: res.data.total,
             },
           },
         });
@@ -190,7 +190,7 @@ export default {
         payload: {
           page: state.pagination.current,
           size: state.pagination.pageSize,
-          env: state.currentEnv,
+          env: state.currentEnv || 0,
           key: state.name,
         },
       });
@@ -210,7 +210,7 @@ export default {
         payload: {
           page: state.pagination.current,
           size: state.pagination.pageSize,
-          env: state.currentEnv,
+          env: state.currentEnv || 0,
           key: state.name,
         },
       });
@@ -225,7 +225,7 @@ export default {
           payload: {
             page: state.pagination.current,
             size: state.pagination.pageSize,
-            env: state.currentEnv,
+            env: state.currentEnv || 0,
             key: state.name,
           },
         });
@@ -255,7 +255,6 @@ export default {
     * fetchRedisConfig({payload}, {call, put}) {
       const res = yield call(listRedisConfig, payload);
       if (!auth.response(res)) {
-        message.error(res.msg);
         return;
       }
       yield put({
@@ -332,7 +331,7 @@ export default {
     * onlineRedisCommand({payload}, {call, put}) {
       const res = yield call(onlineRedisCommand, payload);
       if (auth.response(res)) {
-        return res.data;
+        return JSON.parse(res.data);
       }
       return res.msg;
     },

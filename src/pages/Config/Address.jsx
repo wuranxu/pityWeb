@@ -21,9 +21,6 @@ const Address = ({loading, gconfig, dispatch}) => {
     dispatch({
       type: 'gconfig/fetchEnvList',
       payload: {
-        page: 1,
-        size: 1000,
-        exactly: true
       }
     })
   }

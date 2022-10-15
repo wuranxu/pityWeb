@@ -2,127 +2,127 @@ import request from '@/utils/request';
 import {CONFIG} from '@/consts/config';
 import auth from '@/utils/auth';
 
-export async function listEnvironment(params) {
-  return request(`${CONFIG.URL}/config/environment/list`, {
-    method: 'GET',
-    params,
-    headers: auth.headers(),
-  });
-}
-
-export async function insertEnvironment(params) {
-  return request(`${CONFIG.URL}/config/environment/insert`, {
+export async function listEnvironment(data) {
+  return request(`${CONFIG.URL}/config/listEnvironment`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function updateEnvironment(params) {
-  return request(`${CONFIG.URL}/config/environment/update`, {
+export async function insertEnvironment(data) {
+  return request(`${CONFIG.URL}/config/insertEnvironment`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function deleteEnvironment(params) {
-  return request(`${CONFIG.URL}/config/environment/delete`, {
-    method: 'GET',
-    params,
-    headers: auth.headers(),
-  });
-}
-
-
-export async function insertGConfig(params) {
-  return request(`${CONFIG.URL}/config/gconfig/insert`, {
+export async function updateEnvironment(data) {
+  return request(`${CONFIG.URL}/config/updateEnvironment`, {
     method: 'POST',
-    data: params,
+    data,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteEnvironment(data) {
+  return request(`${CONFIG.URL}/config/deleteEnvironment`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+
+export async function insertGConfig(data) {
+  return request(`${CONFIG.URL}/config/insertGConfig`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // 获取gconfig列表
-export async function listGConfig(params) {
-  return request(`${CONFIG.URL}/config/gconfig/list`, {
-    method: 'GET',
-    params,
+export async function listGConfig(data) {
+  return request(`${CONFIG.URL}/config/listGConfig`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // 获取gconfig列表
-export async function listDbConfig(params) {
-  return request(`${CONFIG.URL}/config/dbconfig/list`, {
-    method: 'GET',
-    params,
-    headers: auth.headers(),
-  });
-}
-
-export async function insertDbConfig(params) {
-  return request(`${CONFIG.URL}/config/dbconfig/insert`, {
+export async function listDbConfig(data) {
+  return request(`${CONFIG.URL}/config/listDbConfig`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function updateDbConfig(params) {
-  return request(`${CONFIG.URL}/config/dbconfig/update`, {
+export async function insertDbConfig(data) {
+  return request(`${CONFIG.URL}/config/insertDbConfig`, {
     method: 'POST',
-    data: params,
+    data: data,
     headers: auth.headers(),
   });
 }
 
-export async function onTestDbConfig(params) {
-  return request(`${CONFIG.URL}/config/dbconfig/connect`, {
-    method: 'GET',
-    params,
-    headers: auth.headers(),
-  });
-}
-
-export async function deleteDbConfig(params) {
-  return request(`${CONFIG.URL}/config/dbconfig/delete`, {
-    method: 'GET',
-    params,
-    headers: auth.headers(),
-  });
-}
-
-export async function updateGConfig(params) {
-  return request(`${CONFIG.URL}/config/gconfig/update`, {
+export async function updateDbConfig(data) {
+  return request(`${CONFIG.URL}/config/updateDbConfig`, {
     method: 'POST',
-    data: params,
+    data: data,
+    headers: auth.headers(),
+  });
+}
+
+export async function onTestDbConfig(data) {
+  return request(`${CONFIG.URL}/config/testDbConfig`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+export async function deleteDbConfig(data) {
+  return request(`${CONFIG.URL}/config/deleteDbConfig`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}
+
+export async function updateGConfig(data) {
+  return request(`${CONFIG.URL}/config/updateGConfig`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 
-export async function deleteGConfig(params) {
-  return request(`${CONFIG.URL}/config/gconfig/delete`, {
-    method: 'GET',
-    params,
+export async function deleteGConfig(data) {
+  return request(`${CONFIG.URL}/config/deleteGConfig`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // redis配置
-export async function listRedisConfig(params) {
-  return request(`${CONFIG.URL}/config/redis/list`, {
-    method: 'GET',
-    params,
+export async function listRedisConfig(data) {
+  return request(`${CONFIG.URL}/config/listRedis`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function insertRedisConfig(params) {
-  return request(`${CONFIG.URL}/config/redis/insert`, {
+export async function insertRedisConfig(data) {
+  return request(`${CONFIG.URL}/config/insertRedis`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
@@ -175,26 +175,26 @@ export async function deleteGateway(data) {
 }
 
 
-export async function updateRedisConfig(params) {
-  return request(`${CONFIG.URL}/config/redis/update`, {
+export async function updateRedisConfig(data) {
+  return request(`${CONFIG.URL}/config/updateRedis`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function deleteRedisConfig(params) {
-  return request(`${CONFIG.URL}/config/redis/delete`, {
-    method: 'GET',
-    params,
+export async function deleteRedisConfig(data) {
+  return request(`${CONFIG.URL}/config/deleteRedis`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function onlineRedisCommand(params) {
-  return request(`${CONFIG.URL}/config/redis/command`, {
+export async function onlineRedisCommand(data) {
+  return request(`${CONFIG.URL}/config/runRedisCommand`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }

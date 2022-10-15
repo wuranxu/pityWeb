@@ -27,9 +27,6 @@ const Redis = ({gconfig, loading, dispatch}) => {
     dispatch({
       type: 'gconfig/fetchEnvList',
       payload: {
-        page: 1,
-        size: 1000,
-        exactly: true // 全部获取
       }
     })
   }
@@ -73,11 +70,11 @@ const Redis = ({gconfig, loading, dispatch}) => {
       key: 'addr',
       dataIndex: 'addr',
     },
-    {
-      title: '用户名',
-      key: 'username',
-      dataIndex: 'username',
-    },
+    // {
+    //   title: '用户名',
+    //   key: 'username',
+    //   dataIndex: 'username',
+    // },
     {
       title: '密码',
       key: 'password',
@@ -114,7 +111,7 @@ const Redis = ({gconfig, loading, dispatch}) => {
     if (!record.id) {
       res = await dispatch({
         type: 'gconfig/insertRedisConfig',
-        payload: values,
+        payload: {...values, db: values.db || 0},
       })
     } else {
       res = await dispatch({
@@ -122,6 +119,7 @@ const Redis = ({gconfig, loading, dispatch}) => {
         payload: {
           ...values,
           id: record.id,
+          db: values.db || 0
         }
       })
     }
@@ -197,14 +195,14 @@ const Redis = ({gconfig, loading, dispatch}) => {
             ]}>
               <Input placeholder="输入redis连接地址, 集群用英文逗号隔开"/>
             </Form.Item>
-            <Form.Item label="用户名" name="username" rules={[
-              {
-                required: false,
-                message: "输入redis用户名",
-              }
-            ]}>
-              <Input placeholder="输入redis用户名"/>
-            </Form.Item>
+            {/*<Form.Item label="用户名" name="username" rules={[*/}
+            {/*  {*/}
+            {/*    required: false,*/}
+            {/*    message: "输入redis用户名",*/}
+            {/*  }*/}
+            {/*]}>*/}
+            {/*  <Input placeholder="输入redis用户名"/>*/}
+            {/*</Form.Item>*/}
             <Form.Item label="密码" name="password" rules={[
               {
                 required: false,

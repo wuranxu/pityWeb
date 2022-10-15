@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Button, Card, Col, Spin, Divider, Input, Row, Table } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
-import { PlusOutlined } from '@ant-design/icons';
-import { deleteEnvironment, insertEnvironment, listEnvironment, updateEnvironment } from '@/services/configure';
+import React, {Component} from 'react';
+import {Button, Card, Col, Divider, Input, Row, Spin, Table} from 'antd';
+import {PageContainer} from '@ant-design/pro-layout';
+import {PlusOutlined} from '@ant-design/icons';
+import {deleteEnvironment, insertEnvironment, listEnvironment, updateEnvironment} from '@/services/configure';
 import auth from '@/utils/auth';
 import FormForModal from '@/components/PityForm/FormForModal';
 import fields from '@/consts/fields';
@@ -21,7 +21,7 @@ class Environment extends Component {
     name: '',
     visible: false,
     loading: false,
-    record: { id: 0 },
+    record: {id: 0},
   };
 
   async componentDidMount() {
@@ -31,15 +31,15 @@ class Environment extends Component {
   }
 
   fetchEnvironmentList = async (page = this.state.pagination.current, size = this.state.pagination.pageSize, name = this.state.name) => {
-    this.setState({ loading: true });
-    const res = await listEnvironment({ page, size, name });
+    this.setState({loading: true});
+    const res = await listEnvironment({page, size, name});
     if (auth.response(res)) {
       this.setState({
         data: res.data,
-        pagination: { total: res.total, current: page, pageSize: size },
+        pagination: {total: res.data.length, current: page, pageSize: size},
       });
     }
-    this.setState({ loading: false });
+    this.setState({loading: false});
   };
 
   onSearch = async name => {
@@ -47,7 +47,7 @@ class Environment extends Component {
   };
 
   onFinish = async values => {
-    const params = { ...values, id: this.state.record.id };
+    const params = {...values, id: this.state.record.id};
     let res;
     if (this.state.record.id === 0) {
       // 说明是新增
@@ -56,13 +56,13 @@ class Environment extends Component {
       res = await updateEnvironment(params);
     }
     if (auth.response(res, true)) {
-      this.setState({ visible: false });
+      this.setState({visible: false});
     }
     await this.fetchEnvironmentList();
   };
 
   onDelete = async id => {
-    const res = await deleteEnvironment({ id });
+    const res = await deleteEnvironment({id});
     auth.response(res, true);
     await this.fetchEnvironmentList();
   };
@@ -102,9 +102,9 @@ class Environment extends Component {
         key: 'operation',
         render: (_, record) => <>
           <a onClick={() => {
-            this.setState({ visible: true, record });
+            this.setState({visible: true, record});
           }}>编辑</a>
-          <Divider type='vertical' />
+          <Divider type='vertical'/>
           <a onClick={async () => {
             await this.onDelete(record.id);
           }}>删除</a>
@@ -116,7 +116,7 @@ class Environment extends Component {
         <Spin spinning={this.state.loading}>
           <Card>
             <FormForModal visible={this.state.visible} onCancel={() => {
-              this.setState({ visible: false });
+              this.setState({visible: false});
             }}
                           title='环境管理' left={6} right={18} width={500} record={this.state.record}
                           onFinish={this.onFinish} fields={fields.Environment}
@@ -124,20 +124,20 @@ class Environment extends Component {
             <Row>
               <Col span={6}>
                 <Button type='primary' onClick={() => {
-                  this.setState({ visible: true, record: { id: 0 } });
-                }}><PlusOutlined />新增环境</Button>
+                  this.setState({visible: true, record: {id: 0}});
+                }}><PlusOutlined/>新增环境</Button>
               </Col>
-              <Col span={12} />
+              <Col span={12}/>
               <Col span={6}>
                 <Input.Search placeholder='请输入环境名'
                               value={this.state.name}
                               onSearch={this.onSearch}
                               onChange={e => {
-                                this.setState({ name: e.target.value });
-                              }} />
+                                this.setState({name: e.target.value});
+                              }}/>
               </Col>
             </Row>
-            <Row style={{ marginTop: 12 }}>
+            <Row style={{marginTop: 12}}>
               <Col span={24}>
                 <Table dataSource={this.state.data} columns={columns} onChange={async pagination => {
                   await this.fetchEnvironmentList(pagination.current, pagination.pageSize);

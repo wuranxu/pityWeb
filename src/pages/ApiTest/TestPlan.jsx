@@ -205,9 +205,6 @@ const TestPlan = ({testplan, dispatch, loading, gconfig, user, project}) => {
     dispatch({
       type: 'gconfig/fetchEnvList',
       payload: {
-        page: 1,
-        size: 1000,
-        exactly: true // 全部获取
       }
     })
   }

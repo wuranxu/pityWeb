@@ -20,7 +20,8 @@ const RedisConstructor = ({form, dispatch, construct, gconfig, suffix}) => {
 
   useEffect(() => {
     dispatch({
-      type: 'gconfig/fetchRedisConfig'
+      type: 'gconfig/fetchRedisConfig',
+      payload: {}
     })
   }, [])
 

@@ -34,7 +34,7 @@ export default {
 
   effects: {
     * fetchDatabaseSource({payload}, {call, put}) {
-      const res = yield call(fetchDatabaseSource);
+      const res = yield call(fetchDatabaseSource, payload);
       if (auth.response(res)) {
         yield put({
           type: 'save',
@@ -88,7 +88,7 @@ export default {
     },
 
     * fetchHistorySQL({payload}, {call, put, select}) {
-      const res = yield call(listHistory, payload);
+      const res = yield call(listHistory, payload || {});
       if (auth.response(res)) {
         const online = yield select(state => state.online)
         yield put({

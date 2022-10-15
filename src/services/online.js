@@ -2,16 +2,16 @@ import request from "@/utils/request";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 
-export async function fetchDatabaseSource(params) {
-  return request(`${CONFIG.URL}/online/database/list`, {
-    method: 'GET',
-    params,
+export async function fetchDatabaseSource(data) {
+  return request(`${CONFIG.URL}/config/listDbTree`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 export async function fetchTables(data) {
-  return request(`${CONFIG.URL}/online/tables/list`, {
+  return request(`${CONFIG.URL}/config/listDbTables`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -19,18 +19,18 @@ export async function fetchTables(data) {
 }
 
 
-export async function onlineExecuteSQL(params) {
-  return request(`${CONFIG.URL}/online/sql`, {
+export async function onlineExecuteSQL(data) {
+  return request(`${CONFIG.URL}/config/runSQL`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function listHistory(params) {
-  return request(`${CONFIG.URL}/online/history/query`, {
-    method: 'GET',
-    params,
+export async function listHistory(data) {
+  return request(`${CONFIG.URL}/config/querySQLHistory`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }

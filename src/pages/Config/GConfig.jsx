@@ -158,10 +158,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
   const getEnvList = async () => {
     await dispatch({
       type: 'gconfig/fetchEnvList',
-      payload: {
-        page: 1,
-        size: 10000,
-      },
+      payload: {},
     });
   };
 
@@ -177,7 +174,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       payload: {
         page,
         size,
-        env: currentEnv || '',
+        env: currentEnv ? currentEnv: 0,
         key: name,
       },
     });
@@ -230,7 +227,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
             <Button type='primary'
                     onClick={() => {
                       save({modal: true});
-                      setRecord({id: 0, key_type: 0, env: currentEnv !== null ? currentEnv.toString() : currentEnv})
+                      setRecord({id: 0, key_type: 0, env: currentEnv !== null ? currentEnv : currentEnv})
                     }}><PlusOutlined/>添加变量</Button>
           </Col>
           <Col span={4}/>
@@ -240,7 +237,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
                                           save({currentEnv: e});
                                         }}>
               {
-                envList.map(v => <Option value={v.id.toString()}>{v.name}</Option>)
+                envList.map(v => <Option value={v.id}>{v.name}</Option>)
               }
             </Select>} placeholder='请输入key' value={name} onChange={e => {
               save({name: e.target.value});

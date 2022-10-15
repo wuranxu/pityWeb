@@ -54,8 +54,6 @@ const Database = ({dispatch, gconfig, loading}) => {
     dispatch({
       type: 'gconfig/fetchEnvList',
       payload: {
-        page: 1,
-        size: 10000,
       },
     });
     await fetchDbConfig();

@@ -28,7 +28,8 @@ const DatabaseConstructor = ({form, dispatch, construct, gconfig, suffix}) => {
 
   useEffect(() => {
     dispatch({
-      type: 'gconfig/fetchDbConfig'
+      type: 'gconfig/fetchDbConfig',
+      payload: {}
     })
   }, [])
 

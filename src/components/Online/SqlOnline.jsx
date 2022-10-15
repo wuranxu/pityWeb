@@ -42,6 +42,7 @@ const SqlOnline = ({online, dispatch, loading, leftHeight, cardHeight, tableHeig
   useEffect(() => {
     dispatch({
       type: 'online/fetchDatabaseSource',
+      payload: {}
     })
   }, [])
 

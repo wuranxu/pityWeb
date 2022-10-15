@@ -146,6 +146,7 @@ const RedisOnline = ({dispatch, gconfig}) => {
   useEffect(() => {
     dispatch({
       type: 'gconfig/fetchRedisConfig',
+      payload: {}
     })
 
   }, [])
