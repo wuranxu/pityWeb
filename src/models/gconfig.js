@@ -169,7 +169,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          options: res.data.map(v => (
+          options: res.data.data.map(v => (
             {label: v, value: `$\{${v.key}\}`, key: v.id}
           ))
         },

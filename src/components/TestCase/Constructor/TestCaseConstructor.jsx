@@ -14,6 +14,7 @@ export default ({data, form, dispatch, testcaseData, constructorType}) => {
   useEffect(() => {
     dispatch({
       type: 'construct/getTestCaseListTree',
+      payload: {}
     })
   }, [])
 

@@ -7,6 +7,7 @@ import React, {useEffect, useState} from "react";
 import {CONFIG} from '../../../consts/config';
 import RequestInfoList from "./RequestInfoList";
 import {CameraOutlined, FireOutlined, ImportOutlined} from "@ant-design/icons";
+import auth from '../../../utils/auth';
 
 enum ImportType {
   har = 1
@@ -96,22 +97,36 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
     }
   }
 
-  const onUpload = async fileData => {
+  const uploadCallback = (res) => {
+    if (auth.response(res)) {
+      const data = res.data.map((v, index) => ({
+        ...v,
+        index,
+        request_headers: JSON.stringify(v.request_headers, null, 2),
+        response_headers: JSON.stringify(v.response_headers, null, 2),
+        cookies: JSON.stringify(v.cookies, null, 2),
+        request_cookies: JSON.stringify(v.request_cookies, null, 2),
+      }));
+      if (data.length > 0) {
+        notification.success({
+          message: `🎉 成功导入${data.length}条数据，快去挑选请求生成用例吧~`,
+          placement: 'topLeft'
+        })
+        setRecord(data)
+      }
+    }
+  }
+
+  const onUpload = fileData => {
     setSelectedRowKeys([])
-    const res = await dispatch({
+    dispatch({
       type: 'recorder/import',
       payload: {
         file: fileData.file,
         import_type: ImportType.har,
+        callback: uploadCallback,
       }
     })
-    if (res.length > 0) {
-      notification.success({
-        message: `🎉 成功导入${res.length}条数据，快去挑选请求生成用例吧~`,
-        placement: 'topLeft'
-      })
-      setRecord(res)
-    }
   }
 
   return (
@@ -135,7 +150,8 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
       </Form>
       {
         record.length === 0 ?
-          <Empty image={NoRecord} imageStyle={{height: 220}} description="当前没有任何请求数据，你可以选择【录制】后的数据，也可以导入har文件提取接口👏">
+          <Empty image={NoRecord} imageStyle={{height: 220}}
+                 description="当前没有任何请求数据，你可以选择【录制】后的数据，也可以导入har文件提取接口👏">
             <Space>
               <Button onClick={onLoadRecords}><CameraOutlined/> 录制请求</Button>
               <Upload showUploadList={false} customRequest={onUpload} fileList={[]}>

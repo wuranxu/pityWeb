@@ -43,7 +43,7 @@ const AddTestCaseComponent = ({
     dispatch({
       type: 'testcase/queryTestcaseDirectory',
       payload: {
-        directory_id,
+        directory_id: parseInt(directory_id, 10),
       }
     })
 
@@ -87,7 +87,7 @@ const AddTestCaseComponent = ({
       ...values,
       request_type: parseInt(values.request_type, 10),
       status: parseInt(values.status, 10),
-      tag: values.tag ? values.tag.join(',') : null,
+      tag: values.tag ? values.tag.join(',') : '',
       directory_id,
       body_type: bodyType,
       request_headers: common.translateHeaders(headers),

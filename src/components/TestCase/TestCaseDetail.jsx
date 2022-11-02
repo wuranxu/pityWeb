@@ -103,7 +103,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
       return;
     }
     setLoading(true);
-    const res = await queryTestCase({caseId});
+    const res = await queryTestCase({case_id: caseId});
     if (auth.response(res)) {
       setData(res.data);
     }
@@ -126,7 +126,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
       ...values,
       request_type: parseInt(values.request_type, 10),
       status: parseInt(values.status, 10),
-      tag: values.tag !== undefined ? values.tag.join(',') : null,
+      tag: values.tag !== undefined ? values.tag.join(',') : '',
       project_id: project.id,
       id: caseId,
       request_headers: translateHeaders(), body

@@ -226,7 +226,8 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
 
   const listEnv = () => {
     dispatch({
-      type: 'gconfig/fetchEnvList'
+      type: 'gconfig/fetchEnvList',
+      payload: {}
     })
   }
 
@@ -236,9 +237,9 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       dispatch({
         type: 'testcase/listTestcase',
         payload: {
-          directory_id: currentDirectory[0],
+          directory_id: parseInt(currentDirectory[0], 10),
           name: values.name || '',
-          create_user: values.create_user !== null && values.create_user !== undefined ? values.create_user : '',
+          create_user: values?.create_user || 0,
         },
       })
     }
@@ -288,12 +289,12 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     if (record.id) {
       result = await dispatch({
         type: 'testcase/updateTestcaseDirectory',
-        payload: {...params, id: record.id},
+        payload: {...params, id: record.id, parent: params.parent === null ? 0 : parseInt(params.parent, 10)},
       })
     } else {
       result = await dispatch({
         type: 'testcase/insertTestcaseDirectory',
-        payload: params,
+        payload: {...params, parent: params.parent === null ? 0 : parseInt(params.parent, 10)},
       })
     }
     if (result) {
@@ -336,7 +337,9 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   const onDeleteTestcase = async () => {
     const res = await dispatch({
       type: 'testcase/deleteTestcase',
-      payload: selectedRowKeys,
+      payload: {
+        data: selectedRowKeys
+      },
     })
     if (res) {
       listTestcase();

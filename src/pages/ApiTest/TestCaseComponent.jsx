@@ -62,7 +62,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       dispatch({
         type: 'testcase/queryTestcase',
         payload: {
-          caseId: case_id,
+          case_id,
         }
       })
     }
@@ -72,9 +72,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     dispatch({
       type: 'testcase/queryTestcaseDirectory',
       payload: {
-        directory_id,
+        directory_id: parseInt(directory_id, 10),
       }
-    })
+    }, [])
 
     // 获取环境信息
     dispatch({
@@ -108,7 +108,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     || loading.effects['testcase/fetchUserList'])
 
   const getTag = tag => {
-    if (tag === null) {
+    if (tag === null || tag === '') {
       return '无'
     }
     if (typeof tag === 'object') {
@@ -140,7 +140,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       ...values,
       request_type: parseInt(values.request_type, 10),
       status: parseInt(values.status, 10),
-      tag: values.tag ? values.tag.join(',') : null,
+      tag: values.tag ? values.tag.join(',') : '',
       directory_id,
       body_type: bodyType,
       request_headers: common.translateHeaders(headers),
@@ -152,7 +152,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       params.name = caseInfo.name;
       params.status = caseInfo.status;
       params.tag = caseInfo.tag !== null ? typeof caseInfo.tag === 'object' ?
-        caseInfo.tag.join(',') : caseInfo.tag ? caseInfo.tag : null : null;
+        caseInfo.tag.join(',') : caseInfo.tag ? caseInfo.tag : '' : '';
       params.request_type = caseInfo.request_type;
     }
     if (caseInfo.id) {

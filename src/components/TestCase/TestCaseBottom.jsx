@@ -335,7 +335,9 @@ const TestCaseBottom = ({
                                    }
                                    return await dispatch({
                                      type: 'construct/orderConstructor',
-                                     payload: newData.map((v, index) => ({id: v.id, index}))
+                                     payload: {
+                                       data: newData.map((v, index) => ({id: v.id, index}))
+                                     }
                                    })
                                  }}/>
                   </Col>
@@ -418,7 +420,9 @@ const TestCaseBottom = ({
                                    }
                                    return await dispatch({
                                      type: 'construct/orderConstructor',
-                                     payload: newData.map((v, index) => ({id: v.id, index}))
+                                     payload: {
+                                       data: newData.map((v, index) => ({id: v.id, index}))
+                                     }
                                    })
                                  }}/>
                   </Col>

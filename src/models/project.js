@@ -29,17 +29,17 @@ export default {
       const res = yield call(listProject, {page: 1, size: 10000});
       if (auth.response(res)) {
         const projects = {}
-        res.data.forEach(item => {
+        res.data.data.forEach(item => {
           projects[item.id] = item.name;
         })
         let projId = yield select(state => state.project.project_id)
         if (projId === undefined) {
-          projId = res.data.length > 0 ? res.data[0].id : undefined
+          projId = res.data.data.length > 0 ? res.data.data[0].id : undefined
         }
         yield put({
           type: 'save',
           payload: {
-            projects: res.data,
+            projects: res.data.data,
             projectsMap: projects,
             project_id: projId,
           }

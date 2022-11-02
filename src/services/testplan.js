@@ -12,10 +12,10 @@ export async function listTestPlan(params) {
 }
 
 
-export async function listTestPlanCaseTree(params) {
-  return request(`${CONFIG.URL}/testcase/tree`, {
-    method: 'GET',
-    params,
+export async function listTestPlanCaseTree(data) {
+  return request(`${CONFIG.URL}/testcase/queryTestCaseTree`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }

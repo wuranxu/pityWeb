@@ -28,10 +28,10 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            reportData: res.data,
+            reportData: res.data.data,
             pagination: {
               ...pagination,
-              total: res.total,
+              total: res.data.total,
             }
           }
         })

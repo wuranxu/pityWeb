@@ -36,7 +36,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
   const [editor, setEditor] = useState(null);
 
   const getBrain = async (case_id = response.case_id, single = true) => {
-    const res = await queryXmindData({case_id})
+    const res = await queryXmindData({id: case_id})
     if (auth.response(res)) {
       if (single) {
         setXmindData(res.data)

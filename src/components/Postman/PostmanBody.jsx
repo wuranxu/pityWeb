@@ -113,7 +113,7 @@ const PostmanBody = ({
   useEffect(async () => {
     const res = await listGConfig({page: 1, size: 500});
     if (auth.response(res)) {
-      const data = res.data.map((v) => ({
+      const data = res.data.data.map((v) => ({
         label: <Tooltip title={<pre>{v.value}</pre>}>
           <div>{v.key}</div>
         </Tooltip>, value: `$\{${v.key}\}`, key: v.id

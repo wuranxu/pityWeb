@@ -10,49 +10,49 @@ export async function listTestCaseTree(data) {
   });
 }
 
-export async function createTestCase(params) {
-  return request(`${CONFIG.URL}/testcase/insert`, {
+export async function createTestCase(data) {
+  return request(`${CONFIG.URL}/testcase/insertTestCase`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function createTestCaseV2(params) {
-  return request(`${CONFIG.URL}/testcase/create`, {
+export async function createTestCaseV2(data) {
+  return request(`${CONFIG.URL}/testcase/createTestCase`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function updateTestCase(params) {
-  return request(`${CONFIG.URL}/testcase/update`, {
+export async function updateTestCase(data) {
+  return request(`${CONFIG.URL}/testcase/updateTestCase`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function listTestcase(params) {
-  return request(`${CONFIG.URL}/testcase/list`, {
-    method: 'GET',
-    params,
+export async function listTestcase(data) {
+  return request(`${CONFIG.URL}/testcase/listTestCase`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function queryTestCase(params) {
-  return request(`${CONFIG.URL}/testcase/query`, {
-    method: 'GET',
-    params,
+export async function queryTestCase(data) {
+  return request(`${CONFIG.URL}/testcase/queryTestCase`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // 新增断言
 export async function insertTestCaseAsserts(data) {
-  return request(`${CONFIG.URL}/testcase/asserts/insert`, {
+  return request(`${CONFIG.URL}/testcase/insertAsserts`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -61,7 +61,7 @@ export async function insertTestCaseAsserts(data) {
 
 // 编辑断言
 export async function updateTestCaseAsserts(data) {
-  return request(`${CONFIG.URL}/testcase/asserts/update`, {
+  return request(`${CONFIG.URL}/testcase/updateAsserts`, {
     method: 'POST',
     data,
     headers: auth.headers(),
@@ -70,52 +70,52 @@ export async function updateTestCaseAsserts(data) {
 
 // 删除断言
 export async function deleteTestCaseAsserts(data) {
-  return request(`${CONFIG.URL}/testcase/asserts/delete`, {
-    method: 'GET',
-    params: data,
+  return request(`${CONFIG.URL}/testcase/deleteAsserts`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function queryXmindData(params) {
-  return request(`${CONFIG.URL}/testcase/xmind`, {
-    method: 'GET',
-    params,
+export async function queryXmindData(data) {
+  return request(`${CONFIG.URL}/testcase/queryXmindData`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // 获取测试用例树
-export async function listTestcaseTree(params) {
-  return request(`${CONFIG.URL}/testcase/directory`, {
-    method: 'GET',
-    params,
+export async function listTestcaseTree(data) {
+  return request(`${CONFIG.URL}/testcase/queryTestCaseDirTree`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
-export async function queryTestcaseDirectory(params) {
-  return request(`${CONFIG.URL}/testcase/directory/query`, {
-    method: 'GET',
-    params,
+export async function queryTestcaseDirectory(data) {
+  return request(`${CONFIG.URL}/testcase/queryTestCaseDir`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // 新增目录
-export async function insertTestcaseDirectory(params) {
-  return request(`${CONFIG.URL}/testcase/directory/insert`, {
+export async function insertTestcaseDirectory(data) {
+  return request(`${CONFIG.URL}/testcase/insertTestCaseDir`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
 // 修改目录
-export async function updateTestcaseDirectory(params) {
-  return request(`${CONFIG.URL}/testcase/directory/update`, {
+export async function updateTestcaseDirectory(data) {
+  return request(`${CONFIG.URL}/testcase/updateTestCaseDir`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
@@ -125,59 +125,59 @@ export async function updateTestcaseDirectory(params) {
  * @param params
  * @returns {Promise<any>}
  */
-export async function moveTestCase(params) {
-  return request(`${CONFIG.URL}/testcase/move`, {
+export async function moveTestCase(data) {
+  return request(`${CONFIG.URL}/testcase/moveTestCase`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
 // 删除目录
-export async function deleteTestcaseDirectory(params) {
-  return request(`${CONFIG.URL}/testcase/directory/delete`, {
-    method: 'GET',
-    params,
+export async function deleteTestcaseDirectory(data) {
+  return request(`${CONFIG.URL}/testcase/deleteTestCaseDir`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 /**
  * 删除测试用例
- * @param params
+ * @param data
  * @returns {Promise<any>}
  */
-export async function deleteTestcase(params) {
-  return request(`${CONFIG.URL}/testcase/delete`, {
-    method: 'DELETE',
-    data: params,
+export async function deleteTestcase(data) {
+  return request(`${CONFIG.URL}/testcase/deleteTestCase`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
 
 // 新增测试数据
-export async function insertTestcaseData(params) {
-  return request(`${CONFIG.URL}/testcase/data/insert`, {
+export async function insertTestcaseData(data) {
+  return request(`${CONFIG.URL}/testcase/insertTestData`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
 // 编辑测试数据
-export async function updateTestcaseData(params) {
-  return request(`${CONFIG.URL}/testcase/data/update`, {
+export async function updateTestcaseData(data) {
+  return request(`${CONFIG.URL}/testcase/updateTestData`, {
     method: 'POST',
-    data: params,
+    data,
     headers: auth.headers(),
   });
 }
 
 // 删除测试数据
-export async function deleteTestcaseData(params) {
-  return request(`${CONFIG.URL}/testcase/data/delete`, {
-    method: 'GET',
-    params,
+export async function deleteTestcaseData(data) {
+  return request(`${CONFIG.URL}/testcase/deleteTestData`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }
@@ -226,7 +226,7 @@ export async function stopRecord(params) {
 
 // 生成用例
 export async function generateCase(data) {
-  return request(`${CONFIG.URL}/testcase/generate`, {
+  return request(`${CONFIG.URL}/testcase/generateTestCase`, {
     headers: auth.headers(),
     data,
     method: 'POST'
@@ -235,15 +235,42 @@ export async function generateCase(data) {
 
 // 导入har文件
 export async function importFile(data) {
-  const formData = new FormData();
-  formData.append("file", data.file)
-  return await request(`${CONFIG.URL}/testcase/import`, {
-    method: 'POST',
-    data: formData,
-    params: {import_type: data.import_type},
-    requestType: 'form',
-    headers: auth.headers(false),
-  });
+  const reader = new FileReader();
+  reader.readAsDataURL(data.file)
+  reader.onload = async () => {
+    const res = await request(`${CONFIG.URL}/testcase/importTestCase`, {
+      method: 'POST',
+      data: {
+        filename: data.file.name,
+        content: reader.result,
+        import_type: data.import_type
+      },
+      headers: auth.headers(),
+    });
+    data.callback(res)
+  }
+  // let res;
+  // reader.onload = async () => {
+  //   res = await request(`${CONFIG.URL}/testcase/importTestCase`, {
+  //     method: 'POST',
+  //     data: {
+  //       filename: data.file.name,
+  //       content: reader.result,
+  //       import_type: data.import_type
+  //     },
+  //     headers: auth.headers(),
+  //   });
+  // }
+  // return res;
+  // const formData = new FormData();
+  // formData.append("file", data.file)
+  // return await request(`${CONFIG.URL}/testcase/import`, {
+  //   method: 'POST',
+  //   data: formData,
+  //   params: {import_type: data.import_type},
+  //   requestType: 'form',
+  //   headers: auth.headers(false),
+  // });
 }
 
 // 删除录制数据
