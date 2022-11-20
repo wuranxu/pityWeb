@@ -249,28 +249,6 @@ export async function importFile(data) {
     });
     data.callback(res)
   }
-  // let res;
-  // reader.onload = async () => {
-  //   res = await request(`${CONFIG.URL}/testcase/importTestCase`, {
-  //     method: 'POST',
-  //     data: {
-  //       filename: data.file.name,
-  //       content: reader.result,
-  //       import_type: data.import_type
-  //     },
-  //     headers: auth.headers(),
-  //   });
-  // }
-  // return res;
-  // const formData = new FormData();
-  // formData.append("file", data.file)
-  // return await request(`${CONFIG.URL}/testcase/import`, {
-  //   method: 'POST',
-  //   data: formData,
-  //   params: {import_type: data.import_type},
-  //   requestType: 'form',
-  //   headers: auth.headers(false),
-  // });
 }
 
 // 删除录制数据

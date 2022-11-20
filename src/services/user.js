@@ -106,10 +106,10 @@ export async function loginGithub(params) {
   });
 }
 
-export async function queryUserStatistics(params) {
+export async function queryUserStatistics(data) {
   return await request(`${CONFIG.URL}/dashboard/workspace`, {
     method: 'POST',
-    params,
+    data,
     headers: auth.headers(),
   });
 }

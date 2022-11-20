@@ -156,8 +156,8 @@ const UserModel = {
       }
     },
 
-    * queryUserStatistics(_, {call, put}) {
-      const response = yield call(queryUserStatistics);
+    * queryUserStatistics({payload}, {call, put}) {
+      const response = yield call(queryUserStatistics, payload);
       if (auth.response(response)) {
         yield put({
           type: 'save',

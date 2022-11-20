@@ -74,10 +74,13 @@ const Workspace = ({user, dispatch}) => {
 
   useEffect(() => {
     dispatch({
-      type: "user/queryUserStatistics"
+      type: "user/queryUserStatistics",
+      payload: {}
     })
     dispatch({
-      type: 'user/queryFollowTestPlanData'
+      type: 'user/queryFollowTestPlanData',
+      payload: {}
+
     })
   }, [])
 
