@@ -44,7 +44,7 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            planData: res.data,
+            planData: res.data.data,
           }
         })
       }

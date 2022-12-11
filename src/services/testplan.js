@@ -3,10 +3,10 @@ import request from "@/utils/request";
 import {CONFIG} from "@/consts/config";
 import auth from "@/utils/auth";
 
-export async function listTestPlan(params) {
-  return request(`${CONFIG.URL}/testcase/plan/list`, {
-    method: 'GET',
-    params,
+export async function listTestPlan(data) {
+  return request(`${CONFIG.URL}/testcase/listTestPlan`, {
+    method: 'POST',
+    data,
     headers: auth.headers(),
   });
 }

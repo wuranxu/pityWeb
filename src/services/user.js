@@ -114,10 +114,10 @@ export async function queryUserStatistics(data) {
   });
 }
 
-export async function queryFollowTestPlanData(params) {
-  return await request(`${CONFIG.URL}/workspace/testplan`, {
-    method: 'GET',
-    params,
+export async function queryFollowTestPlanData(data) {
+  return await request(`${CONFIG.URL}/testcase/queryUserFollowTestPlan`, {
+    method: 'POST',
+    data: data || {},
     headers: auth.headers(),
   });
 }

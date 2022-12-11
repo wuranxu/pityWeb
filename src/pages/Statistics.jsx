@@ -231,9 +231,9 @@ export default () => {
                       avatar={<Avatar src={users[item.id]?.avatar || CONFIG.AVATAR_URL}/>}
                       title={
                         <span>
-                        {users[item.id]?.name
-                        } <Badge style={{marginLeft: 8}} status={clients[item.id] ? "success" : 'default'}
-                                 text={clients[item.id] ? "在线" : '离线'}/>
+                        {users[item.id]?.name}
+                          {/*<Badge style={{marginLeft: 8}} status={clients[item.id] ? "success" : 'default'}*/}
+                          {/*       text={clients[item.id] ? "在线" : '离线'}/>*/}
                       </span>
                       }
                       description={users[item.id]?.email}
