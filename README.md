@@ -3,6 +3,10 @@
 ![png](https://img.shields.io/badge/React-17+-blue)
 ![png](https://img.shields.io/badge/contributors-3-green)
 
+### V2版本体验地址
+
+  [http://121.5.2.74:8006](http://121.5.2.74:8006/)
+
 ### 技术栈
 
 - [x] antd pro 👍
