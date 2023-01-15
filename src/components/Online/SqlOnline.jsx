@@ -1,12 +1,12 @@
 import {Card, Col, Empty, message, Row, Select, Spin, Table, Tabs, Tree} from "antd";
 import React, {useEffect, useState} from 'react';
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import SqlAceEditor from "@/components/CodeEditor/AceEditor/SqlAceEditor";
 import emptyWork from '@/assets/emptyWork.svg';
 import {CopyTwoTone, PlayCircleTwoTone} from "@ant-design/icons";
 import {IconFont} from "@/components/Icon/IconFont";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import noResult from '@/assets/NoData.svg';
 import {Data, HistoryQuery, InsertTable, Key, ListView} from "@icon-park/react";

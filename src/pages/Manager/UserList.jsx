@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {Card, Col, Divider, Form, Input, Modal, Row, Select, Switch, Table, Tag} from "antd";
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import UserLink from "@/components/Button/UserLink";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import PityPopConfirm from "@/components/Confirm/PityPopConfirm";
 import {UserOutlined} from "@ant-design/icons";
 
@@ -153,7 +153,7 @@ const UserInfo = ({user, dispatch, loading}) => {
   return (
     <PageContainer breadcrumb={null} title="用户管理页面">
       <Card>
-        <Modal title="编辑用户" width={500} visible={modal} onCancel={() => setModal(false)} onOk={onSubmit}>
+        <Modal title="编辑用户" width={500} open={modal} onCancel={() => setModal(false)} onOk={onSubmit}>
           <Form form={form} initialValues={record} {...CONFIG.LAYOUT}>
             <Form.Item label="姓名" name="name">
               <Input placeholder="输入用户姓名"/>

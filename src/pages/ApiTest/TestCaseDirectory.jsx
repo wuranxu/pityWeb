@@ -1,4 +1,5 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
+import {REQUEST_TYPE} from '@/components/Common/global';
 import {
   Avatar,
   Badge,
@@ -23,7 +24,7 @@ import {
   Tooltip,
   TreeSelect
 } from "antd";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import React, {memo, useEffect, useState} from "react";
 import SplitPane from 'react-split-pane';
 import "./TestCaseDirectory.less";
@@ -44,7 +45,7 @@ import {
 import 'react-contexify/dist/ReactContexify.css';
 import NoRecord from "@/components/NotFound/NoRecord";
 import FormForModal from "@/components/PityForm/FormForModal";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import auth from "@/utils/auth";
 import TestResult from "@/components/TestCase/TestResult";
 import UserLink from "@/components/Button/UserLink";
@@ -156,7 +157,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       dataIndex: "request_type",
       key: 'request_type',
       width: 110,
-      render: request_type => CONFIG.REQUEST_TYPE[request_type]
+      render: request_type => REQUEST_TYPE[request_type]
     },
     {
       title: "优先级",
@@ -254,7 +255,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
     listTestcaseTree();
   }, [project_id])
 
-  useEffect(async () => {
+  useEffect(() => {
     listTestcase();
   }, [currentDirectory])
 
@@ -474,66 +475,66 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
   </AMenu>
 
   return (
-    <PageContainer title={false} breadcrumb={null} style={{margin: -8}}>
+    <PageContainer title={false} breadcrumb={null}>
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={name} single={false}/>
       <FormForModal title="移动用例" onCancel={() => setMoveModal(false)}
                     fields={moveFields} onFinish={onMove}
-                    visible={moveModal} left={6} right={18} width={500} formName="move"/>
+                    open={moveModal} left={6} right={18} width={500} formName="move"/>
       {
         projects.length === 0 ? <Result status="404"
                                         subTitle={<span>你还没有添加任何项目, <a target="_blank"
                                                                                  href="/#/apiTest/project">添加项目</a>后才能编写Case</span>}/> :
 
-          <Row gutter={16}>
-            <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
-                          fields={fields} onFinish={onCreateDirectory} record={record}
-                          visible={rootModal} left={6} right={18} width={400} formName="root"/>
-            <Drawer bodyStyle={{padding: 0}} visible={addCaseVisible} width={1300} title="添加用例"
-                    onClose={() => setAddCaseVisible(false)} maskClosable={false}>
-              <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]}
-                                    setAddCaseVisible={setAddCaseVisible}/>
-            </Drawer>
-            <RecorderDrawer directory={directory} visible={recorderModal} setVisible={setRecorderModal}/>
-            <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={300} maxSize={800}>
-              <ScrollCard className="card" hideOverflowX bodyPadding={12}>
-                <Row gutter={8}>
-                  <Col span={24}>
-                    <div style={{height: 40, lineHeight: '40px'}}>
-                      {
-                        editing ? <Select style={{marginLeft: 32, width: 150}} showSearch allowClear
-                                          placeholder="请选择项目" value={project_id} autoFocus={true}
-                                          onChange={e => {
-                                            if (e !== undefined) {
-                                              save({project_id: e})
-                                            }
-                                            setEditing(false);
-                                          }}
-                                          filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                          }>
-                            {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
-                          </Select> :
-                          <div onClick={() => setEditing(true)}>
-                            <Avatar style={{marginLeft: 8, marginRight: 6}} size="large"
-                                    src={getProject().avatar || CONFIG.PROJECT_AVATAR_URL}/>
-                            <span style={{
-                              display: 'inline-block',
-                              marginLeft: 12,
-                              fontWeight: 400,
-                              fontSize: 14
-                            }}>{getProject().name}</span>
-                            <Switch style={{marginLeft: 12, cursor: 'pointer', lineHeight: '40px'}}
-                                    theme="outline" size="16" fill="#7ed321"/>
-                          </div>
-                      }
-                    </div>
-                  </Col>
-                </Row>
-                <div style={{marginTop: 24}}>
-                  <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
-                    {directory.length > 0 ?
-                      <>
+          <Card style={{height: '100%', minHeight: 600}} bodyStyle={{padding: 0}} bordered={false}>
+            <Row>
+              <FormForModal title={modalTitle} onCancel={() => setRootModal(false)}
+                            fields={fields} onFinish={onCreateDirectory} record={record}
+                            open={rootModal} left={6} right={18} width={400} formName="root"/>
+              <Drawer bodyStyle={{padding: 0}} open={addCaseVisible} width={1300} title="添加用例"
+                      onClose={() => setAddCaseVisible(false)} maskClosable={false}>
+                <AddTestCaseComponent listTestcase={listTestcase} directory_id={currentDirectory[0]}
+                                      setAddCaseVisible={setAddCaseVisible}/>
+              </Drawer>
+              <RecorderDrawer directory={directory} open={recorderModal} setVisible={setRecorderModal}/>
+              <SplitPane className="pitySplit" split="vertical" minSize={260} defaultSize={300} maxSize={800}>
+                <ScrollCard className="card" hideOverflowX={true}>
+                  <Row gutter={8}>
+                    <Col span={24}>
+                      <div style={{height: 40, lineHeight: '40px'}}>
+                        {
+                          editing ? <Select style={{marginLeft: 32, width: 150}} showSearch allowClear
+                                            placeholder="请选择项目" value={project_id} autoFocus={true}
+                                            onChange={e => {
+                                              if (e !== undefined) {
+                                                save({project_id: e})
+                                              }
+                                              setEditing(false);
+                                            }}
+                                            filterOption={(input, option) =>
+                                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }>
+                              {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
+                            </Select> :
+                            <div onClick={() => setEditing(true)}>
+                              <Avatar style={{marginLeft: 8, marginRight: 6}} size="large"
+                                      src={getProject().avatar || CONFIG.PROJECT_AVATAR_URL}/>
+                              <span style={{
+                                display: 'inline-block',
+                                marginLeft: 12,
+                                fontWeight: 400,
+                                fontSize: 14
+                              }}>{getProject().name}</span>
+                              <Switch style={{marginLeft: 12, cursor: 'pointer', lineHeight: '40px'}}
+                                      theme="outline" size="16" fill="#7ed321"/>
+                            </div>
+                        }
+                      </div>
+                    </Col>
+                  </Row>
+                  <div style={{marginTop: 24}}>
+                    <Spin spinning={loading.effects['testcase/listTestcaseDirectory']}>
+                      {directory.length > 0 ?
                         <SearchTree treeData={directory} menu={content}
                                     addDirectory={AddDirectory}
                                     onSelect={keys => {
@@ -546,92 +547,93 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                           handleItemClick(1, node)
                         }} selectedKeys={currentDirectory}
                         />
-                      </> : <NoRecord height={180} desc={<div>
+                        : <NoRecord height={180} desc={<span>
                         还没有目录，<a onClick={() => {
-                        setRootModal(true)
-                        setRecord({name: ''})
-                        setModalTitle("新建根目录");
-                        setCurrentNode(null);
-                      }}>添加</a>一个吧~
-                      </div>}/>
-                    }
-                  </Spin>
-                </div>
-              </ScrollCard>
-              <ScrollCard className="card" hideOverflowX>
-                {
-                  currentDirectory.length > 0 ? <>
-                    <Form form={form}>
-                      <Row gutter={6}>
-                        <Col span={8}>
-                          <Form.Item label="用例名称"  {...layout} name="name">
-                            <Input placeholder="输入用例名称"/>
-                          </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                          <Form.Item label="创建人"  {...layout} name="create_user">
-                            <UserSelect users={userList} placeholder="请选择创建用户"/>
-                          </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                          <div style={{float: 'right'}}>
-                            <Button type="primary" onClick={async () => {
-                              await listTestcase();
-                            }}><SearchOutlined/> 查询</Button>
-                            <Button style={{marginLeft: 8}} onClick={async () => {
-                              form.resetFields();
-                              await listTestcase();
-                            }}><ReloadOutlined/> 重置</Button>
-                          </div>
+                          setRootModal(true)
+                          setRecord({name: ''})
+                          setModalTitle("新建根目录");
+                          setCurrentNode(null);
+                        }}>添加</a>一个吧~
+                      </span>}/>
+                      }
+                    </Spin>
+                  </div>
+                </ScrollCard>
+                <ScrollCard className="card" hideOverflowX={true}>
+                  {
+                    currentDirectory.length > 0 ? <>
+                      <Form form={form}>
+                        <Row gutter={6}>
+                          <Col span={8}>
+                            <Form.Item label="用例名称"  {...layout} name="name">
+                              <Input placeholder="输入用例名称"/>
+                            </Form.Item>
+                          </Col>
+                          <Col span={8}>
+                            <Form.Item label="创建人"  {...layout} name="create_user">
+                              <UserSelect users={userList} placeholder="请选择创建用户"/>
+                            </Form.Item>
+                          </Col>
+                          <Col span={8}>
+                            <div style={{float: 'right'}}>
+                              <Button type="primary" onClick={async () => {
+                                await listTestcase();
+                              }}><SearchOutlined/> 查询</Button>
+                              <Button style={{marginLeft: 8}} onClick={async () => {
+                                form.resetFields();
+                                await listTestcase();
+                              }}><ReloadOutlined/> 重置</Button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Form>
+                      <Row gutter={8} style={{marginTop: 4}}>
+                        <Col span={24}>
+                          <Dropdown overlay={AddCaseMenu} trigger="click">
+                            <Button type="primary"><PlusOutlined/> 添加用例</Button>
+                          </Dropdown>
+                          {selectedRowKeys.length > 0 ?
+                            <Dropdown overlay={menu()} trigger={['hover']}>
+                              <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
+                                e.stopPropagation()
+                              }}>执行用例 <DownOutlined/></Button>
+                            </Dropdown>
+                            : null}
+                          {selectedRowKeys.length > 0 ?
+                            <Button type="dashed" style={{marginLeft: 8}} icon={<ExportOutlined/>}
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onMoveTestCase();
+                                    }}>移动用例</Button>
+                            : null}
+                          {selectedRowKeys.length > 0 ?
+                            <Button danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onDeleteTestcase();
+                                    }}>删除用例</Button>
+                            : null}
                         </Col>
                       </Row>
-                    </Form>
-                    <Row gutter={8} style={{marginTop: 4}}>
-                      <Col span={24}>
-                        <Dropdown overlay={AddCaseMenu} trigger="click">
-                          <Button type="primary"><PlusOutlined/> 添加用例</Button>
-                        </Dropdown>
-                        {selectedRowKeys.length > 0 ?
-                          <Dropdown overlay={menu()} trigger={['hover']}>
-                            <Button style={{marginLeft: 8}} icon={<PlayCircleOutlined/>} onClick={(e) => {
-                              e.stopPropagation()
-                            }}>执行用例 <DownOutlined/></Button>
-                          </Dropdown>
-                          : null}
-                        {selectedRowKeys.length > 0 ?
-                          <Button type="dashed" style={{marginLeft: 8}} icon={<ExportOutlined/>}
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    onMoveTestCase();
-                                  }}>移动用例</Button>
-                          : null}
-                        {selectedRowKeys.length > 0 ?
-                          <Button danger style={{marginLeft: 8}} icon={<DeleteOutlined/>}
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    onDeleteTestcase();
-                                  }}>删除用例</Button>
-                          : null}
-                      </Col>
-                    </Row>
-                    <Row style={{marginTop: 16}}>
-                      <Col span={24}>
-                        <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
-                               pagination={pagination}
-                               bordered
-                               onChange={pg => {
-                                 saveCase({pagination: {...pagination, current: pg.current}})
-                               }}
-                               dataSource={testcases}
-                               loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
-                      </Col>
-                    </Row>
-                  </> : <Empty image={emptyWork} imageStyle={{height: 230}}
-                               description="快选中左侧的目录畅享用例之旅吧~"/>
-                }
-              </ScrollCard>
-            </SplitPane>
-          </Row>
+                      <Row style={{marginTop: 16}}>
+                        <Col span={24}>
+                          <Table columns={columns} rowKey={record => record.id} rowSelection={rowSelection}
+                                 pagination={pagination}
+                                 bordered
+                                 onChange={pg => {
+                                   saveCase({pagination: {...pagination, current: pg.current}})
+                                 }}
+                                 dataSource={testcases}
+                                 loading={loading.effects['testcase/listTestcase'] || loading.effects['testcase/executeTestcase']}/>
+                        </Col>
+                      </Row>
+                    </> : <Empty image={emptyWork} imageStyle={{height: 230}}
+                                 description="快选中左侧的目录畅享用例之旅吧~"/>
+                  }
+                </ScrollCard>
+              </SplitPane>
+            </Row>
+          </Card>
       }
     </PageContainer>
   )

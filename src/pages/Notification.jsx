@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {PageContainer} from '@ant-design/pro-layout';
-import {Card, Col, List, Menu, Modal, Row} from "antd";
-import {connect} from 'umi';
-import UserLink from "@/components/Button/UserLink";
+import {PageContainer} from '@ant-design/pro-components';
+import {Avatar, Card, Col, List, Menu, Modal, Row} from "antd";
+import {connect, useModel} from '@umijs/max';
 import TooltipIcon from "@/components/Icon/TooltipIcon";
-import {CloseOutlined, EyeTwoTone, NotificationOutlined} from "@ant-design/icons";
+import {CloseOutlined, EyeTwoTone} from "@ant-design/icons";
 import Markdown from "@/components/CodeEditor/Markdown";
+import "./UserInfo.less";
+import UserLink from "@/components/Button/UserLink";
 
-const Notification = ({global, loading, user, dispatch}) => {
+const Notification = ({user, dispatch}) => {
 
   const [current, setCurrent] = useState("0");
   const [activeTab, setActiveTab] = useState("1");
@@ -15,6 +16,7 @@ const Notification = ({global, loading, user, dispatch}) => {
   const [visible, setVisible] = useState(false);
   const [content, setContent] = useState("");
   const {userMap} = user;
+  const {fetchNotices, setNoticeCount, deleteNotices, readNotices, notices} = useModel('notice');
 
   const tabListNoTitle = [
     {
@@ -31,50 +33,37 @@ const Notification = ({global, loading, user, dispatch}) => {
     setCurrent(e.key);
   };
 
-  const {notices} = global;
+  const getNotices = async (currentTab) => {
+    const data = await fetchNotices({
+      msg_status: currentTab,
+      msg_type: current,
+    })
+    if (currentTab === '1') {
+      await readNotices(data)
+      setNoticeCount(0)
+    }
+  }
 
-  useEffect(async () => {
-    await dispatch({
-      type: 'global/fetchNotices',
-      payload: {
-        msg_status: activeTab,
-        msg_type: current,
-      }
-    });
-
-    if (activeTab === '1') {
-      await dispatch({
-        type: 'global/readNotices',
-      })
-      await dispatch({
-        type: 'global/save',
-        payload: {
-          noticeCount: 0,
-        }
+  useEffect(() => {
+    getNotices(activeTab)
+    if (Object.keys(userMap).length === 0) {
+      dispatch({
+        type: 'user/fetchUserList'
       })
     }
   }, [activeTab, current])
 
   const onDelete = async id => {
-    await dispatch({
-      type: 'global/deleteNotice',
-      payload: {
-        idList: [id]
-      }
+    await deleteNotices({idList: [id]})
+    await fetchNotices({
+      msg_status: activeTab,
+      msg_type: current,
     })
-
-    await dispatch({
-      type: 'global/fetchNotices',
-      payload: {
-        msg_status: activeTab,
-        msg_type: current,
-      }
-    });
   }
 
   return (
     <PageContainer breadcrumb={null} title="消息中心">
-      <Modal title={title} visible={visible} footer={null} onCancel={() => {
+      <Modal title={title} open={visible} footer={null} onCancel={() => {
         setVisible(false)
       }}>
         <Markdown value={content}/>
@@ -112,8 +101,8 @@ const Notification = ({global, loading, user, dispatch}) => {
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<UserLink user={userMap[item.sender]}/>}
-                    title={<a href={item.link}>{item.msg_title}</a>}
+                    avatar={<UserLink user={userMap[item.sender]} size={32}/>}
+                    title={<span><a href={item.link}>{item.msg_title}</a></span>}
                     description={item.created_at}
                   />
                   <div style={{marginRight: 12}}>
@@ -149,4 +138,4 @@ const Notification = ({global, loading, user, dispatch}) => {
   )
 }
 
-export default connect(({global, user, loading}) => ({global, user, loading}))(Notification);
+export default connect(({user}) => ({user}))(Notification);

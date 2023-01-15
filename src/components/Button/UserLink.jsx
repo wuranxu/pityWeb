@@ -1,7 +1,7 @@
 import React from 'react';
 import {Avatar, Tooltip} from "antd";
-import styles from "@/components/GlobalHeader/index.less";
-import {CONFIG} from "@/consts/config";
+import styles from "@/components/RightContent/index.less";
+import CONFIG from "@/consts/config";
 import logo from '@/assets/logo.svg';
 
 export default ({user, size = 24, marginLeft = 6}) => {

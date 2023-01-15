@@ -1,4 +1,4 @@
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import {Alert, Button, Card, Col, Divider, Modal, Row, Table} from "antd";
 import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from "react";
@@ -15,7 +15,7 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv, createMo
   const [modal, setModal] = useState(false);
   const [editor, setEditor] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     const current = parseInt(currentEnv, 10);
     const temp = testData[current]
     if (temp) {
@@ -188,7 +188,7 @@ const TestcaseData = ({caseId, testcase, loading, dispatch, currentEnv, createMo
       <FormForModal title="测试数据" record={record} onCancel={() => {
         setModal(false)
       }} left={4} right={20} width={650}
-                    visible={modal} onFinish={createMode ? onCreateModeFinish : onFinish} fields={fields}>
+                    open={modal} onFinish={createMode ? onCreateModeFinish : onFinish} fields={fields}>
         <Alert closable type="info" style={{marginBottom: 12}}
                message="数据管理接受一串key-value的数据，供大家在case里面使用这些变量，用${变量}的方式。" showIcon/>
       </FormForModal>

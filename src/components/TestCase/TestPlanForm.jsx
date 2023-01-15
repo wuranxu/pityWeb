@@ -1,8 +1,8 @@
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import {Avatar, Button, Col, Form, Input, InputNumber, Modal, Row, Select, Steps, TreeSelect} from "antd";
 import {ApiOutlined, NotificationOutlined, SaveOutlined, TeamOutlined} from "@ant-design/icons";
 import React, {useEffect, useState} from 'react';
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import {IconFont} from "@/components/Icon/IconFont";
 import SortedTable from "@/components/Table/SortedTable";
 // import '@/components/Table/SortedTable.less';
@@ -262,7 +262,7 @@ const TestPlanForm = ({user, loading, project, testplan, dispatch, gconfig, fetc
     }
   }
 
-  return <Modal width={700} visible={visible} title={title} style={{marginTop: -40}} footer={null} onCancel={() => {
+  return <Modal width={700} open={visible} title={title} style={{marginTop: -40}} footer={null} onCancel={() => {
     onSave({visible: false})
   }
   }>

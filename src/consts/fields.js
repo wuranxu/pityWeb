@@ -1,5 +1,6 @@
-import {CONFIG} from '@/consts/config';
+import CONFIG from '@/consts/config';
 import {AutoComplete, Badge, Input, Select} from 'antd';
+import {REQUEST_TYPE} from "@/components/Common/global";
 
 const {Option} = Select;
 const {TextArea} = Input;
@@ -104,8 +105,8 @@ export default {
       label: '请求类型',
       required: true,
       component: <Select placeholder="请选择请求协议类型">
-        {Object.keys(CONFIG.REQUEST_TYPE).map(key => <Option key={key} value={key}
-                                                             disabled={key !== '1'}>{CONFIG.REQUEST_TYPE[key]}</Option>)}
+        {Object.keys(REQUEST_TYPE).map(key => <Option key={key} value={key}
+                                                             disabled={key !== '1'}>{REQUEST_TYPE[key]}</Option>)}
       </Select>,
       type: 'select',
       span: 8,

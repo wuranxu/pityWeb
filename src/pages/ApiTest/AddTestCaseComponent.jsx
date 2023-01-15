@@ -1,4 +1,4 @@
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import React, {useEffect, useState} from "react";
 import {Col, Form, Row} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";

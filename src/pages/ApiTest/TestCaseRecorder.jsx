@@ -1,4 +1,4 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {
   AndroidOutlined,
   AppleOutlined,
@@ -25,9 +25,9 @@ import {
   TreeSelect
 } from "antd";
 import React, {useEffect, useState} from "react";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import RequestInfoList from "@/components/TestCase/recorder/RequestInfoList";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import {CameraOne} from "@icon-park/react";
 
 const {Option} = Select;
@@ -166,7 +166,7 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
                                                                                               fill="#7ed321"
                                                                                               strokeLinecap="square"/> </span>}>
       <Card>
-        <Modal title={<span>生成用例 - 已选中{selectedRowKeys.length}条数据</span>} visible={visible}
+        <Modal title={<span>生成用例 - 已选中{selectedRowKeys.length}条数据</span>} open={visible}
                onOk={onGenerateCase}
                onCancel={() => setVisible(false)}>
           <Form form={form} {...CONFIG.LAYOUT}>

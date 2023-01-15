@@ -2,14 +2,14 @@
 import React, {Component} from 'react';
 import "ace-builds";
 import AceEditor from "react-ace";
-import jsonWorkerUrl from "file-loader!ace-builds/src-noconflict/worker-json";
+// import jsonWorkerUrl from "file-loader!ace-builds/src-noconflict/worker-json";
 import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/ext-spellcheck";
 import './MaterialOneDark'; // pg模式包
 import {addCompleter} from 'ace-builds/src-noconflict/ext-language_tools';
 import "ace-builds/src-noconflict/mode-json"
 
-ace.config.setModuleUrl("ace/mode/json_worker", jsonWorkerUrl)
+// ace.config.setModuleUrl("ace/mode/json_worker", jsonWorkerUrl)
 
 
 export default class JSONAceEditor extends Component {

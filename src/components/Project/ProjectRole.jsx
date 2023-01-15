@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Button, Input, List, Popconfirm, Select, Skeleton, Tag} from 'antd';
-import {CONFIG} from '@/consts/config';
+import CONFIG from '@/consts/config';
 import {DeleteTwoTone, PlusOutlined} from '@ant-design/icons';
 import FormForModal from "@/components/PityForm/FormForModal";
 import {useParams} from 'umi';
@@ -148,7 +148,7 @@ const ProjectRole = ({project, roles, users, fetchData}) => {
   return (
     <div>
       <FormForModal title="添加成员" left={6} right={18} width={500} record={{}} onFinish={onFinish} fields={fields}
-                    onCancel={() => setModal(false)} visible={modal}
+                    onCancel={() => setModal(false)} open={modal}
       />
       <div style={{marginBottom: 16}}>
         <Button size="small" type="primary" onClick={() => setModal(true)}><PlusOutlined/>添加成员</Button>

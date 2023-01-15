@@ -1,6 +1,5 @@
 import {fetchDatabaseSource, fetchTables, listHistory, onlineExecuteSQL} from "@/services/online";
 import auth from "@/utils/auth";
-import React from 'react';
 
 export default {
   namespace: 'online',

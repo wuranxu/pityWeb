@@ -1,5 +1,5 @@
 import {Button, Col, Drawer, Row, Steps} from "antd";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import {IconFont} from "@/components/Icon/IconFont";
 import TestCaseConstructorData from "@/components/TestCase/Constructor/ConstructorData";
 import {SaveOutlined} from "@ant-design/icons";
@@ -221,7 +221,7 @@ const ConstructorModal = ({
 
 
   return (
-    <Drawer title={suffix ? '后置条件' : '前置条件'} width={width || 800} visible={modal} onClose={() => setModal(false)}
+    <Drawer title={suffix ? '后置条件' : '前置条件'} width={width || 800} open={modal} onClose={() => setModal(false)}
             footer={null}>
       <>
         <Row>

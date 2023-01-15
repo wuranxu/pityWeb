@@ -1,4 +1,4 @@
-import {PageContainer} from '@ant-design/pro-layout';
+import {PageContainer} from '@ant-design/pro-components';
 import {Button, Card, Col, Divider, Input, Row, Spin, Table} from 'antd';
 import {useEffect, useState} from 'react';
 import {insertEnvironment, listEnvironment, updateEnvironment} from '@/services/configure';
@@ -111,7 +111,7 @@ export default () => {
   return (
     <PageContainer title="环境配置" breadcrumb={null}>
       <Spin spinning={loading}>
-        <FormForModal visible={visible} onCancel={() => setVisible(false)}
+        <FormForModal open={visible} onCancel={() => setVisible(false)}
                       title="环境管理" left={6} right={18} width={500} record={record} onFinish={onFinish}
                       fields={fields.Environment}
         />

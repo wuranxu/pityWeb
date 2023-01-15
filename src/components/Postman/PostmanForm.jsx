@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card,} from 'antd';
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import PostmanBody from "@/components/Postman/PostmanBody";
 
 const PostmanForm = (props) => {

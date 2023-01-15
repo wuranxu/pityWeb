@@ -3,7 +3,7 @@ import { Button, Drawer, Form } from 'antd';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 
 
-export default ({ title, width, left, right, formName, record, onFinish, loading, fields, visible, onCancel }) => {
+export default ({ title, width, left, right, formName, record, onFinish, loading, fields, open, onCancel }) => {
   const [form] = Form.useForm();
   const [headers, setHeaders] = useState([]);
   const [body, setBody] = useState('');
@@ -16,8 +16,8 @@ export default ({ title, width, left, right, formName, record, onFinish, loading
 
   const translateHeaders = () => {
     const hd = {};
-    for (const h in headers) {
-      hd[headers[h].key] = headers[h].value;
+    for (const header of headers) {
+      hd[header.key] = header.value;
     }
     return JSON.stringify(hd, null, 2);
   };
@@ -47,7 +47,7 @@ export default ({ title, width, left, right, formName, record, onFinish, loading
           </Button>
         </div>
       }
-      title={title} width={width} visible={visible} onOk={onOk} onCancel={() => {
+      title={title} width={width} open={open} onOk={onOk} onCancel={() => {
       onCancel();
       form.resetFields();
     }} onClose={() => {

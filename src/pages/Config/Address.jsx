@@ -1,8 +1,8 @@
 import React, {memo, useEffect, useState} from 'react';
-import {PageContainer} from "@ant-design/pro-layout";
-import {connect} from "umi";
+import {PageContainer} from "@ant-design/pro-components";
+import {connect} from "@umijs/max";
 import {Button, Card, Col, Divider, Form, Input, Row, Select, Table, Tag} from "antd";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import TooltipTextIcon from "@/components/Icon/TooltipTextIcon";
 import {PlusOutlined} from "@ant-design/icons";
 import FormForModal from "@/components/PityForm/FormForModal";
@@ -151,7 +151,7 @@ const Address = ({loading, gconfig, dispatch}) => {
   return (
     <PageContainer breadcrumb={null} title="请求地址管理">
       <Card>
-        <FormForModal visible={modal} fields={fields} title={item.id ? "修改地址": "添加地址"} left={6} right={18} record={item}
+        <FormForModal open={modal} fields={fields} title={item.id ? "修改地址": "添加地址"} left={6} right={18} record={item}
                       onFinish={onSubmit} onCancel={() => setModal(false)}/>
         <Form form={form} {...CONFIG.LAYOUT} onValuesChange={fetchAddress}>
           <Row gutter={12}>

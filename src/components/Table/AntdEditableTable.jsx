@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import "./AntdEditableTable.less";
 import {Button, Col, message, Divider, Form, Input, Popconfirm, Row, Select, Table, Typography} from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 const {Option} = Select;
 

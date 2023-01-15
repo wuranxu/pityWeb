@@ -1,6 +1,6 @@
 import {Avatar} from 'antd';
 import React from 'react';
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 export default ({data}) => {
   if (data === null) {

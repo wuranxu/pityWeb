@@ -10,7 +10,7 @@ import React from 'react';
 import numeral from 'numeral';
 import { queryFakeList } from '../../service';
 import stylesApplications from './index.less';
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 export function formatWan(val) {
   const v = val * 1;
   if (!v || Number.isNaN(v)) return '';

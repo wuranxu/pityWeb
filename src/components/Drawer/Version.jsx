@@ -26,9 +26,9 @@ const md = `
 `
 
 
-export default ({visible, setVisible}) => {
+export default ({open, setVisible}) => {
   return (
-    <Drawer visible={visible} onClose={() => setVisible(false)} width={500}>
+    <Drawer open={open} onClose={() => setVisible(false)} width={500}>
       <Markdown value={md}/>
     </Drawer>
   )

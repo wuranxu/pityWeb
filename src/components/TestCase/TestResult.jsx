@@ -47,7 +47,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
     }
   }
 
-  useEffect(async () => {
+  const getResponse = async () => {
     if (single) {
       if (response.case_id !== undefined) {
         await getBrain();
@@ -60,7 +60,10 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
         return
       }
     }
+  }
 
+  useEffect(() => {
+    getResponse()
   }, [response])
 
   const toTable = (field, resp = response) => {
@@ -114,7 +117,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
 
   return (
     <Drawer title={<span>[<strong>{caseName}</strong>] 执行详情</span>} width={width || 1000}
-            visible={modal} placement="right"
+            open={modal} placement="right"
             onClose={() => setModal(false)}>
       <Row gutter={[8, 8]}>
         {

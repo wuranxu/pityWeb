@@ -1,4 +1,4 @@
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import {Button, Card, Col, Form, Row} from "antd";
 import styles from "@/components/Drawer/CaseDetail.less";
 import getComponent from "@/components/PityForm";

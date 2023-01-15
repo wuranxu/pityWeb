@@ -16,8 +16,8 @@ import SortedTable from "@/components/Table/SortedTable";
 import PostmanForm from "@/components/Postman/PostmanForm";
 import TestCaseAssert from "@/components/TestCase/TestCaseAssert";
 import React from "react";
-import {CONFIG} from "@/consts/config";
-import {connect} from 'umi';
+import CONFIG from "@/consts/config";
+import {connect} from '@umijs/max';
 import TestCaseOutParameters from "@/components/TestCase/TestCaseOutParameters";
 import common from "@/utils/common";
 

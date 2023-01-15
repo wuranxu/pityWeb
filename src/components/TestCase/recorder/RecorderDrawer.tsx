@@ -1,10 +1,10 @@
 import {Button, Col, Drawer, Empty, Form, Input, notification, Row, Space, TreeSelect, Upload} from "antd";
 // @ts-ignore
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 // @ts-ignore
 import NoRecord from "../../../assets/no_record.svg";
 import React, {useEffect, useState} from "react";
-import {CONFIG} from '../../../consts/config';
+import CONFIG from '@/consts/config';
 import RequestInfoList from "./RequestInfoList";
 import {CameraOutlined, FireOutlined, ImportOutlined} from "@ant-design/icons";
 
@@ -115,7 +115,7 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
   }
 
   return (
-    <Drawer title="生成用例" onClose={() => setVisible()} visible={visible} width={960} extra={
+    <Drawer title="生成用例" onClose={() => setVisible()} open={visible} width={960} extra={
       <Button disabled={selectedRowKeys.length === 0} onClick={onGenerateCase}
               type="primary"><FireOutlined/> 生成用例</Button>
     }>

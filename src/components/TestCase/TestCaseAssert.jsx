@@ -3,10 +3,10 @@ import {ExclamationCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import FormForModal from "@/components/PityForm/FormForModal";
 import fields from "@/consts/fields";
 import React, {useState} from "react";
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 const TestCaseAssert = ({dispatch, testcase, caseId, createMode}) => {
   const [assertModal, setAssertModal] = useState(false);
@@ -162,7 +162,7 @@ const TestCaseAssert = ({dispatch, testcase, caseId, createMode}) => {
   return (
     <Row gutter={8}>
       <Col span={24}>
-        <FormForModal visible={assertModal} fields={fields.CaseAsserts} title='用例断言' left={6} right={18}
+        <FormForModal open={assertModal} fields={fields.CaseAsserts} title='用例断言' left={6} right={18}
                       onFinish={onSaveAssert} onCancel={() => setAssertModal(false)} record={record}/>
         <Row style={{marginBottom: 16}}>
           <Col span={8}>

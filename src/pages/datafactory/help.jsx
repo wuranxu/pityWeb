@@ -5,7 +5,7 @@ import Design from '@/assets/datafactory/Design.svg';
 
 
 export default ({visible, onCancel}) => {
-  return <Modal visible={visible} width={900} title="帮助文档" footer={null} bodyStyle={{minHeight: 360}} onCancel={onCancel}>
+  return <Modal open={visible} width={900} title="帮助文档" footer={null} bodyStyle={{minHeight: 360}} onCancel={onCancel}>
     <Row gutter={18}>
       <Col span={12}>
         <Card hoverable bordered={false} className="help-card-left">

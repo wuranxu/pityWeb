@@ -1,6 +1,6 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import React, {useEffect, useState} from 'react'
 import Terminal from 'react-console-emulator'
 import {Alert, Card, Col, Menu, Row, Select} from "antd";

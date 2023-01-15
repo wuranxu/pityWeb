@@ -1,10 +1,8 @@
 import {stringify} from 'querystring';
-import {history} from 'umi';
+import {history} from '@umijs/max';
 import {checkUrl, generateResetLink, login, register, resetPwd} from '@/services/login';
-import {setAuthority} from '@/utils/authority';
 import {getPageQuery} from '@/utils/utils';
 import {message, notification} from 'antd';
-import {CONFIG} from '@/consts/config';
 import auth from "@/utils/auth";
 
 const Model = {
@@ -110,15 +108,6 @@ const Model = {
     }
   },
   reducers: {
-    changeLoginStatus(state, {payload}) {
-      // 写入用户信息
-      localStorage.setItem('pityToken', payload.data.token);
-      localStorage.setItem('pityUser', JSON.stringify(payload.data.user));
-      localStorage.setItem('pityExpire', payload.data.expire)
-      // setAuthority(payload.currentAuthority);
-      setAuthority(CONFIG.ROLE[payload.data.user.role]);
-      return {...state, status: payload.code === 0 ? 'ok' : 'error', type: 'account'};
-    },
     save(state, {payload}) {
       return {
         ...state,

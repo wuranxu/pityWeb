@@ -1,9 +1,12 @@
-@import '~antd/es/style/themes/default.less';
-
 html,
 body,
 #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
 }
 
 .colorWeak {
@@ -12,6 +15,9 @@ body,
 
 .ant-layout {
   min-height: 100vh;
+}
+.ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
+  left: unset;
 }
 
 canvas {
@@ -24,54 +30,24 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-//.ant-table thead > tr > th{
-//  background: hsl(258deg 100% 98%);
-//}
-
 ul,
 ol {
   list-style: none;
 }
 
-@media (max-width: @screen-xs) {
+@media (max-width: 768px) {
   .ant-table {
     width: 100%;
     overflow-x: auto;
-
     &-thead > tr,
     &-tbody > tr {
       > th,
       > td {
         white-space: pre;
-
         > span {
           display: block;
         }
       }
     }
   }
-}
-
-// 兼容IE11
-@media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
-  body .ant-design-pro > .ant-layout {
-    min-height: 100vh;
-  }
-}
-
-ul.contains-task-list {
-  padding-left: 0 !important;
-}
-
-
-.ant-modal-content {
-  border-radius: 16px !important;
-}
-
-.ant-modal-header {
-  border-radius: 16px !important;
-}
-
-.ant-input-affix-wrapper.borderSearch {
-  border-radius: 16px;
 }

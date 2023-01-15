@@ -1,5 +1,5 @@
-import {PageContainer} from "@ant-design/pro-layout";
-import {connect, useParams} from 'umi';
+import {PageContainer} from "@ant-design/pro-components";
+import {connect, useParams} from '@umijs/max';
 import {Avatar, Card, Col, Empty, Row, Statistic} from "antd";
 import styles from './UserInfo.less';
 import HeatMap from "@/components/Charts/HeatMap";
@@ -9,7 +9,7 @@ import OperationLog from "@/components/Operation/OperationLog";
 import noRecord from "@/assets/no_record.svg";
 import {LikeOutlined, UserOutlined} from "@ant-design/icons";
 import LoadingFailed from '@/assets/LoadingFailed.svg';
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 const today = new Date()
 

@@ -1,7 +1,7 @@
-import {PageContainer} from '@ant-design/pro-layout';
+import {PageContainer} from '@ant-design/pro-components';
 import {Badge, Button, Card, Col, Divider, Input, Modal, Row, Select, Switch, Table, Tag} from 'antd';
 import React, {useEffect, useState} from 'react';
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 
 import {PlusOutlined} from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
@@ -9,7 +9,7 @@ import {vs2015} from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import UserLink from "@/components/Button/UserLink";
 import PityAceEditor from "@/components/CodeEditor/AceEditor/index";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 const {Option} = Select;
 const GConfig = ({gconfig, user, loading, dispatch}) => {
@@ -221,7 +221,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
   return (
     <PageContainer title='全局变量' breadcrumb={null}>
       <Card>
-        <FormForModal fields={fields} visible={modal} left={4} right={20} onFinish={onFinish}
+        <FormForModal fields={fields} open={modal} left={4} right={20} onFinish={onFinish}
                       onCancel={() => {
                         save({modal: false});
                       }} title='编辑变量' record={record} width={600} offset={-60}/>

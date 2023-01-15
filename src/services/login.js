@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import {CONFIG} from '@/consts/config';
+import CONFIG from '@/consts/config';
 
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {

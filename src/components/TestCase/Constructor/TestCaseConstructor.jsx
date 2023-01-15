@@ -2,7 +2,7 @@ import {Select, Switch, Tooltip} from "antd";
 import QuestionOutlined from '@ant-design/icons';
 import React, {useEffect, useState} from "react";
 import CommonForm from "@/components/PityForm/CommonForm";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 
 const {Option} = Select;

@@ -9,7 +9,7 @@ import {
   QuestionCircleOutlined,
   SketchOutlined
 } from '@ant-design/icons';
-import {CONFIG} from '@/consts/config';
+import CONFIG from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
 import {executeCase, executeSelectedCase} from '@/services/request';
@@ -18,6 +18,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import {vs2015} from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import styles from './TestCaseDetail.less';
 import TestResult from "@/components/TestCase/TestResult";
+import {REQUEST_TYPE} from "@/components/Common/global";
 
 const TabPane = Tabs.TabPane;
 const {confirm} = Modal;
@@ -110,7 +111,9 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
     setLoading(false);
   }
 
-  useEffect(init, [caseId]);
+  useEffect(() => {
+    init()
+  }, [caseId]);
 
   const translateHeaders = () => {
     const hd = {};
@@ -156,7 +159,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
                         <Descriptions.Item label='用例目录'>{data.catalogue}</Descriptions.Item>
                         <Descriptions.Item label='优先级'>{<Tag
                           color={CONFIG.CASE_TAG[data.priority]}>{data.priority}</Tag>}</Descriptions.Item>
-                        <Descriptions.Item label='请求协议'>{CONFIG.REQUEST_TYPE[data.request_type]}</Descriptions.Item>
+                        <Descriptions.Item label='请求协议'>{REQUEST_TYPE[data.request_type]}</Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
                           {data.request_method}
                         </Descriptions.Item>

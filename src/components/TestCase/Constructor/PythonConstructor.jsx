@@ -1,7 +1,7 @@
 import {Col, Form, Input, message, notification, Row, Switch, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
-import {connect} from "umi";
-import {CONFIG} from "@/consts/config";
+import {connect} from "@umijs/max";
+import CONFIG from "@/consts/config";
 import {PlayCircleTwoTone} from "@ant-design/icons";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 import PythonAceEditor from "@/components/CodeEditor/AceEditor/PythonAceEditor";
