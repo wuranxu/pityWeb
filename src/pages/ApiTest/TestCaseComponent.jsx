@@ -218,7 +218,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                             caseId={case_id} formData={formData} setFormData={setFormData}
                                             bodyType={bodyType} setBodyType={setBodyType} setSuffix={setSuffix}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
-                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={
+                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} title={
                       <span>{directoryName} {caseInfo.name ? ` / ${caseInfo.name}` : ''} {CASE_TYPE[caseInfo.case_type]}</span>}
                           extra={<div>
                             <Button onClick={() => {
@@ -236,7 +236,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                 }
                               })
                             }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
-                            <Dropdown overlay={menu}>
+                            <Dropdown menu={menu}>
                               <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
                                       loading={loading.effects['testcase/onExecuteTestCase']}
                                       onClick={e => {
@@ -265,7 +265,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                         <Descriptions.Item label='用例等级'>{<Tag
                           color={CONFIG.CASE_TAG[caseInfo.priority]}>{caseInfo.priority}</Tag>}</Descriptions.Item>
                         <Descriptions.Item label='用例状态'>{
-                          <Badge {...CASE_BADGE[caseInfo.status]} />}</Descriptions.Item>
+                          <Badge {...CONFIG.CASE_BADGE[caseInfo.status]} />}</Descriptions.Item>
                         <Descriptions.Item label='用例标签'>{
                           <div style={{textAlign: 'center'}}>
                             {getTag(caseInfo.tag)}

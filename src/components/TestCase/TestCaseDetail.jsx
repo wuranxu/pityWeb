@@ -9,7 +9,7 @@ import {
   QuestionCircleOutlined,
   SketchOutlined
 } from '@ant-design/icons';
-import CONFIG from '@/consts/config';
+import {CONFIG} from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
 import {executeCase, executeSelectedCase} from '@/services/request';

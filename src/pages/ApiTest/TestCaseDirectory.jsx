@@ -193,7 +193,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
       width: 130,
       key: 'ops',
       render: (_, record) => <>
-        <a href={`/#/apiTest/testcase/${currentDirectory[0]}/${record.id}`} target="_blank">详情</a>
+        <a href={`/#/apiTest/testcase/${currentDirectory[0]}/${record.id}`}>详情</a>
         <Divider type="vertical"/>
         <Dropdown overlay={menu(record)}>
           <a onClick={e => {
