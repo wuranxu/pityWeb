@@ -514,7 +514,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
                                             filterOption={(input, option) =>
                                               option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                             }>
-                              {projects.map(v => <Option value={v.id}>{v.name}</Option>)}
+                              {projects.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)}
                             </Select> :
                             <div onClick={() => setEditing(true)}>
                               <Avatar style={{marginLeft: 8, marginRight: 6}} size="large"

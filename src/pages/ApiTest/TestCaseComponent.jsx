@@ -98,10 +98,12 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     }
     if (typeof tag === 'object') {
       return tag.length > 0 ? tag.map(v => <Tag
+        key={v}
         style={{marginRight: 8}}
         color='blue'>{v}</Tag>) : '无'
     }
     return tag ? tag.split(',').map(v => <Tag
+      key={v}
       style={{marginRight: 8}}
       color='blue'>{v}</Tag>) : '无'
   }
