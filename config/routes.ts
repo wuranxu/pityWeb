@@ -115,6 +115,7 @@ export default [
       {
         path: '/record/report/:id',
         hideInMenu: true,
+        name: '测试报告',
         component: './BuildHistory/ReportDetail',
       },
     ],

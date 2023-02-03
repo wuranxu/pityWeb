@@ -165,8 +165,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       title: '用例名称',
       dataIndex: 'case_name',
       key: 'case_name',
-      render: (text, record) => <a href={`/#/apiTest/testcase/${record.directory_id}/${record.case_id}`}
-                                   target="_blank">{text}</a>
+      render: (text, record) => <a href={`/#/apiTest/testcase/${record.directory_id}/${record.case_id}`}>{text}</a>
     },
     {
       title: '数据描述',
@@ -305,7 +304,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
           <Row gutter={[8, 8]}>
             <Col span={18}/>
             <Col span={6}>
-              <Input prefix={<SearchOutlined/>} placeholder="请输入用例名称" className="borderSearch"
+              <Input prefix={<SearchOutlined/>} placeholder="请输入场景名称" className="borderSearch"
                      onPressEnter={onSearchCase}/>
             </Col>
           </Row>

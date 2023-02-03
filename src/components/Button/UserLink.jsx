@@ -18,12 +18,10 @@ export default ({user, size = 24, marginLeft = 6}) => {
         {
           user.deleted_at ?
             <del><a style={{marginLeft: marginLeft, fontSize: 13, color: "#ccc"}} href={`/#/member/${user.id}`}
-                    target="_blank"
                     rel="noreferrer">{user.name}</a></del> :
             <a onClick={e => {
               e.stopPropagation();
             }} style={{marginLeft: marginLeft, fontSize: 13, verticalAlign: 'middle'}} href={`/#/member/${user.id}`}
-               target="_blank"
                rel="noreferrer">{user.name}</a>
         }
 

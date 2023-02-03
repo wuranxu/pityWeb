@@ -112,7 +112,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
     {
       title: '操作',
       key: 'operation',
-      render: (_, record) => <><Button type="link" href={`/#/record/report/${record.id}`}>查看</Button></>
+      render: (_, record) => <a href={`/#/record/report/${record.id}`}>查看</a>
     }
   ]
 

@@ -177,11 +177,11 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
                 {projects.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)}
               </Select>
             </Form.Item>
-            <Form.Item label="用例目录" name="directory_id" rules={[{required: true, message: '请选择用例目录'}]}>
-              <TreeSelect placeholder="先选择项目，然后选择你要生成的用例目录" treeLine treeData={directory}/>
+            <Form.Item label="场景目录" name="directory_id" rules={[{required: true, message: '请选择场景目录'}]}>
+              <TreeSelect placeholder="先选择项目，然后选择你要生成的场景目录" treeLine treeData={directory}/>
             </Form.Item>
-            <Form.Item label="用例名称" name="name" rules={[{required: true, message: '请输入用例名称'}]}>
-              <Input placeholder="请输入用例名称"/>
+            <Form.Item label="场景名称" name="name" rules={[{required: true, message: '请输入用例名称'}]}>
+              <Input placeholder="请输入场景名称"/>
             </Form.Item>
           </Form>
         </Modal>

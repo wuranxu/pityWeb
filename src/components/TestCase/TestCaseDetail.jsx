@@ -9,6 +9,7 @@ import {
   QuestionCircleOutlined,
   SketchOutlined
 } from '@ant-design/icons';
+import {history} from '@umijs/max';
 import {CONFIG} from '@/consts/config';
 import CaseDetail from '@/components/Drawer/CaseDetail';
 import fields from '@/consts/fields';
@@ -53,7 +54,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
         title: '用例执行完毕, 是否跳转到报告页面?',
         icon: <QuestionCircleOutlined/>,
         onOk() {
-          window.open(`/#/record/report/${res.data}`)
+          history.push(`/#/record/report/${res.data}`)
         },
         onCancel() {
         },
@@ -155,15 +156,15 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
                   <Tabs defaultActiveKey="1" style={{marginTop: 12}}>
                     <TabPane key="1" tab="基础信息">
                       <Descriptions bordered size='middle' column={2}>
-                        <Descriptions.Item label='用例名称'><a>{data.name}</a></Descriptions.Item>
-                        <Descriptions.Item label='用例目录'>{data.catalogue}</Descriptions.Item>
+                        <Descriptions.Item label='场景名称'><a>{data.name}</a></Descriptions.Item>
+                        <Descriptions.Item label='场景目录'>{data.catalogue}</Descriptions.Item>
                         <Descriptions.Item label='优先级'>{<Tag
                           color={CONFIG.CASE_TAG[data.priority]}>{data.priority}</Tag>}</Descriptions.Item>
                         <Descriptions.Item label='请求协议'>{REQUEST_TYPE[data.request_type]}</Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
                           {data.request_method}
                         </Descriptions.Item>
-                        <Descriptions.Item label='用例状态'>{
+                        <Descriptions.Item label='状态'>{
                           <Badge {...CONFIG.CASE_BADGE[data.status]} />}</Descriptions.Item>
                         <Descriptions.Item label='请求url' span={2}>
                           <a href={data.url} style={{fontSize: 14}}>{data.url}</a>

@@ -150,8 +150,8 @@ const ConstructorModal = ({
         <Col span={8}>
           <CheckCard
             avatar={<IconFont type="icon-yongliliebiao" style={{fontSize: 32}}/>}
-            title="测试用例"
-            description="测试用例可以传递用例的数据给下一个用例"
+            title="测试场景"
+            description="测试场景可以复用, 并传递用例的数据给下一个场景"
             onClick={() => onSelectType(0)}
           />
         </Col>
@@ -221,7 +221,7 @@ const ConstructorModal = ({
 
 
   return (
-    <Drawer title={suffix ? '后置条件' : '前置条件'} width={width || 800} open={modal} onClose={() => setModal(false)}
+    <Drawer title={suffix ? '后置步骤' : '前置步骤'} width={width || 800} open={modal} onClose={() => setModal(false)}
             footer={null}>
       <>
         <Row>

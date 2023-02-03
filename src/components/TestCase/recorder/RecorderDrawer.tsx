@@ -53,7 +53,7 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
     if (recordLists.length === 0) {
       notification.info({
         message: "🤔未能获取到录制信息",
-        description: <span>你可以去<a href="/#/apiTest/record" target="_blank">录制页面</a> 直接生成用例哦🎉~</span>
+        description: <span>你可以去<a href="/#/apiTest/record">录制页面</a> 直接生成用例哦🎉~</span>
       })
       return;
     }
@@ -122,13 +122,13 @@ const RecorderDrawer = ({visible, setVisible, directory, loading, recorder, disp
       <Form form={form} {...CONFIG.SUB_LAYOUT}>
         <Row gutter={8}>
           <Col span={12}>
-            <Form.Item label="用例目录" name="directory_id" rules={[{required: true, message: '请选择用例目录'}]}>
-              <TreeSelect placeholder="请选择用例目录" treeLine treeData={directory}/>
+            <Form.Item label="场景目录" name="directory_id" rules={[{required: true, message: '请选择场景目录'}]}>
+              <TreeSelect placeholder="请选择场景目录" treeLine treeData={directory}/>
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="用例名称" name="name" rules={[{required: true, message: '请输入用例名称'}]}>
-              <Input placeholder="请输入用例名称"/>
+            <Form.Item label="场景名称" name="name" rules={[{required: true, message: '请输入场景名称'}]}>
+              <Input placeholder="请输入场景名称"/>
             </Form.Item>
           </Col>
         </Row>

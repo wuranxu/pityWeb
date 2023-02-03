@@ -154,8 +154,7 @@ const TestCaseBottom = ({
       if (!result) {
         return null
       }
-      return <div>用例: <a href={`/#/apiTest/testcase/${result.directory_id}/${result.id}`}
-                         target="_blank" rel="noreferrer">{result.name}</a></div>
+      return <div>用例: <a href={`/#/apiTest/testcase/${result.directory_id}/${result.id}`} rel="noreferrer">{result.name}</a></div>
     }
     if (item.type === 1) {
       return <code>{data.sql}</code>
@@ -294,15 +293,14 @@ const TestCaseBottom = ({
                     <TestcaseData caseId={case_id} currentEnv={envActiveKey} createMode={createMode}/>
                   </TabPane>)}
                 </Tabs> : <NoRecord2 height={280}
-                                     desc={<span>没有任何环境信息, {<a href="/#/config/environment"
-                                                               target="_blank">去添加</a>}</span>}/>
+                                     desc={<span>没有任何环境信息, {<a href="/#/config/environment">去添加</a>}</span>}/>
             }
           </TabPane>
           <TabPane key="2"
                    tab={
                      <div>
                        <IconFont
-                         type="icon-DependencyGraph_16x"/>前置条件
+                         type="icon-DependencyGraph_16x"/>前置步骤
                        <BadgeButton number={preConstructor.length} bgColor="rgb(237, 242, 251)"
                                     color="rgb(29, 98, 203)"/>
                      </div>
@@ -310,7 +308,7 @@ const TestCaseBottom = ({
             {
               preConstructor.length === 0 ?
                 <NoRecord height={180}
-                          desc={<div>还没有前置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
+                          desc={<div>还没有前置步骤, 还不赶快 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
                 <Row gutter={12}>
                   <Col span={16}>
                     <Row>
@@ -342,7 +340,7 @@ const TestCaseBottom = ({
                   <Col span={8}>
                     <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
                       {
-                        preConstructor.filter(item => item.enable).length === 0 ? <NoRecord2 desc="暂无开启的前置条件"/> : <Timeline>
+                        preConstructor.filter(item => item.enable).length === 0 ? <NoRecord2 desc="暂无开启的前置步骤"/> : <Timeline>
                           {
                             preConstructor.map((item, index) => item.enable ?
                               <Timeline.Item key={index}>
@@ -385,7 +383,7 @@ const TestCaseBottom = ({
                    tab={
                      <div>
                        <IconFont
-                         type="icon-qingliwuliuliang"/>后置条件
+                         type="icon-qingliwuliuliang"/>后置步骤
                        <BadgeButton number={postConstructor.length} bgColor="rgb(255, 238, 239)"
                                     color="rgb(255, 87, 95)"/>
                      </div>
@@ -393,7 +391,7 @@ const TestCaseBottom = ({
             {
               postConstructor.length === 0 ?
                 <NoRecord height={180}
-                          desc={<div>还没有后置条件, 这不 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
+                          desc={<div>还没有后置步骤, 还不赶紧 <a onClick={onCreateConstructor}>添加一个</a>?</div>}/> :
                 <Row gutter={12}>
                   <Col span={16}>
                     <Row>
@@ -425,7 +423,7 @@ const TestCaseBottom = ({
                   <Col span={8}>
                     <Card style={{height: 400, overflow: 'auto'}} hoverable bordered={false}>
                       {
-                        postConstructor.filter(item => item.enable).length === 0 ? <NoRecord desc="暂无开启的后置条件"/> : <Timeline>
+                        postConstructor.filter(item => item.enable).length === 0 ? <NoRecord desc="暂无开启的后置步骤"/> : <Timeline>
                           {
                             postConstructor.map((item, index) => item.enable ?
                               <Timeline.Item key={index}>

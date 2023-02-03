@@ -388,8 +388,7 @@ const PostmanBody = ({
                 return option.children.props.children.indexOf(input.toLowerCase()) >= 0
               }}
       >
-        <Option value={null} label="无">无<a style={{float: 'right', fontSize: 12}} href="/#/config/address"
-                                           target="_blank">去配置</a></Option>
+        <Option value={null} label="无">无<a style={{float: 'right', fontSize: 12}} href="/#/config/address">去配置</a></Option>
         {
           Object.keys(currentAddress).map(key => <Option value={key} key={key} label={key}><Tooltip title={
             <div>

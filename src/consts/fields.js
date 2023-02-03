@@ -71,11 +71,11 @@ export default {
   CaseDetail: [
     {
       name: 'name',
-      label: '用例名称',
+      label: '场景名称',
       required: true,
-      message: '请输入用例名称',
+      message: '请输入场景名称',
       type: 'input',
-      placeholder: '请输入用例名称',
+      placeholder: '请输入场景名称',
       component: null,
       span: 8,
     },
@@ -83,7 +83,7 @@ export default {
       name: 'priority',
       label: '优先级',
       required: true,
-      component: <Select placeholder="请选择用例优先级">
+      component: <Select placeholder="请选择优先级">
         {CONFIG.PRIORITY.map(v => <Option key={v} value={v}>{v}</Option>)}
       </Select>,
       type: 'select',
@@ -91,9 +91,9 @@ export default {
     },
     {
       name: 'status',
-      label: '用例状态',
+      label: '状态',
       required: true,
-      component: <Select placeholder="请选择用例当前状态">
+      component: <Select placeholder="请选择当前场景状态">
         {Object.keys(CONFIG.CASE_STATUS).map(key => <Option key={key} value={key}>{
           <Badge {...CONFIG.CASE_BADGE[key]} />}</Option>)}
       </Select>,
@@ -113,20 +113,20 @@ export default {
     },
     {
       name: 'tag',
-      label: '用例标签',
+      label: '场景标签',
       required: false,
-      component: <Select mode='tags' placeholder='请输入用例标签'>
+      component: <Select mode='tags' placeholder='请输入场景标签'>
       </Select>,
       type: 'select',
       span: 8,
     },
     {
       name: 'case_type',
-      label: '用例类型',
+      label: '场景类型',
       required: true,
-      component: <Select placeholder='请选择用例类型'>
-        <Option value={0}>普通用例</Option>
-        <Option value={1}>前置用例</Option>
+      component: <Select placeholder='请选择场景类型'>
+        <Option value={0}>普通场景</Option>
+        <Option value={1}>前置场景</Option>
         <Option value={2}>数据工厂</Option>
       </Select>,
       type: 'select',

@@ -173,7 +173,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const menu = envList.length === 0 ? <Card>
     <div>
       <Empty image={noResult} imageStyle={{height: 90, width: 90, margin: '0 auto'}}
-             description={<p>还没有任何环境, 去<a href="/#/config/environment" target="_blank">添加一个</a>?</p>}/>
+             description={<p>还没有任何环境, 去<a href="/#/config/environment">添加一个</a>?</p>}/>
     </div>
 
   </Card> : <Menu>
