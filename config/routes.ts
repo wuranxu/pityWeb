@@ -74,7 +74,7 @@ export default [
     icon: 'api',
     routes: [
       {
-        path: '/apiTest/testcase/list',
+        path: '/apiTest/testcase',
         name: '接口用例',
         component: "./ApiTest/TestCaseDirectory"
       },
@@ -92,6 +92,7 @@ export default [
       {
         path: '/apiTest/testcase/:directory/:case_id',
         name: '编辑用例',
+        hideInMenu: true,
         component: "./ApiTest/TestCaseComponent"
       },
       {
