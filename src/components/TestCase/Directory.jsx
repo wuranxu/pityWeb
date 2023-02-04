@@ -214,7 +214,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
   </Dropdown>;
 
   return (
-    <Spin spinning={loading} tip='努力加载中'>
+    <Spin spinning={loading} tip='暴力加载中...'>
       <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase}/>
       <ConstructorModal width={1050} modal={constructorModal} setModal={setConstructorModal} caseId={constructorCaseId}
                         fetchData={fetchData}/>

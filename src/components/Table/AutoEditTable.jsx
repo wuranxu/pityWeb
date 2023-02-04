@@ -20,8 +20,6 @@ const EditableRow = ({index, ...props}) => {
 
 export default ({columns, dataSource, setDataSource}) => {
   const [editing, setEditing] = useState(null);
-  // console.log(form)
-
 
   const EditableCell = ({
                           title,
@@ -106,7 +104,7 @@ export default ({columns, dataSource, setDataSource}) => {
             },
           ]}
         >
-          <Input ref={inputRef} onPressEnter={save} disabled={record.source === 4}
+          <Input ref={inputRef} onPressEnter={save} disabled={record.source === 4 || record.source === 1}
                  onBlur={save} placeholder={record.source === 4 ? '无需填写' : '请输入匹配项'}/>
         </Form.Item>
       }

@@ -1,18 +1,21 @@
 import AutoEditTable from "@/components/Table/AutoEditTable";
-import {QuestionCircleOutlined} from "@ant-design/icons";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import TooltipIcon from "@/components/Icon/TooltipIcon";
-import {HELPER} from "@/consts/helper";
+import { HELPER } from "@/consts/helper";
 
 const selectMap = {
-  0: 'Body: TEXT',
-  1: 'Body: JSON',
-  2: 'Header: K/V',
+  0: 'Response(正则表达式)',
+  1: 'Response(JSONPath)',
+  2: 'Response Header: K/V',
   3: 'Cookie: K/V',
-  4: '响应状态码',
+  4: 'HTTP状态码',
+  5: 'Body(正则表达式)',
+  6: 'Body(JSONPath)',
+  7: 'Request Header: K/V'
 }
 
-export default ({dispatch, testcase, caseId, createMode}) => {
-  const {outParameters} = testcase;
+export default ({ dispatch, testcase, caseId, createMode }) => {
+  const { outParameters } = testcase;
 
   const setDataSource = dataSource => {
     dispatch({
@@ -44,8 +47,8 @@ export default ({dispatch, testcase, caseId, createMode}) => {
     },
     {
       name: '解析表达式',
-      title: <span>解析表达式 <TooltipIcon icon={<QuestionCircleOutlined/>}
-                                      title={HELPER.JSONPATH_TITLE}></TooltipIcon></span>,
+      title: <span>解析表达式 <TooltipIcon icon={<QuestionCircleOutlined />}
+        title={HELPER.JSONPATH_TITLE}></TooltipIcon></span>,
       dataIndex: 'expression',
       key: 'expression',
       editable: true,
@@ -57,12 +60,12 @@ export default ({dispatch, testcase, caseId, createMode}) => {
       name: '第几个匹配项',
       dataIndex: 'match_index',
       editable: true,
-      render: (match_index, record) => record.source !== 4 ? (match_index || '请输入匹配项') : '无需填写'
+      render: (match_index, record) => record.source !== 4 && record.source !== 1 ? (match_index || '请输入匹配项') : '无需填写'
     }
   ]
 
 
   return (
-    <AutoEditTable columns={columns} dataSource={outParameters} setDataSource={setDataSource}/>
+    <AutoEditTable columns={columns} dataSource={outParameters} setDataSource={setDataSource} />
   )
 }
