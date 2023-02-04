@@ -1,4 +1,4 @@
-import {PageContainer} from "@ant-design/pro-components";
+import { PageContainer } from "@ant-design/pro-components";
 import {
   AndroidOutlined,
   AppleOutlined,
@@ -24,15 +24,15 @@ import {
   Select,
   TreeSelect
 } from "antd";
-import React, {useEffect, useState} from "react";
-import {connect} from "@umijs/max";
+import React, { useEffect, useState } from "react";
+import { connect } from "@umijs/max";
 import RequestInfoList from "@/components/TestCase/recorder/RequestInfoList";
 import CONFIG from "@/consts/config";
-import {CameraOne} from "@icon-park/react";
+import { CameraOne } from "@icon-park/react";
 
-const {Option} = Select;
+const { Option } = Select;
 
-const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
+const TestCaseRecorder = ({ dispatch, project, recorder, testcase, loading }) => {
 
   const {
     recordStatus,
@@ -40,8 +40,8 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
     regex
   } = recorder;
 
-  const {projects} = project;
-  const {directory} = testcase;
+  const { projects } = project;
+  const { directory } = testcase;
 
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [url, setUrl] = useState(regex);
@@ -60,7 +60,7 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
     if (projectId) {
       dispatch({
         type: 'testcase/listTestcaseDirectory',
-        payload: {project_id: projectId, move: true}
+        payload: { project_id: projectId, move: true }
       })
     }
   }
@@ -143,32 +143,34 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
   }
 
   const menu = <Menu>
-    <Menu.Item key="windows"><WindowsOutlined/>
+    <Menu.Item key="windows"><WindowsOutlined />
       <a href={getDownloadUrl(0)}> Windows</a>
     </Menu.Item>
-    <Menu.Item key="linux"><LaptopOutlined/>
+    <Menu.Item key="linux"><LaptopOutlined />
       <a href={getDownloadUrl(1)}> Linux</a>
     </Menu.Item>
-    <Menu.Item key="macos"><AppleOutlined/>
+    <Menu.Item key="macos"><AppleOutlined />
       <a href={getDownloadUrl(2)}> Mac OS</a>
     </Menu.Item>
-    <Menu.Item key="ios"><AppleOutlined/>
+    <Menu.Item key="ios"><AppleOutlined />
       <a href={getDownloadUrl(3)}> IOS</a>
     </Menu.Item>
-    <Menu.Item key="android"><AndroidOutlined/>
+    <Menu.Item key="android"><AndroidOutlined />
       <a href={getDownloadUrl(4)}> Android</a>
     </Menu.Item>
   </Menu>
 
   return (
     <PageContainer breadcrumb={null}
-                   title={<span className="ant-page-header-heading-title">用例录制 <CameraOne theme="outline" size="18"
-                                                                                              fill="#7ed321"
-                                                                                              strokeLinecap="square"/> </span>}>
+      title={<span className="ant-page-header-heading-title">用例录制 <CameraOne theme="outline" size="18"
+        fill="#7ed321"
+        strokeLinecap="square" /> </span>}>
+      <Alert message="由于录制代理CPU负荷过高，暂时先关闭此功能～🍑"
+        style={{ marginBottom: 16 }} type="warning" banner closable />
       <Card>
         <Modal title={<span>生成用例 - 已选中{selectedRowKeys.length}条数据</span>} open={visible}
-               onOk={onGenerateCase}
-               onCancel={() => setVisible(false)}>
+          onOk={onGenerateCase}
+          onCancel={() => setVisible(false)}>
           <Form form={form} {...CONFIG.LAYOUT}>
             <Form.Item label="项目">
               <Select placeholder="请选择项目" onChange={e => {
@@ -177,58 +179,58 @@ const TestCaseRecorder = ({dispatch, project, recorder, testcase, loading}) => {
                 {projects.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)}
               </Select>
             </Form.Item>
-            <Form.Item label="场景目录" name="directory_id" rules={[{required: true, message: '请选择场景目录'}]}>
-              <TreeSelect placeholder="先选择项目，然后选择你要生成的场景目录" treeLine treeData={directory}/>
+            <Form.Item label="场景目录" name="directory_id" rules={[{ required: true, message: '请选择场景目录' }]}>
+              <TreeSelect placeholder="先选择项目，然后选择你要生成的场景目录" treeLine treeData={directory} />
             </Form.Item>
-            <Form.Item label="场景名称" name="name" rules={[{required: true, message: '请输入用例名称'}]}>
-              <Input placeholder="请输入场景名称"/>
+            <Form.Item label="场景名称" name="name" rules={[{ required: true, message: '请输入用例名称' }]}>
+              <Input placeholder="请输入场景名称" />
             </Form.Item>
           </Form>
         </Modal>
         <Row gutter={12}>
           <Col span={10}>
             <Alert type="info" banner closable message={<span>
-            📢 录制接口之前，请先配置好app/web代理哦~<a
-              href="https://wuranxu.github.io/pityDoc/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%8E%A5%E5%8F%A3%E7%94%A8%E4%BE%8B/%E7%94%A8%E4%BE%8B%E5%BD%95%E5%88%B6"
-              target="_blank" rel="noreferrer"> 参考文档</a>
-          </span>}/>
+              📢 录制接口之前，请先配置好app/web代理哦~<a
+                href="https://wuranxu.github.io/pityDoc/%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3/%E6%8E%A5%E5%8F%A3%E7%94%A8%E4%BE%8B/%E7%94%A8%E4%BE%8B%E5%BD%95%E5%88%B6"
+                target="_blank" rel="noreferrer"> 参考文档</a>
+            </span>} />
           </Col>
           <Col span={8}>
             <Dropdown overlay={menu}>
               <a onClick={e => e.preventDefault()}>
-                下载证书 <DownOutlined/>
+                下载证书 <DownOutlined />
               </a>
             </Dropdown>
             <Input placeholder="请输入要匹配的url(正则表达式)" value={url} onChange={e => {
               setUrl(e.target.value)
-            }} style={{width: '75%', marginLeft: 12}}/>
+            }} style={{ width: '75%', marginLeft: 12 }} />
           </Col>
           <Col span={6}>
-            <Button style={{float: 'right', marginRight: 8}} onClick={() => setVisible(true)}
-                    disabled={selectedRowKeys.length === 0}><ToolOutlined/>生成用例</Button>
+            <Button style={{ float: 'right', marginRight: 8 }} onClick={() => setVisible(true)}
+              disabled={selectedRowKeys.length === 0}><ToolOutlined />生成用例</Button>
             {
               recordStatus ? <Button onClick={stopRecord} type="danger"
-                                     style={{float: 'right', marginRight: 8}}><StopOutlined/>停止录制</Button> :
-                <Button type="primary" style={{float: 'right', marginRight: 8}} onClick={startRecord}
-                        loading={recordStatus}><VideoCameraOutlined/>{recordLists.length === 0 ? '开始录制' : '重新录制'}
+                style={{ float: 'right', marginRight: 8 }}><StopOutlined />停止录制</Button> :
+                <Button type="primary" style={{ float: 'right', marginRight: 8 }} onClick={startRecord}
+                  loading={recordStatus}><VideoCameraOutlined />{recordLists.length === 0 ? '开始录制' : '重新录制'}
                 </Button>
             }
 
           </Col>
         </Row>
-        <Row gutter={8} style={{marginTop: 12}}>
+        <Row gutter={8} style={{ marginTop: 12 }}>
           <Col span={24}>
             <RequestInfoList rowSelection={rowSelection} rowKey="index"
-                             emptyText="点击录制按钮即可开始录制app/web的接口请求"
-                             dataSource={recordLists} dispatch={dispatch}
-                             loading={loading.effects['recorder/queryRecordStatus']}/>
+              emptyText="点击录制按钮即可开始录制app/web的接口请求"
+              dataSource={recordLists} dispatch={dispatch}
+              loading={loading.effects['recorder/queryRecordStatus']} />
           </Col>
         </Row>
       </Card>
     </PageContainer>)
 }
 
-export default connect(({loading, recorder, project, testcase, global}) => ({
+export default connect(({ loading, recorder, project, testcase, global }) => ({
   global,
   recorder,
   testcase,
