@@ -590,7 +590,7 @@ const TestCaseDirectory = ({ testcase, gconfig, project, user, loading, dispatch
                       <Row gutter={8} style={{ marginTop: 4 }}>
                         <Col span={24}>
                           <Dropdown overlay={AddCaseMenu} trigger="click">
-                            <Button type="primary"><PlusOutlined /> 添加场景</Button>
+                            <Button type="primary"><PlusOutlined /> 新建场景</Button>
                           </Dropdown>
                           {selectedRowKeys.length > 0 ?
                             <Dropdown menu={menu()} trigger={['hover']}>

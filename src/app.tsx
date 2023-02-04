@@ -10,11 +10,13 @@ import {currentUser as queryCurrentUser, LoginUser} from './services/auth';
 import React from 'react';
 import NoTableData from "@/assets/NoSearch.svg";
 
-import {ConfigProvider, Empty, message} from "antd";
+import {ConfigProvider, Empty, message, Spin} from "antd";
 import IndexPage from "@/pages/IndexPage";
+import { Loading } from '@icon-park/react';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
+Spin.setDefaultIndicator(<Loading spin={true} theme="outline" size="36" fill="#4a90e2" strokeLinecap="butt" />)
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -63,6 +65,7 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   return {
+    siderWidth: 216,
     rightContentRender: () => <RightContent/>,
     waterMarkProps: {
       content: initialState?.currentUser?.name,
@@ -125,9 +128,10 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
     childrenRender: (children) => {
-      if (initialState?.loading) return <PageLoading />;
+      if (initialState?.loading) return <PageLoading/>;
       return (
-        <ConfigProvider renderEmpty={() => <Empty image={NoTableData} imageStyle={{height: 160}}
+        <ConfigProvider 
+        renderEmpty={() => <Empty image={NoTableData} imageStyle={{height: 160}}
                                                   description="暂无数据"/>}>
           {children}
           <IndexPage/>
