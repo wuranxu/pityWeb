@@ -104,7 +104,7 @@ export default {
       name: 'request_type',
       label: '请求类型',
       required: true,
-      component: <Select placeholder="请选择请求协议类型">
+      component: <Select placeholder="请选择请求协议">
         {Object.keys(REQUEST_TYPE).map(key => <Option key={key} value={key}
                                                              disabled={key !== '1'}>{REQUEST_TYPE[key]}</Option>)}
       </Select>,

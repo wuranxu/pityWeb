@@ -4,13 +4,13 @@ import TooltipIcon from "@/components/Icon/TooltipIcon";
 import { HELPER } from "@/consts/helper";
 
 const selectMap = {
-  0: 'Response(正则表达式)',
-  1: 'Response(JSONPath)',
-  2: 'Response Header: K/V',
+  0: 'Response: 正则',
+  1: 'Response: JSONPath',
+  2: 'Header: K/V',
   3: 'Cookie: K/V',
-  4: 'HTTP状态码',
-  5: 'Body(正则表达式)',
-  6: 'Body(JSONPath)',
+  4: '响应状态码',
+  5: 'Body: 正则',
+  6: 'Body: JSONPath',
   7: 'Request Header: K/V'
 }
 
@@ -41,7 +41,7 @@ export default ({ dispatch, testcase, caseId, createMode }) => {
       name: '来源',
       dataIndex: 'source',
       key: 'source',
-      width: '15%',
+      width: '25%',
       editable: true,
       render: (source) => source !== undefined ? selectMap[source] : '请选择来源',
     },
@@ -60,7 +60,7 @@ export default ({ dispatch, testcase, caseId, createMode }) => {
       name: '第几个匹配项',
       dataIndex: 'match_index',
       editable: true,
-      render: (match_index, record) => record.source !== 4 && record.source !== 1 ? (match_index || '请输入匹配项') : '无需填写'
+      render: (match_index, record) => record.source !== 4 && record.source !== 1  && record.source !== 6? (match_index || '请输入匹配项') : '无需填写'
     }
   ]
 

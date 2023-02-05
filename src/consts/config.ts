@@ -100,7 +100,7 @@ const CONFIG = {
     'P4': 'green',
   },
   CASE_CONSTRUCTOR: {
-    0: '测试用例',
+    0: '测试场景',
     1: 'SQL语句',
     2: 'Redis命令',
     4: 'HTTP请求',
@@ -148,7 +148,7 @@ const CONFIG = {
     wrapperCol: {span: 20},
   },
   CONSTRUCTOR_TYPE: {
-    0: '测试用例',
+    0: '测试场景',
     1: 'SQL语句',
     2: 'Redis语句',
     4: 'HTTP请求',

@@ -66,11 +66,14 @@ export default ({columns, dataSource, setDataSource}) => {
           <Select placeholder="选择数据来源" style={{width: '90%'}} ref={inputRef} onSelect={e => {
             onUpdateRecord(record, dataIndex, e)
           }} onBlur={save}>
-            <Option value={0}>Body: TEXT</Option>
-            <Option value={1}>Body: JSON</Option>
+            <Option value={0}>Response: 正则</Option>
+            <Option value={1}>Response: JSONPath</Option>
             <Option value={2}>Header: K/V</Option>
             <Option value={3}>Cookie: K/V</Option>
             <Option value={4}>响应状态码</Option>
+            <Option value={5}>Body: 正则</Option>
+            <Option value={6}>Body: JSONPath</Option>
+            <Option value={7}>Request Header: K/V</Option>
           </Select>
         </Form.Item>
       }
@@ -104,7 +107,7 @@ export default ({columns, dataSource, setDataSource}) => {
             },
           ]}
         >
-          <Input ref={inputRef} onPressEnter={save} disabled={record.source === 4 || record.source === 1}
+          <Input ref={inputRef} onPressEnter={save} disabled={record.source === 4 || record.source === 1 || record.source === 6}
                  onBlur={save} placeholder={record.source === 4 ? '无需填写' : '请输入匹配项'}/>
         </Form.Item>
       }
