@@ -38,7 +38,7 @@ const TestCaseBottom = ({
 
   const [variableModal, setVariableModal] = useState(false);
   const [gconfigVars, setGconfigVars] = useState([]);
-  const [tour, setTour] = useState(localStorage.getItem("case_study") === undefined);
+  const [tour, setTour] = useState(localStorage.getItem("case_study") === null);
 
   const dataRef = useRef(null);
   const preRef = useRef(null);
