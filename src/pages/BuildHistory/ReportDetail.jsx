@@ -1,6 +1,6 @@
-import {connect, useParams} from "umi";
+import {connect, useParams} from "@umijs/max";
 import {Badge, Card, Col, Descriptions, Divider, Input, Row, Spin, Statistic, Table, Tabs, Tag} from "antd";
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import React, {useEffect, useState} from "react";
 import {queryReport} from "@/services/report";
 import auth from "@/utils/auth";
@@ -125,9 +125,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
   const load = !!(loading.effects['testcase/retryCase']
     || loading.effects['gconfig/fetchEnvList'])
 
-  useEffect(async () => {
-    fetchEnv();
-    fetchUsers();
+  const getReportResponse = async () => {
     const res = await queryReport({id: reportId})
     if (auth.response(res)) {
       setCaseList(res.data.case_list);
@@ -135,6 +133,12 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       setReportDetail(res.data.report);
       setPlanName(res.data.plan_name);
     }
+  }
+
+  useEffect(() => {
+    fetchEnv();
+    fetchUsers();
+    getReportResponse();
   }, [])
 
   const onHandleRetry = async record => {
@@ -161,8 +165,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
       title: '用例名称',
       dataIndex: 'case_name',
       key: 'case_name',
-      render: (text, record) => <a href={`/#/apiTest/testcase/${record.directory_id}/${record.case_id}`}
-                                   target="_blank">{text}</a>
+      render: (text, record) => <a href={`/#/apiTest/testcase/${record.directory_id}/${record.case_id}`}>{text}</a>
     },
     {
       title: '数据描述',
@@ -301,7 +304,7 @@ const ReportDetail = ({dispatch, loading, user, gconfig}) => {
           <Row gutter={[8, 8]}>
             <Col span={18}/>
             <Col span={6}>
-              <Input prefix={<SearchOutlined/>} placeholder="请输入用例名称" className="borderSearch"
+              <Input prefix={<SearchOutlined/>} placeholder="请输入场景名称" className="borderSearch"
                      onPressEnter={onSearchCase}/>
             </Col>
           </Row>

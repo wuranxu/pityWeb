@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Card, Col, Spin, Divider, Input, Row, Table } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
 import { deleteEnvironment, insertEnvironment, listEnvironment, updateEnvironment } from '@/services/configure';
 import auth from '@/utils/auth';
@@ -115,7 +115,7 @@ class Environment extends Component {
       <PageContainer title='环境配置' breadcrumb={null}>
         <Spin spinning={this.state.loading}>
           <Card>
-            <FormForModal visible={this.state.visible} onCancel={() => {
+            <FormForModal open={this.state.visible} onCancel={() => {
               this.setState({ visible: false });
             }}
                           title='环境管理' left={6} right={18} width={500} record={this.state.record}

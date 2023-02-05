@@ -1,5 +1,5 @@
 import {Button, Col, Form, Input, Row} from "antd";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 export default ({form}) => {
   return (

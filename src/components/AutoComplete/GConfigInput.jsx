@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {AutoComplete} from "antd";
-import {connect} from "umi";
+import {connect} from "@umijs/max'";
 
 const GConfigInput = ({placeholder, onChange, value, gconfig, dispatch}) => {
 

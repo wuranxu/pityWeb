@@ -21,7 +21,7 @@ import {httpRequest} from '@/services/request';
 import auth from '@/utils/auth';
 import {listGConfig} from "@/services/configure";
 import FormData from "@/components/Postman/FormData";
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import JSONAceEditor from "@/components/CodeEditor/AceEditor/JSONAceEditor";
 import {IconFont} from "@/components/Icon/IconFont";
 
@@ -109,8 +109,7 @@ const PostmanBody = ({
     })
   }, [])
 
-
-  useEffect(async () => {
+  const init = async () => {
     const res = await listGConfig({page: 1, size: 500});
     if (auth.response(res)) {
       const data = res.data.map((v) => ({
@@ -123,6 +122,10 @@ const PostmanBody = ({
     }
     setUrl(form.getFieldValue('url'));
     splitUrl(form.getFieldValue('url'))
+  }
+
+  useEffect(() => {
+    init()
   }, [body])
 
 
@@ -385,8 +388,7 @@ const PostmanBody = ({
                 return option.children.props.children.indexOf(input.toLowerCase()) >= 0
               }}
       >
-        <Option value={null} label="无">无<a style={{float: 'right', fontSize: 12}} href="/#/config/address"
-                                           target="_blank">去配置</a></Option>
+        <Option value={null} label="无">无<a style={{float: 'right', fontSize: 12}} href="/#/config/address">去配置</a></Option>
         {
           Object.keys(currentAddress).map(key => <Option value={key} key={key} label={key}><Tooltip title={
             <div>

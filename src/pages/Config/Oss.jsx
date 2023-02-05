@@ -1,9 +1,9 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {Button, Card, Col, Divider, Form, Input, Modal, Row, Table, Upload} from "antd";
 import {InboxOutlined, PlusOutlined} from "@ant-design/icons";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import {useEffect, useState} from "react";
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import UserLink from "@/components/Button/UserLink";
 
 const Oss = ({loading, dispatch, gconfig, user}) => {
@@ -122,7 +122,7 @@ const Oss = ({loading, dispatch, gconfig, user}) => {
   return (
     <PageContainer title="OSS文件管理" breadcrumb={null}>
       <Card>
-        <Modal width={600} title="上传文件" visible={visible} onCancel={() => setVisible(false)} onOk={onUpload}>
+        <Modal width={600} title="上传文件" open={visible} onCancel={() => setVisible(false)} onOk={onUpload}>
           <Form form={form} {...CONFIG.SQL_LAYOUT}>
             <Form.Item label="文件路径" name="filepath"
                        rules={[{required: true, message: '请输入文件要存储的路径, 目录用/隔开'}]}>

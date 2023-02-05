@@ -1,15 +1,16 @@
 // 构建历史记录
 import moment from 'moment';
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {Button, Card, Col, DatePicker, Form, Row, Select, Table, Tag} from "antd";
 import {CheckCircleTwoTone, CloseCircleTwoTone, ReloadOutlined, SearchOutlined} from "@ant-design/icons";
 import NoRecord from "@/components/NotFound/NoRecord";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import {useEffect} from "react";
 import reportConfig from "@/consts/reportConfig";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import UserLink from "@/components/Button/UserLink";
 import {IconFont} from "@/components/Icon/IconFont";
+import {REPORT_MODE} from "@/components/Common/global";
 
 
 const {RangePicker} = DatePicker;
@@ -49,7 +50,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
       dataIndex: 'mode',
       key: 'mode',
       fixed: 'left',
-      render: mode => CONFIG.REPORT_MODE[mode],
+      render: mode => REPORT_MODE[mode],
     },
     {
       title: '执行人',
@@ -111,7 +112,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
     {
       title: '操作',
       key: 'operation',
-      render: (_, record) => <><Button type="link" href={`/#/record/report/${record.id}`}>查看</Button></>
+      render: (_, record) => <a href={`/#/record/report/${record.id}`}>查看</a>
     }
   ]
 
@@ -119,6 +120,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
     const value = form.getFieldsValue();
     const start_time = value.date[0].format("YYYY-MM-DD HH:mm:ss")
     const end_time = value.date[1].format("YYYY-MM-DD HH:mm:ss")
+
     dispatch({
       type: 'report/fetchReportList',
       payload: {
@@ -127,6 +129,7 @@ const ReportList = ({user, report, loading, dispatch}) => {
         ...value,
         page: pagination.current,
         size: pagination.pageSize,
+        date: null,
       }
     })
   }

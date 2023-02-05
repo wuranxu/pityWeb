@@ -5,7 +5,7 @@ import {SaveOutlined} from '@ant-design/icons';
 
 
 import getComponent from './index';
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 
 const {Item: FormItem} = Form;
 
@@ -72,7 +72,7 @@ const ProjectForm = ({left, right, formName, record, reloadData, onFinish, field
                         labelCol: {span: 0},
                         wrapperCol: {span: 24},
                     }}>
-                        <Button htmlType="submit" type="primary"><SaveOutlined/>修改</Button>
+                        <Button htmlType="submit" type="primary"><SaveOutlined/>保存</Button>
                     </FormItem>
                 </Col>
                 <Col span={6}/>

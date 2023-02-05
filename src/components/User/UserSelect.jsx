@@ -1,5 +1,5 @@
 import {Avatar, Select} from "antd";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import React from "react";
 
 const {Option} = Select;

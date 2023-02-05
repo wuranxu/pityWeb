@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {PageContainer} from '@ant-design/pro-layout';
+import {PageContainer} from '@ant-design/pro-components';
 import {Avatar, Button, Card, Col, Dropdown, Empty, Input, Menu, Modal, Pagination, Row, Spin, Tooltip,} from 'antd';
 import {
   AliwangwangOutlined,
@@ -9,13 +9,13 @@ import {
   SearchOutlined
 } from '@ant-design/icons';
 import FormForModal from '@/components/PityForm/FormForModal';
-import {connect, history} from 'umi';
+import {connect, history} from '@umijs/max';
 import {insertProject, listProject} from '@/services/project';
 import auth from '@/utils/auth';
 import {listUsers} from '@/services/user';
 import noRecord from '@/assets/no_record.svg'
 import UserLink from "@/components/Button/UserLink";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import styles from './Project.less';
 import UserSelect from "@/components/User/UserSelect";
 import {IconFont} from "@/components/Icon/IconFont";
@@ -179,7 +179,7 @@ const Project = ({dispatch, project, loading}) => {
         left={6}
         right={18}
         record={{private: false}}
-        visible={visible}
+        open={visible}
         onCancel={() => setVisible(false)}
         fields={fields}
         onFinish={onHandleCreate}

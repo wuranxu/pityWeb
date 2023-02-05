@@ -1,7 +1,7 @@
 import {Col, Form, Row, Select, TreeSelect} from "antd";
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import React, {useEffect} from "react";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 const {Option} = Select;
 

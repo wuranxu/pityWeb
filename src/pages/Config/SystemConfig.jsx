@@ -1,10 +1,10 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {Button, Card, Col, Form, message, Row, Spin, Tabs} from "antd";
 import OssConfig from "@/components/System/OssConfig";
 import EmailConfig from "@/components/System/EmailConfig";
 import YapiConfig from "@/components/System/YapiConfig";
 import {SaveOutlined} from "@ant-design/icons";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import {useEffect} from "react";
 
 const {TabPane} = Tabs;

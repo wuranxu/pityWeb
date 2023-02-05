@@ -1,6 +1,6 @@
 // 编辑测试数据
 import request from "@/utils/request";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import auth from "@/utils/auth";
 
 export async function listTestPlan(params) {

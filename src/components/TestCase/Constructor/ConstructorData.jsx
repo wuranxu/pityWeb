@@ -1,6 +1,6 @@
 import {Col, Row} from "antd";
 import React from "react";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import TestCaseConstructor from "@/components/TestCase/Constructor/TestCaseConstructor";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 

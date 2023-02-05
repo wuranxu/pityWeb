@@ -1,7 +1,7 @@
 import {Card, Col, Form, Input, Row, Switch} from "antd";
 import React, {useEffect} from "react";
-import {connect} from "umi";
-import {CONFIG} from "@/consts/config";
+import {connect} from "@umijs/max";
+import CONFIG from "@/consts/config";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";
 import PostmanBody from "@/components/Postman/PostmanBody";
 import ShareTooltip from "@/components/PityForm/ShareTooltip";

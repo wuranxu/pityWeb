@@ -1,8 +1,8 @@
 import {Col, Form, Input, Menu, Row, Select, Switch, Tooltip} from "antd";
 import React, {useEffect, useState} from "react";
-import {connect} from "umi";
+import {connect} from "@umijs/max";
 import SqlOnline from "@/components/Online/SqlOnline";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import SqlAceEditor from "@/components/CodeEditor/AceEditor/SqlAceEditor";
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import CopyTreeSelect from "@/components/TestCase/Constructor/ConstructorCopy";

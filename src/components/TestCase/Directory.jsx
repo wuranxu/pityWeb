@@ -41,7 +41,7 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
         <a onClick={() => {
           setDrawer(true);
         }}>
-          添加用例
+          新建场景
         </a>
       </Menu.Item>
     </Menu>
@@ -54,12 +54,12 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
           setConstructorModal(true);
           setConstructorCaseId(key);
         }}>
-          添加数据构造器
+          添加前置步骤
         </a>
       </Menu.Item>
       <Menu.Item icon={<FolderOutlined/>}>
         <a>
-          添加后置条件
+          添加后置步骤
         </a>
       </Menu.Item>
       <Menu.Item icon={<RobotOutlined/>}>
@@ -196,8 +196,8 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
           <strong>Tips: </strong>
           <p/>
           <p>1. 左侧是用例树，展示的是用例和用例的相关信息。</p>
-          <p>2. 我们可以选择用例/断言/前置/后置条件进行查看和修改，这些详情会在右侧展示。</p>
-          <p>{'3. 用例的生命周期是[变量替换]->[前置条件执行]->[用例执行]->[后置条件执行]->[断言执行]'}。</p>
+          <p>2. 我们可以选择用例/断言/前置/后置步骤进行查看和修改，这些详情会在右侧展示。</p>
+          <p>{'3. 用例的生命周期是[变量替换]->[前置步骤执行]->[用例执行]->[后置步骤执行]->[断言执行]'}。</p>
           <p>4. 页面可在线调试对应的接口，选中多个用例可将他们将入测试集。</p>
           <p>5. 更多功能等待作者慢慢完善吧。</p>
         </div>
@@ -207,18 +207,18 @@ export default ({loading, treeData, fetchData, projectData, userMap}) => {
     />;
   };
 
-  const AddButton = <Dropdown overlay={menu}>
+  const AddButton = <Dropdown menu={menu}>
     <a style={{marginLeft: 8}}>
       <PlusOutlined style={{fontSize: 16, marginTop: 4, cursor: 'pointer'}}/>
     </a>
   </Dropdown>;
 
   return (
-    <Spin spinning={loading} tip='努力加载中'>
+    <Spin spinning={loading} tip='暴力加载中...'>
       <CaseForm data={caseInfo} modal={drawer} setModal={setDrawer} onFinish={onCreateCase}/>
       <ConstructorModal width={1050} modal={constructorModal} setModal={setConstructorModal} caseId={constructorCaseId}
                         fetchData={fetchData}/>
-      <FormForModal visible={assertModal} fields={fields.CaseAsserts} title='新增断言' left={6} right={18}
+      <FormForModal open={assertModal} fields={fields.CaseAsserts} title='新增断言' left={6} right={18}
                     onFinish={onSaveAssert} onCancel={() => setAssertModal(false)}/>
       <Row style={{marginTop: -8}}>
         <Col span={8}>

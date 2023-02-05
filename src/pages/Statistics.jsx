@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {StatisticCard} from '@ant-design/pro-components';
 import {Avatar, Badge, Card, Col, List, Progress, Row, Skeleton} from "antd";
 import {TinyArea} from "@ant-design/charts";
@@ -10,7 +10,7 @@ import {ProjectTwoTone} from "@ant-design/icons";
 import {IconFont} from "@/components/Icon/IconFont";
 import {ErrorComputer, Jump, MessageFailed, Plan, Success, User} from "@icon-park/react";
 import {listUsers} from "@/services/user";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 
 const MiniProgress = ({rate}) => {

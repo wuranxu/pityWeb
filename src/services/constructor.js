@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import auth from "@/utils/auth";
 
 // 获取构造方法树

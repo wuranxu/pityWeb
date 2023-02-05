@@ -7,7 +7,7 @@ const md = `
 
 ## 2022-01-16 更新日志
 
-#### 🥞 1. 修复了前置条件为用例的时候case无法执行的问题
+#### 🥞 1. 修复了前置步骤为场景的时候case无法执行的问题
 #### 🍳 2. 新增了系统设置页面，为了方便后续录入yapi/jira等数据(为了防止删除数据，只有超级管理员可以看到哦)
 
 ## 2022-01-06 更新日志
@@ -26,9 +26,9 @@ const md = `
 `
 
 
-export default ({visible, setVisible}) => {
+export default ({open, setVisible}) => {
   return (
-    <Drawer visible={visible} onClose={() => setVisible(false)} width={500}>
+    <Drawer open={open} onClose={() => setVisible(false)} width={500}>
       <Markdown value={md}/>
     </Drawer>
   )

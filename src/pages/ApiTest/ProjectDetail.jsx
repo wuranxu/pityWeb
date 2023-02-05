@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {PageContainer} from '@ant-design/pro-layout';
-import {Avatar, Card, PageHeader, Tabs} from 'antd';
-import {useParams} from 'umi';
+import {PageContainer, PageHeader} from '@ant-design/pro-components';
+import {Avatar, Card, Tabs} from 'antd';
+import {useParams} from '@umijs/max';
 import {queryProject} from '@/services/project';
 import ProjectInfo from '@/components/Project/ProjectInfo';
 import {listUsers} from '@/services/user';
 import ProjectRole from '@/components/Project/ProjectRole';
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import styles from "./Project.less";
 import auth from "@/utils/auth";
 import NoRecord from "@/components/NotFound/NoRecord";
@@ -58,7 +58,7 @@ export default () => {
           window.history.back();
         }}
         title={<span>
-      <Avatar src={projectData.avatar || CONFIG.PROJECT_AVATAR_URL}/>{projectData.name}</span>}
+      <Avatar src={projectData.avatar || CONFIG.PROJECT_AVATAR_URL}/> {projectData.name}</span>}
       />
     }>
       <Card bodyStyle={{padding: '8px 18px'}}>

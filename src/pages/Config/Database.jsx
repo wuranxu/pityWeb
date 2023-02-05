@@ -1,4 +1,4 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {Alert, Badge, Button, Card, Col, Divider, Form, Input, Row, Select, Table, Tag} from "antd";
 import {
   CheckCircleOutlined,
@@ -7,10 +7,10 @@ import {
   ReloadOutlined,
   SearchOutlined
 } from "@ant-design/icons";
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import React, {useEffect, useState} from "react";
 import FormForModal from "@/components/PityForm/FormForModal";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import PityPopConfirm from "@/components/Confirm/PityPopConfirm";
 import {IconFont} from "@/components/Icon/IconFont";
 
@@ -79,8 +79,8 @@ const Database = ({dispatch, gconfig, loading}) => {
 
   }
 
-  useEffect(async () => {
-    await fetchData();
+  useEffect(() => {
+    fetchData();
   }, [])
 
   const columns = [
@@ -268,7 +268,7 @@ const Database = ({dispatch, gconfig, loading}) => {
       <Card>
         <FormForModal Footer={Footer} onTest={onTest}
                       record={databaseRecord} fields={fields} title="数据库配置" onFinish={onFinish}
-                      left={6} right={18} visible={databaseModal} offset={-50} onCancel={() => {
+                      left={6} right={18} open={databaseModal} offset={-50} onCancel={() => {
           save({databaseModal: false})
         }}>
           <Alert type="info" style={{marginBottom: 12, marginTop: -12}} closable

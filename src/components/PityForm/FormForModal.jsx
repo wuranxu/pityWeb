@@ -14,7 +14,7 @@ const FormForModal = ({
                         onFinish,
                         loading,
                         fields,
-                        visible,
+                        open,
                         onCancel,
                         offset = 0,
                         children,
@@ -45,7 +45,7 @@ const FormForModal = ({
                onTest(values);
              })
            }}/> : undefined}
-           title={title} width={width} visible={visible} onOk={onOk} onCancel={onCancel}>
+           title={title} width={width} open={open} onOk={onOk} onCancel={onCancel}>
       {children || null}
       <Form
         form={form}

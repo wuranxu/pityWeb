@@ -1,6 +1,6 @@
 [English](https://github.com/wuranxu/pity/blob/main/README_EN.md)
 
-![png](https://img.shields.io/badge/React-17+-blue)
+![png](https://img.shields.io/badge/React-18+-blue)
 ![png](https://img.shields.io/badge/contributors-3-green)
 
 ### V2版本体验地址

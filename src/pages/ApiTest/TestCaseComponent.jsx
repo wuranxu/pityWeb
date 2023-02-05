@@ -1,26 +1,10 @@
-import {PageContainer} from "@ant-design/pro-layout";
-import {connect, useParams} from 'umi';
+import {PageContainer} from "@ant-design/pro-components";
+import {connect, useParams} from '@umijs/max';
 import React, {useEffect, useState} from "react";
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Descriptions,
-  Dropdown,
-  Empty,
-  Form,
-  Menu,
-  Result,
-  Row,
-  Spin,
-  Tag,
-  Tooltip
-} from "antd";
+import {Badge, Button, Card, Col, Descriptions, Dropdown, Empty, Form, Menu, Row, Spin, Tag, Tooltip} from "antd";
 import TestCaseEditor from "@/components/TestCase/TestCaseEditor";
 import TestResult from "@/components/TestCase/TestResult";
-import {CONFIG} from "@/consts/config";
-import {IconFont} from "@/components/Icon/IconFont";
+import CONFIG from "@/consts/config";
 import ConstructorModal from "@/components/TestCase/ConstructorModal";
 import "./TestCaseComponent.less";
 import {DownOutlined, EditOutlined, PlayCircleOutlined} from "@ant-design/icons";
@@ -30,6 +14,7 @@ import UserLink from "@/components/Button/UserLink";
 import TestCaseBottom from "@/components/TestCase/TestCaseBottom";
 import noResult from '@/assets/NoData.svg';
 import NoPermission from '@/assets/NoPermission.svg';
+import {CASE_TYPE, REQUEST_METHOD, REQUEST_TYPE} from "@/components/Common/global";
 
 
 const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
@@ -113,10 +98,12 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
     }
     if (typeof tag === 'object') {
       return tag.length > 0 ? tag.map(v => <Tag
+        key={v}
         style={{marginRight: 8}}
         color='blue'>{v}</Tag>) : '无'
     }
     return tag ? tag.split(',').map(v => <Tag
+      key={v}
       style={{marginRight: 8}}
       color='blue'>{v}</Tag>) : '无'
   }
@@ -186,7 +173,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
   const menu = envList.length === 0 ? <Card>
     <div>
       <Empty image={noResult} imageStyle={{height: 90, width: 90, margin: '0 auto'}}
-             description={<p>还没有任何环境, 去<a href="/#/config/environment" target="_blank">添加一个</a>?</p>}/>
+             description={<p>还没有任何环境, 去<a href="/#/config/environment">添加一个</a>?</p>}/>
     </div>
 
   </Card> : <Menu>
@@ -215,7 +202,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       <TestResult width={1000} modal={resultModal} setModal={setResultModal} response={testResult}
                   caseName={caseInfo.name} single={false}/>
 
-      <Spin spinning={load} tip="努力加载中" size="large">
+      <Spin spinning={load} tip="暴力加载中..." size="large">
         {
           !case_id ? <TestCaseEditor directoryId={directory_id} create={true} form={form} body={body} setBody={setBody}
                                      headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}
@@ -233,8 +220,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                             caseId={case_id} formData={formData} setFormData={setFormData}
                                             bodyType={bodyType} setBodyType={setBodyType} setSuffix={setSuffix}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
-                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} size="small" title={
-                      <span>{directoryName} {caseInfo.name ? ` / ${caseInfo.name}` : ''} {CONFIG.CASE_TYPE[caseInfo.case_type]}</span>}
+                    <Card style={{margin: -8}} bodyStyle={{padding: 24}} title={
+                      <span>{directoryName} {caseInfo.name ? ` / ${caseInfo.name}` : ''} {CASE_TYPE[caseInfo.case_type]}</span>}
                           extra={<div>
                             <Button onClick={() => {
                               dispatch({
@@ -251,7 +238,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                 }
                               })
                             }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
-                            <Dropdown overlay={menu}>
+                            <Dropdown menu={menu}>
                               <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
                                       loading={loading.effects['testcase/onExecuteTestCase']}
                                       onClick={e => {
@@ -263,7 +250,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                         <Descriptions.Item label='用例名称'><a>{caseInfo.name}</a></Descriptions.Item>
 
                         <Descriptions.Item
-                          label='请求类型'>{CONFIG.REQUEST_TYPE[caseInfo.request_type]}</Descriptions.Item>
+                          label='请求类型'>{REQUEST_TYPE[caseInfo.request_type]}</Descriptions.Item>
                         <Descriptions.Item label='请求url' span={2} style={{
                           fontSize: 14,
                           overflow: 'hidden',
@@ -275,7 +262,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                           </Tooltip>
                         </Descriptions.Item>
                         <Descriptions.Item label='请求方式'>
-                          {CONFIG.REQUEST_METHOD[caseInfo.request_method]}
+                          {REQUEST_METHOD[caseInfo.request_method]}
                         </Descriptions.Item>
                         <Descriptions.Item label='用例等级'>{<Tag
                           color={CONFIG.CASE_TAG[caseInfo.priority]}>{caseInfo.priority}</Tag>}</Descriptions.Item>
@@ -301,7 +288,8 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                     </Card>
                 }
               </Col>
-            </Row> : <Empty description="你无法查看此用例，请联系对应项目组长开通权限。" image={NoPermission} imageStyle={{height: 400}}/>
+            </Row> : <Empty description="你无法查看此用例，请联系对应项目组长开通权限。" image={NoPermission}
+                            imageStyle={{height: 400}}/>
         }
       </Spin>
 

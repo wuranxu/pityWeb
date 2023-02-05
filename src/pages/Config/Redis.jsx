@@ -1,8 +1,8 @@
-import {PageContainer} from "@ant-design/pro-layout";
+import {PageContainer} from "@ant-design/pro-components";
 import {Button, Card, Col, Divider, Form, Input, InputNumber, Modal, Row, Select, Table, Tag} from "antd";
-import {connect} from 'umi'
+import {connect} from '@umijs/max'
 import React, {useEffect, useState} from 'react';
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 import {PlusOutlined} from "@ant-design/icons";
 import PityPopConfirm from "@/components/Confirm/PityPopConfirm";
 
@@ -169,7 +169,7 @@ const Redis = ({gconfig, loading, dispatch}) => {
           setVisible(true);
           setRecord({});
         }}><PlusOutlined/>添加配置</Button>
-        <Modal title="Redis配置" width={500} visible={visible} onCancel={() => setVisible(false)} onOk={onFinish}>
+        <Modal title="Redis配置" width={500} open={visible} onCancel={() => setVisible(false)} onOk={onFinish}>
           <Form form={modalForm} initialValues={record} {...CONFIG.LAYOUT}>
             <Form.Item label="环境" name="env" rules={[
               {

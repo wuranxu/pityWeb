@@ -1,4 +1,4 @@
-import {connect} from 'umi';
+import {connect} from '@umijs/max';
 import {Button, Card, Col, Form, Row} from "antd";
 import styles from "@/components/Drawer/CaseDetail.less";
 import getComponent from "@/components/PityForm";
@@ -45,7 +45,7 @@ const TestCaseEditor = ({
       name="addCase"
       initialValues={caseInfo}
     >
-      <Card title={<span className={styles.caseTitle}>用例信息</span>}
+      <Card title={<span className={styles.caseTitle}>场景信息</span>}
             extra={<>
               <Button type="primary" onClick={async () => {
                 await onSubmit(create)

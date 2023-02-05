@@ -1,5 +1,5 @@
-import {PageContainer} from "@ant-design/pro-layout";
-import {connect, history} from 'umi';
+import {PageContainer} from "@ant-design/pro-components";
+import {connect, history, useModel} from '@umijs/max';
 import {Avatar, Button, Card, Col, Empty, Rate, Row, Statistic, Tag, Tooltip} from "antd";
 import NoRecord2 from "@/components/NotFound/NoRecord2";
 import styles from './Workspace.less';
@@ -17,7 +17,7 @@ import common from "@/utils/common";
 import {TinyArea} from "@ant-design/charts";
 import ChartCard from "@/components/Charts/ChartCard";
 import Area from "@/components/Charts/Area";
-import {CONFIG} from "@/consts/config";
+import CONFIG from "@/consts/config";
 
 const getWelcome = user => {
   const now = new Date()
@@ -72,6 +72,8 @@ const Workspace = ({user, dispatch}) => {
     weekly_case,
   } = user;
 
+  const {initialState} = useModel("@@initialState")
+
   useEffect(() => {
     dispatch({
       type: "user/queryUserStatistics"
@@ -114,7 +116,8 @@ const Workspace = ({user, dispatch}) => {
   }
 
   // 关注的测试计划
-  const {currentUser, followPlan} = user;
+  const {followPlan} = user;
+  const {currentUser} = initialState || {};
 
   const calculatePercent = (report, pt = false) => {
     const percent = common.calPiePercent(report.success_count, report.success_count + report.failed_count + report.error_count)
