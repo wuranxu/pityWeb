@@ -69,7 +69,6 @@ const PostmanBody = ({
   const [headersKeys, setHeadersKeys] = useState(() => headers.map((item) => item.id));
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState({});
-  const [options, setOptions] = useState([]);
   const [url, setUrl] = useState('');
   const [editor, setEditor] = useState(null);
   const [open, setOpen] = useState(false);
@@ -110,16 +109,6 @@ const PostmanBody = ({
   }, [])
 
   const init = async () => {
-    const res = await listGConfig({page: 1, size: 500});
-    if (auth.response(res)) {
-      const data = res.data.map((v) => ({
-        label: <Tooltip title={<pre>{v.value}</pre>}>
-          <div>{v.key}</div>
-        </Tooltip>, value: `$\{${v.key}\}`, key: v.id
-      }))
-      data.unshift({label: <a onClick={() => setOpen(false)}>收起</a>})
-      setOptions(data);
-    }
     setUrl(form.getFieldValue('url'));
     splitUrl(form.getFieldValue('url'))
   }
@@ -443,25 +432,6 @@ const PostmanBody = ({
                          form.setFieldsValue({url: e.target.value})
                          setUrl(e.target.value);
                        }}/>
-                {/*<AutoComplete*/}
-                {/*  open={open}*/}
-                {/*  options={options}*/}
-                {/*  placeholder="请输入要请求的url"*/}
-                {/*  onChange={(string, e) => {*/}
-                {/*    if (e.key && url && url.indexOf(string) === -1) {*/}
-                {/*      const value = `${url}${string}`*/}
-                {/*      splitUrl(value);*/}
-                {/*      form.setFieldsValue({url: value})*/}
-                {/*      setUrl(value);*/}
-                {/*    } else {*/}
-                {/*      splitUrl(string);*/}
-                {/*      form.setFieldsValue({url: string});*/}
-                {/*      setUrl(string);*/}
-                {/*    }*/}
-                {/*  }}*/}
-                {/*>*/}
-                {/*  <Input addonBefore={prefixSelector}/>*/}
-                {/*</AutoComplete>*/}
               </Form.Item>
             </Col>
           </Form>

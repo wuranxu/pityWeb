@@ -10,6 +10,7 @@ import TestCaseOutParameters from "@/components/TestCase/TestCaseOutParameters";
 import VariableModal from '@/components/TestCase/variableModal';
 import CONFIG from "@/consts/config";
 import { listGConfig } from '@/services/configure';
+import { queryVars } from '@/services/testcase';
 import auth from "@/utils/auth";
 import common from "@/utils/common";
 import {
@@ -22,7 +23,7 @@ import {
 } from "@ant-design/icons";
 import { connect } from '@umijs/max';
 import { useKeyPress } from 'ahooks';
-import { Badge, Button, Card, Col, Modal, Row, Switch, Tabs, Tag, Timeline, Tour, Image } from "antd";
+import { Badge, Button, Card, Col, Image, Modal, Row, Switch, Tabs, Tag, Timeline, Tour } from "antd";
 import { useEffect, useRef, useState } from 'react';
 
 const { TabPane } = Tabs
@@ -38,6 +39,7 @@ const TestCaseBottom = ({
 
   const [variableModal, setVariableModal] = useState(false);
   const [gconfigVars, setGconfigVars] = useState([]);
+  const [caseVars, setCaseVars] = useState([]);
   const [tour, setTour] = useState(localStorage.getItem("case_study") === null);
 
   const dataRef = useRef(null);
@@ -46,6 +48,14 @@ const TestCaseBottom = ({
   const reqRef = useRef(null);
   const assertRef = useRef(null);
   const outRef = useRef(null);
+
+  const onQueryCaseVars = async (steps) => {
+    const params = steps.map(item => ({ case_id: item.case_id, step_name: item.name }))
+    const res = await queryVars(params)
+    if (auth.response(res)) {
+      setCaseVars(Object.keys(res.data).map(k => res.data[k]));
+    }
+  }
 
   const steps = [
     {
@@ -141,7 +151,6 @@ const TestCaseBottom = ({
   const onFetchGConfigData = async () => {
     const res = await listGConfig({ page: 1, size: 500 });
     if (auth.response(res)) {
-      setGconfigVars(res.data.map(item => ({ name: "${" + item.key + "}" })))
     }
   }
 
@@ -149,6 +158,10 @@ const TestCaseBottom = ({
   useEffect(() => {
     onFetchGConfigData()
   }, [])
+
+  useEffect(() => {
+    onQueryCaseVars(preConstructor)
+  }, [preConstructor])
 
   const onCreateConstructor = () => {
     dispatch({
@@ -375,7 +388,7 @@ const TestCaseBottom = ({
 
   return (
     <Row gutter={8} style={{ marginTop: 36, minHeight: 500 }}>
-      <VariableModal open={variableModal} gconfig={gconfigVars} variables={[]} onCancel={() => setVariableModal(false)} />
+      <VariableModal open={variableModal} gconfig={gconfigVars} variables={caseVars} onCancel={() => setVariableModal(false)} />
       <Tour open={tour} onClose={() => {
         localStorage.setItem("case_study", "done");
         setTour(false)

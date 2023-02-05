@@ -55,7 +55,7 @@ const TestCaseAssert = ({dispatch, testcase, caseId, createMode}) => {
       title: '类型',
       key: 'assert_type',
       dataIndex: 'assert_type',
-      render: text => CONFIG.ASSERT_TYPE_TAG[text]
+      render: text => CONFIG.ASSERT_TYPE[text]
     },
     {
       title: '预期结果',

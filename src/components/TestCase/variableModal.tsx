@@ -5,25 +5,40 @@ import Table, { ColumnsType } from "antd/es/table";
 interface VariableModalProps {
     open?: boolean;
     onCancel: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    gconfig: DataType[];
-    variables: DataType[];
+    gconfig: GConfigDataType[];
+    variables: StepDataType[];
 }
 
-interface DataType {
+interface GConfigDataType {
     name: string;
 }
+
+interface StepDataType extends GConfigDataType {
+    stepName: string;
+}
+
+
 
 
 const { TabPane } = Tabs;
 
 const VariableModal: React.FC<VariableModalProps> = ({ open, gconfig, variables, onCancel }) => {
 
-    const columns: ColumnsType<DataType> = [
+    const columns: ColumnsType<GConfigDataType> = [
         {
             title: '变量名',
             dataIndex: "name",
             key: 'name',
             render: (name) => <Typography.Text copyable>{name}</Typography.Text>
+        },
+    ]
+
+    const stepColumns: ColumnsType<StepDataType> = [
+        ...columns,
+        {
+            title: '来源',
+            dataIndex: "stepName",
+            key: 'stepName',
         },
     ]
 
@@ -34,7 +49,7 @@ const VariableModal: React.FC<VariableModalProps> = ({ open, gconfig, variables,
                     <Table columns={columns} dataSource={gconfig} size="small" />
                 </TabPane>
                 <TabPane key="case" tab="用例变量">
-                    <Table columns={columns} dataSource={variables} size="small" />
+                    <Table columns={stepColumns} dataSource={variables} size="small" />
                 </TabPane>
             </Tabs>
         </Modal>

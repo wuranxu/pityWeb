@@ -254,3 +254,12 @@ export async function removeRecord(index) {
     headers: auth.headers(),
   });
 }
+
+// 查询用例可用变量
+export async function queryVars(data) {
+  return await request(`${CONFIG.URL}/testcase/variables`, {
+    method: 'POST',
+    data,
+    headers: auth.headers(),
+  });
+}

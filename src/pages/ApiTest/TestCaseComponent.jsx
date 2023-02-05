@@ -116,6 +116,9 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       if (v.source === 4) {
         return v.name;
       }
+      if (v.source === 1 || v.source === 6) {
+        return v.name && v.expression
+      }
       return v.match_index && v.name && v.expression;
     })
 
@@ -192,8 +195,6 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
       return caseInfo.tag;
     }
     return caseInfo.tag.split(",")
-
-
   }
 
   return (
@@ -238,7 +239,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                 }
                               })
                             }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
-                            <Dropdown menu={menu}>
+                            <Dropdown overlay={menu}>
                               <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
                                       loading={loading.effects['testcase/onExecuteTestCase']}
                                       onClick={e => {

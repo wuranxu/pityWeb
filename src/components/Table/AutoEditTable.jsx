@@ -102,7 +102,7 @@ export default ({columns, dataSource, setDataSource}) => {
           name={dataIndex}
           rules={[
             {
-              required: record.source !== 4,
+              required: record.source !== 4 && record.source !== 1 && record.source !== 6,
               message: `${name} is required.`,
             },
           ]}
