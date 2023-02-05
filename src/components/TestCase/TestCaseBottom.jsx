@@ -19,7 +19,7 @@ import {
   ExclamationCircleOutlined,
   PlusOutlined,
   QuestionCircleOutlined,
-  SaveOutlined,
+  SaveOutlined
 } from '@ant-design/icons';
 import { connect } from '@umijs/max';
 import { useKeyPress } from 'ahooks';
@@ -35,7 +35,7 @@ import {
   Tabs,
   Tag,
   Timeline,
-  Tour,
+  Tour
 } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
