@@ -145,7 +145,9 @@ const TestCaseBottom = ({
   useKeyPress(
     ['shift.4'],
     () => {
-      setVariableModal(true);
+      if (window.location.href.indexOf(`/apiTest/testcase/`) > -1 && window.location.href.endsWith(`/${case_id}`)) {
+        setVariableModal(true);
+      }
     },
     {
       exactMatch: true,
