@@ -34,6 +34,7 @@ export default ({columns, dataSource, setDataSource}) => {
                         }) => {
     const form = useContext(EditableContext);
     const inputRef = useRef(null);
+    const [requiredMap, setRequiredMap] = useState({})
 
     useEffect(() => {
       if (editing != null) {
@@ -118,7 +119,7 @@ export default ({columns, dataSource, setDataSource}) => {
         name={dataIndex}
         rules={[
           {
-            required: true,
+            required: record.source !== 4,
             message: `${name} is required.`,
           },
         ]}
