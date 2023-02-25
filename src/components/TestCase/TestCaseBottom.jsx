@@ -145,7 +145,7 @@ const TestCaseBottom = ({
   useKeyPress(
     ['shift.4'],
     () => {
-      if (window.location.href.indexOf(`/apiTest/testcase/`) > -1 && window.location.href.endsWith(`/${case_id}`)) {
+      if (activeKey !== '4' && window.location.href.indexOf(`/apiTest/testcase/`) > -1 && window.location.href.endsWith(`/${case_id}`)) {
         setVariableModal(true);
       }
     },
