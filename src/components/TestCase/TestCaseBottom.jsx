@@ -19,7 +19,7 @@ import {
   ExclamationCircleOutlined,
   PlusOutlined,
   QuestionCircleOutlined,
-  SaveOutlined
+  SaveOutlined,
 } from '@ant-design/icons';
 import { connect } from '@umijs/max';
 import { useKeyPress } from 'ahooks';
@@ -35,7 +35,7 @@ import {
   Tabs,
   Tag,
   Timeline,
-  Tour
+  Tour,
 } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
@@ -145,7 +145,11 @@ const TestCaseBottom = ({
   useKeyPress(
     ['shift.4'],
     () => {
-      if (window.location.href.indexOf(`/apiTest/testcase/`) > -1 && window.location.href.endsWith(`/${case_id}`)) {
+      if (
+        activeKey !== '4' &&
+        window.location.href.indexOf(`/apiTest/testcase/`) > -1 &&
+        window.location.href.endsWith(`/${case_id}`)
+      ) {
         setVariableModal(true);
       }
     },
