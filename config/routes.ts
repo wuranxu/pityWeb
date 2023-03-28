@@ -14,7 +14,7 @@ export default [
   {
     path: '/user',
     layout: false,
-    title: '玩转接口测试',
+    title: false,
     routes: [
       {
         name: 'login',
@@ -40,9 +40,9 @@ export default [
       {
         path: '/dashboard/statistics',
         name: 'statistics',
-        component: "./Statistics"
+        component: './Statistics',
       },
-    ]
+    ],
   },
   {
     path: '/account/settings',
@@ -76,31 +76,31 @@ export default [
       {
         path: '/apiTest/testcase',
         name: '接口用例',
-        component: "./ApiTest/TestCaseDirectory"
+        component: './ApiTest/TestCaseDirectory',
       },
       {
         path: '/apiTest/record',
         name: '用例录制',
-        component: "./ApiTest/TestCaseRecorder"
+        component: './ApiTest/TestCaseRecorder',
       },
       {
         path: '/apiTest/testcase/:directory/add',
         name: '添加用例',
         hideInMenu: true,
-        component: "./ApiTest/TestCaseComponent"
+        component: './ApiTest/TestCaseComponent',
       },
       {
         path: '/apiTest/testcase/:directory/:case_id',
         name: '编辑用例',
         hideInMenu: true,
-        component: "./ApiTest/TestCaseComponent"
+        component: './ApiTest/TestCaseComponent',
       },
       {
         path: '/apiTest/testplan',
         name: '测试计划',
-        component: './ApiTest/TestPlan'
-      }
-    ]
+        component: './ApiTest/TestPlan',
+      },
+    ],
   },
   {
     path: '/record',
@@ -124,7 +124,7 @@ export default [
     path: '/notification',
     name: '消息中心',
     hideInMenu: true,
-    component: './Notification'
+    component: './Notification',
   },
   {
     path: '/config',
@@ -162,7 +162,7 @@ export default [
         name: 'oss文件',
         component: './Config/Oss',
       },
-    ]
+    ],
   },
   {
     path: '/system',
@@ -187,7 +187,7 @@ export default [
     path: '/mock',
     icon: 'icon-mockplus_doc',
     name: 'Mock配置',
-    component: "./Building"
+    component: './Building',
   },
   {
     path: '/tool',
@@ -212,25 +212,25 @@ export default [
         icon: 'redis',
         component: './Tool/RedisOnline',
       },
-    ]
+    ],
   },
   {
     path: '/ci',
     icon: 'icon-CI',
     name: '持续集成',
-    component: "./Building"
+    component: './Building',
   },
   {
     path: '/precise',
     icon: 'icon-jingzhun',
     name: '精准测试',
-    component: "./Building"
+    component: './Building',
   },
   {
     path: '/datafactory',
     icon: 'icon-hebingxingzhuang',
     name: '数据工厂',
-    component: "./datafactory"
+    component: './datafactory',
   },
   {
     path: '*',

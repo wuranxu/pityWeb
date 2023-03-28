@@ -15,10 +15,10 @@ export default defineConfig({
    */
   hash: true,
 
-  title: '玩转接口测试',
+  title: '',
 
   history: {
-    type: 'hash'
+    type: 'hash',
   },
 
   /**
