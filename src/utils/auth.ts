@@ -35,8 +35,8 @@ export default {
     if (res.code === 401) {
       // 说明用户未认证
       // message.info(res.msg);
-      localStorage.deleteItem('pityToken');
-      localStorage.deleteItem('pityUser');
+      localStorage.removeItem('pityToken');
+      localStorage.removeItem('pityUser');
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
         const uri = href.split("redirect=")
@@ -66,8 +66,8 @@ export default {
     if (res.code === 401) {
       // 说明用户未认证
       // message.info(res.msg);
-      localStorage.deleteItem('pityToken');
-      localStorage.deleteItem('pityUser');
+      localStorage.removeItem('pityToken');
+      localStorage.removeItem('pityUser');
       const href = window.location.href;
       if (href.indexOf("/user/login") === -1) {
         const uri = href.split("redirect=")

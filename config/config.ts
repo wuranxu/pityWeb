@@ -15,7 +15,7 @@ export default defineConfig({
    */
   hash: true,
 
-  title: '',
+  title: 'pity',
 
   history: {
     type: 'hash',

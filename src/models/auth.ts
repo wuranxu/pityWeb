@@ -1,6 +1,6 @@
 // @ts-ignore
 import {getPageQuery} from "@/utils/utils";
-import type {PityResponse} from "@/services/auth";
+import {PityResponse, register} from "@/services/auth";
 import {login} from "@/services/auth";
 import {useState} from "react";
 
@@ -24,35 +24,13 @@ export default () => {
     const resp = await login(payload);
     changeLoginStatus(resp)
     return resp;
-    // if (resp.code === 0) {
-    //   const urlParams = new URL(window.location.href);
-    //   const params = getPageQuery();
-    //   message.success('🎉 🎉 🎉  登录成功！');
-
-    //   let {redirect} = params;
-    //   if (redirect) {
-    //     const redirectUrlParams = new URL(redirect);
-    //
-    //     if (redirectUrlParams.origin === urlParams.origin) {
-    //       redirect = redirect.substr(urlParams.origin.length);
-    //
-    //       if (redirect.match(/^\/.*#/)) {
-    //         redirect = redirect.substr(redirect.indexOf('#') + 1);
-    //       }
-    //     } else {
-    //       window.location.href = '/';
-    //       return;
-    //     }
-    //   }
-    //   if (history !== undefined) {
-    //     history.replace(redirect || '/');
-    //   } else {
-    //     window.location.href = '/';
-    //   }
-    // } else {
-    //   message.error(resp.msg || '网络开小差了，请稍后重试');
-    // }
   }
 
-  return {status, loginPity};
+  const registerPity = async (payload: Record<string, any>) => {
+    const resp = await register(payload);
+    changeLoginStatus(resp)
+    return resp;
+  }
+
+  return {status, loginPity, registerPity};
 };

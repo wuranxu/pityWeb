@@ -40,6 +40,14 @@ export async function login(params: Record<string, string | undefined>) {
   });
 }
 
+// // 注册接口
+export async function register(params: Record<string, any>) {
+  return request<PityResponse>(`${CONFIG.URL}/auth/register`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function generateResetLink(params: Record<string, any>) {
   return request<{
     data: API.CurrentUser;
