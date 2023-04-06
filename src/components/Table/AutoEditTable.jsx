@@ -103,12 +103,13 @@ export default ({columns, dataSource, setDataSource}) => {
           name={dataIndex}
           rules={[
             {
-              required: record.source !== 4 && record.source !== 1 && record.source !== 6,
+              required: [4, 1, 6, 2, 3, 7].indexOf(record.source) === -1,
               message: `${name} is required.`,
             },
           ]}
         >
-          <Input ref={inputRef} onPressEnter={save} disabled={record.source === 4 || record.source === 1 || record.source === 6}
+          <Input ref={inputRef} onPressEnter={save}
+                 disabled={[4, 1, 6, 2, 3, 7].indexOf(record.source) > -1}
                  onBlur={save} placeholder={record.source === 4 ? '无需填写' : '请输入匹配项'}/>
         </Form.Item>
       }

@@ -13,7 +13,6 @@ const TestCaseEditor = ({
                           dispatch,
                           form,
                           testcase,
-                          loading,
                           caseId,
                           body,
                           setBody,
@@ -29,14 +28,11 @@ const TestCaseEditor = ({
                         }) => {
 
   const {caseInfo} = testcase;
-  // const [bodyType, setBodyType] = useState(0);
-  // const [formData, setFormData] = useState(0);
 
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(caseInfo);
     setBody(caseInfo.body)
-    // setHeaders(common.parseHeaders(caseInfo.request_headers))
   }, [caseInfo])
 
   return (
@@ -46,17 +42,20 @@ const TestCaseEditor = ({
       initialValues={caseInfo}
     >
       <Card title={<span className={styles.caseTitle}>场景信息</span>}
-            extra={<>
-              <Button type="primary" onClick={async () => {
-                await onSubmit(create)
-              }}><SaveOutlined/> 提交</Button>
-              {!create ? <Button style={{marginLeft: 8}} onClick={() => {
-                dispatch({
-                  type: 'testcase/save',
-                  payload: {editing: false}
-                })
-              }}><SaveOutlined/> 取消</Button> : <Button style={{marginLeft: 8}}><PlayCircleOutlined/> 测试</Button>}
-            </>}>
+            extra={
+              create ? null :
+                <>
+                  <Button type="primary" onClick={async () => {
+                    await onSubmit(create)
+                  }}><SaveOutlined/> 提交</Button>
+                  {!create ? <Button style={{marginLeft: 8}} onClick={() => {
+                      dispatch({
+                        type: 'testcase/save',
+                        payload: {editing: false}
+                      })
+                    }}><SaveOutlined/> 取消</Button> :
+                    <Button style={{marginLeft: 8}}><PlayCircleOutlined/> 测试</Button>}
+                </>}>
         <Row gutter={[8, 8]}>
           {
             fields.CaseDetail.map(item => <Col span={item.span || 24}>
