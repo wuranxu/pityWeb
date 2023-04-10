@@ -620,7 +620,7 @@ const TestCaseDirectory = ({testcase, gconfig, project, user, loading, dispatch}
           status="404"
           subTitle={
             <span>
-              你还没有添加任何项目, <a href="/#/apiTest/project">添加项目</a>后才能编写Case
+              你还没有添加任何项目, <a href="/#/project">添加项目</a>后才能编写Case
             </span>
           }
         />
