@@ -89,7 +89,7 @@ export default ({caseId, userMap, setExecuteStatus, project, checkedKeys}) => {
 
   const CaseTitle = <Col span={24}>
     <span style={{fontWeight: 'bold', fontSize: 16}}>用例详情</span>
-    <Button type='danger' className={styles.inlineButton}><DeleteOutlined/>删除</Button>
+    <Button danger className={styles.inlineButton}><DeleteOutlined/>删除</Button>
     <Dropdown.Button className={styles.inlineButton} type="primary" onClick={execute} overlay={menu}>
       <PlayCircleOutlined/> 执行
     </Dropdown.Button>

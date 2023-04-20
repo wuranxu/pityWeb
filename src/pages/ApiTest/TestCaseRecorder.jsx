@@ -209,7 +209,7 @@ const TestCaseRecorder = ({ dispatch, project, recorder, testcase, loading }) =>
             <Button style={{ float: 'right', marginRight: 8 }} onClick={() => setVisible(true)}
               disabled={selectedRowKeys.length === 0}><ToolOutlined />生成用例</Button>
             {
-              recordStatus ? <Button onClick={stopRecord} type="danger"
+              recordStatus ? <Button onClick={stopRecord} danger
                 style={{ float: 'right', marginRight: 8 }}><StopOutlined />停止录制</Button> :
                 <Button type="primary" style={{ float: 'right', marginRight: 8 }} onClick={startRecord}
                   loading={recordStatus}><VideoCameraOutlined />{recordLists.length === 0 ? '开始录制' : '重新录制'}
