@@ -9,7 +9,7 @@ const getUrl = () => {
   if (defaultSettings.apiUrl) {
     return defaultSettings.apiUrl;
   }
-  return dev ? 'http://localhost:7777' : 'https://api.pity.fun'
+  return dev ? 'http://localhost:7777' : 'http://45.143.233.102:7777'
 }
 
 const URL = getUrl();
