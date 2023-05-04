@@ -1,20 +1,20 @@
 import CONFIG from '@/consts/config';
-import {AutoComplete, Badge, Input, Select} from 'antd';
-import {REQUEST_TYPE} from "@/components/Common/global";
+import { AutoComplete, Badge, Input, Select } from 'antd';
+import { REQUEST_TYPE } from '@/components/Common/global';
 
-const {Option} = Select;
-const {TextArea} = Input;
+const { Option } = Select;
+const { TextArea } = Input;
 
 const options = [
   {
-    label: "${response}",
-    value: "${response}",
+    label: '${response}',
+    value: '${response}',
   },
   {
-    label: "${status_code}",
-    value: "${status_code}",
+    label: '${status_code}',
+    value: '${status_code}',
   },
-]
+];
 
 export default {
   CaseAsserts: [
@@ -32,9 +32,15 @@ export default {
       name: 'assert_type',
       label: '校验方式',
       required: true,
-      component: <Select placeholder="选择校验方式，支持JSON深层次判断">
-        {Object.keys(CONFIG.ASSERT_TYPE).map(v => <Option key={v} value={v}>{CONFIG.ASSERT_TYPE[v]}</Option>)}
-      </Select>,
+      component: (
+        <Select placeholder="选择校验方式，支持JSON深层次判断">
+          {Object.keys(CONFIG.ASSERT_TYPE).map((v) => (
+            <Option key={v} value={v}>
+              {CONFIG.ASSERT_TYPE[v]}
+            </Option>
+          ))}
+        </Select>
+      ),
       type: 'select',
       span: 24,
     },
@@ -43,13 +49,11 @@ export default {
       label: '预期结果',
       required: true,
       message: '请输入预期结果',
-      component: <AutoComplete
-        options={[]}
-      >
-        <TextArea
-          placeholder="请输入预期结果，支持变量哦"
-        />
-      </AutoComplete>,
+      component: (
+        <AutoComplete options={[]}>
+          <TextArea placeholder="请输入预期结果，支持变量哦" />
+        </AutoComplete>
+      ),
       span: 24,
     },
     {
@@ -57,13 +61,11 @@ export default {
       label: '实际结果',
       required: true,
       message: '请输入实际结果',
-      component: <AutoComplete
-        options={options}
-      >
-        <TextArea
-          placeholder="请输入实际结果，支持变量哦"
-        />
-      </AutoComplete>,
+      component: (
+        <AutoComplete options={options}>
+          <TextArea placeholder="请输入实际结果，支持变量哦" />
+        </AutoComplete>
+      ),
       span: 24,
     },
   ],
@@ -83,9 +85,15 @@ export default {
       name: 'priority',
       label: '优先级',
       required: true,
-      component: <Select placeholder="请选择优先级">
-        {CONFIG.PRIORITY.map(v => <Option key={v} value={v}>{v}</Option>)}
-      </Select>,
+      component: (
+        <Select placeholder="请选择优先级">
+          {CONFIG.PRIORITY.map((v) => (
+            <Option key={v} value={v}>
+              {v}
+            </Option>
+          ))}
+        </Select>
+      ),
       type: 'select',
       span: 8,
     },
@@ -93,10 +101,15 @@ export default {
       name: 'status',
       label: '状态',
       required: true,
-      component: <Select placeholder="请选择当前场景状态">
-        {Object.keys(CONFIG.CASE_STATUS).map(key => <Option key={key} value={key}>{
-          <Badge {...CONFIG.CASE_BADGE[key]} />}</Option>)}
-      </Select>,
+      component: (
+        <Select placeholder="请选择当前场景状态">
+          {Object.keys(CONFIG.CASE_STATUS).map((key) => (
+            <Option key={key} value={key}>
+              {<Badge {...CONFIG.CASE_BADGE[key]} />}
+            </Option>
+          ))}
+        </Select>
+      ),
       type: 'select',
       span: 8,
     },
@@ -104,10 +117,15 @@ export default {
       name: 'request_type',
       label: '请求类型',
       required: true,
-      component: <Select placeholder="请选择请求协议">
-        {Object.keys(REQUEST_TYPE).map(key => <Option key={key} value={key}
-                                                             disabled={key !== '1'}>{REQUEST_TYPE[key]}</Option>)}
-      </Select>,
+      component: (
+        <Select placeholder="请选择请求协议">
+          {Object.keys(REQUEST_TYPE).map((key) => (
+            <Option key={key} value={key} disabled={key !== '1'}>
+              {REQUEST_TYPE[key]}
+            </Option>
+          ))}
+        </Select>
+      ),
       type: 'select',
       span: 8,
     },
@@ -115,8 +133,7 @@ export default {
       name: 'tag',
       label: '场景标签',
       required: false,
-      component: <Select mode='tags' placeholder='请输入场景标签'>
-      </Select>,
+      component: <Select mode="tags" placeholder="请输入场景标签"></Select>,
       type: 'select',
       span: 8,
     },
@@ -124,11 +141,13 @@ export default {
       name: 'case_type',
       label: '场景类型',
       required: true,
-      component: <Select placeholder='请选择场景类型'>
-        <Option value={0}>普通场景</Option>
-        <Option value={1}>前置场景</Option>
-        <Option value={2}>数据工厂</Option>
-      </Select>,
+      component: (
+        <Select placeholder="请选择场景类型">
+          <Option value={0}>普通场景</Option>
+          <Option value={1}>前置场景</Option>
+          <Option value={2}>数据工厂</Option>
+        </Select>
+      ),
       type: 'select',
       span: 8,
     },
@@ -141,8 +160,8 @@ export default {
       required: true,
       message: '请输入环境名称',
       type: 'input',
-      placeholder: '请输入环境名称',
-      component: null,
+      placeholder: '请输入环境名称(最多10字符)',
+      component: <Input maxLength={10} />,
       span: 24,
     },
     {
@@ -151,7 +170,7 @@ export default {
       required: false,
       message: '请输入备注',
       placeholder: '请输入备注',
-      component: <Input.TextArea maxLength={200}/>,
+      component: <Input.TextArea maxLength={200} />,
       span: 24,
     },
   ],
