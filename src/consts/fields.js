@@ -169,7 +169,7 @@ export default {
       label: '备注',
       required: false,
       message: '请输入备注',
-      placeholder: '请输入备注',
+      placeholder: '请输入备注哈',
       component: <Input.TextArea maxLength={200} />,
       span: 24,
     },
