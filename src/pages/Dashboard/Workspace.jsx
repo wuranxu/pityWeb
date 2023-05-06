@@ -261,15 +261,19 @@ const Workspace = ({user, dispatch}) => {
             <Col span={6}>
               <LinkTag link='/record/list' name="测试报告"/>
             </Col>
-            <Col span={6}>
+            {/* <Col span={6}>
               <LinkTag link='/tool/request' name="HTTP工具"/>
+            </Col> */}
+            <Col span={6}>
+              {/* 此处的HTTP工具更改为接口用例，因为屏蔽了该工具，如有需要，后续放开后再添加 */}
+              <LinkTag link='/apiTest/testcase' name="接口用例"/>
             </Col>
             <Col span={6}>
               <LinkTag link='/config/database' name="数据库配置"/>
             </Col>
             <Col span={6}>
               <Button size="small" type="primary" ghost style={{fontSize: 12}}>
-                <PlusOutlined/> 添加
+                <PlusOutlined/> 添加(禁用)
               </Button>
             </Col>
           </Row>

@@ -63,7 +63,8 @@ const GlobalHeaderRight = () => {
       <span
         className={actionClassName}
         onClick={() => {
-          window.open('https://wuranxu.github.io/pityDoc/');
+          // https://wuranxu.github.io/pityDoc/
+          window.open('https://www.siyuai.xyz/');
         }}
       >
         <QuestionCircleOutlined/>

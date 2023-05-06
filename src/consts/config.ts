@@ -26,7 +26,7 @@ const CONFIG = {
   WS_URL: getWss(),
   ICONFONT: defaultSettings.iconfontUrl,
   OSS_URL: "http://oss.pity.fun/pity",
-  AVATAR_URL: 'https://static.pity.fun/picture/20220809231905.png',
+  AVATAR_URL: 'https://www.siyuai.xyz/sylogo.png',
   DOCUMENT_URL: 'https://wuranxu.github.io/pityDoc',
   PROJECT_AVATAR_URL: 'https://static.pity.fun/picture/20220809232253.png',
   ROLE: {

@@ -78,11 +78,11 @@ export default [
         name: '接口用例',
         component: './ApiTest/TestCaseDirectory',
       },
-      {
-        path: '/apiTest/record',
-        name: '用例录制',
-        component: './ApiTest/TestCaseRecorder',
-      },
+      // {
+      //   path: '/apiTest/record',
+      //   name: '用例录制',
+      //   component: './ApiTest/TestCaseRecorder',
+      // },
       {
         path: '/apiTest/testcase/:directory/add',
         name: '添加用例',
@@ -154,12 +154,12 @@ export default [
       },
       {
         path: '/config/redis',
-        name: 'Redis配置',
+        name: 'Redis配置(禁用)',
         component: './Config/Redis',
       },
       {
         path: '/config/oss',
-        name: 'oss文件',
+        name: 'oss文件(禁用)',
         component: './Config/Oss',
       },
     ],
@@ -183,55 +183,55 @@ export default [
       },
     ],
   },
-  {
-    path: '/mock',
-    icon: 'icon-mockplus_doc',
-    name: 'Mock配置',
-    component: './Building',
-  },
-  {
-    path: '/tool',
-    name: '实用工具',
-    icon: 'tool',
-    routes: [
-      {
-        path: '/tool/request',
-        name: 'HTTP测试',
-        icon: 'icon-yunhang',
-        component: './Tool/Request',
-      },
-      {
-        path: '/tool/sql',
-        name: 'SQL客户端',
-        icon: 'database',
-        component: './Tool/SqlOnline',
-      },
-      {
-        path: '/tool/redis',
-        name: 'Redis客户端',
-        icon: 'redis',
-        component: './Tool/RedisOnline',
-      },
-    ],
-  },
-  {
-    path: '/ci',
-    icon: 'icon-CI',
-    name: '持续集成',
-    component: './Building',
-  },
-  {
-    path: '/precise',
-    icon: 'icon-jingzhun',
-    name: '精准测试',
-    component: './Building',
-  },
-  {
-    path: '/datafactory',
-    icon: 'icon-hebingxingzhuang',
-    name: '数据工厂',
-    component: './datafactory',
-  },
+  // {
+  //   path: '/mock',
+  //   icon: 'icon-mockplus_doc',
+  //   name: 'Mock配置',
+  //   component: './Building',
+  // },
+  // {
+  //   path: '/tool',
+  //   name: '实用工具',
+  //   icon: 'tool',
+  //   routes: [
+  //     {
+  //       path: '/tool/request',
+  //       name: 'HTTP测试',
+  //       icon: 'icon-yunhang',
+  //       component: './Tool/Request',
+  //     },
+  //     {
+  //       path: '/tool/sql',
+  //       name: 'SQL客户端',
+  //       icon: 'database',
+  //       component: './Tool/SqlOnline',
+  //     },
+  //     {
+  //       path: '/tool/redis',
+  //       name: 'Redis客户端',
+  //       icon: 'redis',
+  //       component: './Tool/RedisOnline',
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: '/ci',
+  //   icon: 'icon-CI',
+  //   name: '持续集成',
+  //   component: './Building',
+  // },
+  // {
+  //   path: '/precise',
+  //   icon: 'icon-jingzhun',
+  //   name: '精准测试',
+  //   component: './Building',
+  // },
+  // {
+  //   path: '/datafactory',
+  //   icon: 'icon-hebingxingzhuang',
+  //   name: '数据工厂',
+  //   component: './datafactory',
+  // },
   {
     path: '*',
     layout: false,
