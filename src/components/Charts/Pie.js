@@ -23,7 +23,10 @@ export default ({data, height, name, value = 'count'}) => {
       },
     },
     tooltip: {
-      title: (title) => `${(title * 100).toFixed(0)}%`
+      showTitle: true,
+      title: (title, datum) => {
+        return `${datum.name}: ${(datum.percent * 100).toFixed(0)}%`
+      },
     },
     interactions: [
       {

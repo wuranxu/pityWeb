@@ -215,7 +215,6 @@ const TestCaseRecorder = ({ dispatch, project, recorder, testcase, loading }) =>
                   loading={recordStatus}><VideoCameraOutlined />{recordLists.length === 0 ? '开始录制' : '重新录制'}
                 </Button>
             }
-
           </Col>
         </Row>
         <Row gutter={8} style={{ marginTop: 12 }}>
