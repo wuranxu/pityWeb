@@ -51,6 +51,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       title: 'value',
       dataIndex: 'value',
       key: 'value',
+      ellipsis: true,
       render: (text, record) => {
         if (record.key_type === 0) {
           return text;
