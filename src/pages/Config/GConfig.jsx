@@ -10,6 +10,7 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import UserLink from "@/components/Button/UserLink";
 import PityAceEditor from "@/components/CodeEditor/AceEditor/index";
 import CONFIG from "@/consts/config";
+import styles from './GConfig.less';
 
 const {Option} = Select;
 const GConfig = ({gconfig, user, loading, dispatch}) => {
@@ -51,6 +52,7 @@ const GConfig = ({gconfig, user, loading, dispatch}) => {
       title: 'value',
       dataIndex: 'value',
       key: 'value',
+      className: styles.ellipsis,
       render: (text, record) => {
         if (record.key_type === 0) {
           return text;
