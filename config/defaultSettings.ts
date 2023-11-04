@@ -23,6 +23,7 @@ const Settings: LayoutSettings & {
   logo: '/logo.svg',
   iconfontUrl: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
   apiUrl: 'http://127.0.0.1:7777',
+  wssUrl: 'ws://127.0.0.1:7777',
   https: false,
 };
 
