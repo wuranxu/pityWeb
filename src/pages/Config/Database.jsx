@@ -192,10 +192,9 @@ const Database = ({dispatch, gconfig, loading}) => {
       required: true,
       message: '请选择对应环境',
       type: 'select',
-      component: <Select>
+      component: <Select placeholder="请选择对应环境">
         {envList.map(v => <Option key={v.id} value={v.id}>{v.name}</Option>)}
       </Select>,
-      placeholder: '请选择对应环境',
     },
     {
       name: 'name',
@@ -266,12 +265,12 @@ const Database = ({dispatch, gconfig, loading}) => {
   return (
     <PageContainer title="数据库配置列表" breadcrumb={null}>
       <Card>
-        <FormForModal Footer={Footer} onTest={onTest}
+        <FormForModal Footer={Footer} onTest={onTest} width={520}
                       record={databaseRecord} fields={fields} title="数据库配置" onFinish={onFinish}
                       left={6} right={18} open={databaseModal} offset={-50} onCancel={() => {
           save({databaseModal: false})
         }}>
-          <Alert type="info" style={{marginBottom: 12, marginTop: -12}} closable
+          <Alert type="info" style={{marginBottom: 12}} closable
                  message="🥂 在添加/编辑数据库配置之前，记得先测试连接是否可用哟！"/>
         </FormForModal>
         <Form {...layout} form={form}>
@@ -279,7 +278,7 @@ const Database = ({dispatch, gconfig, loading}) => {
             <Col span={6}>
               <Form.Item label="环境" name="env">
                 <Select placeholder="选择环境" allowClear>
-                  {envList.map(k => <Option value={k.id}>{k.name}</Option>)}
+                  {envList.map(k => <Option key={k.id} value={k.id}>{k.name}</Option>)}
                 </Select>
               </Form.Item>
             </Col>

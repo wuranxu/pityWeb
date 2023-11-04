@@ -1,24 +1,22 @@
 import defaultSettings from "../../config/defaultSettings";
-const isDev = () => {
-  return window.location.href.indexOf("localhost") > -1 || window.location.href.indexOf("127.0.0.1") > -1;
-}
 
-const dev = isDev()
+
+// const isDev = () => {
+//   return window.location.href.indexOf("localhost") > -1 || window.location.href.indexOf("127.0.0.1") > -1;
+// }
+
+// const dev = isDev()
 
 const getUrl = () => {
-  if (defaultSettings.apiUrl) {
-    return defaultSettings.apiUrl;
-  }
-  return dev ? 'http://localhost:7777' : 'https://api.pity.fun'
+  const prefix = defaultSettings.https ? 'https://' : 'http://'
+  return `${prefix}${defaultSettings.apiUrl}`
 }
 
 const URL = getUrl();
 
 const getWss = () => {
-  if (defaultSettings.wssUrl) {
-    return defaultSettings.wssUrl;
-  }
-  return dev ? 'ws://127.0.0.1:7777/ws' : 'wss://api.pity.fun/ws'
+  const prefix = defaultSettings.https ? 'wss://' : 'ws://'
+  return `${prefix}${defaultSettings.apiUrl}`
 }
 
 const CONFIG = {

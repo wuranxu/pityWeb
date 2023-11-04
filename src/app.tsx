@@ -70,30 +70,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
-    token: {
-      colorBgAppListIconHover: 'rgba(0,0,0,0.06)',
-      colorTextAppListIconHover: 'rgba(255,255,255,0.95)',
-      colorTextAppListIcon: 'rgba(255,255,255,0.85)',
-      sider: {
-        colorBgCollapsedButton: '#fff',
-        colorTextCollapsedButtonHover: 'rgba(0,0,0,0.65)',
-        colorTextCollapsedButton: 'rgba(0,0,0,0.45)',
-        colorMenuBackground: '#232137',
-        colorBgMenuItemCollapsedHover: 'rgba(0,0,0,0.06)',
-        colorBgMenuItemCollapsedSelected: 'rgba(0,0,0,0.15)',
-        colorBgMenuItemCollapsedElevated: 'rgba(0,0,0,0.85)',
-        colorMenuItemDivider: 'rgba(255,255,255,0.15)',
-        colorBgMenuItemHover: 'rgba(0,0,0,0.06)',
-        colorBgMenuItemSelected: '#1670ff',
-        colorTextMenuSelected: '#fff',
-        colorTextMenuItemHover: 'rgba(255,255,255,0.75)',
-        colorTextMenu: 'rgba(255,255,255,0.75)',
-        colorTextMenuSecondary: 'rgba(255,255,255,0.65)',
-        colorTextMenuTitle: 'rgba(255,255,255,0.95)',
-        colorTextMenuActive: 'rgba(255,255,255,0.95)',
-        colorTextSubMenuSelected: '#fff',
-      },
-    },
     footerRender: () => <Footer/>,
     onPageChange: () => {
       const {location} = history;
@@ -104,19 +80,19 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     },
     layoutBgImgList: [
       {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
+        src: 'https://img.alicdn.com/imgextra/i2/O1CN01O4etvp1DvpFLKfuWq_!!6000000000279-2-tps-609-606.png',
         left: 85,
         bottom: 100,
         height: '303px',
       },
       {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/C2TWRpJpiC0AAAAAAAAAAAAAFl94AQBr',
+        src: 'https://img.alicdn.com/imgextra/i2/O1CN01O4etvp1DvpFLKfuWq_!!6000000000279-2-tps-609-606.png',
         bottom: -68,
         right: -45,
         height: '303px',
       },
       {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/F6vSTbj8KpYAAAAAAAAAAAAAFl94AQBr',
+        src: 'https://img.alicdn.com/imgextra/i3/O1CN018NxReL1shX85Yz6Cx_!!6000000005798-2-tps-884-496.png',
         bottom: 0,
         left: 0,
         width: '331px',
@@ -130,7 +106,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     childrenRender: (children) => {
       if (initialState?.loading) return <PageLoading/>;
       return (
-        <ConfigProvider 
+        <ConfigProvider
         renderEmpty={() => <Empty image={NoTableData} imageStyle={{height: 160}}
                                                   description="暂无数据"/>}>
           {children}

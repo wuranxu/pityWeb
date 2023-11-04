@@ -222,7 +222,7 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                             bodyType={bodyType} setBodyType={setBodyType} setSuffix={setSuffix}
                                             headers={headers} setHeaders={setHeaders} onSubmit={onSubmit}/> :
                     <Card style={{margin: -8}} bodyStyle={{padding: 24}} title={
-                      <span>{directoryName} {caseInfo.name ? ` / ${caseInfo.name}` : ''} {CASE_TYPE[caseInfo.case_type]}</span>}
+                      <span>{directoryName} {caseInfo.name ? ` > ${caseInfo.name}` : ''} {CASE_TYPE[caseInfo.case_type]}</span>}
                           extra={<div>
                             <Button onClick={() => {
                               dispatch({
@@ -239,13 +239,14 @@ const TestCaseComponent = ({loading, dispatch, user, testcase, gconfig}) => {
                                 }
                               })
                             }} style={{borderRadius: 16}}><EditOutlined/> 编辑</Button>
-                            <Dropdown overlay={menu}>
-                              <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
-                                      loading={loading.effects['testcase/onExecuteTestCase']}
-                                      onClick={e => {
-                                        e.stopPropagation()
-                                      }}><PlayCircleOutlined/> 运行<DownOutlined/></Button>
-                            </Dropdown>
+                            <Button type="primary" style={{marginLeft: 8, borderRadius: 16}}
+                                    loading={loading.effects['testcase/onExecuteTestCase']}
+                                    onClick={e => {
+                                      e.stopPropagation()
+                                    }}><PlayCircleOutlined/> 运行</Button>
+                            {/*<Dropdown overlay={menu}>*/}
+
+                            {/*</Dropdown>*/}
                           </div>}>
                       <Descriptions column={4}>
                         <Descriptions.Item label='用例名称'><a>{caseInfo.name}</a></Descriptions.Item>
