@@ -213,7 +213,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
                     <JSONAceEditor
                       setEditor={setEditor}
                       readOnly={true}
-                      value={response[name].response ? response[name].response : ''}
+                      value={JSON.stringify(response[name]?.response || "null", null, 2)}
                       height="80vh"
                     />
                   </TabPane>
@@ -314,7 +314,7 @@ export default ({response, caseName, width, modal, setModal, single = true}) => 
               <JSONAceEditor
                 readOnly={true}
                 setEditor={setEditor}
-                value={response.response ? response.response : ''}
+                value={JSON.stringify(response[name]?.response || "null", null, 2)}
                 height="80vh"
               />
             </TabPane>
