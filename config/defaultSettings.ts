@@ -1,4 +1,4 @@
-import {Settings as LayoutSettings} from '@ant-design/pro-components';
+import { Settings as LayoutSettings } from '@ant-design/pro-components';
 
 /**
  * @name
