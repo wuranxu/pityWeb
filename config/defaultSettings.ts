@@ -8,6 +8,7 @@ const Settings: LayoutSettings & {
   https?: boolean;
   logo?: string;
   apiUrl?: string;
+  backend?: boolean;
 } = {
   navTheme: 'light',
   // 拂晓蓝
@@ -23,6 +24,7 @@ const Settings: LayoutSettings & {
   iconfontUrl: '//at.alicdn.com/t/font_915840_kom9s5w2t6k.js',
   apiUrl: 'api.pity.fun',
   https: false,
+  backend: false,
 };
 
 export default Settings;

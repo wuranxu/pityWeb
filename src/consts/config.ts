@@ -6,17 +6,23 @@ import defaultSettings from "../../config/defaultSettings";
 // }
 
 // const dev = isDev()
+const getApiUrl = () => {
+  if (defaultSettings.backend) {
+    return window.location.host
+  }
+  return defaultSettings.apiUrl
+}
 
 const getUrl = () => {
   const prefix = defaultSettings.https ? 'https://' : 'http://'
-  return `${prefix}${defaultSettings.apiUrl}`
+  return `${prefix}${getApiUrl()}`
 }
 
 const URL = getUrl();
 
 const getWss = () => {
   const prefix = defaultSettings.https ? 'wss://' : 'ws://'
-  return `${prefix}${defaultSettings.apiUrl}`
+  return `${prefix}${getApiUrl()}`
 }
 
 const CONFIG = {
