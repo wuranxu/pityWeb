@@ -3,9 +3,9 @@
 ![png](https://img.shields.io/badge/React-18+-blue)
 ![png](https://img.shields.io/badge/contributors-3-green)
 
-### V2版本体验地址
+### 体验地址
 
-  [http://121.5.2.74:8006](http://121.5.2.74:8006/)
+  [http://pity.fun](http://pity.fun)
 
 ### 技术栈
 

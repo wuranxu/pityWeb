@@ -510,7 +510,7 @@ const PostmanBody = ({
         {Object.keys(response).length === 0 ? null : (
           <Tabs style={{width: '100%'}} tabBarExtraContent={tabExtra(response)}>
             <TabPane tab="Body" key="1">
-              <JSONAceEditor value={response.response} readOnly={true}
+              <JSONAceEditor value={typeof response?.response === 'object' ? JSON.stringify(response.response, null, 2): response.response} readOnly={true}
                              height="30vh" setEditor={setEditor}/>
             </TabPane>
             <TabPane tab="Cookie" key="2">

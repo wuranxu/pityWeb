@@ -29,6 +29,7 @@ const resColumns = [
   },
 ];
 export default ({ response, caseName, width, modal, setModal, single = true }) => {
+  console.log("resp", response)
   const [xmindData, setXmindData] = useState(null);
   const [xmindDataList, setXmindDataList] = useState([]);
   const [graph, setGraph] = useState({});
@@ -286,7 +287,7 @@ export default ({ response, caseName, width, modal, setModal, single = true }) =
                     <JSONAceEditor
                       setEditor={setEditor}
                       readOnly={true}
-                      value={JSON.stringify(response[name]?.response || 'null', null, 2)}
+                      value={JSON.stringify(response[name]?.response || null, null, 2)}
                       height="80vh"
                     />
                   </TabPane>
@@ -462,7 +463,7 @@ export default ({ response, caseName, width, modal, setModal, single = true }) =
               <JSONAceEditor
                 readOnly={true}
                 setEditor={setEditor}
-                value={JSON.stringify(response[name]?.response || 'null', null, 2)}
+                value={JSON.stringify(response[name]?.response || null, null, 2)}
                 height="80vh"
               />
             </TabPane>
